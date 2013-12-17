@@ -1,0 +1,170 @@
+body {
+	background-color: #FCD097;
+}
+
+#intro {
+    margin: 0 auto;
+    position: relative;
+	width:530px;
+	height:58px;
+
+}
+
+#intro01_ {
+	position:absolute;
+	left:0px;
+	top:0px;
+	width:530px;
+	height:58px;
+}
+
+#intro02_ {
+	position:absolute;
+	left:0px;
+	top:58px;
+	width:134px;
+	height:437px;
+}
+
+#intro03_ {
+	position:absolute;
+	vertical-align: text-bottom;
+	left:134px;
+	top:58px;
+	width:259px;
+	height:265px;
+	background-image: url(../images/intro03.png);
+}
+
+#intro04_ {
+	position:absolute;
+	left:393px;
+	top:58px;
+	width:137px;
+	height:437px;
+}
+
+#intro05_ {
+	position:absolute;
+	left:134px;
+	top:323px;
+	width:54px;
+	height:37px;
+	background-image: url(../images/intro05.png);
+}
+
+#intro06_ {
+	position:absolute;
+	left:188px;
+	top:323px;
+	width:152px;
+	height:20px;
+}
+
+#intro07_ {
+	position:absolute;
+	left:340px;
+	top:323px;
+	width:53px;
+	height:37px;
+	background-image: url(../images/intro07.png);
+}
+
+#intro08_ {
+	position:absolute;
+	left:188px;
+	top:343px;
+	width:152px;
+	height:17px;
+	background-image: url(../images/intro08.png);
+}
+
+#intro09_ {
+	position:absolute;
+	left:134px;
+	top:360px;
+	width:35px;
+	height:69px;
+	background-image: url(../images/intro09.png);
+}
+
+#intro10_ {
+	position:absolute;
+	left:169px;
+	top:360px;
+	width:186px;
+	height:23px;
+	background-image: url(../images/intro10.png);
+}
+
+#intro11_ {
+	position:absolute;
+	left:355px;
+	top:360px;
+	width:38px;
+	height:69px;
+	background-image: url(../images/intro11.png);
+}
+
+#intro12_ {
+	position:absolute;
+	left:169px;
+	top:383px;
+	width:186px;
+	height:9px;
+	background-image: url(../images/intro12.png);
+}
+
+#intro13_ {
+	position:absolute;
+	left:169px;
+	top:392px;
+	width:186px;
+	height:27px;
+	background-image: url(../images/intro13.png);
+}
+
+#intro14_ {
+	position:absolute;
+	left:169px;
+	top:419px;
+	width:186px;
+	height:10px;
+	background-image: url(../images/intro14.png);
+}
+#peu {
+	color: #000000;
+	height: 10px;
+	left: -70px;
+	position: absolute;
+	top: 450px;
+	width: 700px;
+}
+
+#user_agent_msg {
+	text-align:justify;
+	font:Arial, Helvetica, sans-serif;
+	font-size:11px;
+}
+#peu p {
+	text-align:justify;
+	font:Arial, Helvetica, sans-serif;
+	font-size:11px;
+	}
+.todo {
+	text-align: center;
+	letter-spacing: normal;
+	vertical-align: middle;
+	word-spacing: normal;
+	text-align: center;
+	background-color:#FFFFFF;
+}
+p {
+	margin: 0px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 9px;
+	text-align: center;
+}
+.vermell {
+	color: #99605A;
+}

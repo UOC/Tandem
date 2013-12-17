@@ -1,0 +1,380 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	font-family:Arial, Helvetica, sans-serif;
+	margin:0;
+	padding:0;
+}
+
+p{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:0.85em;
+	padding:0;
+    margin: 0 20px 0 0;
+	}
+
+a{
+	text-decoration:none;
+		}
+a img {border:none;}
+
+#container{	
+    margin: 0 auto;
+	width:1000px;}
+
+#head{
+    background-image: url("../images/Tandem-Speakapps_03.gif");
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    height: 90px;
+    margin: 0 0 10px 0;
+	}
+#head img{
+	float:left;
+	}
+	
+#menu{
+	width:640px;
+	margin:0;
+	padding:0;
+	}
+#menu ul{
+	margin: 5px 0; 
+	padding: 0;}
+	
+#menu li {
+	display:inline;
+    margin: 0 20px 0 0;
+	padding: 0;
+}
+
+#menu li a:link, #menu li a:visited {
+	background-repeat:no-repeat;
+	background-position:right;
+	text-decoration:none;
+
+}
+#menu li a:hover {
+	text-decoration:none;
+
+}
+	
+#content{
+    display: inline;
+    float: left;
+    margin: 0 0 10px;
+    width: 705px;
+	background:url(../images/linias.gif) repeat-y top right;
+	}
+
+#showNews{
+	top:0px;
+	min-width:400px;
+	overflow:visible;
+	position:absolute;
+	text-align:center;
+	line-height:23px;
+	display:block;
+	margin-left: 210px;
+	color:#2B3F26;
+	font-size:18px;
+	line-height:20px;
+	padding-left:50px;
+	padding-right:50px;
+	z-index:1000;
+	background-color:#fff; 
+	border:1px solid #2B3F27; 
+	border-top:0;
+	padding:15px 25px 5px 25px;
+	-moz-box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow:3px 3px 6px rgba(0, 0, 0, 0.3);
+	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.image{
+	display:inline;
+	float:left;
+	}
+
+#imgComp{
+	float: left;
+    margin: 0 0 0 20px;
+	}
+
+#imgComp2{
+	float: left;
+	margin: 0 0 0 20px;
+}
+
+#buttonsCheck{
+    border-top: 1px dashed #CCCCCC;
+    clear: left;
+    float: left;
+    margin: 20px 0 0;
+    width: 675px;
+}
+
+#columR{
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100px;
+	}
+
+#buttonDesconn{
+	float:right;
+	margin-right:80px;
+	margin-top:50px;
+}
+
+#help{
+margin-left:823px;
+position:absolute;
+margin-top:45px;
+}
+
+#nextQuestion{
+	float:left;
+	background-position: left top;
+	background-repeat: no-repeat;
+	margin: -40px 0 0;
+	width: 1000px;
+}
+
+.listaBotones{
+	list-style:none;
+	margin: 10px 0;
+	padding:0;
+}
+
+.listaBotones li{
+	margin:2px;
+	padding:2px;
+	float:left;
+}
+
+#footer{
+    background-image: url("../images/Tandem-Speakapps_03.gif");
+	float:left;
+    background-position: left top;
+    background-repeat: no-repeat;
+    height: 114px;
+    margin: 0;
+    width: 1000px;
+	}
+	
+#footer img{
+    float: right;
+    margin: 5px 60px 0 0;
+	}
+	
+	
+#zoom {
+	position:relative;
+	left:0px;
+	top:0px;
+	width:50px;
+	height:21px;
+}
+
+#zoom2 {
+	position:relative;
+	left:0px;
+	top:0px;
+	width:50px;
+	height:21px;
+}
+
+#textosExerc{margin-bottom:20px;}
+
+
+.titol_modul{
+	color:#FFF;
+	background:#FFF url(../images/fonsTitol.png) no-repeat;
+	font-size:14px;
+	font-weight:bold;
+	width:190px;
+	height:25px;
+	line-height:25px;
+	padding-left:10px;
+	margin:0px 0px 15px 0px;
+}
+.contenidor_connexio{
+	width:200px;
+	height:324px;
+	padding:0px;
+	margin:0px 0px 15px 0px;
+}
+.contenidor_esperant{
+	background:#FFF url(../images/before_connecting.png) no-repeat;
+}
+.contenidor_connectat{
+	background:#FFF url(../images/connecting.png) no-repeat;
+}
+.contenidor_connector{
+	width:180px;
+	height:142px;
+	padding:10px;
+}
+.contenidor_foto_a{
+	width:62px;
+	height:82px;
+	margin-right:10px;
+	float:left;
+}
+
+#contenidor_connector_b{
+	margin-top:20px;
+}
+.contenidor_dades_person_a{
+	top: -8px;
+	width:99px;
+	float:left;
+}
+
+.contenidor_foto_b{
+	width:52px;
+	height:82px;
+	margin-left:10px;
+	float:left;
+	margin-top:40px;
+}
+#contenidor_connector_a .contenidor_dades_person_b{
+	top: -8px;
+	width:99px;
+	float:left;
+}
+
+#contenidor_connector_b .contenidor_dades_person_b{
+	top: -8px;
+	padding-top:15px;
+	width:109px;
+	float:left;
+	text-align:right;
+}
+.name_person{
+	font-size:12px;
+	font-weight:bold;
+}
+.punts{
+	font-size:11px;
+}
+.mes_dades{
+	font-size:10px;
+}
+.clear{
+	clear:both;
+}
+
+
+
+/*buttons*/
+
+.buttonsE{
+	padding: 10px 20px 6px;
+	color: #999;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 36	px;
+	background: #ddd;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	text-shadow: #fff 0px 1px 1px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+	background: -moz-linear-gradient(top,  #eeeeee,  #cccccc);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc');
+}
+.buttonsE:active {
+	box-shadow: 0px 0px 0px rgba(0,0,0,.5);
+	-webkit-box-shadow: 0px 0px 0px rgba(0,0,0,.5);
+	-moz-box-shadow: 0px 0px 0px rgba(0,0,0,.5);
+	position: relative;
+	top: 1px;
+	left: 1px;
+}
+
+.buttonsEdesact{
+	padding: 10px 20px 6px;
+	color: #ea102d;
+	text-decoration: line-through;
+	font-size: 16px;
+	line-height: 36	px;
+	background: #000;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	text-shadow: #fff 0px 1px 1px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+	background: -moz-linear-gradient(top,  #eeeeee,  #cccccc);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc');
+}
+.buttonsEinter{
+	padding: 10px 20px 6px;
+	color: #1096ea;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 36	px;
+	background: #ccc;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	text-shadow: #fff 0px 1px 1px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+	background: -moz-linear-gradient(top,  #eeeeee,  #cccccc);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc');
+}
+.buttonsEp{
+	padding: 10px 20px 6px;
+	color: #38c928;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 36	px;
+	background: #ccc;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	text-shadow: #fff 0px 1px 1px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+	background: -moz-linear-gradient(top,  #eeeeee,  #cccccc);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc');
+}
+.buttonsNewtask{
+	padding: 10px 35px 6px;
+	color: #999;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 150px;
+	background: #ddd;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-webkit-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	-moz-box-shadow: 1px 1px 2px rgba(0,0,0,.5);
+	text-shadow: #fff 0px 1px 1px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#cccccc));
+	background: -moz-linear-gradient(top,  #eeeeee,  #cccccc);
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc');
+}
+.buttonsNewtask:active {
+	box-shadow: 0px 0px 0px rgba(0,0,0,.5);
+	-webkit-box-shadow: 0px 0px 0px rgba(0,0,0,.5);
+	-moz-box-shadow: 0px 0px 0px rgba(0,0,0,.5);
+	position: relative;
+	top: 1px;
+	left: 1px;
+}

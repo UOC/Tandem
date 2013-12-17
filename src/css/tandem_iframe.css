@@ -1,0 +1,180 @@
+﻿/**
+CSS TANDEM IFRAME
+(c) 2012 - Raúl Fernández Solana
+**/
+
+/* CSS Reset */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {margin: 0;padding: 0;border: 0;outline: 0;font-weight: inherit;font-style: inherit;font-size: 100%;font-family: inherit;vertical-align: baseline;}
+:focus {outline: 0}
+body {line-height: 1;color: black;background: white}
+ol, ul {list-style: none}
+table {border-collapse: separate;border-spacing: 0}
+caption, th, td {text-align: left;font-weight: normal}
+blockquote:before, blockquote:after,q:before, q:after {content: ""}
+blockquote, q {quotes: "" ""}
+
+
+/* Misc styles */
+
+body {
+color:#2B3F26;
+background:transparent;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 75%;
+text-align:left;
+padding:5px;
+}
+
+.left {float:left !important;}
+.right {float:right !important;}
+.clear {clear:both;}
+.nobr {white-space:nowrap;}
+strong {font-weight:bold}
+em {font-style:italic}
+
+a, a:link, a:active, a:visited {text-decoration:none; color:#7e9f0b}
+a:hover,a:focus {text-decoration: underline;}
+
+p, blockquote, q  {
+padding:.2em 0 .9em;
+line-height: 1.4em;
+letter-spacing:.1pt;
+}
+
+h1 {font-size:2em;margin-bottom:.1em;}
+h2 {font-size:1.5em;margin-bottom:.4em;}
+h3 {font-size:1.3em;margin-bottom:.3em;font-weight:bold;}
+h4 {font-size:1.2em;margin-bottom:.2em;}
+h1,h2,h3,h4,h5,h6 {
+font-family: Arial, Helvetica, sans-serif; 
+font-weight: normal;
+line-height:1.2em;
+}
+h3{font-weight:bold;}
+
+/* Abreviaturas, acrónimos y accesibilidad */
+
+acronym, abbr, dfn {
+	cursor: help;
+	padding-bottom: 2px;
+	border: none;
+}
+
+blockquote, q{
+margin: 1em 1.2em;
+color: #A7AA8C;
+border-left: 2px solid #A7AA8C;
+padding-left: 1em; 
+}
+
+#accessibility, .hidden{
+position: absolute !important;
+clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+clip: rect(1px, 1px, 1px, 1px);
+padding:0 !important;
+border:0 !important;
+height: 1px !important; 
+width: 1px !important; 
+overflow: hidden;
+}
+
+/* Generic form elements */
+
+label {font-weight:bold; color:#333}
+input[type=text],
+input[type=password],
+textarea,
+select {
+	background-color:#fff;
+	border:1px solid #999;
+	color:#333;
+	padding:5px;
+}
+
+select {
+	line-height:24px;
+	height:30px;
+}
+
+input[type=text]:hover,
+input[type=password]:hover,
+textarea:hover,
+select:hover {
+	border-color:#7e9f0b;
+}
+
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus,
+select:focus {
+	border-color:#7e9f0b;
+	-moz-box-shadow: 0 0 3px rgba(189, 191, 147, 0.9), 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+	-webkit-box-shadow: 0 0 3px rgba(189, 191, 147, 0.9), 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+	box-shadow: 0 0 3px rgba(189, 191, 147, 0.9), 1px 1px 2px rgba(0, 0, 0, 0.2) inset;
+	outline: medium none;
+}
+
+input[type=text]:disabled,
+input[type=password]:disabled,
+textarea:disabled,
+select:disabled {
+	border-color:#ccc;
+	color:#ccc;
+}
+
+input[type=button],
+input[type=submit],
+input.tandem-btn {
+	font-family:Arial, Helvetica, sans-serif;
+    background: #7e9f0b;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-align:center;
+    display:inline-block;
+    min-width:105px;
+    height:30px;
+    line-height:30px;
+    font-size:1em;
+    text-decoration:none;
+}
+
+input.tandem-btn{width:105px;}
+
+input[type=button]:hover,
+input[type=submit]:hover,
+input.tandem-btn:hover,
+input[type=button]:focus,
+input[type=submit]:focus,
+input.tandem-btn:focus{
+	text-decoration:none;
+	background:#94b036;
+}
+
+
+/* listas */
+
+ul,ol{
+display:block;
+margin:.3em 0 .9em;
+padding:0 30px;
+}
+
+ul{list-style-type: disc;}
+ol{list-style-type: decimal;}
+
+ul li,
+ol li{
+margin: 3px 0;
+padding: 3px 0;
+}
+

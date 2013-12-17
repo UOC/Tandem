@@ -1,0 +1,331 @@
+/**
+CSS TANDEM
+(c) 2012 - Raœl Fern‡ndez Solana
+**/
+
+/* CSS Reset */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+:focus {
+	outline: 0;
+}
+
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+table { /* tables still need 'cellspacing="0"' in the markup */
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+	border: 1px solid black;
+	padding: 2px;
+}
+
+th {
+	text-align: center;
+	font-weight: bold;
+}
+
+blockquote:before, blockquote:after,
+	q:before, q:after {
+	content: "";
+}
+
+blockquote, q {
+	quotes: "" "";
+}
+
+strong {font-weight:bold}
+em {font-style:italic}
+
+
+/* Misc styles */
+
+body {
+	color:#333;
+	background:#f7faf5;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 75%;
+	text-align:left;
+}
+
+.left {float:left !important;}
+.right {float:right !important;}
+.clear {clear:both;}
+.nobr {white-space:nowrap;}
+
+a, a:link, a:active, a:visited {text-decoration:none; color:#7e9f0b}
+a:hover,a:focus {text-decoration: underline;}
+
+p {
+padding:.2em 0 .9em;
+line-height: 1.4em;
+letter-spacing:.1pt;
+}
+
+h1 {font-size:1.7em;}
+h2 {font-size:1.5em;}
+h3 {font-size:1.3em;}
+h4 {font-size:1.1em;}
+h1,h2,h3,h4,h5,h6 {font-family: Arial, Helvetica, sans-serif; font-weight: normal;}
+
+
+/* Abreviaturas, acr—nimos y accesibilidad */
+
+acronym, abbr, dfn {
+	cursor: help;
+	padding-bottom: 2px;
+	border: none;
+}
+
+blockquote, q {
+	quotes: '\00AB' '\00BB'; 
+	margin: 0; padding: 0;
+	border: none
+}
+
+blockquote p:before, q:before {content: open-quote}
+blockquote p:after, q:after {content: close-quote}
+
+#accessibility, .hidden {
+	position: absolute;
+	top: -999em;
+	left: -999em
+}
+
+
+/* Layout */
+
+*{
+	margin: 0;
+	padding: 0
+}
+
+html, 
+body {
+	height: 100%;
+}
+
+#wrapper {
+	min-height:100%;
+}
+
+#main-container {
+	overflow:auto;
+	padding-bottom: 335px;
+	min-width: 900px;
+}
+
+#footer-container {
+	position: relative;
+	margin-top: -335px;
+	height: 335px;
+	clear:both;
+	min-width:900px
+}
+
+#wrapper,#main-container {
+	background:#f7faf5;
+}
+
+#footer-container {
+	background:#f7faf5 url('images/footer_paisaje.png') repeat-x 0 100%;
+	height:335px;
+}
+
+#main {
+	width:860px; 
+	padding:20px 20px 0;
+	margin:0 auto;
+	overflow:hidden;
+}
+
+#footer {
+	display:block;
+	width:900px; 
+	margin:0 auto;
+	overflow:hidden;
+}
+
+
+/* logo */
+
+#logo {float:right;margin:20px 30px 0 0;}
+
+
+/* Generic form elements */
+
+label {font-weight:bold; color:#333}
+fieldset {}
+legend {}
+
+input[type=text],
+input[type=password],
+textarea,
+select {
+	background-color:#fff;
+	border:1px solid #999;
+	color:#333;
+	padding:5px;
+}
+
+select {
+	line-height:24px;
+	height:30px;
+}
+
+input[type=text]:hover,
+input[type=password]:hover,
+textarea:hover,
+select:hover {
+	border-color:#7e9f0b;
+}
+
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus,
+select:focus {
+	border-color:#7e9f0b;
+	-moz-box-shadow: 0 0 3px rgba(189, 191, 147, 0.9), 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+	-webkit-box-shadow: 0 0 3px rgba(189, 191, 147, 0.9), 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+	box-shadow: 0 0 3px rgba(189, 191, 147, 0.9), 1px 1px 2px rgba(0, 0, 0, 0.2) inset;
+	outline: medium none;
+}
+
+input[type=text]:disabled,
+input[type=password]:disabled,
+textarea:disabled,
+select:disabled {
+	border-color:#ccc;
+	color:#ccc;
+}
+
+input[type=button],
+input[type=submit],
+input.tandem-btn {
+	font-family:Arial, Helvetica, sans-serif;
+    background: #7e9f0b;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-align:center;
+    display:inline-block;
+    min-width:110px;
+    height:30px;
+    line-height:30px;
+    font-size:1em;
+}
+
+input.tandem-btn{width:105px;}
+
+input[type=button]:hover,
+input[type=submit]:hover,
+input.tandem-btn:hover,
+input[type=button]:focus,
+input[type=submit]:focus,
+input.tandem-btn:focus{
+	background:#94b036;
+}
+
+
+/* Login form */
+
+.login_form{
+	margin-top:15px;
+	float:left;
+	width:556px;
+}
+
+.login_form fieldset{
+	float:left;
+	margin-bottom:15px;
+}
+
+.login_form fieldset label{
+	float:left;
+	clear:left;
+	margin-bottom:10px;
+}
+
+.login_form fieldset input,
+.login_form fieldset select{
+	float:left;
+	clear:left;
+}
+
+.login_form fieldset select{
+width: 200px;
+margin-right:24px;
+}
+
+
+/* Footer */
+
+#footer .footer-tandem {
+	display:block;
+	float:right;
+	width:269px;
+	height:256px;
+	margin-right:20px;
+	background: transparent url('images/footer_tandem.png');
+}
+
+#footer .footer-logos {
+	display:block;
+	float:right;
+	clear:both;
+	height:36px;
+	margin:15px 20px 0 0;
+}
+
+#footer img {
+	display:block;
+	float:left;
+	margin-left:27px;
+}
+.error {
+	color: red;
+}
+.title {
+	font-weight: bold;
+	font-size: 110%;
+}
+th {
+	font-weight: bold;
+	font-size: 100%;
+	vertical-align: middle;
+}
+.input_date {
+	width:150px !important;
+	margin-right:8px;		
+}
