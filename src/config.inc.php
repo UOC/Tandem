@@ -13,7 +13,7 @@
  */
 define('BD_HOST', 'localhost');
 define('BD_NAME', 'tandem');
-define('BD_USERNAME', 'tandem_2');
-define('BD_PASSWORD', 'tandem_2');
-define('PROTECTED_FOLDER', '/Users/antonibertranbellido/uoc/tandem_files');
+define('BD_USERNAME', 'TANDEM_USERNAME');
+define('BD_PASSWORD', 'TANDEM_PASSWORD');
+define('PROTECTED_FOLDER', '/PATH_TO_TANDEM_FILES/tandem_files');
 define('GOOGLE_ANALYTICS_ID', '');
