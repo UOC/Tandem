@@ -2,6 +2,8 @@
 $language['welcome'] = 'Bienvenido';
 $language['no estas autoritzat'] = 'no estas autoritzado';
 $language['back'] = 'volver';
+$language['txtOtherUserConn'] = 'Ahora estáis conectados.';
+$language['txtWaiting4User'] = 'Esperando la conexión con Tandem...';
 $language['no_users_in_course'] = 'No hay usuarios en el curso';	
 $language['refresh'] = 'Actualizar Usuarios';
 $language['show_tandem'] = 'Mostrar Tándems';		
