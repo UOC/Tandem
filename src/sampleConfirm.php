@@ -196,7 +196,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
 	//thread is so quick...
 						writeButtons();
-						setTimeout(function(){notifyTimerDown(txtWaiting4User);},250);
+						setTimeout(function(){notifyTimerDown('<?php echo Language::get('txtWaiting4User')?>');},250);
 						// why is this line here?
 							//hideButtons();
 					  }   
@@ -280,7 +280,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
 //thread is so quick...
 					writeButtons();
-					setTimeout(function(){notifyTimerDown(txtWaiting4User);},150);
+					setTimeout(function(){notifyTimerDown('<?php echo Language::get('txtWaiting4User')?>');},150);
 					hideButtons();
 				}
 			}
@@ -309,7 +309,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
 					if(check4UsersConex()){
 //when both connected show alert, change user->side images and central image
-						notifyTimerDown(txtOtherUserConn);
+						notifyTimerDown('<?php echo Language::get('txtOtherUserConn')?>');
 						setTimeout(function(){$("#imgR").attr('src','images/before_connecting<?php echo $user;?>.jpg');},1000);
 						setTimeout(function(){$("#imgR").attr('src','images/connecting.jpg');},1500);
 						$('#buttonsCheck').show('fast');
