@@ -52,8 +52,7 @@
                 	$this->debugMessage($query);
                     $result = mysql_query($query, $this->conn);
                     if (!$result) {
-                    	echo("Error BD ".mysql_error());
-                    	die("<p>Query:".$query."</p>");
+                    	error_log("Error BD ".mysql_error().$query);
                     }
                     return $result;
                 }
@@ -905,7 +904,7 @@
 				public function obteTandem($id) {
 					$sql = 'select tandem.*, exercise.name_xml_file, exercise.name as name_exercise from tandem '.
 					        'inner join exercise on exercise.id = tandem.id_exercise '.
-							'where tandem.id ='.$id;
+							'where tandem.id ='.$this->escapeString($id);
 					$result = $this->consulta($sql);
 					if ($result) {
 						$result = $this->obteObjecteComArray($result);
