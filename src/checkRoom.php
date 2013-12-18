@@ -26,7 +26,7 @@ $node = $_GET["node"];
 $classOf = $_GET["classOf"];
 $data = $_GET["data"];
 
-if(is_file($data.$room.".xml")){?>
+if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$data.$room.".xml")){?>
 	<script type="text/javascript">
 		top.document.getElementById('roomStatus').innerHTML="";
 		if (window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");

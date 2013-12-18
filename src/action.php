@@ -7,7 +7,7 @@ function findAttribute($object, $attribute) {
 }
 
 function editXMLConfirm($room,$user,$number,$nextSample){  
-	$xml = simplexml_load_file($room.".xml");
+	$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	$number = (int) $number;
 	//No encuentra ese action
 	if (!$xml) {
@@ -34,11 +34,11 @@ function editXMLConfirm($room,$user,$number,$nextSample){
 			//encuentra y no existe confirmacion primer usuario
 		}else $xml->actions[$nextSample]->action[$number]->addAttribute('firstUser',$user);
 	}
-  	$xml->asXML($room.".xml");
+  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 }
 
 function preTimer($room,$user,$nextSample){
-	$xml = simplexml_load_file($room.".xml");
+	$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	$number=0;
 	if($xml->actions[$nextSample]==null){
 		$xml->addChild('actions');
@@ -50,11 +50,11 @@ function preTimer($room,$user,$nextSample){
 			$xml->actions[$nextSample]->addAttribute('secondUser',$user);
 		}
 	}
-  	$xml->asXML($room.".xml");	
+  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");	
 }
 
 function editXMLMap($room,$user,$number,$nextSample) {
-	$xml = simplexml_load_file($room.".xml");
+	$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	$number = (int) $number;
 		if($xml->actions[$nextSample]->action[0]==null){ 
 			$xml->addChild('actions');
@@ -72,7 +72,7 @@ function editXMLMap($room,$user,$number,$nextSample) {
 			$action->addAttribute('secondUser',$user);
 		}else $action->addAttribute('firstUser',$user); 
 		
-		$xml->asXML($room.".xml");
+		$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 }
 
 function thruTimer($nextSample,$numBtn){
@@ -88,7 +88,7 @@ $numBtn = isset($_GET["numBtn"])?$_GET["numBtn"]:0;
 // $numBtn = $_GET["numBtn"];
 // END
 if($_GET["user"]!="" && $_GET["room"]!=""){
-	if(is_file($_GET["room"].".xml")) {		
+	if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$_GET["room"].".xml")) {		
 		switch($_GET["tipo"]){
 			case 'confirm': editXMLConfirm($_GET["room"],$_GET["user"],$_GET["number"],$nextSample,"");break;
 			

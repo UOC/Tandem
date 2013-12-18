@@ -5,7 +5,7 @@ define ('INSTANCE_ID', 'resource_link_id');
 define ('LAUNCH_PRESENTATION_LOCALE', 'launch_presentation_locale');
 define ('CUSTOM_LANG', 'custom_lang_id');
 define ('LANG', 'lang');
-define ('AUTHORIZATION_KEY_OKI' , /*'uocPHP_tandem'*/'uocPHP_aws_amazon');
+define ('AUTHORIZATION_KEY_OKI' , 'uocPHP_tandem');
 define ('AUTHORIZATION_KEY_FIELD_OKI' , 'authorization_key');
 define ('CONTAINER_FIELD_OKI', 'container');
 define ('INSTANCEID_FIELD_OKI', 'instanceId');

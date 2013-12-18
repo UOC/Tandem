@@ -65,9 +65,9 @@ class IntegrationTandemBLTI {
 		if ($custom_room && !file_exists($custom_room.".xml")) {
 			//Salvem les dades temporal per indicar l'aula
 			$doc = $this->createXML($custom_room);
-			$xml = simplexml_load_file($custom_room.".xml");
+			$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$custom_room.".xml");
 			$xml->usuarios[0]->addAttribute('exercise',$exercise);
-	  		$xml->asXML($custom_room.".xml");
+	  		$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$custom_room.".xml");
 		}		
 	}
 	/**
@@ -81,9 +81,9 @@ class IntegrationTandemBLTI {
 		$this->createXML($room);
 		$this->editXMLUser($user_obj,$room);
 	
-		$xml = simplexml_load_file($room.'.xml');
+		$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.'.xml');
 		$xml->usuarios[0]->addAttribute('exercise',$exercise);
-		$xml->asXML($room.".xml");
+		$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	}
 	/**
 	 * 
@@ -123,7 +123,7 @@ class IntegrationTandemBLTI {
 		$u->appendChild($roomN);
 		$doc->appendChild( $u );
 		$ini->appendChild( $u );
-		$doc->save($room.".xml");
+		$doc->save(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 		return $doc;
 	}
 	
@@ -134,14 +134,14 @@ class IntegrationTandemBLTI {
 	 * @param String $room
 	 */
 	function editXMLUser($user_obj,$room){  
-		$xml = simplexml_load_file($room.".xml");
+		$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 		if(count($xml->usuarios[0]->usuario)==0) {
 			$this->putDataXML($xml, $user_obj);
 		}
 		else if(count($xml->usuarios[0]->usuario)==1 && $xml->usuarios[0]->usuario[0]!=$user_obj->type_user) {
 			$this->putDataXML($xml, $user_obj);
 		}
-	  	$xml->asXML($room.".xml");
+	  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	}
 	/**
 	 * 
@@ -150,6 +150,10 @@ class IntegrationTandemBLTI {
 	 * @param String $room
 	 */
 	function canUserLoginInTandem($user_obj,$room){  
+		if (!file_exists($room.".xml"))
+		{
+			$room = PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room;
+		}
 		$xml = simplexml_load_file($room.".xml");
 		$total_users = count($xml->usuarios[0]->usuario);
 		$return = $total_users<IntegrationTandemBLTI::MAX_USER_TANDEM;

@@ -59,11 +59,12 @@ function posa_osid_context_session($gestorBD, $course_id, $context) {
 				$osidContext->assignContext($okibusPHP_okibusClient_field_oki, $okibusPHP_okibusClient_field_prefix_oki.$context->info[$okibusPHP_okibusClient_field_lti]);
 			}
 			//Aquesta es de uoc i necessaria
-			$osidContext->assignContext(AUTHORIZATION_KEY_FIELD_OKI, AUTHORIZATION_KEY_OKI);
+			$osidContext->assignContext(AUTHORIZATION_KEY_FIELD_OKI, $utilsProperties->getProperty(PROVIDER_PREFIX_OKI.$oauth_consumer_key.'_'.AUTHORIZATION_KEY_FIELD_OKI));
 			$_SESSION[HTTPATTRIBUTEKEY_OSIDCONTEXT]=serialize($osidContext);
 		}
 	} catch (Exception $e) {
 		show_error($e->getMessage());
+
 	}
 	return $osidContext;
 }
@@ -120,8 +121,30 @@ function debugMessageIT($message, $debug=false) {
  * Shows the message
  * @param unknown_type $msg
  */
-function show_error($msg) {
-	echo '<div class="error">'.$msg.'</div>';
+function show_error($msg, $die=false) {
+	if ($die) {
+		echo('<html>
+<title>Tandem Error</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
+<!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
+<link rel="stylesheet" type="text/css" media="all" href="css/colorbox.css" />
+<!-- END -->
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.ui.core.js"></script>
+<script src="js/jquery.ui.widget.js"></script>
+<script src="js/jquery.ui.button.js"></script>
+<script src="js/jquery.ui.position.js"></script>
+<script src="js/jquery.ui.autocomplete.js"></script>
+<script src="js/jquery.colorbox-min.js"></script>
+</head>
+<body><br><br>');
+	}
+	echo '<h1 class="error alertjs-container">'.$msg.'</h1>';
+	if ($die) {
+		die('</body></html>');
+	}
 }
 /**
  *
@@ -138,7 +161,7 @@ function sanitise_string($str) {
  */
 function delete_xml_file($room) {
 	$r = false;
-	if(is_file($room.".xml")) {
+	if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
 		//DELETE - 20121005 - abertranb - Deletes the unset session 
 		//Netegem la sessio
 		//session_unset();
@@ -183,7 +206,8 @@ function getNameXmlFileUnZipped($directory){
 	foreach($results as $value){
 		$extension = explode(".", $value);
 		$isSys = explode("data", $value);
-		if($extension[1]=="xml" && $isSys[1]!="")
+		if(count($extension)>1 && $extension[1]=="xml" &&
+			 count($isSys)>1 && $isSys[1]!="")
 		{
 			$filename = str_replace('.xml','',$isSys[1]);
 			break;
@@ -202,7 +226,7 @@ function moveFromTempToCourseFolder($source, $destination, $delete) {
 		return $delete;
 	
 	if (is_file($source)) {
-		if (copy($source.$file, $destination.$file)) {
+		if (copy($source, $destination)) {
 			$delete[] = $source;
 		}
 	} else {

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<exe lang="en">
+	<nextType classOf="sampleConfirm" numBtns="4" numUsers="2" currSample="19" node="0"></nextType>
+	<nextType classOf="sampleConfirm" numBtns="4" numUsers="2" currSample="19" node="1">
+		<textE><![CDATA[<p><b>Spot the differences</b></p><p>Your task partner can see the same picture as you but with 4 differences. Describe the picture to your task partner and identify the 4 differences. 
+</p><br/>]]></textE>
+	</nextType>
+	<nextType classOf="sampleConfirm" numBtns="1" numUsers="2" currSample="20" node="1" timer="01:30">
+		<textE><![CDATA[<p>	Do you use gadgets like the ones in the photos? What problems can they cause?<br/>
+		Discuss this with your task partner. 
+		</p><br/>]]></textE>
+	</nextType>
+	<nextType classOf="sampleConfirm" numBtns="5" numUsers="2" currSample="21" node="2">
+		<textE><![CDATA[<p><b>Spot the differences</b></p><p>	
+You and your partner can see pictures of different learning environments. Describe your pictures to each other and identify at least five differences between your pictures. </p><br/>]]></textE>
+	</nextType>
+	<nextType classOf="sampleConfirm" numBtns="1" numUsers="2" currSample="22" node="4">
+		<textE><![CDATA[<p>	Which of these learning environments do you prefer to teach in? Why? Which of these learning environments do you prefer to learn in? Why? What activities could you do in each learning environment? What types of learners would these different places attract? Think about learners' age, learning styles, subject area, etc. Discuss it with your task partner. </p>]]></textE>
+	</nextType>
+	<nextType classOf="sampleConfirm" numBtns="5" numUsers="2" currSample="23" node="5">
+		<textE><![CDATA[<p>	You and Student B have different images with words and expressions to describe different skills language teachers need.  </p>
+<p><strong>Describe to each other the different words and expressions you have without saying the word/expression so your partner can guess. </strong> For each word/expression, talk together about whether you think they are<br/> 
+<strong>more important for online teaching,<br/>
+less important for online teaching, or<br/>
+      equally important for online teaching. </strong></p>]]></textE>
+	</nextType>
+	<nextType classOf="sampleConfirm" numBtns="1" numUsers="2" currSample="24" node="6">
+		<textE><![CDATA[<p><b>How important are each of these skills?</b></p><p> Choose the <b>three</b> skills you both consider to be the most important and then rank the three in order of importance. Are there any other skills you think will be useful/essential for teaching online? Give reasons for your answers.  
+</p><br/>]]></textE>
+	</nextType>
+</exe>

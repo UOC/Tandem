@@ -12,7 +12,7 @@ added_skype_script = false;
 		   current_room = room;
 		   if (window.ActiveXObject) xmlReqUser = new ActiveXObject("Microsoft.XMLHTTP");
 			else xmlReqUser = new XMLHttpRequest();
-			var url=room+".xml";
+			var url="check.php?room="+room;
 			xmlReqUser.onreadystatechange = processUserDataXml;
 			xmlReqUser.timeout = 100000;
 			xmlReqUser.overrideMimeType("text/xml");

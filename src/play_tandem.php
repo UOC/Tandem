@@ -15,6 +15,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor || $id<=0 
 } else {
 	$tandemBLTI = new IntegrationTandemBLTI();
 	$gestorBD	= new GestorBD();
+	$_SESSION[CURRENT_TANDEM] = $id;
 	$tandem = $gestorBD->obteTandem($id);
 	$room = $tandem['name_xml_file'].$tandem['id_resource_lti'].'_'.$tandem['id'];
 	$user = $is_user_host==1?'a':'b';
@@ -24,9 +25,9 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor || $id<=0 
 	$file = $data_exercise->classOf;
 	$node = $data_exercise->node;
 	$nextSample = $data_exercise->nextSample;
-	if (!file_exists($room.".xml")) {
+	if (!file_exists(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
 		
-		$handle = fopen($room.".xml", 'w');
+		$handle = fopen(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml", 'w');
 		if ($handle) {
 			fwrite($handle, $xml);
 			fclose($handle);

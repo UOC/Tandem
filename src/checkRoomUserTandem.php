@@ -41,7 +41,7 @@ $_SESSION[CURRENT_TANDEM] = $room;
 	}
 	
 	//Netejem els xmls anteriors
-	foreach(getDirectoryList("./") as $value){
+	foreach(getDirectoryList(PROTECTED_FOLDER) as $value){
 	    	preg_match('/[^?]*/', $value, $matches); 
 	        $string = $matches[0]; 
 	      
@@ -54,7 +54,7 @@ $_SESSION[CURRENT_TANDEM] = $room;
 	            preg_match('/[^?]*/', $filenamepart, $matches); 
 	            $pos=strpos($pattern[0][0],'data');
 	            if ($matches[0]=='xml' && $pos===FALSE) {
-	            	 if (filemtime($value) < time()-(24*60*60)) unlink($value);
+	            	 if (filemtime(PROTECTED_FOLDER.'/'.$value) < time()-(24*60*60)) unlink(PROTECTED_FOLDER.'/'.$value);
 	            }
 	        } 
 		/*$extension = explode(".", $value);
@@ -86,7 +86,7 @@ $_SESSION[CURRENT_TANDEM] = $room;
 				$exercise = $data.$id_resource_lti.'_'.$room;
 				$redirect_to_room = false;
 				$user_obj->type_user = 'b';
-				if(!is_file($exercise.".xml")) { 
+				if(!is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$exercise.".xml")) { 
 					//$create_room = isset($_REQUEST['create_room'])?$_REQUEST['create_room']:false;
 					//if ($create_room=='1') {
 						$user_obj->type_user = 'a'; $tandemBLTI->makeXMLUserLTI($user_obj,$exercise,$data);

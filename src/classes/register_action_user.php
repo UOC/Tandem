@@ -86,9 +86,9 @@ if ($user_register_obj && $course_register_id && $id_register_tandem && isset($u
 	$room_register = sanitise_string($exercise_register.getTandemIdentifier($id_register_tandem, $id_resource_register));
 
 
-	if(is_file($room_register.".xml")) {
+	if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room_register.".xml")) {
 		//Obtenim el xml i el guardem a la bd
-		$xml_register = file_get_contents($room_register.".xml");
+		$xml_register = file_get_contents(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room_register.".xml");
 		$gestorBDRegister->registra_xml_tandem($id_register_tandem, $xml_register);
 		if ($is_final) {
 			delete_xml_file($room_register);

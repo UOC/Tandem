@@ -15,11 +15,10 @@ $tandem = $gestorBDSample->obteTandem($id_current_tandem);
 
 $title_exercise = $tandem['name_exercise'];
 
-if($_GET['userb']!="" && $_GET['userb']!=null){
+if(isset($_GET['userb']) && $_GET['userb']!="" && $_GET['userb']!=null){
 	$userBid = $_GET['userb'];
 	$nameb = $gestorBDSample->getUserB($userBid);
 }
-
 
 $ExerFolder = $_GET["nextSample"];
 //This is because xml nodes begins counting at zero, but zero is not real :-) 
@@ -153,7 +152,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					  dataType: "xml",
 					  success: function(xml){
 					    //var clientid = $(xml).find('client_id').eq(1).text();
-					  //extract data cmoyas --> not in use
+					  //extract data
 						//var lng=$(xml).find('exe').attr('lang');
 						//script.src = "lang/"+lng+".js";
 						//script.type = 'text/javascript';
@@ -194,7 +193,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 						endHTML = cad[<?php echo $node;?>].getAttribute("endHTML");
 						textE=cad[<?php echo $node;?>].getElementsByTagName("textE")[0].childNodes[0].data;
 						getXML("<?php echo $user;?>","<?php echo $room;?>");
-						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',750);
+						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
 	//thread is so quick...
 						writeButtons();
 						setTimeout(function(){notifyTimerDown(txtWaiting4User);},250);
@@ -258,15 +257,8 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				//$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
 			}
 //timer
+
 			
-			getInitXML_OLD = function(){
-				var url="data<?php echo $data;?>.xml";
-				xmlReq.onreadystatechange = processInitXml;
-				xmlReq.timeout = 100000;
-				xmlReq.overrideMimeType("text/xml");
-				xmlReq.open("GET", url, true);
-				xmlReq.send(null);
-			}
 			processInitXml = function(){
 				if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
 					//extract data
@@ -285,13 +277,13 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					numBtn=cad[<?php echo $node;?>].getAttribute("numBtns");
 					textE=cad[<?php echo $node;?>].getElementsByTagName("textE")[0].childNodes[0].data;
 					getXML("<?php echo $user;?>","<?php echo $room;?>");
-					intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',750);
+					intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
 //thread is so quick...
 					writeButtons();
 					setTimeout(function(){notifyTimerDown(txtWaiting4User);},150);
 					hideButtons();
 				}
-			} 
+			}
 //Initializes & creates users node in room's xml			
 			getXML = function(user,room){
 				var url="createUser.php";
@@ -302,11 +294,11 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				xmlReq.open("GET", url+"?"+params, true);
 				xmlReq.send(null);
 			}
-//nothing to do 
+//nothing to do
 			processXml = function(){}
 //Interval (500ms) checking xml and waiting for both users to be connected
 			getXMLDone = function(user,room){
-				var url="<?php echo $room; ?>.xml";
+				var url="check.php?room=<?php echo $room; ?>";
 				xmlReq.onreadystatechange = processXmlOverDone;
 				xmlReq.timeout = 100000;
 				xmlReq.overrideMimeType("text/xml");
@@ -349,7 +341,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			check4BothChecked = function(){
 				$.ajax({
 				  type: 'GET',
-				  url: "<?php echo $room; ?>.xml",
+				  url: "check.php?room=<?php echo $room; ?>",
 				  data: {
 				  },
 				  dataType: "xml",
@@ -541,6 +533,8 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				if(numExerc==1) 
 					if('<?php echo $user;?>'=='a') {	
 					<?php
+						$fn = '';
+						$sn = '';
 						if($nameb!=null){
 							$fnB = $nameb->fullname;
 							$fnB = explode(" ",$fnB);
@@ -605,7 +599,6 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				
 				//muestra el iframe de la solución
 				//$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
-
 				if(numNodes!=<?php echo $node;?>){
 					$('#next_task').attr('href', classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>');
 					document.getElementById('next1Item').style.display='inline';

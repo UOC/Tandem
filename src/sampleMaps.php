@@ -68,7 +68,7 @@ else $Otheruser='a';
 			else xmlReq = new XMLHttpRequest();
 //get data from dataROOM.xml->initializes exercise values
 			getInitXML = function(){
-				var url="data<?php echo $data;?>.xml";
+				var url = "<?php echo $path;?>data<?php echo $data;?>.xml";
 				xmlReq.onreadystatechange = processInitXml;
 				xmlReq.timeout = 100000;
 				xmlReq.overrideMimeType("text/xml");
@@ -155,7 +155,7 @@ else $Otheruser='a';
 			check4BothChecked = function(){
 				$.ajax({
 				  type: 'GET',
-				  url: "check.php",//"<?php echo $room; ?>.xml",
+				  url: "check.php?room=<?php echo $room; ?>",
 				  data: {
 					  room: "<?php echo $room; ?>"
 				  },

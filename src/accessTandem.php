@@ -28,7 +28,7 @@ if ($tandem) {
 	$user_obj->id_resource = $id_resource;
 	$user_obj->type_user = 'b';
 	
-	if(!is_file($room.".xml")) {
+	if(!is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
 		$user_obj->type_user = 'a';
 		$tandemBLTI->makeXMLUser($user_obj,$room,$exercise);
 	} else {

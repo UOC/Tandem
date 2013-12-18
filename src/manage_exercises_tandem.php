@@ -9,6 +9,7 @@ $course_id = $_SESSION[COURSE_ID];
 //20120830 abertranb register the course folder
 $course_folder = $_SESSION[TANDEM_COURSE_FOLDER];
 //FIIIII
+$message = false;
 if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_obj->instructor) {
 	//Tornem a l'index
 	header ('Location: index.php');
@@ -16,7 +17,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 	$exercise_name = '';
 	$exercise_id = -1;
 	$gestorBD	= new GestorBD();
-	if($_FILES["zip_file"]["name"]) {
+	if(isset($_FILES["zip_file"]) && $_FILES["zip_file"]["name"]) {
 		$filename = $_FILES["zip_file"]["name"];
 		$source = $_FILES["zip_file"]["tmp_name"];
 		$type = $_FILES["zip_file"]["type"];
