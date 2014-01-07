@@ -57,18 +57,19 @@
                     return $result;
                 }
                 
-                private function obteObjecteComArray($result){
+                // Let's do it private -> public cmoyas
+                public function obteObjecteComArray($result){
                 	return mysql_fetch_assoc($result);
                 }
                 
-                private function numResultats($result) {
+                public function numResultats($result) {
                 	return mysql_num_rows($result);
                 }
 
-                private function obteComArray($result) {
+                public function obteComArray($result) {
                 	$rows = array();
                 	while ($row = mysql_fetch_assoc($result)) {
-                		$rows[] = $row;
+                        $rows[] = $row;
                 	}
                 	return $rows;
                 }
@@ -171,7 +172,54 @@
 	                	return false;
 	                }
                 }
-                
+                /**
+                *
+                * Obte si usuari está comunicant
+                * @param unknown_type $user 
+                * @param unknown_type $id_course
+                * @return int
+                */
+                public function get_userInTandem($user,$id_course) {
+                    $result = $this->consulta("SELECT * FROM user_course WHERE id_user=".$this->escapeString($user)." AND id_course=".$this->escapeString($id_course));
+                    $row = mysql_fetch_object($result);
+                    return $row->inTandem;
+                }
+                /**
+                *
+                * Set si usuari está comunicant
+                * @param unknown_type $id_user 
+                * @param unknown_type $id_course 
+                * @param unknown_type $status 
+                * @return sql
+                */
+                public function set_userInTandem($user,$id_course,$status) {
+                    $result = $this->consulta("UPDATE user_course SET inTandem = ".$status." WHERE id_user = ".$this->escapeString($user)." AND id_course=".$this->escapeString($id_course));
+                    return $result;
+                }
+                /**
+                *
+                * Set date des de que usuari está comunicant
+                * @param unknown_type $id_user 
+                * @param unknown_type $id_course 
+                * @param unknown_type $date 
+                * @return sql
+                */
+                public function set_userLastAccess($user,$id_course,$date) {
+                    $result = $this->consulta("UPDATE user_course SET lastAccessTandem = ".$this->escapeString($date)." WHERE id_user = ".$this->escapeString($user)." AND id_course=".$this->escapeString($id_course));
+                    return $result;
+                }
+                /**
+                *
+                * Get date des de que usuari está comunicant
+                * @param unknown_type $id_user 
+                * @param unknown_type $id_course 
+                * @return sql
+                */
+                public function get_lastAccessTandemStatus($user,$id_course) {
+                    $result = $this->consulta("SELECT * FROM user_course WHERE id_user=".$this->escapeString($user)." AND id_course=".$this->escapeString($id_course));
+                    $row = mysql_fetch_object($result);
+                    return $row->lastAccessTandem;
+                }
                	/**
                	*
                	* Register courseKey in database

@@ -19,17 +19,84 @@ $id_user_host = $user_obj->id;
 $message = '';
 $id_course = $_SESSION[COURSE_ID];
 $id_exercise = $gestorBD->getExerciseByXmlName($data, $id_course);
+$room = '';
 
-$room = $gestorBD->has_invited_to_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest);
-$user_agent = $_SERVER['HTTP_USER_AGENT'];
-if ($room <= 0) {
-	$room = $gestorBD->register_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest, $message, $user_agent);
-}
-$_SESSION[CURRENT_TANDEM] = $room;
 ?>
 <script src="js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript">
-<?php 
+
+<?php
+
+function getinTandemStatus($user,$id_course){
+	$gestorBD = new GestorBD();
+	$val = $gestorBD->get_userInTandem($user,$id_course);
+	//error_log("User:".$user." - course:".$id_course."getinTandemStatus:".$val);
+	return $val;
+}
+
+function setinTandemStatus($user,$id_course,$status){
+	$gestorBD = new GestorBD();
+	$val = $gestorBD->set_userInTandem($user,$id_course,$status);
+	//error_log("User:".$user." - course:".$id_course."status:".$status);
+	return $val;
+}
+
+function setlastAccessTandemStatus($user,$id_course,$date){
+	$gestorBD = new GestorBD();
+	$val = $gestorBD->set_userLastAccess($user,$id_course,$date);
+	//error_log("User:".$user." - course:".$id_course."date:".$date);
+	return $val;
+}
+
+function getlastAccessTandemStatus($user,$id_course){
+	$gestorBD = new GestorBD();
+	$val = $gestorBD->get_lastAccessTandemStatus($user,$id_course);
+	//error_log("User:".$user." - course:".$id_course);
+	return $val;
+}
+
+function compareDateTime($val){
+	$maxIntervalTimeInTandem = 1; //1 hora
+	date_default_timezone_set('Europe/Madrid');
+	$mysqldate = date("Y-m-d H:i:s");
+	$diasDiferencia = floor((strtotime($mysqldate) - strtotime($val))/3600/24);
+	$horasDiferencia = floor((strtotime($mysqldate) - strtotime($val))/3600);
+	//error_log($diasDiferencia." - ". $horasDiferencia);
+	$ret=0;
+	if($diasDiferencia>0) $ret = 1;
+	else if($horasDiferencia>=$maxIntervalTimeInTandem) $ret = 1;
+		 else $ret = 0;
+	return $ret;
+}
+
+
+if (getinTandemStatus($id_user_host,$id_course) == 0 || compareDateTime(getlastAccessTandemStatus($id_user_guest,$id_course))==1){
+	setinTandemStatus($id_user_host,$id_course,1);
+	date_default_timezone_set('Europe/Madrid');
+	$mysqldate = date("Y-m-d H:i:s");
+	setlastAccessTandemStatus($id_user_host,$id_course,$mysqldate);
+}
+$comunicandoA=0;
+if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlastAccessTandemStatus($id_user_guest,$id_course))==0 ){
+	$comunicandoA=1;
+}else{
+	setinTandemStatus($id_user_guest,$id_course,1);
+	date_default_timezone_set('Europe/Madrid');
+	$mysqldate = date("Y-m-d H:i:s");
+	setlastAccessTandemStatus($id_user_guest,$id_course,$mysqldate);
+	//Crea la room
+	$room = $gestorBD->has_invited_to_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest);
+	$user_agent = $_SERVER['HTTP_USER_AGENT'];
+	if ($room <= 0) {
+		$room = $gestorBD->register_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest, $message, $user_agent);
+	}
+	$_SESSION[CURRENT_TANDEM] = $room;
+}
+
+
+
+
+
 	function getDirectoryList ($directory){
 	    $results = array();
 	    $handler = opendir($directory);
@@ -61,11 +128,7 @@ $_SESSION[CURRENT_TANDEM] = $room;
 		$isSys = explode("data", $value);
 		if(count($extension)>1 && $extension[1]=="xml" && $isSys[1]=="") 
 			if (filemtime($value) < time()-(24*60*60)) unlink($value);*/
-	}
-	
-	
-	
-	
+	}	
 	if (!isset($user_obj) && isset($exercise) && strlen($exercise)>0) {
 		//Tornem a l'index
 		?>
@@ -83,29 +146,30 @@ $_SESSION[CURRENT_TANDEM] = $room;
 		printError('Error exercise <?php echo $data; ?> does not exist');
 		<?php
 		} else {
-				$exercise = $data.$id_resource_lti.'_'.$room;
+				if(isset($room)) $exercise = $data.$id_resource_lti.'_'.$room;
 				$redirect_to_room = false;
 				$user_obj->type_user = 'b';
 				if(!is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$exercise.".xml")) { 
-					//$create_room = isset($_REQUEST['create_room'])?$_REQUEST['create_room']:false;
-					//if ($create_room=='1') {
-						$user_obj->type_user = 'a'; $tandemBLTI->makeXMLUserLTI($user_obj,$exercise,$data);
+						$user_obj->type_user = 'a';
+						$tandemBLTI->makeXMLUserLTI($user_obj,$exercise,$data);
 						$redirect_to_room = true;
-					//} else {?>
-						//top.document.getElementById('roomStatus').innerHTML="<input id='createRoom' type='submit' value=' create room ' onclick='createRoom(\"<?php echo $room;?>\",\"<?php echo $data;?>\",\"<?php echo $nextSample;?>\",\"<?php echo $node;?>\",\"<?php echo $classOf;?>\");'/>";
-					<?php //}
 				} else  {
 					if (!$tandemBLTI->canUserLoginInTandem($user_obj,$exercise)) { ?>
 						jQuery(document).ready(function(){
 							top.document.getElementById('roomStatus').innerHTML='Please choose another room, this one is currently in use.';
 						});
-					<?php } else {
-						$tandemBLTI->editXMLUser($user_obj,$exercise); 
-						$redirect_to_room = true;
-					}?>
-		<?php }  
+					<?php }else{
+							$tandemBLTI->editXMLUser($user_obj,$exercise); 
+							$redirect_to_room = true;
+					}
+		}  
+			if($comunicandoA==1){ ?>
+				jQuery(document).ready(function(){
+					top.document.getElementById('roomStatus').innerHTML="<?php echo Language::get('user_in_tandem');?>";
+					setTimeout(function(){top.location.reload();}, 3000);
+				});
+		<?php }else{
 			if ($redirect_to_room) { ?>
-	
 				jQuery(document).ready(function(){
 					top.document.getElementById('roomStatus').innerHTML="";
 					openLinkWaiting(); });
@@ -122,6 +186,6 @@ $_SESSION[CURRENT_TANDEM] = $room;
 				}
 		<?php }
 		}
-	
+	}
 	}?>
 </script>
