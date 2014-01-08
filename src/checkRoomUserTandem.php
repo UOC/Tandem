@@ -14,6 +14,9 @@ $data = $_REQUEST['data'];
 
 $id_resource_lti = $_SESSION[ID_RESOURCE];
 $id_user_guest = $_REQUEST['id_user_guest'];
+
+$_SESSION[ID_USER_GUEST] = $id_user_guest;
+
 $id_user_host = $user_obj->id;
 //TODO passar missatge
 $message = '';

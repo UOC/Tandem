@@ -384,7 +384,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 										}
 	//First answer, notify the other user
 								}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-										notifyTimerDown(txtTheUser+isFinishedFirst+txtReplied);
+										notifyTimerDown("<?php echo Language::get("txtTheUser");?>"+isFinishedFirst+"<?php echo Language::get("txtReplied");?>");
 									  }
 							}
 						}
@@ -446,7 +446,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 								}
 	//First answer, notify the other user
 							}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-							 		notifyTimerDown(txtTheUser+isFinishedFirst+txtReplied);
+							 		notifyTimerDown("<?php echo Language::get("txtTheUser");?>"+isFinishedFirst+"<?php echo Language::get("txtReplied");?>");
 								  }
 						}
 					}
