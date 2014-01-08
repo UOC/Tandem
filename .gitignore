@@ -1,4 +1,4 @@
 src/config.inc.php
 src/course/
 src/xml/
-src/IMSBasicLTI/authorizedConsumersKey.cfg
+src/IMSBasicLTI/configuration/authorizedConsumersKey.cfg
