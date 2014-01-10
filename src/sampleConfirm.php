@@ -384,7 +384,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 										}
 	//First answer, notify the other user
 								}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-										notifyTimerDown(txtTheUser+isFinishedFirst+txtReplied);
+										notifyTimerDown("<?php echo Language::get("txtTheUser");?>"+isFinishedFirst+"<?php echo Language::get("txtReplied");?>");
 									  }
 							}
 						}
@@ -446,7 +446,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 								}
 	//First answer, notify the other user
 							}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-							 		notifyTimerDown(txtTheUser+isFinishedFirst+txtReplied);
+							 		notifyTimerDown("<?php echo Language::get("txtTheUser");?>"+isFinishedFirst+"<?php echo Language::get("txtReplied");?>");
 								  }
 						}
 					}
@@ -478,7 +478,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				$('#tasks').hide('fast');
 			}
 			hideText = function(){
-				notifyTimerDown(txtDesconnected);
+				notifyTimerDown('<?php echo Language::get("txtDesconnected")?>');
 				$('#buttonDesconn').hide('slow');
 			}
 			//20121004
@@ -535,7 +535,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					<?php
 						$fn = '';
 						$sn = '';
-						if($nameb!=null){
+						if($nameb!=null || $nameb!=""){
 							$fnB = $nameb->fullname;
 							$fnB = explode(" ",$fnB);
 							$fn = $fnB[0];

@@ -78,10 +78,10 @@ else $Otheruser='a';
 			processInitXml = function(){
 				if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
 					//extract data
-					var lng=xmlReq.responseXML.getElementsByTagName('exe')[0].getAttribute("lang");
-					script.src = "lang/"+lng+".js";
-					script.type = 'text/javascript';
-					body.appendChild(script);
+					//var lng=xmlReq.responseXML.getElementsByTagName('exe')[0].getAttribute("lang");
+					//script.src = "lang/"+lng+".js";
+					//script.type = 'text/javascript';
+					//body.appendChild(script);
 					var cad=xmlReq.responseXML.getElementsByTagName('nextType');
 					numNodes = cad.length-1;
 					if(<?php echo $node+1;?><=numNodes){

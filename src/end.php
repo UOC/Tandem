@@ -21,11 +21,25 @@ include_once(dirname(__FILE__).'/classes/register_action_user.php');
 
 -->
 </style>
+
+<script type="text/javascript">
+	desconn = function(){
+		$.ajax({
+			type: 'GET',
+			url: "desconn.php",
+			data: {'room':'<?php echo $_GET["room"];?>'},
+			success: function(){
+				top.document.location.href="selectUserAndRoom.php";
+			}
+		});
+	}
+</script>
+
 <!-- End Save for Web Styles -->
 </head>
 <body id="home_" style="background-color:#FFFFFF;">
 <!-- Save for Web Slices (Tandem Pantalla Inici_ParaExportar.psd) -->
-<a href="selectUserAndRoom.php"><img id="home" src="images/final.jpg" width="310" height="343" alt="" /></a>
+<a href="#" onclick="desconn();"><img id="home" src="images/final.jpg" width="310" height="343" alt="" /></a>
 <!-- a href="#" onclick="parent.window.close();"><img id="home" src="images/final.jpg" width="310" height="343" alt="" /></a> -->
 <!-- End Save for Web Slices -->
 </body>
