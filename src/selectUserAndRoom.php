@@ -172,6 +172,7 @@ if (!$user_obj || !$course_id) {
 					},
 					change: function( event, ui ) {
 						if ( !ui.item ) {
+							input.val( $(select).find("option:selected").text());
 							var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
 								valid = false;
 							select.children( "option" ).each(function() {
@@ -199,7 +200,6 @@ if (!$user_obj || !$course_id) {
 	        });
 			//Aquesta linia es pq seleccioni
 			input.val( $(select).find("option:selected").text());
-
 			
 			input.data( "autocomplete" )._renderItem = function( ul, item ) {
 				return $( "<li></li>" )
