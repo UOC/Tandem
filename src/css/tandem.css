@@ -224,6 +224,7 @@ body.acceso #main {
 	display:block;
 	float:left;
 	padding-top:10px;
+	position:relative;
 }
 
 .solution-content{
@@ -265,12 +266,23 @@ font-weight:bold;
 
 /* header */
 
+.welcome{
+	font-size: 20px; 
+	color: #575759;
+}
+
 #logo {
 	float:right;
 	margin:20px 30px 0 0;
+	position: absolute;
+	right: 0;
+	top: 30px;
 }
 
 #header #logo {
+	position:relative;
+	top:auto;
+	right:auto;
 	float:left;
 	margin:20px 20px 0 5px;
 	padding-right:25px;
@@ -413,9 +425,27 @@ input.tandem-btn, a.tandem-btn {
     text-decoration:none;
 }
 
+input.tandem-btn-secundary, a.tandem-btn-secundary {
+	font-family:Arial, Helvetica, sans-serif;
+    background: #fff;
+    color: #7E9F0B;
+    border: 1px solid #7E9F0B;
+    cursor: pointer;
+    font-weight: bold;
+    text-align:center;
+    display:inline-block;
+    min-width:105px;
+    height:30px;
+    line-height:30px;
+    font-size:1em;
+    text-decoration:none;
+    padding:0 10px;
+}
+
+
 input.tandem-btnout, a.tandem-btnout {
 	font-family:Arial, Helvetica, sans-serif;
-    background: #CCC;
+    background: #ccc;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -429,18 +459,15 @@ input.tandem-btnout, a.tandem-btnout {
     text-decoration:none;
 }
 a.tandem-btnout:hover,
-input[type=button]:hover,
-input[type=submit]:hover,
+a.tandem-btnout:focus,
 input.tandem-btnout:hover,
-input[type=button]:focus,
-input[type=submit]:focus,
 input.tandem-btnout:focus{
 	text-decoration:none;
-	background:#999;
+	background:#ccc;
+	cursor: default;
 }
 
 input.tandem-btn{width:105px;}
-
 input.tandem-btnout{width:105px;}
 
 a.tandem-btn:hover,
@@ -454,13 +481,45 @@ input.tandem-btn:focus{
 	background:#94b036;
 }
 
+a.tandem-btn-secundary:hover,
+a.tandem-btn-secundary:focus,
+input.tandem-btn-secundary:hover,
+input.tandem-btn-secundary:focus{
+	text-decoration:none;
+	background:#94b036;
+	color:#fff;
+	border-color:#94b036;
+}
+
+i.icon{
+	display:inline-block;
+	width:18px;
+	height:18px;
+	background: transparent url('../img/iconset.png') no-repeat 0 0;
+}
+
+a.btn-reload{
+	padding-left:30px;
+	position:relative;
+}
+a.btn-reload .icon{
+	background-position:0 0;
+	position:absolute;
+	left:7px;
+	top:5px;
+}
+
+a.btn-reload:hover .icon,
+a.btn-reload:focus .icon{
+	background-position:0 -18px;
+}
 
 /* Login form */
 
 .login_form{
 	margin-top:15px;
-	float:left;
-	width:556px;
+	/*float:left;
+	width:556px;*/
 }
 
 .login_form fieldset{
@@ -905,6 +964,135 @@ line-height:23px;
 	background:transparent;
 }
 
+/* Manage Area */
+
+.manage-area{
+	float:left;
+	width:100%;
+	margin-top:30px;
+}
+
+.manage-area .title{
+	float:left;
+	width:100%;
+	background:transparent url('../img/ln_dot_h.gif') repeat-x 0 100%;
+	padding-bottom:5px;
+	/*border-bottom:1px dotted #2b3f27;*/
+
+}
+
+.manage-area .title .tandem-btn-secundary{
+	float:left;
+	margin-left:15px;
+	top:-3px;
+}
+
+.manage-area .title h2{
+	color:#1e2d1c;
+	font-weight: normal;
+	font-size: 2em;
+	float:left;
+}
+
+.manage-area .message{
+	float:left;
+	border:0;
+    width:98%;
+    margin-bottom:1em;
+    padding:1em 1% .5em;
+    background:#ecefe4 url('../img/ln_dot_h.gif') repeat-x 0 100%;
+}
+
+/* Manage Area Tables */
+
+table.table{
+	border-collapse: collapse;
+	border:0;
+    width:100%;
+    max-width:100%!important;
+    margin-bottom:1em;
+    margin: .5em 0 1.5em;
+    background:#fff url('../img/ln_dot_h.gif') repeat-x 0 100%;
+}
+
+table.table th {
+    text-align: left;
+    background:#ecefe4;
+}
+
+table.table tr th, 
+table.table tr td {
+    padding: 10px 6px;
+    line-height: 1.4em;
+    vertical-align: middle;
+    border:0;
+}
+
+table.table tr td {
+    padding: 6px;
+}
+
+table.table thead tr th {
+    vertical-align: bottom;
+    background:#ecefe4 url('../img/ln_dot_h.gif') repeat-x 0 100%;
+    font-weight:bold;
+    font-size:1.2em;
+}
+
+table.table>thead:first-child>tr:first-child>th, 
+table.table>thead:first-child>tr:first-child>td {
+    border-top: 0;
+}
+
+
+/*
+#statistics1 {
+	border-collapse: collapse;
+}
+#statistics1 td {
+	border:1px #BDBF93 solid; 
+	padding: 2px 5px;
+	cellspacing: 2px;
+}
+
+#statistics2 td {
+	border:1px #000000 solid;
+	padding: 2px;
+	spacing: 2px;
+}
+#statistics3 td {
+	border:1px #000000 solid;
+	padding: 2px;
+	spacing: 2px;
+}
+#statistics1 th {
+	text-align:center;
+	font-weight:bold;
+	font-size: 120%;
+	border:1px #7E9F0B solid; 
+	padding: 2px;
+	spacing: 2px;
+}
+
+#statistics2 th {
+	text-align:center;
+	font-weight:bold;
+	font-size: 120%;
+	border:1px #000000 solid;
+	padding: 2px;
+	spacing: 2px;
+}
+#statistics3 th {
+	text-align:center;
+	font-weight:bold;
+	font-size: 120%;
+	border:1px #000000 solid;
+	padding: 2px;
+	spacing: 2px;
+}
+*/
+
+
 /* 20120926 abertranb */
 /* define height and width of scrollable area. Add 16px to width for scrollbar          */
 div.tableContainer {
@@ -1050,12 +1238,12 @@ html>body tbody.scrollContent td + td + td + td {
 html>body tbody.scrollContent td + td + td + td + td {
 	width: 111px
 }
-#statistics1 { /* 10082012 nfinney> changed to collapsed borders */
+/*#statistics1 {
 	border-collapse: collapse;
 }
 #statistics1 td {
-	border:1px #BDBF93 solid; /* 10082012 nfinney> changed color from #000000 */
-	padding: 2px 5px; /* 10082012 nfinney> added horizontal padding */
+	border:1px #BDBF93 solid;
+	padding: 2px 5px;
 	cellspacing: 2px;
 }
 
@@ -1073,7 +1261,7 @@ html>body tbody.scrollContent td + td + td + td + td {
 	text-align:center;
 	font-weight:bold;
 	font-size: 120%;
-	border:1px #7E9F0B solid; /* 10082012 nfinney> changed color from #000000 */
+	border:1px #7E9F0B solid; 
 	padding: 2px;
 	spacing: 2px;
 }
@@ -1094,6 +1282,8 @@ html>body tbody.scrollContent td + td + td + td + td {
 	padding: 2px;
 	spacing: 2px;
 }
+*/
+
 .info {
 	font-size: 120%;
 	background-color: #F0F5E9;

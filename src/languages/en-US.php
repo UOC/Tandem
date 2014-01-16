@@ -81,3 +81,4 @@ $language['exercise_deleted_ok'] = 'Exercise was successfully removed';
 $language['error_delete_exercise'] = 'Error deleting the selected exercise, verify that the file exists and has the correct permissions';
 $language['main_xml_file_not_found'] = 'Unable to process the file because can not find main XML file';
 $language['no_exercises_found'] = 'Not exercises available, teacher has to configure it';
+$language['state'] = 'State';

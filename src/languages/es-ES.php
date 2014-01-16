@@ -81,3 +81,4 @@ $language['exercise_deleted_ok'] = 'Se ha eliminado correctamente el ejercicio';
 $language['error_delete_exercise'] = 'Error eliminando el ejercicio seleccionado, compruebe que existe y que el fichero tenga los permisos correctos';
 $language['main_xml_file_not_found'] = 'No se puede procesar el fichero ya que no se puede encontrar el fichero XML principal';
 $language['no_exercises_found'] = 'No hay ejercicios disponibles, el profesor tiene que configurarlo';
+$language['state'] = 'Estado';

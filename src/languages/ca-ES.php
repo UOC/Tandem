@@ -81,3 +81,4 @@ $language['exercise_deleted_ok'] = 'S\'ha eliminat correctament l\'exercici';
 $language['error_delete_exercise'] = 'Error eliminant l\'exercici seleccionat, comprovi que existeix i que el fitxer tingui els permissos correctes';
 $language['main_xml_file_not_found'] = 'No es pot processar el fitxer ja que no es troba el fitxer XML principal';
 $language['no_exercises_found'] = 'No hi ha exercicis disponibles, el professor ha de configurar-los';
+$language['state'] = 'Estat';
