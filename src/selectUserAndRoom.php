@@ -434,17 +434,17 @@ if (!$user_obj || !$course_id) {
 					     var created_txt = $(xml).find('created').text();
 					     var nameuser_txt = $(xml).find('nameuser').text();
 					     var exercise_txt = $(xml).find('exercise').text();
-					     $("div.info").show();
+					     $("#info-block").show();
 					     //10092012 nfinney: restyle Invite message
 					     
-					$("div.info").append("<div style='float:left;width:70%'><h4><?php echo Language::get('just_been_invited');?> "+nameuser_txt+" <?php echo Language::get('exercise');?>: "+exercise_txt+" </h4></div><div style='float:right;width:20%'><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo Language::get('accept');?></a></div><div style='clear:both'></div>");
+					$("#info-block").append("<div class='block-inside'><i class='icon'><h3><?php echo Language::get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo Language::get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo Language::get('accept');?></a></div>");
 					setExpiredNow(60);
 					
 					
 					     //END 10092012
-					     //$("div.info").append("Created: "+created_txt+"");
-					     //$("div.info").append("Name: "+nameuser_txt);
-					     //$("div.info").append("Exercise: "+exercise_txt);
+					     //$("#info-block").append("Created: "+created_txt+"");
+					     //$("#info-block").append("Name: "+nameuser_txt);
+					     //$("#info-block").append("Exercise: "+exercise_txt);
 					     clearInterval(intervalCheck);
 				  	}
 
@@ -562,11 +562,12 @@ if (!$user_obj || !$course_id) {
 									<input type="button" onclick="Javascript:putLink();" id="start" name="start" disabled="disabled" value="<?php echo Language::get('start')?>" class="tandem-btn" tabindex="3" />
 								</fieldset>
 						<?php } else {
-							echo '<div class="info">'.Language::get('no_exercises_found').'</div>';
+							echo '<div class="alert alert-waring">'.Language::get('no_exercises_found').'</div>';
 						} ?>
 						<div class="manage-area">
 						<div class="clear">
-							<div class="info" style="display:none"></div> <!-- 10092012 nfinney> type error: changed to 'none' from 'hidden' -->
+							<div id="info-block" class="alert alert-info" style="display:none"></div>
+							<!--<div class="info" style="display:none"></div>--> <!-- 10092012 nfinney> type error: changed to 'none' from 'hidden' -->
 							<?php if (!$pending_invitations){?>
 								<div class="title">
 									<h2><?php echo Language::get('pending_tandems')?></h2>
@@ -696,13 +697,13 @@ if (!$user_obj || !$course_id) {
 							<input type="submit" name="showTandem" onclick="Javscript:canviaAction('exercises');" value="<?php echo Language::get('mange_exercises_tandem')?>" />
 						</div>	
 						<?php } //is instructor ?>  
-						<?php /*
+						
 						<div class="clear">
-						    <p>echo Language::getTag('tandem_description_1','<strong>'.$name.'</strong>') <!--10082012: nfinney> finney> replaced with popup on IE detection--><br/>
-							<?php echo Language::get('tandem_description_2');</p>
+							<?php /* <p>echo Language::getTag('tandem_description_1','<strong>'.$name.'</strong>') <!--10082012: nfinney> finney> replaced with popup on IE detection--><br/>
+							<?php echo Language::get('tandem_description_2');</p> */ ?>
 							<p id="roomStatus"></p>
 						</div>
-						*/ ?>
+						
 						</div> <!-- /manage-area -->
 					</form>
 					<div id="logo">
