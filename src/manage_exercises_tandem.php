@@ -33,7 +33,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 	
 		$continue = strtolower($name[1]) == 'zip' ? true : false;
 		if(!$continue) {
-			$message = Language::get('error_no_zip_format');
+			$message = $LanguageInstance->get('error_no_zip_format');
 		} else {
 			$target_path = dirname(__FILE__).DIRECTORY_SEPARATOR.$course_folder;
 			
@@ -61,10 +61,10 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				$name_xml_file = getNameXmlFileUnZipped($target_path_temp);
 				
 				if (file_exists($target_path.DIRECTORY_SEPARATOR.'data'.$name_xml_file.'.xml') && !$overrides_xml_file) {
-					$message = Language::getTag('file_exercise_xml_aready_exists','<strong>'.$name_xml_file.'</strong>');
+					$message = $LanguageInstance->getTag('file_exercise_xml_aready_exists','<strong>'.$name_xml_file.'</strong>');
 					rrmdir($target_path_temp);
 				} elseif (strlen($name_xml_file)==0) {
-					$message = Language::get('main_xml_file_not_found');
+					$message = $LanguageInstance->get('main_xml_file_not_found');
 					rrmdir($target_path_temp);
 				}
 				else 
@@ -75,25 +75,25 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 					
 					$enabled = 1;
 					$gestorBD->register_tandem_exercise($course_id, -1, $user_obj->id, $name_form, $name_xml_file, $enabled);
-					$message = Language::getTag('zip_upload_ok',$filename);
+					$message = $LanguageInstance->getTag('zip_upload_ok',$filename);
 					$exercise_name = '';
 					$exercise_id = -1;
 				}
 			} else {
-				$message = Language::get('error_uploading_file');
+				$message = $LanguageInstance->get('error_uploading_file');
 			}
 		}
 	} else {
 	
 		if (isset($_POST['submit']) && strlen($_POST['submit'])>0) {
 			//Here is a POST and dind't get the $_FILE for that reason show error;
-			$message = Language::get('error_choose_file');
+			$message = $LanguageInstance->get('error_choose_file');
 			if (isset($_POST['name']) && strlen($_POST['name'])>0) {
 				$exercise_name = $_POST['name'];
 			}
 		}
 	
-		if (isset($_GET['delete'])) {
+		if (isset($_GET['delete'])) { 
 			$delete = $_GET['delete'];
 			
 			$exercise = $gestorBD->delete_exercise($course_id, $delete);
@@ -102,9 +102,9 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				$target_path_file = dirname(__FILE__).DIRECTORY_SEPARATOR.$course_folder.DIRECTORY_SEPARATOR.$exercise['name_xml_file'].'.xml';
 				if (file_exists($target_path_file)) {
 					unlink($target_path_file);
-					$message = Language::get('exercise_deleted_ok');
+					$message = $LanguageInstance->get('exercise_deleted_ok');
 				} else {
-					$message = Language::get('error_delete_exercise');
+					$message = $LanguageInstance->get('error_delete_exercise');
 				}
 			}
 		} elseif (isset($_GET['enabled'])) {
@@ -119,7 +119,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				}
 				$exercise_id = $exercise[0]['id'];
 			} else {
-				$message = Language::get('error_getting_information_of_exercise');
+				$message = $LanguageInstance->get('error_getting_information_of_exercise');
 			}
 		}
 	} 
@@ -150,7 +150,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 
 <!-- accessibility -->
 	<div id="accessibility">
-		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo Language::get('direct_access_to_content')?></a> | 
+		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> | 
 		<!--
 		<a href="#" accesskey="n" title="Acceso directo al men� de navegaci�n">Acceso directo al men� de navegaci�n</a> | 
 		<a href="#" accesskey="m" title="Mapa del sitio">Mapa del sitio</a> 
@@ -168,15 +168,15 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				<?php if($message) echo '<div class="info">'.$message.'</div>'; ?>
 				<div id="content">
 					<div id="logo">
-						<a href="#" title="<?php echo Language::get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo Language::get('tandem_logo')?>" /></a>
+						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
 					</div>
-				<h4><a href="selectUserAndRoom.php">&larr;&nbsp;<?php echo Language::get('back')?></a></h4>
-				<h1><?php echo Language::get('mange_exercises_tandem')?></h1>
+				<h4><a href="selectUserAndRoom.php">&larr;&nbsp;<?php echo $LanguageInstance->get('back')?></a></h4>
+				<h1><?php echo $LanguageInstance->get('mange_exercises_tandem')?></h1>
 				<form enctype="multipart/form-data" method="post" action="">
-					<p><label><?php echo Language::get('exercise_name')?>: <input type="text" name="name" value="<?php echo $exercise_name ?>"/></label></p>
-					<p><label><?php echo Language::get('choose_zip_file')?>: <input type="file" name="zip_file" /> Max. <?php echo $upload_mb; ?> MB</label></p>
-					<p><label><?php echo Language::get('overrides_xml_file')?>: <select name="overrides_xml_file" ><option value="0"><?php echo Language::get('no')?></option><option value="1" <?php echo $exercise_id>0?'selected="selected"':''?>><?php echo Language::get('yes')?></option></select> </label></p>
-					<input type="submit" name="submit" value="<?php echo Language::get('upload')?>" />
+					<p><label><?php echo $LanguageInstance->get('exercise_name')?>: <input type="text" name="name" value="<?php echo $exercise_name ?>"/></label></p>
+					<p><label><?php echo $LanguageInstance->get('choose_zip_file')?>: <input type="file" name="zip_file" /> Max. <?php echo $upload_mb; ?> MB</label></p>
+					<p><label><?php echo $LanguageInstance->get('overrides_xml_file')?>: <select name="overrides_xml_file" ><option value="0"><?php echo $LanguageInstance->get('no')?></option><option value="1" <?php echo $exercise_id>0?'selected="selected"':''?>><?php echo $LanguageInstance->get('yes')?></option></select> </label></p>
+					<input type="submit" name="submit" value="<?php echo $LanguageInstance->get('upload')?>" />
 					<input type="hidden" name="id" value="<?php echo $exercise_id ?>" />
 					</form>
 					<div class="clear">&nbsp;</div>
@@ -185,9 +185,9 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 						<table  class="scrollTable">
 						<thead class="fixedHeader">
 							<tr>
-								<th><?php echo Language::get('exercise_name')?></th>
-								<th><?php echo Language::get('name_xml_file')?></th>
-								<th><?php echo Language::get('enabled')?></th>
+								<th><?php echo $LanguageInstance->get('exercise_name')?></th>
+								<th><?php echo $LanguageInstance->get('name_xml_file')?></th>
+								<th><?php echo $LanguageInstance->get('enabled')?></th>
 								<th>&nbsp;</th>
 								<th>&nbsp;</th>
 							</tr>
@@ -198,9 +198,9 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 							<tr class="<?php echo $i%2==0?'normalRow':'alternateRow'?>">
 								<td><?php echo $exercise['name']?></td>
 								<td><?php echo $exercise['name_xml_file']?></td>
-								<td><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo Language::get($exercise['enabled']=='1'?'yes':'no')?></a></td>
-								<td><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>"><?php echo Language::get('update')?></a></td>
-								<td><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>"><?php echo Language::get('delete')?></a></td>
+								<td><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo $LanguageInstance->get($exercise['enabled']=='1'?'yes':'no')?></a></td>
+								<td><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>"><?php echo $LanguageInstance->get('update')?></a></td>
+								<td><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>"><?php echo $LanguageInstance->get('delete')?></a></td>
 							</tr>
 							<?php 
 							$i++;
@@ -209,7 +209,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 						</table>
 					</div>
 					<?php } else {?>
-						<p class="error"><?php echo Language::get('no_results_found')?></p>
+						<p class="error"><?php echo $LanguageInstance->get('no_results_found')?></p>
 					<?php }?>
 			
 					
@@ -224,7 +224,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 	<!-- footer -->
 	<div id="footer-container">
 		<div id="footer">
-			<div class="footer-tandem" title="<?php echo Language::get('tandem')?>"></div>
+			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem')?>"></div>
 			<div class="footer-logos">
 				<img src="img/logo_LLP.png" alt="Lifelong Learning Programme" />
 				<img src="img/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />

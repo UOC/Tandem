@@ -235,11 +235,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 
 <!-- accessibility -->
 	<div id="accessibility">
-		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo Language::get('direct_access_to_content')?></a> | 
-		<!--
-		<a href="#" accesskey="n" title="Acceso directo al men� de navegaci�n">Acceso directo al men� de navegaci�n</a> | 
-		<a href="#" accesskey="m" title="Mapa del sitio">Mapa del sitio</a> 
-		-->
+		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> | 
 	</div>
 	<!-- /accessibility -->
 	
@@ -251,32 +247,32 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 			<div id="main">
 				<!-- content -->
 				<div id="content">
-					<h1><?php echo Language::get('tandems')?></h1>
+					<h1><?php echo $LanguageInstance->get('tandems')?></h1>
 					<div id="logo">
-						<a href="#" title="<?php echo Language::get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo Language::get('tandem_logo')?>" /></a>
+						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
 					</div>
 					<form action="#" method="post" class="login_form" id="form_action">
 						<fieldset>
 						<?php 
 							if ($users_course && count($users_course)>0) {
 							?>
-							<label for="select_user" title="1. <?php echo Language::get('select_users')?>"><select name="user_selected" id="user_selected" tabindex="1"  >
-								<option value="0"><?php echo Language::get('select_users')?></option>
+							<label for="select_user" title="1. <?php echo $LanguageInstance->get('select_users')?>"><select name="user_selected" id="user_selected" tabindex="1"  >
+								<option value="0"><?php echo $LanguageInstance->get('select_users')?></option>
 								<?php foreach ($users_course as $user) {?>
 									<option value="<?php echo $user['id']?>" <?php echo ($user_selected==$user['id']?'selected':'')?>><?php echo $user['surname'].', '.$user['firstname']?></option>
 								<?php }?>
 							</select>
 						<?php 
 						} else {
-							$msg = Language::get('no_users_in_course');
+							$msg = $LanguageInstance->get('no_users_in_course');
 					?> 
 					<label for="not_users" title="<?php echo $msg?>"><?php echo $msg?></label>
 					<?php } ?>
 						</fieldset>
 						<fieldset>
 							<?php if (count($array_exercises)>0) {?>
-								<label for="select_exercise" title="2. <?php echo Language::get('select_exercise')?>"><select id="select_exercise" name="select_exercise" tabindex="2">
-										<option value="-1"><?php echo Language::get('select_exercise')?></option>
+								<label for="select_exercise" title="2. <?php echo $LanguageInstance->get('select_exercise')?>"><select id="select_exercise" name="select_exercise" tabindex="2">
+										<option value="-1"><?php echo $LanguageInstance->get('select_exercise')?></option>
 									<?php foreach ($array_exercises as $exercise) {?>
 										<option value="<?php echo $exercise['name_xml_file']?>" <?php echo $selected_exercise==$exercise['name_xml_file']?'selected="selected"':''?>><?php echo $exercise['name']?></option>
 									<?php }?>
@@ -284,52 +280,52 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 							<?php }?>
 						</fieldset>
 						<fieldset>
-								<label for="start" title="3. <?php echo Language::get('show_tandem')?>">
-								<input type="submit" name="showTandem" value="<?php echo Language::get('show_tandem')?>" onclick="Javascript:cleanForm()" />
+								<label for="start" title="3. <?php echo $LanguageInstance->get('show_tandem')?>">
+								<input type="submit" name="showTandem" value="<?php echo $LanguageInstance->get('show_tandem')?>" onclick="Javascript:cleanForm()" />
 						</fieldset>
 					<div class="clear" />
 						<fieldset>
-								<label for="start" title="<?php echo Language::get('start_date')?>" ><?php echo Language::get('start_date')?></label>
+								<label for="start" title="<?php echo $LanguageInstance->get('start_date')?>" ><?php echo $LanguageInstance->get('start_date')?></label>
 								<input type="text" id="start_date" name="start_date" value="<?php echo $start_date;?>" class="input_date ui-state-default ui-widget ui-widget-content ui-corner-left ui-corner-right"/>
 						</fieldset>
 						<fieldset>
-								<label for="finsih" title="<?php echo Language::get('finish_date')?>"><?php echo Language::get('finish_date')?></label>
+								<label for="finsih" title="<?php echo $LanguageInstance->get('finish_date')?>"><?php echo $LanguageInstance->get('finish_date')?></label>
 								<input type="text" id="finish_date" name="finish_date" value="<?php echo $finish_date;?>"  class="input_date ui-state-default ui-widget ui-widget-content ui-corner-left ui-corner-right"/>
 						</fieldset>
 						<fieldset>
-								<label for="finished" title="<?php echo Language::get('finished')?>"><?php echo Language::get('finished')?></label>
+								<label for="finished" title="<?php echo $LanguageInstance->get('finished')?>"><?php echo $LanguageInstance->get('finished')?></label>
 								<select id="finished" name="finished" tabindex="1" class="input_date">
-										<option value="-1"><?php echo Language::get('all')?></option>
-										<option value="0" <?php echo $finished==0?'selected="selected"':''?>><?php echo Language::get('no')?></option>
-										<option value="1" <?php echo $finished==1?'selected="selected"':''?>><?php echo Language::get('yes')?></option>
+										<option value="-1"><?php echo $LanguageInstance->get('all')?></option>
+										<option value="0" <?php echo $finished==0?'selected="selected"':''?>><?php echo $LanguageInstance->get('no')?></option>
+										<option value="1" <?php echo $finished==1?'selected="selected"':''?>><?php echo $LanguageInstance->get('yes')?></option>
 								</select>
 						</fieldset>
 					<div class="clear">
 					<?php 
 						if ($is_showTandem) {
 							if ($user_selected==0 && ($user_tandems==null || count($user_tandems)==0)) {?>
-								<p class="error"><?php echo Language::get('no_results_found')?></p>
+								<p class="error"><?php echo $LanguageInstance->get('no_results_found')?></p>
 							<?php 
 							} else {
 								if ($user_tandems==null || count($user_tandems)==0) {
 								?>
-									<?php echo Language::get('no_tandems')?>
+									<?php echo $LanguageInstance->get('no_tandems')?>
 								<?php 	
 								} else { 
 									?>
-										<div class="title"><?php echo Language::get('tandems')?></div>
+										<div class="title"><?php echo $LanguageInstance->get('tandems')?></div>
 										<table id="statistics1">
 											<tr>
-												<th><a href="Javascript:order(0, <?php echo ($order_by_tandems==0)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('date')?></a><?php if ($order_by_tandems==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(1, <?php echo ($order_by_tandems==1)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('exercise')?></a><?php if ($order_by_tandems==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(2, <?php echo ($order_by_tandems==2)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('total_time')?></a><?php if ($order_by_tandems==2){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(3, <?php echo ($order_by_tandems==3)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('user')?></a><?php if ($order_by_tandems==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(4, <?php echo ($order_by_tandems==4)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('user_host')?></a><?php if ($order_by_tandems==4){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(5, <?php echo ($order_by_tandems==5)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('user_guest')?></a><?php if ($order_by_tandems==5){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(6, <?php echo ($order_by_tandems==6)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('date_guest_user_logged')?></a><?php if ($order_by_tandems==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(7, <?php echo ($order_by_tandems==7)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('finalized')?></a><?php if ($order_by_tandems==7){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(8, <?php echo ($order_by_tandems==8)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('user_agent_host')?></a><?php if ($order_by_tandems==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
-												<th><a href="Javascript:order(9, <?php echo ($order_by_tandems==9)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('user_agent_guest')?></a><?php if ($order_by_tandems==7){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(0, <?php echo ($order_by_tandems==0)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('date')?></a><?php if ($order_by_tandems==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(1, <?php echo ($order_by_tandems==1)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('exercise')?></a><?php if ($order_by_tandems==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(2, <?php echo ($order_by_tandems==2)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('total_time')?></a><?php if ($order_by_tandems==2){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(3, <?php echo ($order_by_tandems==3)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('user')?></a><?php if ($order_by_tandems==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(4, <?php echo ($order_by_tandems==4)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('user_host')?></a><?php if ($order_by_tandems==4){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(5, <?php echo ($order_by_tandems==5)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('user_guest')?></a><?php if ($order_by_tandems==5){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(6, <?php echo ($order_by_tandems==6)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('date_guest_user_logged')?></a><?php if ($order_by_tandems==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(7, <?php echo ($order_by_tandems==7)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('finalized')?></a><?php if ($order_by_tandems==7){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(8, <?php echo ($order_by_tandems==8)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('user_agent_host')?></a><?php if ($order_by_tandems==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
+												<th><a href="Javascript:order(9, <?php echo ($order_by_tandems==9)?($order_by_tandems_direction==0?1:0):0 ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('user_agent_guest')?></a><?php if ($order_by_tandems==7){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tandems_direction==0?'n':'s'?> right"></span><?php } ?></th>
 											</tr>
 										<?php 
 										foreach ($user_tandems as $tandem) {
@@ -338,12 +334,12 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 											$total_time = time_format($seconds);
 										?>
 											<tr>
-												<td><a href="Javascript:search(<?php echo $tandem['id']?>,-1,-1)" title="<?php echo Language::get('go')?>" target="_blank"><?php echo $tandem['created']?></a></td>
+												<td><a href="Javascript:search(<?php echo $tandem['id']?>,-1,-1)" title="<?php echo $LanguageInstance->get('go')?>" target="_blank"><?php echo $tandem['created']?></a></td>
 												<td><?php echo $tandem['exercise']?></td>
-												<td title="<?php echo Language::getTagDouble('total_time_seconds', $minutes,$seconds)?>"><?php echo $total_time?></td>
+												<td title="<?php echo $LanguageInstance->getTagDouble('total_time_seconds', $minutes,$seconds)?>"><?php echo $total_time?></td>
 												<td><?php echo $tandem['fullname']?></td>
-												<td><?php echo $tandem['user_host']?> <?php if ($tandem['has_xml_description']==1) {?><input type="button" onclick="Javascript:play_tandem(<?php echo $tandem['id'] ?>, 1)" value="<?php echo Language::get('play');?>" title="<?php echo Language::get('play_as_user_host');?>" ><?php } ?></td>
-												<td><?php echo $tandem['user_guest']?> <?php if ($tandem['has_xml_description']==1) {?><input type="button" onclick="Javascript:play_tandem(<?php echo $tandem['id'] ?>, 0)" value="<?php echo Language::get('play');?>" title="<?php echo Language::get('play_as_user_guest');?>" ><?php } ?></td>
+												<td><?php echo $tandem['user_host']?> <?php if ($tandem['has_xml_description']==1) {?><input type="button" onclick="Javascript:play_tandem(<?php echo $tandem['id'] ?>, 1)" value="<?php echo $LanguageInstance->get('play');?>" title="<?php echo $LanguageInstance->get('play_as_user_host');?>" ><?php } ?></td>
+												<td><?php echo $tandem['user_guest']?> <?php if ($tandem['has_xml_description']==1) {?><input type="button" onclick="Javascript:play_tandem(<?php echo $tandem['id'] ?>, 0)" value="<?php echo $LanguageInstance->get('play');?>" title="<?php echo $LanguageInstance->get('play_as_user_guest');?>" ><?php } ?></td>
 												<td><?php echo $tandem['date_guest_user_logged']?></td>
 												<td><?php echo $tandem['finalized']?></td>
 												<td><?php echo $tandem['user_agent_host']?></td>
@@ -358,16 +354,16 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 								
 							if ($task_tandems != null) {
 								?>
-								<div class="title"><?php echo Language::get('tasks_tandems')?></div>
+								<div class="title"><?php echo $LanguageInstance->get('tasks_tandems')?></div>
 								<table id="statistics2">
 									<tr>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 0, <?php echo ($order_by_tasks==0)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('date')?></a><?php if ($order_by_tasks==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 1, <?php echo ($order_by_tasks==1)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('exercise')?></a><?php if ($order_by_tasks==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 2, <?php echo ($order_by_tasks==2)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('task')?></a><?php if ($order_by_tasks==2){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 3, <?php echo ($order_by_tasks==3)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('total_time')?></a><?php if ($order_by_tasks==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 4, <?php echo ($order_by_tasks==4)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('user')?></a><?php if ($order_by_tasks==4){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<!-- th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 5, <?php echo ($order_by_tasks==5)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('date_guest_user_logged')?></a><?php if ($order_by_tasks==5){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th> -->
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 6, <?php echo ($order_by_tasks==6)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo Language::get('finalized')?></a><?php if ($order_by_tasks==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 0, <?php echo ($order_by_tasks==0)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('date')?></a><?php if ($order_by_tasks==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 1, <?php echo ($order_by_tasks==1)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('exercise')?></a><?php if ($order_by_tasks==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 2, <?php echo ($order_by_tasks==2)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('task')?></a><?php if ($order_by_tasks==2){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 3, <?php echo ($order_by_tasks==3)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('total_time')?></a><?php if ($order_by_tasks==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 4, <?php echo ($order_by_tasks==4)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('user')?></a><?php if ($order_by_tasks==4){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<!-- th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 5, <?php echo ($order_by_tasks==5)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('date_guest_user_logged')?></a><?php if ($order_by_tasks==5){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th> -->
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 6, <?php echo ($order_by_tasks==6)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('finalized')?></a><?php if ($order_by_tasks==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
 									</tr>
 								<?php 
 								foreach ($task_tandems as $task) {
@@ -377,10 +373,10 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 									
 								?>
 									<tr>
-										<td><a href="Javascript:search(<?php echo $task['id_tandem']?>,<?php echo $task['task_number']?>,-1)" title="<?php echo Language::get('go')?>" target="_blank"><?php echo $task['created']?></a></td>
+										<td><a href="Javascript:search(<?php echo $task['id_tandem']?>,<?php echo $task['task_number']?>,-1)" title="<?php echo $LanguageInstance->get('go')?>" target="_blank"><?php echo $task['created']?></a></td>
 										<td><?php echo $task['exercise']?></td>
 										<td><?php echo $task['task_number']?></td>
-										<td title="<?php echo Language::getTagDouble('total_time_seconds', $minutes, $seconds)?>"><?php echo $total_time?></td>
+										<td title="<?php echo $LanguageInstance->getTagDouble('total_time_seconds', $minutes, $seconds)?>"><?php echo $total_time?></td>
 										<td ><?php echo $task['user']?></td>
 										<!-- td><?php echo $task['date_guest_user_logged']?></td> -->
 										<td><?php echo $task['finalized']?></td>
@@ -394,17 +390,17 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 							
 							if ($question_task_tandems != null) {
 								?>
-								<div class="title"><?php echo Language::get('questions_tasks_tandems')?></div>
+								<div class="title"><?php echo $LanguageInstance->get('questions_tasks_tandems')?></div>
 								<table id="statistics3">
 									<tr>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, 0, <?php echo ($order_by_questions==0)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('date')?></a><?php if ($order_by_questions==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,1, <?php echo ($order_by_questions==1)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('exercise')?></a><?php if ($order_by_questions==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,2, <?php echo ($order_by_questions==2)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('task')?></a><?php if ($order_by_questions==2){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,3, <?php echo ($order_by_questions==3)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('question')?></a><?php if ($order_by_questions==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,4, <?php echo ($order_by_questions==4)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('total_time')?></a><?php if ($order_by_questions==4){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,5, <?php echo ($order_by_questions==5)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('user')?></a><?php if ($order_by_questions==5){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
-										<!-- th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,6, <?php echo ($order_by_questions==6)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('date_guest_user_logged')?></a><?php if ($order_by_questions==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th> -->
-										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,7, <?php echo ($order_by_questions==7)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo Language::get('finalized')?></a><?php if ($order_by_questions==7){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>, 0, <?php echo ($order_by_questions==0)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('date')?></a><?php if ($order_by_questions==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,1, <?php echo ($order_by_questions==1)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('exercise')?></a><?php if ($order_by_questions==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,2, <?php echo ($order_by_questions==2)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('task')?></a><?php if ($order_by_questions==2){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,3, <?php echo ($order_by_questions==3)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('question')?></a><?php if ($order_by_questions==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,4, <?php echo ($order_by_questions==4)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('total_time')?></a><?php if ($order_by_questions==4){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,5, <?php echo ($order_by_questions==5)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('user')?></a><?php if ($order_by_questions==5){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
+										<!-- th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,6, <?php echo ($order_by_questions==6)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('date_guest_user_logged')?></a><?php if ($order_by_questions==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th> -->
+										<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, <?php echo $order_by_tasks; ?>, <?php echo $order_by_tasks_direction; ?>,7, <?php echo ($order_by_questions==7)?($order_by_questions_direction==0?1:0):0 ?>);"><?php echo $LanguageInstance->get('finalized')?></a><?php if ($order_by_questions==7){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_questions_direction==0?'n':'s'?> right"></span><?php } ?></th>
 									</tr>
 								<?php 
 								foreach ($question_task_tandems as $question) {
@@ -413,11 +409,11 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 									$total_time = time_format($seconds);
 								?>
 									<tr>
-										<td><a href="Javascript:search(<?php echo $question['id_tandem']?>,<?php echo $question['task_number']?>,<?php echo $question['question_number']?>)" title="<?php echo Language::get('go')?>" target="_blank"><?php echo $question['created']?></a></td>
+										<td><a href="Javascript:search(<?php echo $question['id_tandem']?>,<?php echo $question['task_number']?>,<?php echo $question['question_number']?>)" title="<?php echo $LanguageInstance->get('go')?>" target="_blank"><?php echo $question['created']?></a></td>
 										<td><?php echo $question['exercise']?></td>
 										<td><?php echo $question['task_number']?></td>
 										<td><?php echo $question['question_number']?></td>
-										<td title="<?php echo Language::getTagDouble('total_time_seconds', $minutes, $seconds)?>"><?php echo $total_time?></td>
+										<td title="<?php echo $LanguageInstance->getTagDouble('total_time_seconds', $minutes, $seconds)?>"><?php echo $total_time?></td>
 										<td><?php echo $question['user']?></td>
 										<!-- td><?php echo $question['date_guest_user_logged']?></td> -->
 										<td><?php echo $question['finalized']?></td>
@@ -456,7 +452,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	<!-- footer -->
 	<!-- div id="footer-container">
 		<div id="footer">
-			<div class="footer-tandem" title="<?php echo Language::get('tandem')?>"></div>
+			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem')?>"></div>
 			<div class="footer-logos">
 				<img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
 				<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />

@@ -43,5 +43,5 @@ if ($tandem) {
 	}
 	header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise);
 } else {
-	echo Language::get('no estas autoritzat');
+	echo $LanguageInstance->get('no estas autoritzat');
 }

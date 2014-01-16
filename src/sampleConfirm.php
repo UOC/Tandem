@@ -196,7 +196,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
 	//thread is so quick...
 						writeButtons();
-						setTimeout(function(){notifyTimerDown('<?php echo Language::get('txtWaiting4User')?>');},250);
+						setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},250);
 						// why is this line here?
 							//hideButtons();
 					  }   
@@ -280,7 +280,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
 //thread is so quick...
 					writeButtons();
-					setTimeout(function(){notifyTimerDown('<?php echo Language::get('txtWaiting4User')?>');},150);
+					setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},150);
 					hideButtons();
 				}
 			}
@@ -309,7 +309,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
 					if(check4UsersConex()){
 //when both connected show alert, change user->side images and central image
-						notifyTimerDown('<?php echo Language::get('txtOtherUserConn')?>');
+						notifyTimerDown('<?php echo $LanguageInstance->get('txtOtherUserConn')?>');
 						setTimeout(function(){$("#imgR").attr('src','images/before_connecting<?php echo $user;?>.jpg');},1000);
 						setTimeout(function(){$("#imgR").attr('src','images/connecting.jpg');},1500);
 						$('#buttonsCheck').show('fast');
@@ -384,7 +384,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 										}
 	//First answer, notify the other user
 								}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-										notifyTimerDown("<?php echo Language::get("txtTheUser");?>"+isFinishedFirst+"<?php echo Language::get("txtReplied");?>");
+										notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
 									  }
 							}
 						}
@@ -446,7 +446,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 								}
 	//First answer, notify the other user
 							}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-							 		notifyTimerDown("<?php echo Language::get("txtTheUser");?>"+isFinishedFirst+"<?php echo Language::get("txtReplied");?>");
+							 		notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
 								  }
 						}
 					}
@@ -478,7 +478,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				$('#tasks').hide('fast');
 			}
 			hideText = function(){
-				notifyTimerDown('<?php echo Language::get("txtDesconnected")?>');
+				notifyTimerDown('<?php echo $LanguageInstance->get("txtDesconnected")?>');
 				$('#buttonDesconn').hide('slow');
 			}
 			//20121004
@@ -685,19 +685,19 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				    	<div class="user">
 				    		<div class="details">
 				    			<span class="name" id="name_person_a"></span>
-				    			<a href="#info_user_1" id="lnk_user_1" class="infotip" data-rel="<?php echo Language::get('hide_profile')?>"><span><?php echo Language::get('show_profile')?></span></a>
+				    			<a href="#info_user_1" id="lnk_user_1" class="infotip" data-rel="<?php echo $LanguageInstance->get('hide_profile')?>"><span><?php echo $LanguageInstance->get('show_profile')?></span></a>
 				    		</div>
 				    		<div id="image_person_a" class="photo" alt="user 1 photo"></div>
 				    		
 				    		<div class="user_info" id="info_user_1">
 					    		<span class="social" title="skype" id="chat_person_a">SkypeUser <span class="icon skype"></span></span>
 				    		</div>
-				    		<a href="#" id="lnk_quit" onclick="desconn();"><?php echo Language::get('quit')?></a>
+				    		<a href="#" id="lnk_quit" onclick="desconn();"><?php echo $LanguageInstance->get('quit')?></a>
 				    	</div>
 				    	<div class="user">
 				    		<div class="details">
 				    			<span class="name" id="name_person_b"></span>
-				    			<a href="#info_user_2" id="lnk_user_2" class="infotip" data-rel="<?php echo Language::get('hide_profile')?>"><span><?php echo Language::get('show_profile')?></span></a>
+				    			<a href="#info_user_2" id="lnk_user_2" class="infotip" data-rel="<?php echo $LanguageInstance->get('hide_profile')?>"><span><?php echo $LanguageInstance->get('show_profile')?></span></a>
 				    		</div>
 				    		<div id="image_person_b" class="photo" alt="user 2 photo"></div>
 				    		<div class="user_info" id="info_user_2">
@@ -721,7 +721,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 	  			<ul id="steps"></ul>
                 
         <div id="timeline" style="display:none;">
- 			<div class="lbl"><?php echo Language::get('task_remaining_time')?></div>
+ 			<div class="lbl"><?php echo $LanguageInstance->get('task_remaining_time')?></div>
 	 		<div class="clock" id="clock"><span class="mm">00</span>:<span class="ss">00</span></div>
  			<div class="linewrap"><div class="line"></div></div>
 	  	</div>

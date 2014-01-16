@@ -690,19 +690,19 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				    	<div class="user">
 				    		<div class="details">
 				    			<span class="name" id="name_person_a"></span>
-				    			<a href="#info_user_1" id="lnk_user_1" class="infotip" data-rel="<?php echo Language::get('hide_profile')?>"><span><?php echo Language::get('show_profile')?></span></a>
+				    			<a href="#info_user_1" id="lnk_user_1" class="infotip" data-rel="<?php echo $LanguageInstance->get('hide_profile')?>"><span><?php echo $LanguageInstance->get('show_profile')?></span></a>
 				    		</div>
 				    		<div id="image_person_a" class="photo" alt="user 1 photo"></div>
 				    		
 				    		<div class="user_info" id="info_user_1">
 					    		<span class="social" title="skype" id="chat_person_a">SkypeUser <span class="icon skype"></span></span>
 				    		</div>
-				    		<a href="#" id="lnk_quit" onclick="desconn();"><?php echo Language::get('quit')?></a>
+				    		<a href="#" id="lnk_quit" onclick="desconn();"><?php echo $LanguageInstance->get('quit')?></a>
 				    	</div>
 				    	<div class="user">
 				    		<div class="details">
 				    			<span class="name" id="name_person_b"></span>
-				    			<a href="#info_user_2" id="lnk_user_2" class="infotip" data-rel="<?php echo Language::get('hide_profile')?>"><span><?php echo Language::get('show_profile')?></span></a>
+				    			<a href="#info_user_2" id="lnk_user_2" class="infotip" data-rel="<?php echo $LanguageInstance->get('hide_profile')?>"><span><?php echo $LanguageInstance->get('show_profile')?></span></a>
 				    		</div>
 				    		<div id="image_person_b" class="photo" alt="user 2 photo"></div>
 				    		<div class="user_info" id="info_user_2">
@@ -726,7 +726,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 	  			<ul id="steps"></ul>
                 
         <div id="timeline" style="display:none;">
- 			<div class="lbl"><?php echo Language::get('task_remaining_time')?></div>
+ 			<div class="lbl"><?php echo $LanguageInstance->get('task_remaining_time')?></div>
 	 		<div class="clock" id="clock"><span class="mm">00</span>:<span class="ss">00</span></div>
  			<div class="linewrap"><div class="line"></div></div>
 	  	</div>
