@@ -1,26 +1,44 @@
 <?php 
 require_once 'constants.php';
 session_start();
-$lang = isset($_SESSION[LANG])?$_SESSION[LANG]:false;
-if (!$lang) {
-	$lang = 'es-ES';
-	$_SESSION[LANG] = $lang;
-}
-require_once dirname(__FILE__).'/../languages/'.$lang.'.php';
 
 class Language {
 
+
+	function &_instance() {
+	    static $instance = null;
+	    if (is_null($instance)) {
+	      $instance = new Language();
+	    }
+
+	    return $instance;
+	}
+
+	function init() {
+
+		$locale = isset($_SESSION[LANG])?$_SESSION[LANG]:false;
+		if (!$locale) {
+			$locale = 'es_ES';
+			$_SESSION[LANG] = $locale;
+		}
+		putenv('LANG=' . $locale);
+
+		setlocale(LC_ALL, $locale);
+
+		bindtextdomain( "messages", "languages" );
+		textdomain("messages");
+
+		$instance = &Language::_instance();
+
+    	return $instance;
+	}
 	/**
 	 * 
 	 * Get the translation
 	 * @param string $string
 	 */
-	public static function get($string) {
-		global $language;		
-		if (isset($language[$string])) {
-			$string = $language[$string];
-		}	
-		return $string;
+	public function get($string) {
+		return gettext($string);
 	}
 	
 	/**
@@ -29,12 +47,8 @@ class Language {
 	* @param string $string
 	* @param string $subs
 	*/
-	public static function getTag($string, $subs) {
-		global $language;
-		if (isset($language[$string])) {
-			$string = $language[$string];
-		}
-		return sprintf($string, $subs);
+	public function getTag($string, $subs) {
+		return sprintf(gettext($string), $subs);
 	}
 	
 	/**
@@ -44,12 +58,9 @@ class Language {
 	* @param string $subs1
 	* @param string $subs2
 	*/
-	public static function getTagDouble($string, $subs1, $subs2) {
-	global $language;
-	if (isset($language[$string])) {
-	$string = $language[$string];
-	}
-	return sprintf($string, $subs1, $subs2);
+	public function getTagDouble($string, $subs1, $subs2) {
+		return sprintf(gettext($string), $subs1, $subs2);
 	}
 }
-?>
+
+$LanguageInstance = Language::init();

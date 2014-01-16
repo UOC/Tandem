@@ -2,175 +2,267 @@
 # This file is distributed under the same license as the Development (trunk) package.
 msgid ""
 msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
 "PO-Revision-Date: 2014-01-15 13:03:52+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/0.1\n"
-"Project-Id-Version: Tandem (trunk)\n"
 
 msgid "welcome"
 msgstr "Welcome"
+
 msgid "no estas autoritzat"
 msgstr "not authorized"
+
 msgid "back"
 msgstr "back"
+
 msgid "txtOtherUserConn"
 msgstr "You are now connected with your Tandem partner."
+
 msgid "txtWaiting4User"
 msgstr "Waiting Tandem connection.."
+
 msgid "no_users_in_course"
 msgstr "No users in this course"
+
 msgid "txtTheUser"
 msgstr "<b>Partner ("
+
 msgid "txtReplied"
 msgstr ") has replied. Waiting for confirmation</b>"
+
 msgid "refresh"
 msgstr "Update Users"
+
 msgid "user_in_tandem"
 msgstr "Your partner is not reachable, try it later"
+
 msgid "show_tandem"
 msgstr "Show Tandems"
+
 msgid "txtDesconnected"
 msgstr "Desconnection"
+
 msgid "select_user"
 msgstr "Select user"
+
 msgid "select_users"
 msgstr "Select user"
+
 msgid "tandems"
 msgstr "Tandems"
+
 msgid "no_tandems"
 msgstr "There are not tandems for this user"
+
 msgid "date"
 msgstr "Date"
+
 msgid "points"
 msgstr "Points"
+
 msgid "user_host"
 msgstr "Host User"
+
 msgid "user"
 msgstr "User"
+
 msgid "user_guest"
 msgstr "Guest User"
+
 msgid "date_guest_user_logged"
 msgstr "Date Logged Other User"
+
 msgid "finalized"
 msgstr "Date Finalized"
+
 msgid "total_time"
 msgstr "Total Minutes"
+
 msgid "start"
 msgstr "Start!"
+
 msgid "accept"
 msgstr "Accept"
+
 msgid "select_exercise"
 msgstr "Select Exercise"
+
 msgid "tandem_description_1"
-msgstr "Welcome %s to the Tandem Pilot. This tool works with Google Chrome, Firefox 4 onwards, Safari 5."
+msgstr ""
+"Welcome %s to the Tandem Pilot. This tool works with Google Chrome, Firefox "
+"4 onwards, Safari 5."
+
 msgid "tandem_description_2"
-msgstr "The Tandem Tool does NOT work with Internet Explorer. We are working on solving this problem."
+msgstr ""
+"The Tandem Tool does NOT work with Internet Explorer. We are working on "
+"solving this problem."
+
 msgid "tandem_logo"
 msgstr "Logo Tandem"
+
 msgid "tandem"
 msgstr "Tandem"
+
 msgid "exercise"
 msgstr "Exercise"
+
 msgid "go"
 msgstr "Go"
+
 msgid "waiting"
 msgstr "Waiting for user..."
+
 msgid "waitingUserX"
 msgstr "Waiting for"
+
 msgid "acceptance"
-msgstr "If your tandem partner does not accept within 1 min, this invitation will expire."
+msgstr ""
+"If your tandem partner does not accept within 1 min, this invitation will "
+"expire."
+
 msgid "direct_access_to_content"
 msgstr "Direct access to content"
+
 msgid "pending_tandems"
 msgstr "Pending Invitations"
+
 msgid "no_pending_tandems"
 msgstr "You do not have pending invitations to Tandem"
+
 msgid "reload_pending"
 msgstr "Reload Pending Tandems"
+
 msgid "tasks_tandems"
 msgstr "Tasks"
+
 msgid "questions_tasks_tandems"
 msgstr "Questions"
+
 msgid "task"
 msgstr "Task"
+
 msgid "question"
 msgstr "Question"
+
 msgid "total_time_seconds"
 msgstr "Total time:&#13 %s minutes&#13 %s seconds"
+
 msgid "start_date"
 msgstr "Start date"
+
 msgid "finish_date"
 msgstr "Finish date"
+
 msgid "finished"
 msgstr "Finished"
+
 msgid "caducado"
 msgstr "Expired"
+
 msgid "all"
 msgstr "All"
+
 msgid "no"
 msgstr "No"
+
 msgid "yes"
 msgstr "Yes"
+
 msgid "no_results_found"
 msgstr "No results found"
+
 msgid "play_as_user_host"
 msgstr "Play as user host"
+
 msgid "play_as_user_guest"
 msgstr "Play as user guest"
+
 msgid "play"
 msgstr "Play"
+
 msgid "just_been_invited"
-msgstr "You have been invited to do Tandem with:" 
+msgstr "You have been invited to do Tandem with:"
+
 msgid "user_agent_host"
 msgstr "Host browser info"
+
 msgid "user_agent_guest"
 msgstr "Guest browser info"
+
 msgid "mange_exercises_tandem"
 msgstr "Manage Exercises"
+
 msgid "choose_zip_file"
 msgstr "Choose a zip file to upload"
+
 msgid "zip_upload_ok"
 msgstr "File %s was uploaded and unpacked."
+
 msgid "error_uploading_file"
 msgstr "There was a problem with the upload. Please try again."
+
 msgid "error_no_zip_format"
-msgstr "The file you are trying to upload is not a .zip file. Please try again."
+msgstr ""
+"The file you are trying to upload is not a .zip file. Please try again."
+
 msgid "error_getting_information_of_exercise"
 msgstr "Exercise not found in data base"
+
 msgid "exercise_name"
 msgstr "Exercise Name"
+
 msgid "name_xml_file"
 msgstr "Xml Name"
+
 msgid "enabled"
 msgstr "Enabled"
+
 msgid "delete"
 msgstr "Delete"
+
 msgid "show_profile"
 msgstr "show profile"
+
 msgid "hide_profile"
 msgstr "hide profile"
+
 msgid "quit"
 msgstr "Quit"
+
 msgid "task_remaining_time"
 msgstr "Tiempo Restante de la Tarea"
+
 msgid "overrides_xml_file"
 msgstr "Overrides the XML file if it has the same name"
+
 msgid "file_exercise_xml_aready_exists"
-msgstr "File %s exists, are you sure you want to overwrite? To do this select \"Overwrite to Yes\""
+msgstr ""
+"File %s exists, are you sure you want to overwrite? To do this select "
+"\"Overwrite to Yes\""
+
 msgid "update"
 msgstr "Update"
+
 msgid "upload"
 msgstr "Upload"
+
 msgid "error_choose_file"
 msgstr "You must select a ZIP file to upload"
+
 msgid "exercise_deleted_ok"
 msgstr "Exercise was successfully removed"
+
 msgid "error_delete_exercise"
-msgstr "Error deleting the selected exercise, verify that the file exists and has the correct permissions"
+msgstr ""
+"Error deleting the selected exercise, verify that the file exists and has "
+"the correct permissions"
+
 msgid "main_xml_file_not_found"
 msgstr "Unable to process the file because can not find main XML file"
+
 msgid "no_exercises_found"
 msgstr "Not exercises available, teacher has to configure it"

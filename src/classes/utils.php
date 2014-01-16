@@ -79,16 +79,16 @@ function lti_get_lang($context) {
 	switch ($custom_lang_id)
 	{
 		case "a":
-			$lang="ca-ES";
+			$lang="ca_ES";
 			break;
 		case "b":
-			$lang="es-ES";
+			$lang="es_ES";
 			break;
 		case "d":
-			$lang="fr-FR";
+			$lang="fr_FR";
 			break;
 		default:
-			$lang="en-US";
+			$lang="en_US";
 	}
 	return $lang;
 }
