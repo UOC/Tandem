@@ -26,8 +26,8 @@ require_once dirname(__FILE__).'/classes/lang.php';
 <body id="home" style="background-color:#FFFFFF;">
 <img id="home" src="images/Tandem-Speakapps_01.gif" alt="" />
 <br /><br />
-<p style="text-align:center;"><?php echo Language::get('waitingUserX');?><?php echo " <b>".$_GET["fn"]." ".$_GET["sn"]."</b>";?></p>
-<p style="text-align:center;"><?php echo Language::get('acceptance');?><br/>
+<p style="text-align:center;"><?php echo $LanguageInstance->get('waitingUserX');?><?php echo " <b>".$_GET["fn"]." ".$_GET["sn"]."</b>";?></p>
+<p style="text-align:center;"><?php echo $LanguageInstance->get('acceptance');?><br/>
 <h4 style="text-align:center;"><span id="startNowBtn"></span></h4></p>
 
 </body>
