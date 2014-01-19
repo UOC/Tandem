@@ -106,6 +106,7 @@ if (!$user_obj || !$course_id) {
 <script src="js/jquery.ui.position.js"></script>
 <script src="js/jquery.ui.autocomplete.js"></script>
 <script src="js/jquery.colorbox-min.js"></script>
+<script src="js/common.js"></script>
 <?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
 <script type="text/javascript">
 
@@ -437,7 +438,7 @@ if (!$user_obj || !$course_id) {
 					     $("#info-block").show();
 					     //10092012 nfinney: restyle Invite message
 					     
-					$("#info-block").append("<div class='block-inside'><i class='icon'><h3><?php echo Language::get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo Language::get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo Language::get('accept');?></a></div>");
+					$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo Language::get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo Language::get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo Language::get('accept');?></a></div>");
 					setExpiredNow(60);
 					
 					
@@ -459,7 +460,7 @@ if (!$user_obj || !$course_id) {
 			$('#main_form').attr('target', '');
 			if (show=='show') {
 				$('#main_form').attr('action', 'statistics_tandem.php');
-				$('#main_form').attr('target', 'statistics<?php echo rand();?>');
+				//$('#main_form').attr('target', 'statistics<?php echo rand();?>');
 			} else {
 				if (show=='exercises') {
 					$('#main_form').attr('action', 'manage_exercises_tandem.php');
@@ -584,10 +585,10 @@ if (!$user_obj || !$course_id) {
 								<table id="statistics1" class="table">
 								<thead>
 									<tr>	
-										<th><?php echo Language::get('user_guest')?></th>
-										<th><?php echo Language::get('exercise')?></th>
-										<th><?php echo Language::get('date')?></th>
-										<th><?php echo Language::get('state')?></th>
+										<th style="width:30%"><?php echo Language::get('user_guest')?></th>
+										<th style="width:25%"><?php echo Language::get('exercise')?></th>
+										<th style="width:25%"><?php echo Language::get('date')?></th>
+										<th style="width:20%"><?php echo Language::get('state')?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -692,9 +693,9 @@ if (!$user_obj || !$course_id) {
 						</div>
 						*/ ?>
 						<div class="clear">
-							<input type="submit" name="reload" onclick="Javscript:canviaAction('');" value="<?php echo Language::get('refresh')?>" />
-							<input type="submit" name="showTandem" onclick="Javscript:canviaAction('show');" value="<?php echo Language::get('show_tandem')?>" />
-							<input type="submit" name="showTandem" onclick="Javscript:canviaAction('exercises');" value="<?php echo Language::get('mange_exercises_tandem')?>" />
+							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo Language::get('refresh')?>" />
+							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo Language::get('show_tandem')?>" />
+							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo Language::get('mange_exercises_tandem')?>" />
 						</div>	
 						<?php } //is instructor ?>  
 						
@@ -732,5 +733,4 @@ if (!$user_obj || !$course_id) {
 	<iframe src="" width="0" frameborder="0" height="0" id="idfrm" name="idfrm" />
 </body>
 </html>
-<?php } 
-?>
+<?php } ?>

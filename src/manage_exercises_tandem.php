@@ -10,6 +10,7 @@ $course_id = $_SESSION[COURSE_ID];
 $course_folder = $_SESSION[TANDEM_COURSE_FOLDER];
 //FIIIII
 $message = false;
+$message_cls = 'alert-error';
 if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_obj->instructor) {
 	//Tornem a l'index
 	header ('Location: index.php');
@@ -76,6 +77,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 					$enabled = 1;
 					$gestorBD->register_tandem_exercise($course_id, -1, $user_obj->id, $name_form, $name_xml_file, $enabled);
 					$message = Language::getTag('zip_upload_ok',$filename);
+					$message_cls = 'alert-info';
 					$exercise_name = '';
 					$exercise_id = -1;
 				}
@@ -103,6 +105,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				if (file_exists($target_path_file)) {
 					unlink($target_path_file);
 					$message = Language::get('exercise_deleted_ok');
+					$message_cls = 'alert-info';
 				} else {
 					$message = Language::get('error_delete_exercise');
 				}
@@ -144,6 +147,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 <script src="js/jquery.ui.autocomplete.js"></script>
 <script src="js/jquery.ui.datepicker.js"></script>
 <script src="js/jquery.colorbox-min.js"></script>
+<script src="js/common.js"></script>
 <?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
 </head>
 <body>
@@ -162,56 +166,117 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 	<div id="wrapper">
 		<!-- main-container -->
   		<div id="main-container">
+  			<?php if($message) echo '<div class="alert '.$message_cls.'" style="margin-bottom:0"><button type="button" class="close" aria-hidden="true">&#215;</button>'.$message.'</div>'; ?>
   			<!-- main -->
 			<div id="main">
 				<!-- content -->
-				<?php if($message) echo '<div class="info">'.$message.'</div>'; ?>
+
+				<?php /* if($message) echo '<div class="info">'.$message.'</div>'; */ ?>
 				<div id="content">
+					<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo Language::get('back')?></a>
 					<div id="logo">
 						<a href="#" title="<?php echo Language::get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo Language::get('tandem_logo')?>" /></a>
 					</div>
-				<h4><a href="selectUserAndRoom.php">&larr;&nbsp;<?php echo Language::get('back')?></a></h4>
-				<h1><?php echo Language::get('mange_exercises_tandem')?></h1>
-				<form enctype="multipart/form-data" method="post" action="">
-					<p><label><?php echo Language::get('exercise_name')?>: <input type="text" name="name" value="<?php echo $exercise_name ?>"/></label></p>
-					<p><label><?php echo Language::get('choose_zip_file')?>: <input type="file" name="zip_file" /> Max. <?php echo $upload_mb; ?> MB</label></p>
-					<p><label><?php echo Language::get('overrides_xml_file')?>: <select name="overrides_xml_file" ><option value="0"><?php echo Language::get('no')?></option><option value="1" <?php echo $exercise_id>0?'selected="selected"':''?>><?php echo Language::get('yes')?></option></select> </label></p>
-					<input type="submit" name="submit" value="<?php echo Language::get('upload')?>" />
-					<input type="hidden" name="id" value="<?php echo $exercise_id ?>" />
-					</form>
-					<div class="clear">&nbsp;</div>
-					<?php if ($array_exercises && count($array_exercises)>0) {?>
-					<div id="tableContainer" class="tableContainer">
-						<table  class="scrollTable">
-						<thead class="fixedHeader">
-							<tr>
-								<th><?php echo Language::get('exercise_name')?></th>
-								<th><?php echo Language::get('name_xml_file')?></th>
-								<th><?php echo Language::get('enabled')?></th>
-								<th>&nbsp;</th>
-								<th>&nbsp;</th>
-							</tr>
-						</thead>
-						<tbody class="scrollContent">
-							<?php $i=0;
-							foreach ($array_exercises as $exercise) {?>
-							<tr class="<?php echo $i%2==0?'normalRow':'alternateRow'?>">
-								<td><?php echo $exercise['name']?></td>
-								<td><?php echo $exercise['name_xml_file']?></td>
-								<td><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo Language::get($exercise['enabled']=='1'?'yes':'no')?></a></td>
-								<td><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>"><?php echo Language::get('update')?></a></td>
-								<td><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>"><?php echo Language::get('delete')?></a></td>
-							</tr>
-							<?php 
-							$i++;
-							}?>
-						 </tbody> 
-						</table>
+					
+					<div class="clear">
+
+						<h1 class="main-title"><?php echo Language::get('mange_exercises_tandem')?></h1>
+
+						<?php  if ($exercise_id == -1 ) { ?>
+						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span>New Exercise</span></a>
+						<?php }else{ ?>
+						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span>New Exercise</span></a>
+						<a href="#" class="tandem-btn btn-exercise open" id="btn-edit-exercise"><i class="icon"></i><span>Edit Exercise: <em><?php echo $exercise_name ?></em></span></a>
+						<?php } ?>
+
+						<form id="frm-new-exercise" enctype="multipart/form-data" method="post" action="" style="display:none">
+							<div class="frm-group">
+								<label class="frm-label"><?php echo Language::get('exercise_name')?>:</label> 
+								<input type="text" name="name" value="" />
+							</div>
+							<div class="frm-group">
+								<label  class="frm-label" data-title-file="<?php echo Language::get('choose_zip_file')?>:" data-title-none="Nombre del Archivo:"><?php echo Language::get('choose_zip_file')?>:</label> 
+								<span class="attach-input">
+									<input type="text" value="" class="attach-input-text" placeholder="Ningun archivo seleccionado" />
+									<span class="attach-input-btn">
+										<i class="icon"></i>
+					                    <span aria-hidden="true">Adjuntar un archivo</span>
+					                    <input type="file" name="zip_file" class="attach-input-file" />
+					                </span>
+					                <span class="attach-input-help">Max. <?php echo $upload_mb; ?> MB</span>
+					            </span>
+							</div>
+							<div class="frm-foot">
+								<input type="hidden" name="id" value="-1" />
+								<input type="hidden" name="overrides_xml_file" value="1" />
+								<input type="submit" name="submit" value="<?php echo Language::get('upload')?>" />
+							</div>
+						</form>
+
+						<?php if ($exercise_id != -1 ) { ?>
+						<form id="frm-edit-exercise" enctype="multipart/form-data" method="post" action="" style="display:block">
+							<div class="frm-group">
+								<label  class="frm-label"><?php echo Language::get('exercise_name')?>:</label> 
+								<input type="text" name="name" value="<?php echo $exercise_name ?>" />
+							</div>
+							<div class="frm-group">
+								<label  class="frm-label" data-title-file="<?php echo Language::get('choose_zip_file')?>:" data-title-none="Nombre del Archivo:"><?php echo Language::get('choose_zip_file')?>:</label> 
+								<span class="attach-input">
+									<input type="text" value="" class="attach-input-text" placeholder="Ningun archivo seleccionado" />
+									<span class="attach-input-btn">
+										<i class="icon"></i>
+					                    <span aria-hidden="true">Adjuntar un archivo</span>
+					                    <input type="file" name="zip_file" class="attach-input-file" />
+					                </span>
+					                <span class="attach-input-help">Max. <?php echo $upload_mb; ?> MB</span>
+					            </span>
+							</div>
+							<div class="frm-foot">
+								<input type="hidden" name="id" value="<?php echo $exercise_id ?>" />
+								<input type="hidden" name="overrides_xml_file" value="1" />
+								<input type="submit" name="submit" value="<?php echo Language::get('upload')?>" />
+							</div>
+						</form>
+						<?php } ?>
+						
+						<div class="manage-area">
+							<h3 class="secundary-title">Exercise List</h3>
+							<?php if ($array_exercises && count($array_exercises)>0) {?>
+							<!--<div id="tableContainer" class="tableContainer">-->
+							<table  class="table">
+								<thead>
+									<tr>
+										<th><?php echo Language::get('exercise_name')?></th>
+										<th><?php echo Language::get('name_xml_file')?></th>
+										<th class="center"><?php echo Language::get('enabled')?></th>
+										<th class="center"><?php echo Language::get('update')?></th>
+										<th class="center"><?php echo Language::get('delete')?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php $i=0;
+									foreach ($array_exercises as $exercise) {?>
+									<tr class="<?php echo $i%2==0?'normalRow':'alternateRow'?>">
+										<td><?php echo $exercise['name']?></td>
+										<td><?php echo $exercise['name_xml_file']?></td>
+										<td class="center"><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo Language::get($exercise['enabled']=='1'?'yes':'no')?></a></td>
+										<td class="center"><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>" class="lnk-btn-edit" title="<?php echo Language::get('update')?>"><span class="visually-hidden"><?php echo Language::get('update')?></span></a></td>
+										<td class="center"><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>" class="lnk-btn-trash" title="<?php echo Language::get('delete')?>"><span class="visually-hidden"><?php echo Language::get('delete')?></span></a></td>
+									</tr>
+									<?php 
+									$i++;
+									}?>
+								 </tbody> 
+							</table>
+
+							<!--</div>-->
+							<?php } else {?>
+								<div class="message">
+									<p><strong><?php echo Language::get('no_results_found')?></strong></p>
+								</div>
+							<?php }?>
+						</div>
 					</div>
-					<?php } else {?>
-						<p class="error"><?php echo Language::get('no_results_found')?></p>
-					<?php }?>
-			
 					
 				</div>
 				<!-- /content -->
