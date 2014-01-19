@@ -106,6 +106,7 @@ if (!$user_obj || !$course_id) {
 <script src="js/jquery.ui.position.js"></script>
 <script src="js/jquery.ui.autocomplete.js"></script>
 <script src="js/jquery.colorbox-min.js"></script>
+<script src="js/common.js"></script>
 <?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
 <script type="text/javascript">
 
@@ -191,7 +192,7 @@ if (!$user_obj || !$course_id) {
 						}
 					}
 				})
-				.addClass( "ui-widget ui-widget-content ui-corner-left" );
+				.addClass( "ui-widget ui-widget-content" );
 
 			 // MODIFICATION - bind to the input's focus
 	        input.focus(function(event) {
@@ -219,7 +220,7 @@ if (!$user_obj || !$course_id) {
 					text: false
 				})
 				.removeClass( "ui-corner-all" )
-				.addClass( "ui-corner-right ui-button-icon" )
+				.addClass( " ui-button-icon" )
 				.click(function() {
 					// close if already visible
 					if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
@@ -434,17 +435,17 @@ if (!$user_obj || !$course_id) {
 					     var created_txt = $(xml).find('created').text();
 					     var nameuser_txt = $(xml).find('nameuser').text();
 					     var exercise_txt = $(xml).find('exercise').text();
-					     $("div.info").show();
+					     $("#info-block").show();
 					     //10092012 nfinney: restyle Invite message
 					     
-					$("div.info").append("<div style='float:left;width:70%'><h4><?php echo Language::get('just_been_invited');?> "+nameuser_txt+" <?php echo Language::get('exercise');?>: "+exercise_txt+" </h4></div><div style='float:right;width:20%'><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo Language::get('accept');?></a></div><div style='clear:both'></div>");
+					$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo Language::get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo Language::get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo Language::get('accept');?></a></div>");
 					setExpiredNow(60);
 					
 					
 					     //END 10092012
-					     //$("div.info").append("Created: "+created_txt+"");
-					     //$("div.info").append("Name: "+nameuser_txt);
-					     //$("div.info").append("Exercise: "+exercise_txt);
+					     //$("#info-block").append("Created: "+created_txt+"");
+					     //$("#info-block").append("Name: "+nameuser_txt);
+					     //$("#info-block").append("Exercise: "+exercise_txt);
 					     clearInterval(intervalCheck);
 				  	}
 
@@ -459,7 +460,7 @@ if (!$user_obj || !$course_id) {
 			$('#main_form').attr('target', '');
 			if (show=='show') {
 				$('#main_form').attr('action', 'statistics_tandem.php');
-				$('#main_form').attr('target', 'statistics<?php echo rand();?>');
+				//$('#main_form').attr('target', 'statistics<?php echo rand();?>');
 			} else {
 				if (show=='exercises') {
 					$('#main_form').attr('action', 'manage_exercises_tandem.php');
@@ -516,7 +517,7 @@ if (!$user_obj || !$course_id) {
 			<div id="main">
 				<!-- content -->
 				<div id="content">
-					<span style="font-size: 18px; color: #575759"><?php echo Language::get('welcome')?> <?php echo $name ?>!</span><br/>
+					<span class="welcome"><?php echo Language::get('welcome')?> <?php echo $name ?>!</span><br/>
 					<form action="#" method="post" id="main_form" class="login_form">
 						<?php if ($array_exercises!==false &&
 						 is_array($array_exercises) &&
@@ -562,128 +563,149 @@ if (!$user_obj || !$course_id) {
 									<input type="button" onclick="Javascript:putLink();" id="start" name="start" disabled="disabled" value="<?php echo Language::get('start')?>" class="tandem-btn" tabindex="3" />
 								</fieldset>
 						<?php } else {
-							echo '<div class="info">'.Language::get('no_exercises_found').'</div>';
+							echo '<div class="alert alert-waring">'.Language::get('no_exercises_found').'</div>';
 						} ?>
+						<div class="manage-area">
 						<div class="clear">
-						<div class="info" style="display:none"></div> <!-- 10092012 nfinney> type error: changed to 'none' from 'hidden' -->
-						<?php if (!$pending_invitations){?>
-							<p><?php echo Language::get('no_pending_tandems')?></p>
-						<?php } else { ?>
-							<div class="title" style="margin: 0 0 5px 0;"><span style="font-size:24px;color:#575759;"><?php echo Language::get('pending_tandems')?></span><span style="position:relative; top: -3px; left: 10px"><a href="selectUserAndRoom.php">[<?php echo Language::get('reload_pending')?>]</a></span></div>
-							<table id="statistics1">
-								<tr>
-									
-									<th><?php echo Language::get('user_guest')?></th>
-									<th><?php echo Language::get('exercise')?></th>
-									<th><?php echo Language::get('date')?></th>
-									<th></th>
-								</tr>
-							<?php 
-							$ai=0;
-							foreach ($pending_invitations as $tandem) {
-							$ai++;
-							?>
-								<tr>
-									
-									<td><?php echo $tandem['surname'].', '.$tandem['firstname']?></td>
-									<td><?php echo $tandem['name']?></td>
-									<td><?php echo $tandem['created']?></td>
-									
-									<?php
-									$time2Expire=60;
-									if( (time() - strtotime($tandem['created']))>=$time2Expire){
-									?> 
-									<td><a href="#" title="<?php echo Language::get('go')?>" class="tandem-btnout"><?php echo Language::get('caducado')?></a></td>
-									<?php }else{ ?>
-										<script>
-											setExpired(<?php echo $time2Expire;?>);
-											var intTimer;
-											function setExpired(i){
-												intTimer = setTimeout("getTime("+i+");", 1000);
-											}
-											function getTime(i){
-												//var t;
-												//i--;
-												//if(i<10) t ="0"+i;
-												//else t = i;
-												for(var iT=0;iT<=<?php echo $ai;?>;iT++){
-													//$("#timer2expired"+iT).html("<?php echo Language::get('accept')?> 00:"+t);
-													
-													//if(i<=1 || isNowOn==1){ 
-														$("#timer2expired"+iT).removeClass("tandem-btn").addClass("tandem-btnout");
-														$("#timer2expired"+iT).html("<?php echo Language::get('caducado')?>");
-														$("#timer2expired"+iT).attr("href", "#")
-														clearInterval(intTimer);
-													//}
-													//else setExpired(i);
-												}
-											}
-										</script>
-									<td><a id="timer2expired<?php echo $ai;?>" href="accessTandem.php?id=<?php echo $tandem['id']?>" title="<?php echo Language::get('go')?>" class="tandem-btn"><?php echo Language::get('accept')?></a></td>
-									
-									<?php
-										}
-									?>
-									
-								</tr>
-							<?php }?>
-							</table>
-						 <?php }?>	
-						</div>
-						<div class="clear">
-						<p><!--<a href="selectUserAndRoom.php"><?php echo Language::get('reload_pending')?></a>--></p>
-						</div>
-					<?php if ($user_obj->instructor) { ?>
-					<div class="clear">
-					<?php 
-						/*if ($is_showTandem) {
-							if ($user_selected==0) {?>
-								<p class="error"><?php echo Language::get('select_user')?></p>
-							<?php 
-							} else {
-								if ($user_tandems==null || count($user_tandems)==0) {
+							<div id="info-block" class="alert alert-info" style="display:none"></div>
+							<!--<div class="info" style="display:none"></div>--> <!-- 10092012 nfinney> type error: changed to 'none' from 'hidden' -->
+							<?php if (!$pending_invitations){?>
+								<div class="title">
+									<h2><?php echo Language::get('pending_tandems')?></h2>
+								</div>
+								<div class="message">
+									<p><strong><?php echo Language::get('no_pending_tandems')?></strong></p>
+								</div>
+							<?php } else { ?>
+								<div class="title">
+									<h2><?php echo Language::get('pending_tandems')?></h2>
+									<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-reload"><i class="icon"></i><?php echo Language::get('reload_pending')?></a>
+								</div>
+								
+								<table id="statistics1" class="table">
+								<thead>
+									<tr>	
+										<th style="width:30%"><?php echo Language::get('user_guest')?></th>
+										<th style="width:25%"><?php echo Language::get('exercise')?></th>
+										<th style="width:25%"><?php echo Language::get('date')?></th>
+										<th style="width:20%"><?php echo Language::get('state')?></th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php 
+								$ai=0;
+								foreach ($pending_invitations as $tandem) {
+								$ai++;
 								?>
-									<?php echo Language::get('no_tandems')?>
-								<?php 	
-								} else { 
-									?>
-										<div class="title"><?php echo Language::get('tandems')?></div>
-										<table>
-											<tr>
-												<th><?php echo Language::get('date')?></th>
-												<th><?php echo Language::get('total_time')?></th>
-												<th><?php echo Language::get('user_guest')?></th>
-												<th><?php echo Language::get('date_guest_user_logged')?></th>
-												<th><?php echo Language::get('finalized')?></th>
-											</tr>
-										<?php 
-										foreach ($user_tandems as $tandem) {
+									<tr>
+										
+										<td><?php echo $tandem['surname'].', '.$tandem['firstname']?></td>
+										<td><?php echo $tandem['name']?></td>
+										<td><?php echo $tandem['created']?></td>
+										
+										<?php
+										$time2Expire=60;
+										if( (time() - strtotime($tandem['created']))>=$time2Expire){
+										?> 
+										<td><a href="#" title="<?php echo Language::get('go')?>" class="tandem-btnout"><?php echo Language::get('caducado')?></a></td>
+										<?php }else{ ?>
+											<script>
+												setExpired(<?php echo $time2Expire;?>);
+												var intTimer;
+												function setExpired(i){
+													intTimer = setTimeout("getTime("+i+");", 1000);
+												}
+												function getTime(i){
+													//var t;
+													//i--;
+													//if(i<10) t ="0"+i;
+													//else t = i;
+													for(var iT=0;iT<=<?php echo $ai;?>;iT++){
+														//$("#timer2expired"+iT).html("<?php echo Language::get('accept')?> 00:"+t);
+														
+														//if(i<=1 || isNowOn==1){ 
+															$("#timer2expired"+iT).removeClass("tandem-btn").addClass("tandem-btnout");
+															$("#timer2expired"+iT).html("<?php echo Language::get('caducado')?>");
+															$("#timer2expired"+iT).attr("href", "#")
+															clearInterval(intTimer);
+														//}
+														//else setExpired(i);
+													}
+												}
+											</script>
+										<td><a id="timer2expired<?php echo $ai;?>" href="accessTandem.php?id=<?php echo $tandem['id']?>" title="<?php echo Language::get('go')?>" class="tandem-btn"><?php echo Language::get('accept')?></a></td>
+										
+										<?php
+											}
 										?>
-											<tr>
-												<td><a href="statistics_tandem.php?id=<?php echo $tandem['id']?>" title="<?php echo Language::get('go')?>"><?php echo $tandem['created']?></a></td>
-												<td><?php echo isset($tandem['total_time'])?$tandem['total_time']:0?></td>
-												<td><?php echo $tandem['other_user']?></td>
-												<td><?php echo $tandem['date_guest_user_logged']?></td>
-												<td><?php echo $tandem['finalized']?></td>
-											</tr>
-										<?php }?>
-										</table>
-										<div class="clear" >&nbsp;</div>
-						<?php  		}	
-								}
-						}*/?>
-					</div>
+										
+									</tr>
+								<?php }?>
+								</tbody>
+								</table>
+						 	<?php } ?>	
+						</div>
+						<?php /*
 						<div class="clear">
-							<input type="submit" name="reload" onclick="Javscript:canviaAction('');" value="<?php echo Language::get('refresh')?>" />
-							<input type="submit" name="showTandem" onclick="Javscript:canviaAction('show');" value="<?php echo Language::get('show_tandem')?>" />
-							<input type="submit" name="showTandem" onclick="Javscript:canviaAction('exercises');" value="<?php echo Language::get('mange_exercises_tandem')?>" />
+						<p><a href="selectUserAndRoom.php"><?php echo Language::get('reload_pending')?></a></p>
+						</div> 
+						*/ ?>
+						<?php if ($user_obj->instructor) { ?>
+						<?php /*
+						<div class="clear">
+						
+							if ($is_showTandem) {
+								if ($user_selected==0) {?>
+									<p class="error"><?php echo Language::get('select_user')?></p>
+								<?php 
+								} else {
+									if ($user_tandems==null || count($user_tandems)==0) {
+									?>
+										<?php echo Language::get('no_tandems')?>
+									<?php 	
+									} else { 
+										?>
+											<div class="title"><?php echo Language::get('tandems')?></div>
+											<table>
+												<tr>
+													<th><?php echo Language::get('date')?></th>
+													<th><?php echo Language::get('total_time')?></th>
+													<th><?php echo Language::get('user_guest')?></th>
+													<th><?php echo Language::get('date_guest_user_logged')?></th>
+													<th><?php echo Language::get('finalized')?></th>
+												</tr>
+											<?php 
+											foreach ($user_tandems as $tandem) {
+											?>
+												<tr>
+													<td><a href="statistics_tandem.php?id=<?php echo $tandem['id']?>" title="<?php echo Language::get('go')?>"><?php echo $tandem['created']?></a></td>
+													<td><?php echo isset($tandem['total_time'])?$tandem['total_time']:0?></td>
+													<td><?php echo $tandem['other_user']?></td>
+													<td><?php echo $tandem['date_guest_user_logged']?></td>
+													<td><?php echo $tandem['finalized']?></td>
+												</tr>
+											<?php }?>
+											</table>
+											<div class="clear" >&nbsp;</div>
+							<?php  		}	
+									}
+							}
+						</div>
+						*/ ?>
+						<div class="clear">
+							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo Language::get('refresh')?>" />
+							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo Language::get('show_tandem')?>" />
+							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo Language::get('mange_exercises_tandem')?>" />
 						</div>	
-					<?php } //is instructor ?>  
+						<?php } //is instructor ?>  
+						
 						<div class="clear">
-						    <p><?php /*echo Language::getTag('tandem_description_1','<strong>'.$name.'</strong>') */ ?> <!--10082012: nfinney> finney> replaced with popup on IE detection--><br/>
-							<?php /* echo Language::get('tandem_description_2') */ ?></p>
+							<?php /* <p>echo Language::getTag('tandem_description_1','<strong>'.$name.'</strong>') <!--10082012: nfinney> finney> replaced with popup on IE detection--><br/>
+							<?php echo Language::get('tandem_description_2');</p> */ ?>
 							<p id="roomStatus"></p>
 						</div>
+						
+						</div> <!-- /manage-area -->
 					</form>
 					<div id="logo">
 						<a href="#" title="<?php echo Language::get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo Language::get('tandem_logo')?>" /></a>
@@ -711,5 +733,4 @@ if (!$user_obj || !$course_id) {
 	<iframe src="" width="0" frameborder="0" height="0" id="idfrm" name="idfrm" />
 </body>
 </html>
-<?php } 
-?>
+<?php } ?>
