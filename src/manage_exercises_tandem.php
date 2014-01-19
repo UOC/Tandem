@@ -173,34 +173,34 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 
 				<?php /* if($message) echo '<div class="info">'.$message.'</div>'; */ ?>
 				<div id="content">
-					<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo Language::get('back')?></a>
+					<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
 					<div id="logo">
 						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
 					</div>
 					
 					<div class="clear">
 
-						<h1 class="main-title"><?php echo Language::get('mange_exercises_tandem')?></h1>
+						<h1 class="main-title"><?php echo $LanguageInstance->get('mange_exercises_tandem')?></h1>
 
 						<?php  if ($exercise_id == -1 ) { ?>
-						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span>New Exercise</span></a>
+						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('new_exercise')?></span></a>
 						<?php }else{ ?>
-						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span>New Exercise</span></a>
-						<a href="#" class="tandem-btn btn-exercise open" id="btn-edit-exercise"><i class="icon"></i><span>Edit Exercise: <em><?php echo $exercise_name ?></em></span></a>
+						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('new_exercise')?></span></a>
+						<a href="#" class="tandem-btn btn-exercise open" id="btn-edit-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('edit_exercise')?>: <em><?php echo $exercise_name ?></em></span></a>
 						<?php } ?>
 
 						<form id="frm-new-exercise" enctype="multipart/form-data" method="post" action="" style="display:none">
 							<div class="frm-group">
-								<label class="frm-label"><?php echo Language::get('exercise_name')?>:</label> 
+								<label class="frm-label"><?php echo $LanguageInstance->get('exercise_name')?>:</label> 
 								<input type="text" name="name" value="" />
 							</div>
 							<div class="frm-group">
-								<label  class="frm-label" data-title-file="<?php echo Language::get('choose_zip_file')?>:" data-title-none="Nombre del Archivo:"><?php echo Language::get('choose_zip_file')?>:</label> 
+								<label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('choose_zip_file')?>:" data-title-none="<?php echo $LanguageInstance->get('file_name')?>:"><?php echo $LanguageInstance->get('choose_zip_file')?>:</label> 
 								<span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="Ningun archivo seleccionado" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('none_file_selected')?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
-					                    <span aria-hidden="true">Adjuntar un archivo</span>
+					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
 					                    <input type="file" name="zip_file" class="attach-input-file" />
 					                </span>
 					                <span class="attach-input-help">Max. <?php echo $upload_mb; ?> MB</span>
@@ -209,23 +209,23 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 							<div class="frm-foot">
 								<input type="hidden" name="id" value="-1" />
 								<input type="hidden" name="overrides_xml_file" value="1" />
-								<input type="submit" name="submit" value="<?php echo Language::get('upload')?>" />
+								<input type="submit" name="submit" value="<?php echo $LanguageInstance->get('upload')?>" />
 							</div>
 						</form>
 
 						<?php if ($exercise_id != -1 ) { ?>
 						<form id="frm-edit-exercise" enctype="multipart/form-data" method="post" action="" style="display:block">
 							<div class="frm-group">
-								<label  class="frm-label"><?php echo Language::get('exercise_name')?>:</label> 
+								<label  class="frm-label"><?php echo $LanguageInstance->get('exercise_name')?>:</label> 
 								<input type="text" name="name" value="<?php echo $exercise_name ?>" />
 							</div>
 							<div class="frm-group">
-								<label  class="frm-label" data-title-file="<?php echo Language::get('choose_zip_file')?>:" data-title-none="Nombre del Archivo:"><?php echo Language::get('choose_zip_file')?>:</label> 
+								<label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('choose_zip_file')?>:" data-title-none="<?php echo $LanguageInstance->get('file_name')?>:"><?php echo $LanguageInstance->get('choose_zip_file')?>:</label> 
 								<span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="Ningun archivo seleccionado" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('none_file_selected')?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
-					                    <span aria-hidden="true">Adjuntar un archivo</span>
+					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
 					                    <input type="file" name="zip_file" class="attach-input-file" />
 					                </span>
 					                <span class="attach-input-help">Max. <?php echo $upload_mb; ?> MB</span>
@@ -234,23 +234,23 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 							<div class="frm-foot">
 								<input type="hidden" name="id" value="<?php echo $exercise_id ?>" />
 								<input type="hidden" name="overrides_xml_file" value="1" />
-								<input type="submit" name="submit" value="<?php echo Language::get('upload')?>" />
+								<input type="submit" name="submit" value="<?php echo $LanguageInstance->get('upload')?>" />
 							</div>
 						</form>
 						<?php } ?>
 						
 						<div class="manage-area">
-							<h3 class="secundary-title">Exercise List</h3>
+							<h3 class="secundary-title"><?php echo $LanguageInstance->get('exercise_list')?></h3>
 							<?php if ($array_exercises && count($array_exercises)>0) {?>
 							<!--<div id="tableContainer" class="tableContainer">-->
 							<table  class="table">
 								<thead>
 									<tr>
-								<th><?php echo $LanguageInstance->get('exercise_name')?></th>
-								<th><?php echo $LanguageInstance->get('name_xml_file')?></th>
-								<th><?php echo $LanguageInstance->get('enabled')?></th>
-										<th class="center"><?php echo Language::get('update')?></th>
-										<th class="center"><?php echo Language::get('delete')?></th>
+										<th><?php echo $LanguageInstance->get('exercise_name')?></th>
+										<th><?php echo $LanguageInstance->get('name_xml_file')?></th>
+										<th class="center"><?php echo $LanguageInstance->get('enabled')?></th>
+										<th class="center"><?php echo $LanguageInstance->get('update')?></th>
+										<th class="center"><?php echo $LanguageInstance->get('delete')?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -260,8 +260,8 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 										<td><?php echo $exercise['name']?></td>
 										<td><?php echo $exercise['name_xml_file']?></td>
 										<td class="center"><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo Language::get($exercise['enabled']=='1'?'yes':'no')?></a></td>
-										<td class="center"><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>" class="lnk-btn-edit" title="<?php echo Language::get('update')?>"><span class="visually-hidden"><?php echo Language::get('update')?></span></a></td>
-										<td class="center"><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>" class="lnk-btn-trash" title="<?php echo Language::get('delete')?>"><span class="visually-hidden"><?php echo Language::get('delete')?></span></a></td>
+										<td class="center"><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>" class="lnk-btn-edit" title="<?php echo $LanguageInstance->get('update')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('update')?></span></a></td>
+										<td class="center"><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>" class="lnk-btn-trash" title="<?php echo $LanguageInstance->get('delete')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('delete')?></span></a></td>
 									</tr>
 									<?php 
 									$i++;
@@ -272,7 +272,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 							<!--</div>-->
 							<?php } else {?>
 								<div class="message">
-									<p><strong><?php echo Language::get('no_results_found')?></strong></p>
+									<p><strong><?php echo $LanguageInstance->get('no_results_found')?></strong></p>
 								</div>
 							<?php }?>
 						</div>

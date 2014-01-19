@@ -438,7 +438,7 @@ if (!$user_obj || !$course_id) {
 					     $("#info-block").show();
 					     //10092012 nfinney: restyle Invite message
 					     
-					$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo Language::get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo Language::get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo Language::get('accept');?></a></div>");
+					$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo $LanguageInstance->get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo $LanguageInstance->get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo $LanguageInstance->get('accept');?></a></div>");
 					setExpiredNow(60);
 					
 					
@@ -460,7 +460,7 @@ if (!$user_obj || !$course_id) {
 			$('#main_form').attr('target', '');
 			if (show=='show') {
 				$('#main_form').attr('action', 'statistics_tandem.php');
-				//$('#main_form').attr('target', 'statistics<?php echo rand();?>');
+				$('#main_form').attr('target', 'statistics<?php echo rand();?>');
 			} else {
 				if (show=='exercises') {
 					$('#main_form').attr('action', 'manage_exercises_tandem.php');
@@ -517,7 +517,7 @@ if (!$user_obj || !$course_id) {
 			<div id="main">
 				<!-- content -->
 				<div id="content">
-					<span class="welcome"><?php echo Language::get('welcome')?> <?php echo $name ?>!</span><br/>
+					<span class="welcome"><?php echo $LanguageInstance->get('welcome')?> <?php echo $name ?>!</span><br/>
 					<form action="#" method="post" id="main_form" class="login_form">
 						<?php if ($array_exercises!==false &&
 						 is_array($array_exercises) &&
@@ -571,24 +571,24 @@ if (!$user_obj || !$course_id) {
 							<!--<div class="info" style="display:none"></div>--> <!-- 10092012 nfinney> type error: changed to 'none' from 'hidden' -->
 							<?php if (!$pending_invitations){?>
 								<div class="title">
-									<h2><?php echo Language::get('pending_tandems')?></h2>
+									<h2><?php echo $LanguageInstance->get('pending_tandems')?></h2>
 								</div>
 								<div class="message">
-									<p><strong><?php echo Language::get('no_pending_tandems')?></strong></p>
+									<p><strong><?php echo $LanguageInstance->get('no_pending_tandems')?></strong></p>
 								</div>
 							<?php } else { ?>
 								<div class="title">
-									<h2><?php echo Language::get('pending_tandems')?></h2>
-									<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-reload"><i class="icon"></i><?php echo Language::get('reload_pending')?></a>
+									<h2><?php echo $LanguageInstance->get('pending_tandems')?></h2>
+									<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-reload"><i class="icon"></i><?php echo $LanguageInstance->get('reload_pending')?></a>
 								</div>
 								
 								<table id="statistics1" class="table">
 								<thead>
 									<tr>	
-										<th style="width:30%"><?php echo Language::get('user_guest')?></th>
-										<th style="width:25%"><?php echo Language::get('exercise')?></th>
-										<th style="width:25%"><?php echo Language::get('date')?></th>
-										<th style="width:20%"><?php echo Language::get('state')?></th>
+										<th style="width:30%"><?php echo $LanguageInstance->get('user_guest')?></th>
+										<th style="width:25%"><?php echo $LanguageInstance->get('exercise')?></th>
+										<th style="width:25%"><?php echo $LanguageInstance->get('date')?></th>
+										<th style="width:20%"><?php echo $LanguageInstance->get('state')?></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -607,7 +607,7 @@ if (!$user_obj || !$course_id) {
 										$time2Expire=60;
 										if( (time() - strtotime($tandem['created']))>=$time2Expire){
 										?> 
-										<td><a href="#" title="<?php echo Language::get('go')?>" class="tandem-btnout"><?php echo Language::get('caducado')?></a></td>
+										<td><a href="#" title="<?php echo $LanguageInstance->get('go')?>" class="tandem-btnout"><?php echo $LanguageInstance->get('caducado')?></a></td>
 										<?php }else{ ?>
 											<script>
 												setExpired(<?php echo $time2Expire;?>);
@@ -621,11 +621,11 @@ if (!$user_obj || !$course_id) {
 													//if(i<10) t ="0"+i;
 													//else t = i;
 													for(var iT=0;iT<=<?php echo $ai;?>;iT++){
-														//$("#timer2expired"+iT).html("<?php echo Language::get('accept')?> 00:"+t);
+														//$("#timer2expired"+iT).html("<?php echo $LanguageInstance->get('accept')?> 00:"+t);
 														
 														//if(i<=1 || isNowOn==1){ 
 															$("#timer2expired"+iT).removeClass("tandem-btn").addClass("tandem-btnout");
-															$("#timer2expired"+iT).html("<?php echo Language::get('caducado')?>");
+															$("#timer2expired"+iT).html("<?php echo $LanguageInstance->get('caducado')?>");
 															$("#timer2expired"+iT).attr("href", "#")
 															clearInterval(intTimer);
 														//}
@@ -633,7 +633,7 @@ if (!$user_obj || !$course_id) {
 													}
 												}
 											</script>
-										<td><a id="timer2expired<?php echo $ai;?>" href="accessTandem.php?id=<?php echo $tandem['id']?>" title="<?php echo Language::get('go')?>" class="tandem-btn"><?php echo Language::get('accept')?></a></td>
+										<td><a id="timer2expired<?php echo $ai;?>" href="accessTandem.php?id=<?php echo $tandem['id']?>" title="<?php echo $LanguageInstance->get('go')?>" class="tandem-btn"><?php echo $LanguageInstance->get('accept')?></a></td>
 										
 										<?php
 											}
@@ -647,7 +647,7 @@ if (!$user_obj || !$course_id) {
 						</div>
 						<?php /*
 						<div class="clear">
-						<p><a href="selectUserAndRoom.php"><?php echo Language::get('reload_pending')?></a></p>
+						<p><a href="selectUserAndRoom.php"><?php echo $LanguageInstance->get('reload_pending')?></a></p>
 						</div> 
 						*/ ?>
 						<?php if ($user_obj->instructor) { ?>
@@ -656,16 +656,16 @@ if (!$user_obj || !$course_id) {
 						
 							if ($is_showTandem) {
 								if ($user_selected==0) {?>
-									<p class="error"><?php echo Language::get('select_user')?></p>
+									<p class="error"><?php echo $LanguageInstance->get('select_user')?></p>
 								<?php 
 								} else {
 									if ($user_tandems==null || count($user_tandems)==0) {
 									?>
-										<?php echo Language::get('no_tandems')?>
+										<?php echo $LanguageInstance->get('no_tandems')?>
 									<?php 	
 									} else { 
 										?>
-											<div class="title"><?php echo Language::get('tandems')?></div>
+											<div class="title"><?php echo $LanguageInstance->get('tandems')?></div>
 											<table>
 												<tr>
 												<th><?php echo $LanguageInstance->get('date')?></th>
@@ -693,15 +693,15 @@ if (!$user_obj || !$course_id) {
 						</div>
 						*/ ?>
 						<div class="clear">
-							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo Language::get('refresh')?>" />
-							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo Language::get('show_tandem')?>" />
-							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo Language::get('mange_exercises_tandem')?>" />
+							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo $LanguageInstance->get('refresh')?>" />
+							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('show_tandem')?>" />
+							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo $LanguageInstance->get('mange_exercises_tandem')?>" />
 						</div>	
 						<?php } //is instructor ?>  
 						
 						<div class="clear">
 							<?php /* <p>echo Language::getTag('tandem_description_1','<strong>'.$name.'</strong>') <!--10082012: nfinney> finney> replaced with popup on IE detection--><br/>
-							<?php echo Language::get('tandem_description_2');</p> */ ?>
+							<?php echo $LanguageInstance->get('tandem_description_2');</p> */ ?>
 							<p id="roomStatus"></p>
 						</div>
 						
