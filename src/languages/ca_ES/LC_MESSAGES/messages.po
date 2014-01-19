@@ -1,0 +1,268 @@
+# Translation of Tandem (trunk) in Catalan
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2014-01-15 13:03:52+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/0.1\n"
+
+msgid "welcome"
+msgstr "Benvingut"
+
+msgid "no estas autoritzat"
+msgstr "no estas autoritzat"
+
+msgid "back"
+msgstr "tornar"
+
+msgid "txtOtherUserConn"
+msgstr "Ara ja esteu conectats."
+
+msgid "txtTheUser"
+msgstr "<b>L'usuari ("
+
+msgid "txtReplied"
+msgstr ") ha respós. Esperant la teva confirmació</b>"
+
+msgid "txtWaiting4User"
+msgstr "Esperant la conexió amb Tandem..."
+
+msgid "no_users_in_course"
+msgstr "No hi ha usuaris en aquest curs"
+
+msgid "user_in_tandem"
+msgstr "L'usuari no está disponible, intenta-ho més tard"
+
+msgid "refresh"
+msgstr "Actualitzar Usuaris"
+
+msgid "show_tandem"
+msgstr "Mostrar Tandems"
+
+msgid "txtDesconnected"
+msgstr "Desconexió"
+
+msgid "select_user"
+msgstr "Selecciona un usuari primer"
+
+msgid "select_users"
+msgstr "Selecciona usuari"
+
+msgid "tandems"
+msgstr "Tàndems"
+
+msgid "no_tandems"
+msgstr "No hi ha Tàndems per aquest usuari"
+
+msgid "date"
+msgstr "Data"
+
+msgid "points"
+msgstr "Punts"
+
+msgid "user_host"
+msgstr "Usuari Host"
+
+msgid "user"
+msgstr "Usuari"
+
+msgid "user_guest"
+msgstr "Usuari Convidat"
+
+msgid "date_guest_user_logged"
+msgstr "Data Accés Altre Usuari"
+
+msgid "finalized"
+msgstr "Data Finalitzat"
+
+msgid "total_time"
+msgstr "Minuts Total"
+
+msgid "start"
+msgstr "Iniciar!"
+
+msgid "accept"
+msgstr "Accepta"
+
+msgid "select_exercise"
+msgstr "Selecciona Exercici"
+
+msgid "tandem_description_1"
+msgstr ""
+"Benvingut/da %s al Pilot de Tàndem. Aquesta eina funciona amb Google Chrome, "
+"Firefox 4 o superior i Safari 5."
+
+msgid "tandem_description_2"
+msgstr ""
+"Tàndem NO funciona amb Internet Explorer. Estem treballant per arreglar el "
+"problema."
+
+msgid "tandem_logo"
+msgstr "Logo Tàndem"
+
+msgid "tandem"
+msgstr "Tàndem"
+
+msgid "exercise"
+msgstr "Exercici"
+
+msgid "go"
+msgstr "Accedir"
+
+msgid "waiting"
+msgstr "Esperant a l'usuari..."
+
+msgid "waitingUserX"
+msgstr "Esperant a"
+
+msgid "acceptance"
+msgstr ""
+"Si el teu company o companya de tandem no accepta en 1 minut, aquesta "
+"invitació caducarà."
+
+msgid "direct_access_to_content"
+msgstr "Accés directe al contingut"
+
+msgid "pending_tandems"
+msgstr "Invitacions Pendents"
+
+msgid "no_pending_tandems"
+msgstr "No tens invitacions a Tàndem pendents"
+
+msgid "reload_pending"
+msgstr "Recarregar Tàndems Pendents"
+
+msgid "tasks_tandems"
+msgstr "Tasques"
+
+msgid "questions_tasks_tandems"
+msgstr "Preguntes"
+
+msgid "task"
+msgstr "Tasca"
+
+msgid "question"
+msgstr "Pregunta"
+
+msgid "total_time_seconds"
+msgstr "Temps total:&#13 %s minuts&#13 %s segons"
+
+msgid "start_date"
+msgstr "Data inici"
+
+msgid "finish_date"
+msgstr "Data fi"
+
+msgid "finished"
+msgstr "Finalitzat"
+
+msgid "caducado"
+msgstr "Caducat"
+
+msgid "all"
+msgstr "Tots"
+
+msgid "no"
+msgstr "No"
+
+msgid "yes"
+msgstr "Sí"
+
+msgid "no_results_found"
+msgstr "No s'han trobat resultats"
+
+msgid "play_as_user_host"
+msgstr "Mostrar l'execució de l'usuari iniciador"
+
+msgid "play_as_user_guest"
+msgstr "Mostrar l'execució de l'usuari convidat"
+
+msgid "play"
+msgstr "Mostrar"
+
+msgid "just_been_invited"
+msgstr "T'han convidat a fer Tàndem amb:"
+
+msgid "user_agent_host"
+msgstr "Info navegador host"
+
+msgid "user_agent_guest"
+msgstr "Info navegador convidat"
+
+msgid "mange_exercises_tandem"
+msgstr "Gestiona Exercicis"
+
+msgid "choose_zip_file"
+msgstr "Escull un fitxer zip a carregar"
+
+msgid "zip_upload_ok"
+msgstr "El fitxer %s s'ha carregat i descomprimit correctament."
+
+msgid "error_uploading_file"
+msgstr "S'ha produït un error en la càrrega del fitxer. Torna-ho a provar."
+
+msgid "error_no_zip_format"
+msgstr "El fitxer que estas carregant no és .zip. Torna-ho a provar."
+
+msgid "error_getting_information_of_exercise"
+msgstr "No s'ha trobat l'exercici a la base de dades"
+
+msgid "exercise_name"
+msgstr "Nom Exercici"
+
+msgid "name_xml_file"
+msgstr "Nom Xml"
+
+msgid "enabled"
+msgstr "Habilitat"
+
+msgid "delete"
+msgstr "Eliminar"
+
+msgid "show_profile"
+msgstr "ver perfil"
+
+msgid "hide_profile"
+msgstr "ocultar perfil"
+
+msgid "quit"
+msgstr "Sortir"
+
+msgid "task_remaining_time"
+msgstr "Temps Restant de la Tasca"
+
+msgid "overrides_xml_file"
+msgstr "Sobrescriu el fitxer XML si té el mateix nom"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"El fitxer %s existeix, esteu segur que voleu sobrescriure'l? Per fer-ho "
+"selecciona \"Sobrescriu a Sí\""
+
+msgid "update"
+msgstr "Actualitza"
+
+msgid "upload"
+msgstr "Pujar"
+
+msgid "error_choose_file"
+msgstr "Has de seleccionar un fitxer ZIP per fer la pujada"
+
+msgid "exercise_deleted_ok"
+msgstr "S'ha eliminat correctament l'exercici"
+
+msgid "error_delete_exercise"
+msgstr ""
+"Error eliminant l'exercici seleccionat, comprovi que existeix i que el "
+"fitxer tingui els permissos correctes"
+
+msgid "main_xml_file_not_found"
+msgstr ""
+"No es pot processar el fitxer ja que no es troba el fitxer XML principal"
+
+msgid "no_exercises_found"
+msgstr "No hi ha exercicis disponibles, el professor ha de configurar-los"

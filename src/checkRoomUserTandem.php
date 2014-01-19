@@ -168,7 +168,7 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
 		}  
 			if($comunicandoA==1){ ?>
 				jQuery(document).ready(function(){
-					top.document.getElementById('roomStatus').innerHTML="<?php echo Language::get('user_in_tandem');?>";
+					top.document.getElementById('roomStatus').innerHTML="<?php echo $LanguageInstance->get('user_in_tandem');?>";
 					setTimeout(function(){top.location.reload();}, 3000);
 				});
 		<?php }else{
