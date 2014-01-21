@@ -240,7 +240,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 						<?php } ?>
 						
 						<div class="manage-area">
-							<h3 class="secundary-title"><?php echo $LanguageInstance->get('exercise_list')?></h3>
+							<h3 class="secundary-title"><?php echo $LanguageInstance->get('exercises_list')?></h3>
 							<?php if ($array_exercises && count($array_exercises)>0) {?>
 							<!--<div id="tableContainer" class="tableContainer">-->
 							<table  class="table">

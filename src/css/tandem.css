@@ -562,7 +562,8 @@ a.btn-reload:focus .icon{
 	background-position:0 -18px;
 }
 
-a.btn-exercise{
+a.btn-exercise,
+a.btn-search-criteria{
 	position:relative;
 	text-align:left;
 	min-width:50px;
@@ -575,11 +576,15 @@ a.btn-exercise{
 
 
 a.btn-exercise:hover,
-a.btn-exercise:focus{
+a.btn-exercise:focus,
+a.btn-search-criteria:hover,
+a.btn-search-criteria:focus{
 	border-color: #94b036;
 }
 
-a.btn-exercise.open{
+
+a.btn-exercise.open,
+a.btn-search-criteria.open{
 	background: #fff;
     color: #7E9F0B;
     border: 1px dotted #7E9F0B;
@@ -612,6 +617,17 @@ a.btn-exercise.open:focus .icon{
 	background-position:-18px -56px;
 }
 */
+
+a.btn-search-criteria .icon{
+	background-position: 0 -80px;
+	position:absolute;
+	left:7px;
+	top:4px;
+}
+
+a.btn-search-criteria.open .icon{
+	background-position:-54px -80px;
+}
 
 a.btn-back{
 	min-width:50px;
@@ -685,7 +701,7 @@ button.close {
     border: 1px solid #7E9F0B;
     font-weight: bold;
     text-align:left;
-    min-width:90px;
+    min-width:30px;
     height:26px;
     line-height:26px;
     padding:0 10px 0 30px;
@@ -1183,6 +1199,18 @@ font-size:18px;
 line-height:23px;
 }
 
+.simplemodal-container a.modalCloseImg {
+	background: url('../img/iconset.png') no-repeat -76px -74px;
+	width: 18px;
+	height: 18px;
+	display: inline-block;
+	z-index: 3200;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+}
+
 
 /* Iframe */
 
@@ -1258,10 +1286,11 @@ h3.secundary-title{
 }
 
 
-/* Form Exercises */
+/* Form Exercises & Search Criteria*/
 
 #btn-new-exercise,
-#btn-edit-exercise{
+#btn-edit-exercise,
+#btn-search-criteria{
 	position:relative;
 	top:1px;
 }
@@ -1286,6 +1315,150 @@ h3.secundary-title{
 	padding:20px;
 }
 
+#criteria-wrapper{
+	margin-top:20px;
+}
+
+#btn-search-criteria{
+	float:left;
+	margin-right:0;
+}
+
+#applied-criteria{
+	position:relative;
+	top:1px;
+	float:left;
+	border:1px solid #94b036;
+	background:#fff;
+	min-height:30px;
+	line-height:30px;
+	padding:0 5px 0 8px;
+}
+
+#applied-criteria ul{
+	float:left;
+}
+
+#applied-criteria ul li{
+	padding-left:8px;
+	float:left;
+	line-height: 20px;
+	margin: 5px 8px 5px 0;
+	background: transparent url('../img/ln_dot_v.gif') repeat-y 0 0;
+}
+
+#applied-criteria ul li em{
+	color:#7E9F0B;
+}
+
+#search-criteria{
+	float:left;
+	display:none;
+	border: 1px dotted #94b036;
+	background: #fff;
+	padding:15px;
+	padding-left:20px;
+	width:868px;
+}
+
+#search-criteria fieldset{
+	width:21%;
+	float:left;
+	background: transparent url('../img/ln_dot_v.gif') repeat-y 0 0;
+	padding-left:1.5%;
+	min-height:50px;
+}
+
+#search-criteria fieldset:first-child{
+	background:transparent;
+	padding-left:0;
+}
+
+#search-criteria fieldset.date-range-fs{
+	width:35%;
+}
+
+#search-criteria fieldset.status-fs{
+	width:14%;
+}
+
+#search-criteria fieldset.status-fs select{
+	width:152px;
+}
+
+#search-criteria fieldset.search-fs{
+	clear:left;
+	width:100%;
+	padding:0;
+	background:transparent;
+	min-height:30px;
+	margin-top:8px;
+}
+
+#search-criteria fieldset.search-fs input{
+	float:right;
+	min-width:152px;
+	margin-right:8px;
+}
+
+#search-criteria .search-lbl{
+	float:left;
+	margin-bottom:5px;
+}
+
+#search-criteria input[type="text"],
+#search-criteria select,
+#search-criteria .ui-combobox,
+#search-criteria .date-range-fields{
+	float:left;
+	clear:left;
+	margin-left:0;
+}
+#search-criteria select{
+	height:28px;
+	margin-top:2px;
+}
+
+#search-criteria input[type="text"]{
+	width:160px;
+}
+
+#search-criteria .date-range-fields input[type="text"]{
+	clear:none;
+	width:129px;
+	margin-right:10px;
+}
+
+#search-criteria .ui-combobox .ui-autocomplete-input {
+	width:160px;
+	height: 26px;
+	margin-top:2px;
+	margin-right:0;
+}
+
+#search-criteria .ui-combobox .ui-button{
+	padding: 0;
+	height: 26px;
+	top: 2px;
+	width: 26px;
+	right: -2px;
+}
+
+.calendar-field{
+	position:relative;
+	float:left;
+}
+
+.calendar-field .ui-datepicker-trigger{
+	background:transparent;
+	border:0;
+	position:absolute;
+	top: 8px;
+	right: 16px;
+	margin: 0;
+	padding: 0;
+	cursor:pointer;
+}
 
 /* Manage Area Tables */
 
@@ -1302,6 +1475,10 @@ table.table{
 table.table th {
     text-align: left;
     background:#ecefe4;
+}
+
+table.table thead th a{
+	font-weight:bold;
 }
 
 table.table tr th, 
@@ -1333,6 +1510,68 @@ table.table th.center,
 table.table td.center{
 	text-align:center;
 }
+
+table.table table.subtable{
+	width:100%;
+}
+
+table.table table.subtable thead tr th {
+    background:#ecefe4 url('../img/ln_dot_h_soft.gif') repeat-x 0 100%;
+}
+
+table.table table.subtable tr th, 
+table.table table.subtable tr td {
+    padding: 6px 3px;
+    line-height: 1.2em;
+}
+
+table.table thead tr th{
+	font-size:1em;
+}
+
+.duration{
+   display:block;
+   float:left;
+   width:100%;
+   background: #F0F5E9 url('../img/ln_dot_h_soft.gif') repeat-x 0 100%;
+}
+
+.duration-details{
+	display:none;
+}
+
+.duration .lbl{
+	display:block;
+	float:left;
+	line-height:20px;
+	height:20px;
+	margin-left:3px;
+	font-weight:bold;
+}
+
+.duration .val{
+	display:block;
+	float:right;
+	position:relative;
+	padding-right:20px;
+	line-height:20px;
+	height:20px;
+}
+
+.duration .expand{
+	position:absolute;
+	right:0;
+	top:-1px;
+	display:inline-block;
+	width:18px;
+	height:18px;
+	background: transparent url('../img/iconset.png') no-repeat 0 -36px;
+}
+
+.duration .expand.open{
+	background-position:-18px -36px;
+}
+
 
 /*
 #statistics1 {
@@ -1598,6 +1837,16 @@ html>body tbody.scrollContent td + td + td + td + td {
 	top:15px;
 }
 
+.alert h3{
+	margin:.3em 0;
+	font-weight: normal;
+}
+
+.alert h3 em{
+	color: #7E9F0B;
+	font-style:normal;
+}
+
 .alert-info {
 	color: #7E9F0B;
 	background-color: #dff0d8;
@@ -1633,18 +1882,13 @@ html>body tbody.scrollContent td + td + td + td + td {
 	margin-top:-5px;
 }
 
+#alert-top{
+	margin-top:30px;
+	width:65%;
+}
+
 #info-block{
 	color:#555;
-}
-
-#info-block h3{
-	margin:.3em 0;
-	font-weight: normal;
-}
-
-#info-block h3 em{
-	color: #7E9F0B;
-	font-style:normal;
 }
 
 #info-block #startNowBtn{
@@ -1653,6 +1897,21 @@ html>body tbody.scrollContent td + td + td + td + td {
 	right:17px;
 	top:13px;
 }
+
+
+.lbl-success{
+	color: #7E9F0B;
+}
+
+.lbl-warning{
+	color: #8a6d3b;
+}
+
+
+.lbl-error{
+	color: #a94442;
+}
+
 
 /* *** Add this for visible Scrolling ;) */
 .ui-autocomplete {

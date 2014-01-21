@@ -460,7 +460,7 @@ if (!$user_obj || !$course_id) {
 			$('#main_form').attr('target', '');
 			if (show=='show') {
 				$('#main_form').attr('action', 'statistics_tandem.php');
-				$('#main_form').attr('target', 'statistics<?php echo rand();?>');
+				//$('#main_form').attr('target', 'statistics<?php echo rand();?>');
 			} else {
 				if (show=='exercises') {
 					$('#main_form').attr('action', 'manage_exercises_tandem.php');
@@ -519,10 +519,7 @@ if (!$user_obj || !$course_id) {
 				<div id="content">
 					<span class="welcome"><?php echo $LanguageInstance->get('welcome')?> <?php echo $name ?>!</span><br/>
 					<form action="#" method="post" id="main_form" class="login_form">
-						<?php if ($array_exercises!==false &&
-						 is_array($array_exercises) &&
-						 count($array_exercises)>0) {?>
-
+						<?php if ($array_exercises!==false && is_array($array_exercises) && count($array_exercises)>0) {?>
 								<fieldset>
 								<?php 
 									if ($users_course && count($users_course)>0) {
@@ -563,7 +560,7 @@ if (!$user_obj || !$course_id) {
 									<input type="button" onclick="Javascript:putLink();" id="start" name="start" disabled="disabled" value="<?php echo $LanguageInstance->get('start')?>" class="tandem-btn" tabindex="3" />
 								</fieldset>
 						<?php } else {
-							echo '<div class="alert alert-waring">'.Language::get('no_exercises_found').'</div>';
+							echo '<div id="alert-top" class="alert alert-warning"><div class="alert-inside"><i class="icon"></i><h3>'.Language::get('no_exercises_found').'</h3></div></div>';
 						} ?>
 						<div class="manage-area">
 						<div class="clear">
@@ -694,7 +691,7 @@ if (!$user_obj || !$course_id) {
 						*/ ?>
 						<div class="clear">
 							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo $LanguageInstance->get('refresh')?>" />
-							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('show_tandem')?>" />
+							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('activity_log')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo $LanguageInstance->get('mange_exercises_tandem')?>" />
 						</div>	
 						<?php } //is instructor ?>  

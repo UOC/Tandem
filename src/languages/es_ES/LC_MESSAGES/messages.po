@@ -3,12 +3,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-01-15 13:03:52+0000\n"
+"PO-Revision-Date: 2014-01-21 17:15+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/0.1\n"
+"X-Generator: Poedit 1.5.3\n"
+"POT-Creation-Date: \n"
+"Last-Translator: hh <hh>\n"
+"Language-Team: \n"
 
 msgid "welcome"
 msgstr "Bienvenido"
@@ -266,3 +269,63 @@ msgstr ""
 
 msgid "no_exercises_found"
 msgstr "No hay ejercicios disponibles, el profesor tiene que configurarlo"
+
+msgid "state"
+msgstr "Estado"
+
+msgid "activity_log"
+msgstr "Registro de Actividad"
+
+msgid "exercises_list"
+msgstr "Lista de Ejercicios"
+
+msgid "new_exercise"
+msgstr "Nuevo Ejercicio"
+
+msgid "edit_exercise"
+msgstr "Editar Ejercicio"
+
+msgid "file_name"
+msgstr "Nombre del Archivo"
+
+msgid "browse"
+msgstr "Examinar"
+
+msgid "none_file_selected"
+msgstr "Ningún archivo seleccionado"
+
+msgid "search_criteria"
+msgstr "Criterios de Busqueda"
+
+msgid "date_range"
+msgstr "Rango de Fechas"
+
+msgid "from"
+msgstr "Desde"
+
+msgid "to"
+msgstr "Hasta"
+
+msgid "status"
+msgstr "Estado"
+
+msgid "duration"
+msgstr "Duración"
+
+msgid "browser_info"
+msgstr "Info Navegador"
+
+msgid "total"
+msgstr "Total"
+
+msgid "complete"
+msgstr "Completado"
+
+msgid "incomplete"
+msgstr "Incompleto"
+
+msgid "error"
+msgstr "Error"
+
+msgid "search"
+msgstr "Buscar"
