@@ -447,12 +447,21 @@
                 private static function add_finished_where($finished = -1, $table) {
                 	$moreWhere = '';
                 	switch ($finished) {
-                		case 1:
-                			$moreWhere .= ' AND '.$table.'.is_finished = 1 ';
-                			break;
-                		case 0:
-                			$moreWhere .= ' AND '.$table.'.is_finished = 0 ';
-                			break;
+                        case 2:
+                            if( $table == 'tandem' )
+                                $moreWhere .= ' AND '.$table.'.date_guest_user_logged is null AND '.$table.'.is_finished = 0 ';
+                            else
+                                $moreWhere .= ' AND '.$table.'.is_finished = 0 ';
+                            break;
+                        case 1:
+                            $moreWhere .= ' AND '.$table.'.is_finished = 1 ';
+                            break;
+                        case 0:
+                            if( $table == 'tandem' )
+                                $moreWhere .= ' AND '.$table.'.date_guest_user_logged is not null AND '.$table.'.is_finished = 0 ';
+                            else
+                                $moreWhere .= ' AND '.$table.'.is_finished = 0 ';
+                            break;
                 	}
                 	return $moreWhere;
                 }
@@ -504,7 +513,7 @@
                 			$order_by = 'tandem.date_guest_user_logged';
                 			break;
                 		case 7:
-                			$order_by = 'tandem.finalized';
+                			$order_by = 'status';
                 			break;
                 		case 8:
                 			$order_by = 'tandem.user_agent_host';
@@ -520,7 +529,14 @@
                 	}
                 	
                 	$sql = 'SELECT distinct tandem.*, exercise.name as exercise, user_tandem.points, user_tandem.total_time, '.
-                								' user.fullname, user_host.fullname as user_host,user_guest.fullname as user_guest, (tandem.xml is not null) has_xml_description '.
+                								' user.fullname, user_host.fullname as user_host,user_guest.fullname as user_guest, (tandem.xml is not null) has_xml_description, '.
+                                                ' CASE 
+                                                    WHEN tandem.date_guest_user_logged is not null AND tandem.finalized is not null
+                                                        THEN 2
+                                                    WHEN tandem.date_guest_user_logged is not null AND tandem.finalized is null
+                                                        THEN 1
+                                                        ELSE 0 
+                                                  END as status '.
                 	                            ' FROM tandem '.
 							                	' inner join exercise on tandem.id_exercise = exercise.id '.
                 								' LEFT outer join user_tandem on user_tandem.id_tandem=tandem.id '. (($user_id>0)? ' AND user_tandem.id_user = '.$user_id.' ':' AND user_tandem.id_user = tandem.id_user_host').

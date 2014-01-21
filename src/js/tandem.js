@@ -1,5 +1,4 @@
 
-
 	// variables globales
 	var waitingLbl = '<span>waiting</span> <img src="img/waiting.gif" alt="waiting" />';
 	var completedLbl = ' <img src="img/ok.png" alt="completed" />';
@@ -162,6 +161,7 @@
 	/* InfoTips */
 
 	$('.infotip').infoTip();
+	
 
 	/* TimeLine */
 

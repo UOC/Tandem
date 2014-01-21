@@ -3,12 +3,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-01-15 13:03:52+0000\n"
+"PO-Revision-Date: 2014-01-21 17:15+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/0.1\n"
+"X-Generator: Poedit 1.5.3\n"
+"POT-Creation-Date: \n"
+"Last-Translator: hh <hh>\n"
+"Language-Team: \n"
 
 msgid "welcome"
 msgstr "Welcome"
@@ -266,3 +269,63 @@ msgstr "Unable to process the file because can not find main XML file"
 
 msgid "no_exercises_found"
 msgstr "Not exercises available, teacher has to configure it"
+
+msgid "state"
+msgstr "State"
+
+msgid "activity_log"
+msgstr "Activity Log"
+
+msgid "exercises_list"
+msgstr "Exercises List"
+
+msgid "new_exercise"
+msgstr "New Exercise"
+
+msgid "edit_exercise"
+msgstr "Edit Exercise"
+
+msgid "file_name"
+msgstr "File Name"
+
+msgid "browse"
+msgstr "Browse"
+
+msgid "none_file_selected"
+msgstr "None file selected"
+
+msgid "search_criteria"
+msgstr "Search Criteria"
+
+msgid "date_range"
+msgstr "Date Range"
+
+msgid "from"
+msgstr "From"
+
+msgid "to"
+msgstr "To"
+
+msgid "status"
+msgstr "Status"
+
+msgid "duration"
+msgstr "Duration"
+
+msgid "browser_info"
+msgstr "Browser Info"
+
+msgid "total"
+msgstr "Total"
+
+msgid "complete"
+msgstr "Complete"
+
+msgid "incomplete"
+msgstr "Incomplete"
+
+msgid "error"
+msgstr "Error"
+
+msgid "search"
+msgstr "Search"
