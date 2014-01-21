@@ -1533,7 +1533,9 @@ table.table thead tr th{
    display:block;
    float:left;
    width:100%;
-   background: #F0F5E9 url('../img/ln_dot_h_soft.gif') repeat-x 0 100%;
+   background: #F0F5E9;
+   border-top:1px solid #fff;
+   border-bottom:1px solid #fff;
 }
 
 .duration-details{
