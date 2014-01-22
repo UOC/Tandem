@@ -122,6 +122,8 @@ else $Otheruser='a';
 			var script = document.createElement('script');	
 			var endOfTandem=0;
 			var intervalTimerAction;
+			var intervalIfNextQuestion;
+			var intervalIfNextQuestionAnswered;
 //xml request for iexploiter/others 		
 			if (window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
 			else xmlReq = new XMLHttpRequest();
@@ -130,13 +132,9 @@ else $Otheruser='a';
 
 <?php
 require_once(dirname(__FILE__).'/classes/constants.php');
-//MODIFIED - 20120927 - abertran to avoid error  A session had already been started - ignoring session_start()
 if(!isset($_SESSION)) {
 	session_start();
 }
-// ORIGINAL
-// session_start();
-// END
 
 
 $path = '';
@@ -197,8 +195,6 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 	//thread is so quick...
 						writeButtons();
 						setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},250);
-						// why is this line here?
-							//hideButtons();
 					  }   
 					});
 			}
@@ -215,7 +211,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			timerChecker = function(){
 					$.ajax({
 					  type: 'GET',
-					  url: "<?php echo $room; ?>.xml",
+					  url: "check.php?room=<?php echo $room; ?>",
 					  data: {
 					  },
 					  dataType: "xml",
@@ -441,7 +437,6 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 								accionNum = parseInt(accionNum)+1;
 								txtNews="";
 								if(accionNum==numBtn) {
-									//showNextQuestion();
 									enableSolution();
 								}
 	//First answer, notify the other user
@@ -484,7 +479,6 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			//20121004
 			enableSolution = function() {
 				//alert("Enabling solution!!!");
-				//$('#next_task .lbl').html("See Solution");
 				salir=1;
 				clearInterval(intervalUpdateAction);
 				if(intervalTimerAction!=null) clearInterval(intervalTimerAction);
@@ -500,13 +494,13 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					for(var i=0;i<numBtn;i++){
 						j=i+1;
 						if(numBtn==1){
-							botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl">Solution <img src="img/ok.png" alt="solution" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="Next Task"><span class="lbl">See Solution</span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl">See Solution</span></a></li>';
+							botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
 						}else{
 							if(i==0) botones+='<li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');return false;"><span class="lbl">'+j+'</span></a></li>';
-							else botones+='<li class="step"><a href="#" id="step_'+j+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');return false;"><span class="lbl">'+j+'</span></a></li>';
+							else botones+='<li class="step"><a href="#" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');return false;"><span class="lbl">'+j+'</span></a></li>';
 						}
 					}
-					if(numBtn>1) botones+='<li class="solution"><span class="lbl">Solution <img src="img/ok.png" alt="solution" /></span></li><li><a href="#" class="next" id="next_task" title="Next Task"><span class="lbl">See Solution</span></a></li>';
+					if(numBtn>1) botones+='<li class="solution"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
 					$("#steps").html(botones);
 									
 				var tasksIt="<ul>";
@@ -518,7 +512,6 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				}
 				tasksIt+="</ul>";
 				$('#tasks').html(tasksIt);
-				//$('#textosExerc').html(textE);
 				
 				//monta el iframe de inicio
 				if(initHTMLB==null)
@@ -577,37 +570,108 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 
 			//20121004 - Add - @abertranb 
 			showSolutionAndShowNextTask = function() {
-				
 				showSolution();
 				$('#next_task').attr('onclick',"");
 				if(numNodes!=<?php echo $node;?>){
-					$('#next_task .lbl').html("Next Task");
+					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Next Task');?>");
 				}
 				$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
-				showNextQuestion();
-				
+					showNextQuestion();
 			}
 			// END
 			
 			showNextQuestion = function(){
-				//20121004 - DELETE - @abertranb - No show 
-				//showSolution();
-				//end
 				salir=1;
 				clearInterval(intervalUpdateAction);
 				if(intervalTimerAction!=null) clearInterval(intervalTimerAction);
 				
 				//muestra el iframe de la solución
-				//$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
-				if(numNodes!=<?php echo $node;?>){
-					$('#next_task').attr('href', classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>');
-					document.getElementById('next1Item').style.display='inline';
+				if(numNodes!=<?php echo $node;?>){					
+					$('#next_task').attr('onclick',"pass2NextQuestion();return false;");
+					if(document.getElementById('next1Item')) document.getElementById('next1Item').style.display='inline';
 				}else{
-					$('#next_task .lbl').html("Click to finish");
+					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");
 					$('#next_task').attr('onclick',"showFinishedAlert();return false;");					
 				}
+				intervalIfNextQuestionAnswered = setInterval('checkIfPass2NextQuestion("<?php echo $user;?>","<?php echo $room;?>")',500);
 				
 			}
+
+
+			checkIfPass2NextQuestion = function(){
+				$.ajax({
+					  type: 'GET',
+					  url: "check.php?room=<?php echo $room; ?>",
+					  data: {
+					  },
+					  dataType: "xml",
+					  statusCode: {
+						    404: function() {
+						    	hideText();
+								hideButtons();
+								userDesconn=1;
+						    }
+						  },
+					  success: function(xml){
+					  	var cad = $(xml).find('actions');
+						var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
+						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');
+						if(isFirstUserEnd!=null && isSecondUserEnd==null && isFirstUserEnd!='<?php echo $user;?>'){
+							notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFirstUserEnd+"<?php echo $LanguageInstance->get("txtEndTask");?>");
+							clearInterval(intervalIfNextQuestionAnswered);
+						}
+					}
+				})
+			}
+
+			pass2NextQuestion = function(){
+				$.ajax({
+				  		type: 'GET',
+				  		url: "action.php",
+				  		data: {'room':'<?php echo $room;?>','user':'<?php echo $user;?>','nextSample':'<?php echo $node;?>','tipo':'SetNextQuestion'},
+				  		dataType: "xml",
+				  		statusCode: {
+					    404: function() {
+					    		hideText();
+								hideButtons();
+								userDesconn=1;
+					    	}
+					  	},
+				  		success: function(){
+				  			notifyTimerDown("<?php echo $LanguageInstance->get("txtWaiting4UserEndTask");?>");
+					  		intervalIfNextQuestion = setInterval('checkIfPass2NextQuestionToJump("<?php echo $user;?>","<?php echo $room;?>")',500);
+				  		}
+					});
+			}
+
+			checkIfPass2NextQuestionToJump = function(){
+				$.ajax({
+					  type: 'GET',
+					  url: "check.php?room=<?php echo $room; ?>",
+					  data: {
+					  },
+					  dataType: "xml",
+					  statusCode: {
+						    404: function() {
+						    	hideText();
+								hideButtons();
+								userDesconn=1;
+						    }
+						  },
+					  success: function(xml){
+					  	var cad = $(xml).find('actions');
+						var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
+						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');
+						if(isFirstUserEnd!=null && isSecondUserEnd!=null){ 
+							clearInterval(intervalIfNextQuestion);
+							location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
+						}
+					}
+				})
+			}
+
+
+
 			showFinishedAlert = function(){
 				endOfTandem=1;
 				$.colorbox({href:"end.php?room=<?php echo $room;?>",escKey:true,overlayClose:false,onLoad:function(){$('#cboxClose').hide();}});

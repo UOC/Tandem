@@ -5,7 +5,7 @@ require_once dirname(__FILE__).'/classes/constants.php';
 session_start();
 
 //Recibimos las variables desde la url
-$room = $_GET["room"];
+$room = PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$_GET["room"];
 if(is_file($room.".xml")) unlink($room.".xml");
 
 

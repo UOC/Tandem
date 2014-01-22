@@ -3,12 +3,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-01-15 13:03:52+0000\n"
+"PO-Revision-Date: 2014-01-22 11:09+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/0.1\n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 
 msgid "welcome"
 msgstr "Bienvenido"
@@ -92,14 +95,10 @@ msgid "select_exercise"
 msgstr "Selecciona Ejercicio"
 
 msgid "tandem_description_1"
-msgstr ""
-"Bienvenid@ %s al Piloto de Tándem. Esta herramienta funciona con Google "
-"Chrome, Firefox 4 o superior y Safari 5."
+msgstr "Bienvenid@ %s al Piloto de Tándem. Esta herramienta funciona con Google Chrome, Firefox 4 o superior y Safari 5."
 
 msgid "tandem_description_2"
-msgstr ""
-"Tándem NO funciona con Internet Explorer. Estamos trabajando en arreglar el "
-"problema."
+msgstr "Tándem NO funciona con Internet Explorer. Estamos trabajando en arreglar el problema."
 
 msgid "tandem_logo"
 msgstr "Logo Tándem"
@@ -120,8 +119,7 @@ msgid "waitingUserX"
 msgstr "Esperando a"
 
 msgid "acceptance"
-msgstr ""
-"Si tu compañero/a de tandem no acepta en 1 minuto, esta invitación caducará."
+msgstr "Si tu compañero/a de tandem no acepta en 1 minuto, esta invitación caducará."
 
 msgid "direct_access_to_content"
 msgstr "Acceso directo al contenido"
@@ -238,9 +236,7 @@ msgid "overrides_xml_file"
 msgstr "Sobreescribe el fichero XML si tiene el mismo nombre"
 
 msgid "file_exercise_xml_aready_exists"
-msgstr ""
-"El fichero %s existe, ¿está seguro que quiere ? Para hacerlo selecciona "
-"\"Sobreescribir a Sí\""
+msgstr "El fichero %s existe, ¿está seguro que quiere ? Para hacerlo selecciona \"Sobreescribir a Sí\""
 
 msgid "update"
 msgstr "Actualiza"
@@ -255,14 +251,29 @@ msgid "exercise_deleted_ok"
 msgstr "Se ha eliminado correctamente el ejercicio"
 
 msgid "error_delete_exercise"
-msgstr ""
-"Error eliminando el ejercicio seleccionado, compruebe que existe y que el "
-"fichero tenga los permisos correctos"
+msgstr "Error eliminando el ejercicio seleccionado, compruebe que existe y que el fichero tenga los permisos correctos"
 
 msgid "main_xml_file_not_found"
-msgstr ""
-"No se puede procesar el fichero ya que no se puede encontrar el fichero XML "
-"principal"
+msgstr "No se puede procesar el fichero ya que no se puede encontrar el fichero XML principal"
 
 msgid "no_exercises_found"
 msgstr "No hay ejercicios disponibles, el profesor tiene que configurarlo"
+
+msgid "Solution"
+msgstr "Solución"
+
+msgid "See Solution"
+msgstr "Ver solución"
+
+msgid "Next Task"
+msgstr "Siguiente tarea"
+
+msgid "Click to finish"
+msgstr "Haz click para acabar"
+
+msgid "txtEndTask"
+msgstr ") ha terminado esta tarea. Esperando tu confirmación</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "Esperando que tu compañero finalice la tarea"
+

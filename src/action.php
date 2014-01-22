@@ -26,9 +26,6 @@ function editXMLConfirm($room,$user,$number,$nextSample){
 	}else{
 		//MODIFIED - 20120927 - abertran to avoid error  Use of undefined constant firstUser - assumed 'firstUser' in
 		if($xml->actions[$nextSample]->action[$number]!="" && findAttribute($xml->actions[$nextSample]->action[$number],'firstUser')){
-		// ORIGINAL
-		//if($xml->actions[$nextSample]->action[$number]!="" && findAttribute($xml->actions[$nextSample]->action[$number],firstUser)){
-		// END
 			//encuentra y existe confirmacion primer usuario
 			$xml->actions[$nextSample]->action[$number]->addAttribute('secondUser',$user);
 			//encuentra y no existe confirmacion primer usuario
@@ -51,6 +48,15 @@ function preTimer($room,$user,$nextSample){
 		}
 	}
   	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");	
+}
+
+function editShowNextQuestion($room,$user,$nextSample){
+	$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+	if(findAttribute($xml->actions[$nextSample],firstUserEnd))
+			$xml->actions[$nextSample]->addAttribute('secondUserEnd',$user);
+	else 
+			$xml->actions[$nextSample]->addAttribute('firstUserEnd',$user);
+	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");	
 }
 
 function editXMLMap($room,$user,$number,$nextSample) {
@@ -82,11 +88,8 @@ function thruTimer($nextSample,$numBtn){
 $is_final = false;
 include_once(dirname(__FILE__).'/classes/register_action_user.php');
 $nextSample = $_GET["nextSample"]-1;
-//MODIFIED - 20120927 - abertran to avoid error if not received numBtn
 $numBtn = isset($_GET["numBtn"])?$_GET["numBtn"]:0;
-// ORIGINAL
-// $numBtn = $_GET["numBtn"];
-// END
+
 if($_GET["user"]!="" && $_GET["room"]!=""){
 	if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$_GET["room"].".xml")) {		
 		switch($_GET["tipo"]){
@@ -95,6 +98,8 @@ if($_GET["user"]!="" && $_GET["room"]!=""){
 			case 'confirmTimer': thruTimer($nextSample,$numBtn);break;
 			
 			case 'confirmPreTimer': preTimer($_GET["room"],$_GET["user"],$nextSample);break;
+
+			case 'SetNextQuestion': editShowNextQuestion($_GET["room"],$_GET["user"],$nextSample);break;
 			
 			case 'map': editXMLMap($_GET["room"],$_GET["user"],$_GET["number"],$nextSample);break;
 			default: break;
