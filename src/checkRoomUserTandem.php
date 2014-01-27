@@ -64,11 +64,13 @@ function compareDateTime($val){
 	$mysqldate = date("Y-m-d H:i:s");
 	$diasDiferencia = floor((strtotime($mysqldate) - strtotime($val))/3600/24);
 	$horasDiferencia = floor((strtotime($mysqldate) - strtotime($val))/3600);
-	//error_log($diasDiferencia." - ". $horasDiferencia);
+	$minutosDiferencia = floor((strtotime($mysqldate) - strtotime($val))/60);
+	//error_log($diasDiferencia." - ". $horasDiferencia." - ".$minutosDiferencia);
 	$ret=0;
 	if($diasDiferencia>0) $ret = 1;
-	else if($horasDiferencia>=$maxIntervalTimeInTandem) $ret = 1;
-		 else $ret = 0;
+	else if($horasDiferencia>0) $ret = 1;
+			else if($minutosDiferencia>=$maxIntervalTimeInTandem) $ret = 1;
+		 			else $ret = 0;
 	return $ret;
 }
 
