@@ -401,9 +401,28 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 											$seconds = isset($tandem['total_time']) ? $tandem['total_time']:0;
 											$minutes = minutes($seconds);
 											$total_time = time_format($seconds);
+											$subTP=explode(":",$total_time);
+											if($subTP[0]>0) $subTimerP=substr($subTP[0],1).":".$subTP[1].":".$subTP[2];
+											else $subTimerP=$subTP[1].":".$subTP[2];
+											$task_tandemsSubTime = $gestorBD->obte_task_tandems($course_id, $user_selected, $exercise_form, $tandem['id'], $id_task, $order_by_tasks, $order_by_tasks_direction, $start_date, $finish_date, $finished);
+											$subTimer= array();
+											$j=0;$i=0;
+											foreach ($task_tandemsSubTime as $question) {	
+												$j++;
+												$secondsSt = isset($question['total_time']) ? $question['total_time']:0;
+												$minutesSt = minutes($secondsSt);
+												$total_timeSt = time_format($secondsSt);
+												if(!isset($subTimer[$i])) $subTimer[$i]="00:00:00";
+												if($subTimer[$i]<$total_timeSt){
+													$subT=explode(":",$total_timeSt);
+													$subT[0]>0 ? $subTimer[$i]=$subT[0].":".$subT[1].":".$subT[2] : $subTimer[$i]=$subT[1].":".$subT[2];
+												}
+												if($j%2==0) $i++;
+											}
+											$createdDateFormatedGlobal = date("d M Y h:i.s",strtotime($tandem['created']));
 										?>
 											<tr>
-												<td><a href="Javascript:search(<?php echo $tandem['id']?>,-1,-1)" title="<?php echo $LanguageInstance->get('go')?>" target="_blank"><?php echo $tandem['created']?></a></td>
+												<td><a href="Javascript:search(<?php echo $tandem['id']?>,-1,-1)" title="<?php echo $LanguageInstance->get('go')?>" target="_blank"><?php echo $createdDateFormatedGlobal;?></a></td>
 												<td><?php echo $tandem['exercise']?></td>
 												<!--
 												<td title="<?php echo $LanguageInstance->getTagDouble('total_time_seconds', $minutes,$seconds)?>"><?php echo $total_time?></td>
@@ -418,7 +437,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 												<td title="<?php echo $LanguageInstance->getTagDouble('total_time_seconds', $minutes,$seconds)?>">
 													<span class="duration">
 														<span class="lbl"><?php echo $LanguageInstance->get('total'); ?></span>
-														<span class="val"><?php echo $total_time?> <a href="#duration_<?php echo $tandem['id']?>" class="expand"  title="<?php echo $LanguageInstance->get('expand')?>"></a></span>
+														<span class="val"><?php echo $subTimerP?> <a href="#duration_<?php echo $tandem['id']?>" class="expand"  title="<?php echo $LanguageInstance->get('expand')?>"></a></span>
 													</span>
 													<table id="duration_<?php echo $tandem['id']?>" class="subtable duration-details">
 														<thead>
@@ -432,11 +451,11 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 														</thead>
 														<tbody>
 															<tr>
-																<td>00:00</td>
-																<td>00:00</td>
-																<td>00:00</td>
-																<td>00:00</td>
-																<td>00:00</td>
+																<td><?php echo $subTimer[0];?></td>
+																<td><?php echo $subTimer[1];?></td>
+																<td><?php echo $subTimer[2];?></td>
+																<td><?php echo $subTimer[3];?></td>
+																<td><?php echo $subTimer[4];?></td>
 															</tr>
 														</tbody>
 													</table>
@@ -454,24 +473,28 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 										<?php } ?>
 										</tbody>
 										</table>
-							<?php   }	
+							<?php   }
+									unset($subTimer);
+									$subTimer=array();
 								}
 									
 									
 								if ($task_tandems != null) {
 									?>
-									<h3 class="secundary-title"><?php echo $LanguageInstance->get('tasks_tandems')?></h3>
+									<h3 class="secundary-titleTask">
+										<div id="taskStats">
+											<span id="taskStatsTxt"><?php echo $LanguageInstance->get('tasks_tandems')?></span>
+											<span id="taskStatsX">[<a href="Javascript:search(-1,-1,-1);" title="close">X</a>]</span>
+										</div>
+									</h3>
 									<table id="statistics2" class="table">
 									<thead>
 										<tr>
-											<th style="width:15%"><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 0, <?php echo ($order_by_tasks==0)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('date')?></a><?php if ($order_by_tasks==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 1, <?php echo ($order_by_tasks==1)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('exercise')?></a><?php if ($order_by_tasks==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+											<!--<th style="width:15%"><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 0, <?php echo ($order_by_tasks==0)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('date')?></a><?php if ($order_by_tasks==0){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 1, <?php echo ($order_by_tasks==1)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('exercise')?></a><?php if ($order_by_tasks==1){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>-->
 											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 2, <?php echo ($order_by_tasks==2)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('task')?></a><?php if ($order_by_tasks==2){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 3, <?php echo ($order_by_tasks==3)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('total_time')?></a><?php if ($order_by_tasks==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
+											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 3, <?php echo ($order_by_tasks==3)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('duration')?></a><?php if ($order_by_tasks==3){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
 											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 4, <?php echo ($order_by_tasks==4)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('user')?></a><?php if ($order_by_tasks==4){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-											<?php /*
-											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 5, <?php echo ($order_by_tasks==5)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('date_guest_user_logged')?></a><?php if ($order_by_tasks==5){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
-											*/ ?>
 											<th><a href="Javascript:order(<?php echo $order_by_tandems; ?>, <?php echo $order_by_tandems_direction; ?>, 6, <?php echo ($order_by_tasks==6)?($order_by_tasks_direction==0?1:0):0 ?>, <?php echo $order_by_questions;?>, <?php echo $order_by_questions_direction;?>);"><?php echo $LanguageInstance->get('finalized')?></a><?php if ($order_by_tasks==6){?><span class="ui-button-icon-primary ui-icon ui-icon-triangle-1-<?php echo $order_by_tasks_direction==0?'n':'s'?> right"></span><?php } ?></th>
 										</tr>
 									</thead>
@@ -481,16 +504,18 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 										$seconds = isset($task['total_time'])?$task['total_time']:0;
 										$minutes = minutes($seconds);
 										$total_time = time_format($seconds);
-										
+										$subTs=explode(":",$total_time);
+										$subTs[0]>0 ? $subTimers=$subTs[0].":".$subTs[1].":".$subTs[2] : $subTimers=$subTs[1].":".$subTs[2];
+										$createdDateFormated = date("d M Y h:i.s",strtotime($task['finalized']));
 									?>
 										<tr>
-											<td><a href="Javascript:search(<?php echo $task['id_tandem']?>,<?php echo $task['task_number']?>,-1)" title="<?php echo $LanguageInstance->get('go')?>" target="_blank"><?php echo $task['created']?></a></td>
-											<td><?php echo $task['exercise']?></td>
+											<!--<td><a href="Javascript:search(<?php echo $task['id_tandem']?>,<?php echo $task['task_number']?>,-1)" title="<?php echo $LanguageInstance->get('go')?>" target="_blank"><?php echo $task['created']?></a></td>
+											<td><?php echo $task['exercise']?></td>-->
 											<td><?php echo $task['task_number']?></td>
-											<td title="<?php echo $LanguageInstance->getTagDouble('total_time_seconds', $minutes, $seconds)?>"><?php echo $total_time?></td>
+											<td title="<?php echo $LanguageInstance->getTagDouble('total_time_seconds', $minutes, $seconds)?>"><?php echo $subTimers?></td>
 											<td ><?php echo $task['user']?></td>
 											<?php /*<td><?php echo $task['date_guest_user_logged']?></td>*/ ?>
-											<td><?php echo $task['finalized']?></td>
+											<td><?php echo $createdDateFormated;?></td>
 										</tr>
 									<?php }?>
 									</tbody>
@@ -565,7 +590,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	</div>
 	<!-- /wrapper -->
 	<!-- footer -->
-	<!-- div id="footer-container">
+	<div id="footer-container">
 		<div id="footer">
 			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem')?>"></div>
 			<div class="footer-logos">
@@ -574,7 +599,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 				<img src="css/images/logo_speakapps.png" alt="Speakapps" />
 			</div>
 		</div>
-	</div -->>
+	</div>
 	<!-- /footer -->
 </body>
 </html>

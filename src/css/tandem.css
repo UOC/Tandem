@@ -1280,6 +1280,16 @@ h3.secundary-title{
 	float:left;
 }
 
+h3.secundary-titleTask{
+	color:#1e2d1c;
+	font-weight: normal;
+	font-size: 1.5em;
+	width:100%;
+	padding-bottom:12px;
+	margin-bottom:0;
+	float:left;
+}
+
 #roomStatus{
 	margin:1em 0;
 	font-size:1.4em;
@@ -1574,6 +1584,26 @@ table.table thead tr th{
 	background-position:-18px -36px;
 }
 
+
+#statistics2{
+	width: 70%;
+	float: right;
+}
+
+#taskStatsX{
+	float: right;
+	margin-right: 15px;
+}
+
+#taskStats{
+	background-color: #EBF4EC;
+	width:70%;
+	float: right;
+}
+
+#taskStatsTxt{
+	margin-left: 5px;
+}
 
 /*
 #statistics1 {
