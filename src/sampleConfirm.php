@@ -250,7 +250,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				  dataType: "xml"
 				});
 				showSolutionAndShowNextTask();
-				//$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
+				//$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
 			}
 //timer
 
@@ -515,12 +515,12 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				
 				//monta el iframe de inicio
 				if(initHTMLB==null)
-				$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTML+"?user=<?php echo $user;?>");
+				$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTML+"?user=<?php echo $user;?>");
 				else{
 					if("<?php echo $user;?>"=="a")
-						$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTML);
+						$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTML);
 					else
-						$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTMLB);
+						$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTMLB);
 				}
 						
 				if(numExerc==1) 
@@ -575,7 +575,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				if(numNodes!=<?php echo $node;?>){
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Next Task');?>");
 				}
-				$('#ifrmHTML').attr("src","<?echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
+				$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
 					showNextQuestion();
 			}
 			// END
