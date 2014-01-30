@@ -69,7 +69,7 @@ a img {border:none;}
 	}
 
 #showNews{
-	top:0px;
+	top:-20px;
 	min-width:400px;
 	overflow:visible;
 	position:absolute;
