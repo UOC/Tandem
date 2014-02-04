@@ -1187,5 +1187,74 @@
 					return $result;
 					
 			}
+
+        /********************************************************************************************************/
+        /************************************** L T I  C O N S U M E R ******************************************/
+        /********************************************************************************************************/
+
+        /**
+         * 
+         * Get the data of LTI app
+         * @param unknown_type $id
+         */
+        public function loadDadesLTI($id) {
+            
+            $user_obj = isset($_SESSION[CURRENT_USER])?$_SESSION[CURRENT_USER]:false;
+            
+            $course_id = $_SESSION[COURSE_ID];
+            $role_data = $this->get_role_classroom($course_id, $user_obj->id);
+            $role = $role_data && isset($role_data['role'])?$role_data['role']:'';
+                
+            $sql = 'SELECT a.id, a.toolurl as toolurl, a.name, a.description, a.resourcekey, a.resourcekey, a.password, a.preferheight, a.sendname, '.
+                    ' a.sendemailaddr, a.acceptgrades, a.allowroster, a.allowsetting, a.customparameters as customparameters,  '.
+                    'a.allowinstructorcustom, a.organizationid, a.organizationurl, a.launchinpopup, a.debugmode, a.registered, a.updated '.
+                    'from lti_application a '.
+                    'where a.id = '.$id;
+            $result = $this->consulta($sql);
+            if($this->numResultats($result) > 0){
+                $row = $this->obteObjecteComArray($result);
+                return $row;
+                
+            }else{
+                return null;
+            }
         }
+
+        /**
+         * 
+         * Obte el rol en la bd
+         * @param int $course_id
+         * @param int $user_id
+         * @return boolean
+         */
+        public function get_role_classroom($course_id, $user_id) {
+            $result = $this->consulta("SELECT * FROM user_course where id_user = ".$user_id." AND id_course = ".$course_id);
+            if($this->numResultats($result) > 0){
+                $row = $this->obteObjecteComArray($result);
+                return $row;
+            }else{
+                return false;
+            }
+        }
+        
+        /**
+         * 
+         * Loads data of remote App
+         * @param unknown_type $id
+         */
+        public function loadRemoteApp($id) {
+            
+            $sql = 'SELECT * from remote_application where id = '.$id;
+            $result = $this->consulta($sql);
+            if($this->numResultats($result) > 0){
+                $row = $this->obteObjecteComArray($result);
+                return $row;
+            
+            }else{
+                return null;
+            }
+        }
+
+        
+} 
 ?>

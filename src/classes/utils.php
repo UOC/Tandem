@@ -1,4 +1,5 @@
 <?php
+require_once('constants.php');
 /**
  * 
  * Gets if file exists in include path or directely
@@ -267,3 +268,16 @@ function rrmdir($path)
 	return $r;
 }
 
+/**
+ * 
+ * Check if session is correct if not redirects
+ */
+function check_user_session() {
+	if (!$_SESSION) {
+		session_start();
+	}
+	if (!isset($_SESSION[CURRENT_USER]) || !isset($_SESSION[CURRENT_USER]->id) || !isset($_SESSION[COURSE_ID])) {
+		header('Location: index.php');
+		die();
+	}
+}
