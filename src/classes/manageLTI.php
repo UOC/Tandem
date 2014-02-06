@@ -5,9 +5,15 @@ class ManageLTI {
 	function lti_consumer_launch($consumer, $user, $locale, $extra_custom_params = array()) {
 		
 		if (!class_exists("bltiUocWrapper")) {
-			require_once dirname(__FILE__).'/../IMSBasicLTI/uoc-blti/bltiUocWrapper.php';
-			require_once dirname(__FILE__).'/../IMSBasicLTI/ims-blti/blti_util.php';
-			require_once dirname(__FILE__).'/../IMSBasicLTI/utils/UtilsPropertiesBLTI.php';
+			if (file_exists(dirname(__FILE__).'/../IMSBasicLTI/uoc-blti/bltiUocWrapper.php')) {
+				require_once dirname(__FILE__).'/../IMSBasicLTI/uoc-blti/bltiUocWrapper.php';
+				require_once dirname(__FILE__).'/../IMSBasicLTI/ims-blti/blti_util.php';
+				require_once dirname(__FILE__).'/../IMSBasicLTI/utils/UtilsPropertiesBLTI.php';
+			} else {
+				require_once 'IMSBasicLTI/uoc-blti/bltiUocWrapper.php';
+				require_once 'IMSBasicLTI/ims-blti/blti_util.php';
+				require_once 'IMSBasicLTI/utils/UtilsPropertiesBLTI.php';
+			}
 		}
 		require_once dirname(__FILE__).'/constants.php';
 	
