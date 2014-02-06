@@ -94,6 +94,26 @@ function lti_get_lang($context) {
 				$lang="en_US";
 		}
 	}
+	if (strlen($lang)<4){
+		switch ($lang)
+		{
+			case "en":
+				$lang="en_US";
+				break;
+			case "es":
+				$lang="es_ES";
+				break;
+			case "ca":
+				$lang="ca_ES";
+				break;
+			case "fr":
+				$lang="fr_FR";
+				break;
+			default:
+				$lang="en_US";
+		}
+	}
+
 	return $lang;
 }
 
