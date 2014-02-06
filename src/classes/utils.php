@@ -71,25 +71,28 @@ function posa_osid_context_session($gestorBD, $course_id, $context) {
 }
 
 function lti_get_lang($context) {
-	$lang = 'en-US';
-	if (isset($context->info[LAUNCH_PRESENTATION_LOCALE]))
-	$custom_lang_id = $context->info[LAUNCH_PRESENTATION_LOCALE];
-	$custom_lang_id = '';
-	if (isset($context->info[CUSTOM_LANG]))
-	$custom_lang_id = $context->info[CUSTOM_LANG];
-	switch ($custom_lang_id)
-	{
-		case "a":
-			$lang="ca_ES";
-			break;
-		case "b":
-			$lang="es_ES";
-			break;
-		case "d":
-			$lang="fr_FR";
-			break;
-		default:
-			$lang="en_US";
+	$lang = 'en_US';
+	if (isset($context->info[LAUNCH_PRESENTATION_LOCALE])) {
+		$lang = $context->info[LAUNCH_PRESENTATION_LOCALE];
+	}
+	$lang = str_replace('-', '_', $lang);
+	if (isset($context->info[CUSTOM_LANG])) {
+		$custom_lang_id = '';
+		$custom_lang_id = $context->info[CUSTOM_LANG];
+		switch ($custom_lang_id)
+		{
+			case "a":
+				$lang="ca_ES";
+				break;
+			case "b":
+				$lang="es_ES";
+				break;
+			case "d":
+				$lang="fr_FR";
+				break;
+			default:
+				$lang="en_US";
+		}
 	}
 	return $lang;
 }
