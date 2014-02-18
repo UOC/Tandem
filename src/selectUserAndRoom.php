@@ -89,11 +89,11 @@ if (!$user_obj || !$course_id) {
 	$name = mb_convert_encoding($user_obj->name, 'ISO-8859-1', 'UTF-8');
 	
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title>Tandem</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta charset="ISO-8859-1" />
 <link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 <!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
@@ -106,6 +106,7 @@ if (!$user_obj || !$course_id) {
 <script src="js/jquery.ui.position.js"></script>
 <script src="js/jquery.ui.autocomplete.js"></script>
 <script src="js/jquery.colorbox-min.js"></script>
+
 <script src="js/common.js"></script>
 <?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
 <script type="text/javascript">
@@ -196,6 +197,7 @@ if (!$user_obj || !$course_id) {
 
 			 // MODIFICATION - bind to the input's focus
 	        input.focus(function(event) {
+	        	event.preventDefault();
 	            $(this).val('');
 	            $(input).autocomplete('search', '');
 	        });
@@ -525,7 +527,7 @@ if (!$user_obj || !$course_id) {
 									if ($users_course && count($users_course)>0) {
 									?>
 									<label for="select_user" title="1. <?php echo $LanguageInstance->get('select_users')?>"><img class="point" src="css/images/p1.png" alt="1. <?php echo $LanguageInstance->get('select_users')?>" /></label>
-									<br></br><select name="user_selected" id="user_selected" tabindex="1"  onchange="enable_exercise(this.value);">
+									<br/><select name="user_selected" id="user_selected" tabindex="1"  onchange="enable_exercise(this.value);">
 										<option value="-1"><?php echo $LanguageInstance->get('select_users')?></option>
 										<?php foreach ($users_course as $user) {
 											if ($user['id']!=$user_obj->id) {?>
@@ -545,7 +547,7 @@ if (!$user_obj || !$course_id) {
 									 is_array($array_exercises) &&
 									 count($array_exercises)>0) {?>
 										<label for="select_exercise" title="2. <?php echo $LanguageInstance->get('select_exercise')?>"><img class="point" src="css/images/p2.png" alt="2. <?php echo $LanguageInstance->get('select_exercise')?>" /></label>
-										<br></br><select id="room" name="room"  tabindex="2" onchange="enable_button(this.value);">
+										<br/><select id="room" name="room"  tabindex="2" onchange="enable_button(this.value);">
 												<option value="-1"><?php echo $LanguageInstance->get('select_exercise')?></option>
 											<?php foreach ($array_exercises as $exercise) {?>
 												<option value="<?php echo $exercise['name_xml_file']?>" <?php echo ($selected_exercise_select==$exercise['name_xml_file']||$selected_exercise==$exercise['name_xml_file'])?'selected="selected"':''?>><?php echo $exercise['name']?></option>
@@ -727,7 +729,7 @@ if (!$user_obj || !$course_id) {
 		</div>
 	</div>
 	<!-- /footer -->
-	<iframe src="" width="0" frameborder="0" height="0" id="idfrm" name="idfrm" />
+	<iframe src="" width="0" frameborder="0" height="0" id="idfrm" name="idfrm"></iframe>
 </body>
 </html>
 <?php } ?>
