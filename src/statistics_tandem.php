@@ -150,6 +150,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 				.addClass( "ui-widget ui-widget-content ui-corner-left" );
 
 			input.focus(function(event) {
+				event.preventDefault();
 	            $(this).val('');
 	            $(input).autocomplete('search', '');
 	        });
