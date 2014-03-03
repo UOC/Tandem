@@ -604,4 +604,9 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	<!-- /footer -->
 </body>
 </html>
-<?php } ?>
+
+
+<?php 
+
+         }
+?>

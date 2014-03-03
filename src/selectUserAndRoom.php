@@ -110,26 +110,6 @@ if (!$user_obj || !$course_id) {
 <script src="js/common.js"></script>
 <?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
 <script type="text/javascript">
-
-
-// 10082012: nfinney> IE DETECTION - ERROR MSG TO USER
-
-	var isIE = (function(){
-		var div = document.createElement('div');
-		div.innerHTML = '<!--[if IE]><i></i><![endif]-->';
-		return (div.getElementsByTagName('i').length === 1);         
-	}());
-
-	$(document).ready(function() {
-		var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
-		if (isIE || isIE11)
-		{
-			$.colorbox({href:"warningIE.html",escKey:true,overlayClose:false, width:400, height:350});
-		}
-	});	
-
-// END
-
 (function( $ ) {
 	$.widget( "ui.combobox", {
 		_create: function() {
@@ -249,8 +229,15 @@ if (!$user_obj || !$course_id) {
 })( jQuery );
 
 	$(document).ready(function(){
-//xml request for iexploiter/others 		
-		if (window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
+
+//IE DETECTION - ERROR MSG TO USER
+		var isIE = (function(){var div = document.createElement('div');div.innerHTML = '<!--[if IE]><i></i><![endif]-->';return (div.getElementsByTagName('i').length === 1);}()); //check compatibility with iE<11
+		var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
+		if (isIE) $.colorbox({href:"warningIE.html",escKey:true,overlayClose:false, width:400, height:350,onLoad:function(){$('#cboxClose').hide();}});
+		// END
+
+//xml request for iexploiter11+/others 		
+		if (isIE11 || window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
 		else xmlReq = new XMLHttpRequest();
 //global vars - will be extracted from dataROOM.xml
 		var classOf="";
@@ -297,8 +284,10 @@ if (!$user_obj || !$course_id) {
 			room = room_2[1];
 			var url= "<?php echo $path; ?>data"+data+".xml";
 			xmlReq.onreadystatechange = processXml;
-			xmlReq.timeout = 100000;
-			xmlReq.overrideMimeType("text/xml");
+			if(!isIE11){
+					xmlReq.timeout = 100000;
+					xmlReq.overrideMimeType("text/xml");
+			}
 			xmlReq.open("GET", url, true);
 			xmlReq.send(null);
 		}
@@ -334,21 +323,6 @@ if (!$user_obj || !$course_id) {
 					user_selected=$('#user_selected').val();
 					document.getElementById('roomStatus').innerHTML="";
 	$('#idfrm').attr('src','checkRoomUserTandem.php?id_user_guest='+user_selected+'&nextSample='+nextSample+'&node='+node+'&classOf='+classOf+'&data='+data);
-					//TODO estaria be pero
-					/*$.ajax({
-						  type: 'GET',
-						  url: "checkRoomUserTandem.php",
-						  data: {'id_user_guest':user_selected,'nextSample':nextSample,'node':node,'classOf':classOf,'data':data},
-						  statusCode: {
-							    404: function() {
-							    	alert("Can't load Room contact with the administrators");
-							    }
-							  },
-							  success: function(){
-								  //
-							  }
-						});*/
-						
 				} else {
 					$('#roomStatus').html('Error loading exercise '+data+' contact with the administrators');
 				}
@@ -367,21 +341,7 @@ if (!$user_obj || !$course_id) {
 				user_selected=$('#user_selected').val();
 				document.getElementById('roomStatus').innerHTML="";
 				$('#idfrm').attr('src','checkRoomUserTandem.php?id_user_guest='+user_selected+'&create_room=1&nextSample='+nextSample+'&node='+node+'&classOf='+classOf+'&data='+data);
-				//TODO
-				/*$.ajax({
-					  type: 'GET',
-					  url: "checkRoomUserTandem.php",
-					  data: {'id_user_guest':user_selected,'create_room':1,'nextSample':nextSample,'node':node,'classOf':classOf,'data':data},
-					  statusCode: {
-						    404: function() {
-						    	alert("Can't create Room contact with the administrators");
-						    }
-						  },
-						  success: function(){
-							  //
-						  }
-					});*/
-				
+				//TODO in Ajax
 		}
 		printError = function (error) {
 			alert(error);
@@ -411,8 +371,10 @@ if (!$user_obj || !$course_id) {
 		interval = setInterval(function(){
 				var url="check.php?room=<?php echo $user_obj->custom_room?>";
 				xmlReq.onreadystatechange = checkExercise;
-				xmlReq.timeout = 100000;
-				xmlReq.overrideMimeType("text/xml");
+				if(!isIE11){
+					xmlReq.timeout = 100000;
+					xmlReq.overrideMimeType("text/xml");
+				}
 				xmlReq.open("GET", url, true);
 				xmlReq.send(null);
 			 },2000);
@@ -474,8 +436,6 @@ if (!$user_obj || !$course_id) {
 			
 	});
 
-</script>
-<script>
 	var intTimerNow;
 	var isNowOn=0;
 	function setExpiredNow(itNow){

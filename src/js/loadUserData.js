@@ -5,19 +5,23 @@ current_user = null;
 has_to_check_user = true;
 current_room = null;
 added_skype_script = false;
+var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
    getUsersDataXml = function(user, room){
 
 	   if (has_to_check_user) {
 		   current_user = user;
 		   current_room = room;
-		   if (window.ActiveXObject) xmlReqUser = new ActiveXObject("Microsoft.XMLHTTP");
-			else xmlReqUser = new XMLHttpRequest();
-			var url="check.php?room="+room;
-			xmlReqUser.onreadystatechange = processUserDataXml;
+		   
+		if (isIE11 || window.ActiveXObject) xmlReqUser = new ActiveXObject("Microsoft.XMLHTTP");
+		else xmlReqUser = new XMLHttpRequest();
+		var url="check.php?room="+room;
+		xmlReqUser.onreadystatechange = processUserDataXml;
+		if(!isIE11){
 			xmlReqUser.timeout = 100000;
 			xmlReqUser.overrideMimeType("text/xml");
-			xmlReqUser.open("GET", url, true);
-			xmlReqUser.send(null);
+		}
+		xmlReqUser.open("GET", url, true);
+		xmlReqUser.send(null);
 	   }
 	}
 	processUserDataXml = function(){

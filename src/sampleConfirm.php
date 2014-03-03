@@ -20,6 +20,9 @@ if(isset($_GET['userb']) && $_GET['userb']!="" && $_GET['userb']!=null){
 	$nameb = $gestorBDSample->getUserB($userBid);
 }
 
+$iexploiter11=false;
+if (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false) $iexploiter11=true;
+
 $ExerFolder = $_GET["nextSample"];
 //This is because xml nodes begins counting at zero, but zero is not real :-) 
 if($_GET["node"]==1) $node = $_GET["node"];
@@ -54,6 +57,8 @@ else $Otheruser='a';
 	<?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
 	
 	<script>
+	var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
+
 //timer
 		var intTimerNow;
 		function setExpiredNow(itNow){
@@ -257,11 +262,6 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			
 			processInitXml = function(){
 				if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
-					//extract data
-					//var lng=xmlReq.responseXML.getElementsByTagName('exe')[0].getAttribute("lang");
-					//script.src = "lang/"+lng+".js";
-					//script.type = 'text/javascript';
-					//body.appendChild(script);
 					var cad=xmlReq.responseXML.getElementsByTagName('nextType');
 					numNodes=cad.length-1;
 					if(<?php echo $node+1;?><=numNodes){
@@ -285,8 +285,10 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				var url="createUser.php";
 				var params="user="+user+"&room="+room;
 				xmlReq.onreadystatechange = processXml;
-				xmlReq.timeout = 100000;
-				xmlReq.overrideMimeType("text/xml");
+				if(!isIE11){
+					xmlReq.timeout = 100000;
+					xmlReq.overrideMimeType("text/xml");
+				}
 				xmlReq.open("GET", url+"?"+params, true);
 				xmlReq.send(null);
 			}
@@ -296,8 +298,10 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			getXMLDone = function(user,room){
 				var url="check.php?room=<?php echo $room; ?>";
 				xmlReq.onreadystatechange = processXmlOverDone;
-				xmlReq.timeout = 100000;
-				xmlReq.overrideMimeType("text/xml");
+				if(!isIE11){
+					xmlReq.timeout = 100000;
+					xmlReq.overrideMimeType("text/xml");
+				}
 				xmlReq.open("GET", url, true);
 				xmlReq.send(null);
 			}
@@ -392,8 +396,10 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				var url="<?php echo $room; ?>.xml";
 				xmlReq.onreadystatechange = processXmlOverChecked;
 				if(userDesconn==0){
-					xmlReq.timeout = 100000;
-					xmlReq.overrideMimeType("text/xml");
+					if(!isIE11){
+						xmlReqUser.timeout = 100000;
+						xmlReqUser.overrideMimeType("text/xml");
+					}
 					xmlReq.open("GET", url, false);
 					xmlReq.send(null);
 				}
@@ -528,11 +534,13 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					<?php
 						$fn = '';
 						$sn = '';
-						if($nameb!=null || $nameb!=""){
-							$fnB = $nameb->fullname;
-							$fnB = explode(" ",$fnB);
-							$fn = $fnB[0];
-							$sn = $fnB[1];
+						if( isset($_GET["userb"]) ){
+							if($nameb!=null || $nameb!=""){
+								$fnB = $nameb->fullname;
+								$fnB = explode(" ",$fnB);
+								$fn = $fnB[0];
+								$sn = $fnB[1];
+							}
 						}
 					?>
 						$.colorbox({href:"waiting4user.php?fn=<?php echo $fn;?>&sn=<?php echo $sn; ?>",escKey:false,overlayClose:false,width:380,height:280,onLoad:function(){$('#cboxClose').hide();}});
@@ -586,7 +594,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				if(intervalTimerAction!=null) clearInterval(intervalTimerAction);
 				
 				//muestra el iframe de la solución
-				if(numNodes!=<?php echo $node;?>){					
+				if(numNodes!=<?php echo $node;?>){
 					$('#next_task').attr('onclick',"pass2NextQuestion();return false;");
 					if(document.getElementById('next1Item')) document.getElementById('next1Item').style.display='inline';
 				}else{
@@ -825,7 +833,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
     
 	<!-- /footer -->
 	<script type="text/javascript" src="js/tandem.js"></script>
-	</div>
+	
 </body>
 
 </html>
