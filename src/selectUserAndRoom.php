@@ -28,7 +28,7 @@ if (!$user_obj || !$course_id) {
 	$users_course = $gestorBD->obte_llistat_usuaris($course_id, $user_obj->id);
 	$is_reload = isset($_POST['reload'])?$_POST['reload']!=null:false;
 	
-	if ($is_reload || !$users_course || count($users_course)==0) {
+	if (true) {
 		if ($lti_context->hasMembershipsService()) { //Carreguem per LTI
 			//Convertir el llistat d'usuaris a un array de 
 			//person_name_given
