@@ -57,8 +57,9 @@ else $Otheruser='a';
 	<?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
 	
 	<script>
-	var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
-
+var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
+var isie8PlusF = (function(){var undef,v = 3,div = document.createElement('div'),all = div.getElementsByTagName('i');while(div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',all[0]);return v > 4 ? v : undef;}());if(isie8PlusF>=8) isie8Plus=true;else isie8Plus=false;
+if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
 //timer
 		var intTimerNow;
 		function setExpiredNow(itNow){
@@ -129,6 +130,7 @@ else $Otheruser='a';
 			var intervalTimerAction;
 			var intervalIfNextQuestion;
 			var intervalIfNextQuestionAnswered;
+			var intervalUpdateAction;
 //xml request for iexploiter/others 		
 			if (window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
 			else xmlReq = new XMLHttpRequest();
@@ -285,7 +287,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				var url="createUser.php";
 				var params="user="+user+"&room="+room;
 				xmlReq.onreadystatechange = processXml;
-				if(!isIE11){
+				if(!isIEOk){
 					xmlReq.timeout = 100000;
 					xmlReq.overrideMimeType("text/xml");
 				}
@@ -298,7 +300,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			getXMLDone = function(user,room){
 				var url="check.php?room=<?php echo $room; ?>";
 				xmlReq.onreadystatechange = processXmlOverDone;
-				if(!isIE11){
+				if(!isIEOk){
 					xmlReq.timeout = 100000;
 					xmlReq.overrideMimeType("text/xml");
 				}
@@ -396,7 +398,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				var url="<?php echo $room; ?>.xml";
 				xmlReq.onreadystatechange = processXmlOverChecked;
 				if(userDesconn==0){
-					if(!isIE11){
+					if(!isIEOk){
 						xmlReqUser.timeout = 100000;
 						xmlReqUser.overrideMimeType("text/xml");
 					}

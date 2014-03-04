@@ -231,13 +231,16 @@ if (!$user_obj || !$course_id) {
 	$(document).ready(function(){
 
 //IE DETECTION - ERROR MSG TO USER
-		var isIE = (function(){var div = document.createElement('div');div.innerHTML = '<!--[if IE]><i></i><![endif]-->';return (div.getElementsByTagName('i').length === 1);}()); //check compatibility with iE<11
 		var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
-		if (isIE) $.colorbox({href:"warningIE.html",escKey:true,overlayClose:false, width:400, height:350,onLoad:function(){$('#cboxClose').hide();}});
+		var isie8PlusF = (function(){var undef,v = 3,div = document.createElement('div'),all = div.getElementsByTagName('i');while(div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',all[0]);return v > 4 ? v : undef;}());if(isie8PlusF>=8) isie8Plus=true;else isie8Plus=false;
+		if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
+
+
+		if (isie8PlusF<8) $.colorbox({href:"warningIE.html",escKey:true,overlayClose:false, width:400, height:350,onLoad:function(){$('#cboxClose').hide();}});
 		// END
 
 //xml request for iexploiter11+/others 		
-		if (isIE11 || window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
+		if (isIEOk || window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
 		else xmlReq = new XMLHttpRequest();
 //global vars - will be extracted from dataROOM.xml
 		var classOf="";
@@ -284,7 +287,7 @@ if (!$user_obj || !$course_id) {
 			room = room_2[1];
 			var url= "<?php echo $path; ?>data"+data+".xml";
 			xmlReq.onreadystatechange = processXml;
-			if(!isIE11){
+			if(!isIEOk){
 					xmlReq.timeout = 100000;
 					xmlReq.overrideMimeType("text/xml");
 			}
@@ -371,7 +374,7 @@ if (!$user_obj || !$course_id) {
 		interval = setInterval(function(){
 				var url="check.php?room=<?php echo $user_obj->custom_room?>";
 				xmlReq.onreadystatechange = checkExercise;
-				if(!isIE11){
+				if(!isIEOk){
 					xmlReq.timeout = 100000;
 					xmlReq.overrideMimeType("text/xml");
 				}

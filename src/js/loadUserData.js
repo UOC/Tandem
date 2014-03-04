@@ -6,17 +6,20 @@ has_to_check_user = true;
 current_room = null;
 added_skype_script = false;
 var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
+var isie8PlusF = (function(){var undef,v = 3,div = document.createElement('div'),all = div.getElementsByTagName('i');while(div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',all[0]);return v > 4 ? v : undef;}());if(isie8PlusF>=8) isie8Plus=true;else isie8Plus=false;
+if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
+
    getUsersDataXml = function(user, room){
 
 	   if (has_to_check_user) {
 		   current_user = user;
 		   current_room = room;
 		   
-		if (isIE11 || window.ActiveXObject) xmlReqUser = new ActiveXObject("Microsoft.XMLHTTP");
+		if (isIEOk || window.ActiveXObject) xmlReqUser = new ActiveXObject("Microsoft.XMLHTTP");
 		else xmlReqUser = new XMLHttpRequest();
 		var url="check.php?room="+room;
 		xmlReqUser.onreadystatechange = processUserDataXml;
-		if(!isIE11){
+		if(!isIEOk){
 			xmlReqUser.timeout = 100000;
 			xmlReqUser.overrideMimeType("text/xml");
 		}
