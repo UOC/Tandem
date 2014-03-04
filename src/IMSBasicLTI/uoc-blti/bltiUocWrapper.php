@@ -237,7 +237,7 @@ class bltiUocWrapper extends BLTI {
      * @param $info array
      */
     function decodeBase64($info) {
-      $keysNoEncode = array("lti_version", "lti_message_type", "tool_consumer_instance_description", "tool_consumer_instance_guid", "oauth_consumer_key", "custom_lti_message_encoded_base64", "oauth_nonce", "oauth_version", "oauth_callback", "oauth_timestamp", "basiclti_submit", "oauth_signature_method");
+      $keysNoEncode = array("lti_version", "lti_message_type", "tool_consumer_instance_description", "tool_consumer_instance_guid", "oauth_consumer_key", "custom_lti_message_encoded_base64", "oauth_nonce", "oauth_version", "oauth_callback", "oauth_timestamp", "basiclti_submit", "oauth_signature_method", "ext_ims_lis_memberships_id", "ext_ims_lis_memberships_url");
       foreach ($info as $key => $item){
         if (!in_array($key, $keysNoEncode))
           $info[$key] = base64_decode($item);
