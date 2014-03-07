@@ -86,14 +86,14 @@ if (!$user_obj || !$course_id) {
 	$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
 
 	//Agafem les dades de l'usuari
-	$name = mb_convert_encoding($user_obj->name, 'ISO-8859-1', 'UTF-8');
+	$name = mb_convert_encoding($user_obj->name, 'UTF-8', 'UTF-8');
 	
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <title>Tandem</title>
-<meta charset="ISO-8859-1" />
+<meta charset="UTF-8" />
 <link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 <!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->

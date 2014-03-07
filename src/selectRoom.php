@@ -62,7 +62,7 @@ if (!isset($user_obj)) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Tandem</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link media="screen" rel="stylesheet" href="css/init.css" />
 	<link media="screen" rel="stylesheet" href="css/colorbox.css" />
 	<link media="screen" rel="stylesheet" href="css/default.css" />

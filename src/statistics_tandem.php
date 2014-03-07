@@ -50,7 +50,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 
 //var_dump($_POST);
 	//Agafem les dades de l'usuari
-	$name = mb_convert_encoding($user_obj->name, 'ISO-8859-1', 'UTF-8');
+	$name = mb_convert_encoding($user_obj->name, 'UTF-8', 'UTF-8');
 
 	function get_tandem_status ($status){
 		global $LanguageInstance;
@@ -68,7 +68,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Tandem</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 <script src="js/jquery-1.7.2.min.js"></script>
