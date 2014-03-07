@@ -136,7 +136,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Tandem</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 <script src="js/jquery-1.7.2.min.js"></script>
