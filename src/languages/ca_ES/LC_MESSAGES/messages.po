@@ -1,53 +1,50 @@
-# Translation of Tandem (trunk) in Catalan
-# This file is distributed under the same license as the Development (trunk) package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-03-04 10:34+0100\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.5.5\n"
-"POT-Creation-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
 
 msgid "welcome"
-msgstr "Benvingut"
+msgstr "Hola"
 
 msgid "no estas autoritzat"
-msgstr "no estas autoritzat"
+msgstr "No estàs autoritzat"
 
 msgid "back"
-msgstr "tornar"
+msgstr "Tornar"
 
 msgid "txtOtherUserConn"
-msgstr "Ara ja esteu conectats."
+msgstr "Ara ja esteu connectats."
 
 msgid "txtTheUser"
 msgstr "<b>L'usuari ("
 
 msgid "txtReplied"
-msgstr ") ha resp&oacute;s. Esperant la teva confirmaci&oacute;</b>"
+msgstr ") ha respost. Esperant la teva confirmació.</b>"
 
 msgid "txtWaiting4User"
-msgstr "Esperant la conexi&oacute; amb T&agrave;ndem..."
+msgstr "Esperant la connexió amb Tandem..."
 
 msgid "no_users_in_course"
-msgstr "No hi ha usuaris en aquest curs"
+msgstr "No hi ha usuaris en aquest curs."
 
 msgid "user_in_tandem"
-msgstr "L'usuari no est&aacute; disponible, intenta-ho m&eacute;s tard"
+msgstr "L'usuari no està disponible, intenta-ho més tard"
 
 msgid "refresh"
-msgstr "Actualitzar Usuaris"
+msgstr "Actualitzar usuaris"
 
 msgid "show_tandem"
 msgstr "Mostrar Tandems"
 
 msgid "txtDesconnected"
-msgstr "Desconexi&oacute;"
+msgstr "Desconnexió"
 
 msgid "select_user"
 msgstr "Selecciona un usuari primer"
@@ -56,10 +53,10 @@ msgid "select_users"
 msgstr "Selecciona usuari"
 
 msgid "tandems"
-msgstr "T&agrave;ndems"
+msgstr "Tandems"
 
 msgid "no_tandems"
-msgstr "No hi ha T&agrave;ndems per aquest usuari"
+msgstr "No hi ha Tandems per aquest usuari"
 
 msgid "date"
 msgstr "Data"
@@ -68,22 +65,22 @@ msgid "points"
 msgstr "Punts"
 
 msgid "user_host"
-msgstr "Usuari Host"
+msgstr "Usuari hoste"
 
 msgid "user"
 msgstr "Usuari"
 
 msgid "user_guest"
-msgstr "Usuari Convidat"
+msgstr "Usuari convidat"
 
 msgid "date_guest_user_logged"
-msgstr "Data Acc&eacute;s Altre Usuari"
+msgstr "Data accés altre usuari"
 
 msgid "finalized"
-msgstr "Data Finalitzat"
+msgstr "Data de finalització"
 
 msgid "total_time"
-msgstr "Minuts Total"
+msgstr "Duració total"
 
 msgid "start"
 msgstr "Iniciar!"
@@ -95,16 +92,20 @@ msgid "select_exercise"
 msgstr "Selecciona Exercici"
 
 msgid "tandem_description_1"
-msgstr "Benvingut/da %s al Pilot de T&agrave;ndem. Aquesta eina funciona amb Google Chrome, Firefox 4 o superior i Safari 5."
+msgstr ""
+"Benvingut/da %s al pilot de Tandem. Aquesta eina funciona amb Google Chrome, "
+"Firefox 4 o superior i Safari 5."
 
 msgid "tandem_description_2"
-msgstr "T&agrave;ndem NO funciona amb Internet Explorer. Estem treballant per arreglar el problema."
+msgstr ""
+"Tandem NO funciona amb Internet Explorer. Estem treballant per arreglar el "
+"problema."
 
 msgid "tandem_logo"
-msgstr "Logo T&agrave;ndem"
+msgstr "Logo Tandem"
 
 msgid "tandem"
-msgstr "T&agrave;ndem"
+msgstr "Tandem"
 
 msgid "exercise"
 msgstr "Exercici"
@@ -113,25 +114,27 @@ msgid "go"
 msgstr "Accedir"
 
 msgid "waiting"
-msgstr "Esperant a l'usuari..."
+msgstr "Esperant l'usuari..."
 
 msgid "waitingUserX"
-msgstr "Esperant a"
+msgstr "Esperant"
 
 msgid "acceptance"
-msgstr "Si el teu company o companya de tandem no accepta en 1 minut, aquesta invitaci&oacute; caducar&agrave;."
+msgstr ""
+"Si el teu company o companya de Tandem no accepta en 1 minut, aquesta "
+"invitació caducarà."
 
 msgid "direct_access_to_content"
-msgstr "Acc&eacute;s directe al contingut"
+msgstr "Accés directe al contingut"
 
 msgid "pending_tandems"
-msgstr "Invitacions Pendents"
+msgstr "Invitacions pendents"
 
 msgid "no_pending_tandems"
-msgstr "No tens invitacions a T&agrave;ndem pendents"
+msgstr "No tens invitacions a Tandem pendents."
 
 msgid "reload_pending"
-msgstr "Recarregar T&agrave;ndems Pendents"
+msgstr "Recarregar Tandems pendents"
 
 msgid "tasks_tandems"
 msgstr "Tasques"
@@ -152,7 +155,7 @@ msgid "start_date"
 msgstr "Data inici"
 
 msgid "finish_date"
-msgstr "Data fi"
+msgstr "Data final"
 
 msgid "finished"
 msgstr "Finalitzat"
@@ -167,97 +170,102 @@ msgid "no"
 msgstr "No"
 
 msgid "yes"
-msgstr "S&iacute;"
+msgstr "Sí"
 
 msgid "no_results_found"
 msgstr "No s'han trobat resultats"
 
 msgid "play_as_user_host"
-msgstr "Mostrar l'execuci&oacute; de l'usuari iniciador"
+msgstr "Mostrar l'execució de l'usuari hoste"
 
 msgid "play_as_user_guest"
-msgstr "Mostrar l'execuci&oacute; de l'usuari convidat"
+msgstr "Mostrar l'execució de l'usuari convidat"
 
 msgid "play"
 msgstr "Mostrar"
 
 msgid "just_been_invited"
-msgstr "T'han convidat a fer T&agrave;ndem amb:"
+msgstr "T'han convidat a fer Tandem amb:"
 
 msgid "user_agent_host"
-msgstr "Info navegador host"
+msgstr "Info navegador hoste"
 
 msgid "user_agent_guest"
 msgstr "Info navegador convidat"
 
 msgid "mange_exercises_tandem"
-msgstr "Gestiona Exercicis"
+msgstr "Gestiona exercicis"
 
 msgid "choose_zip_file"
-msgstr "Escull un fitxer zip a carregar"
+msgstr "Escull un fitxer ZIP per carregar."
 
 msgid "zip_upload_ok"
 msgstr "El fitxer %s s'ha carregat i descomprimit correctament."
 
 msgid "error_uploading_file"
-msgstr "S'ha produ&iuml;t un error en la c&agrave;rrega del fitxer. Torna-ho a provar."
+msgstr "S'ha produït un error en la càrrega del fitxer. Torna-ho a provar."
 
 msgid "error_no_zip_format"
-msgstr "El fitxer que estas carregant no &eacute;s .zip. Torna-ho a provar."
+msgstr "El fitxer que estàs carregant no és ZIP. Torna-ho a provar."
 
 msgid "error_getting_information_of_exercise"
 msgstr "No s'ha trobat l'exercici a la base de dades"
 
 msgid "exercise_name"
-msgstr "Nom Exercici"
+msgstr "Nom exercici"
 
 msgid "name_xml_file"
-msgstr "Nom Xml"
+msgstr "Nom XML"
 
 msgid "enabled"
-msgstr "Habilitat"
+msgstr "Activat"
 
 msgid "delete"
 msgstr "Eliminar"
 
 msgid "show_profile"
-msgstr "ver perfil"
+msgstr "Ver perfil"
 
 msgid "hide_profile"
-msgstr "ocultar perfil"
+msgstr "Ocultar perfil"
 
 msgid "quit"
 msgstr "Sortir"
 
 msgid "task_remaining_time"
-msgstr "Temps Restant de la Tasca"
+msgstr "Temps restant de la tasca"
 
 msgid "overrides_xml_file"
-msgstr "Sobrescriu el fitxer XML si t&eacute; el mateix nom"
+msgstr "Sobrescriurà el fitxer XML si té el mateix nom"
 
 msgid "file_exercise_xml_aready_exists"
-msgstr "El fitxer %s existeix, esteu segur que voleu sobrescriure'l? Per fer-ho selecciona \"Sobrescriu a SÃ­\""
+msgstr ""
+"El fitxer %s existeix, estàs segur que vols sobrescriure'l? Per fer-ho "
+"selecciona \"Sobrescriu a Sí\""
 
 msgid "update"
 msgstr "Actualitza"
 
 msgid "upload"
-msgstr "Pujar"
+msgstr "Carregar"
 
 msgid "error_choose_file"
-msgstr "Has de seleccionar un fitxer ZIP per fer la pujada"
+msgstr "Has de seleccionar un fitxer ZIP per fer la càrrega."
 
 msgid "exercise_deleted_ok"
 msgstr "S'ha eliminat correctament l'exercici"
 
 msgid "error_delete_exercise"
-msgstr "Error eliminant l'exercici seleccionat, comprovi que existeix i que el fitxer tingui els permissos correctes"
+msgstr ""
+"Error eliminant l'exercici seleccionat, comprova que existeix i que el "
+"fitxer tingui els permisos correctes."
 
 msgid "main_xml_file_not_found"
-msgstr "No es pot processar el fitxer ja que no es troba el fitxer XML principal"
+msgstr ""
+"No es pot processar el fitxer ja que no es troba el fitxer XML principal."
 
 msgid "no_exercises_found"
-msgstr "No hi ha exercicis disponibles, el professor ha de configurar-los"
+msgstr "No hi ha exercicis disponibles."
 
 msgid "Solution"
 msgstr "Soluci&oacute;"
@@ -339,4 +347,3 @@ msgstr "Buscar"
 
 msgid "invalid_tool"
 msgstr "Eina inv&agrave;lida"
-

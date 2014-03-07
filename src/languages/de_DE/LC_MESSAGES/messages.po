@@ -1,0 +1,280 @@
+# Translation of Tandem (trunk) in English
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2014-03-07 13:59+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.5\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+
+msgid "welcome"
+msgstr "Willkommen"
+
+msgid "no estas autoritzat"
+msgstr "Sie sind nicht autorisiert"
+
+msgid "back"
+msgstr "Zurück"
+
+msgid "txtOtherUserConn"
+msgstr "Sie sind jetzt mit Ihrem Tandempartner verbunden."
+
+msgid "txtWaiting4User"
+msgstr "Warten auf Tandemverbindung.."
+
+msgid "no_users_in_course"
+msgstr "Keine Benutzer in diesem Kurs."
+
+msgid "txtTheUser"
+msgstr "<b>Ihr Partner/Ihre Partnerin ("
+
+msgid "txtReplied"
+msgstr ") hat geantwortet. Warten auf Bestätigung.</b>"
+
+msgid "refresh"
+msgstr "Benutzer Update"
+
+msgid "user_in_tandem"
+msgstr ""
+"Ihr Partner/Ihre Partnerin ist nicht verfügbar. Versuchen Sie es später noch "
+"einmal. "
+
+msgid "show_tandem"
+msgstr "Tandems anzeigen"
+
+msgid "txtDesconnected"
+msgstr "Verbindung unterbrochen"
+
+msgid "select_user"
+msgstr "Wählen Sie einen Benutzer/eine Benutzerin"
+
+msgid "select_users"
+msgstr "Wählen Sie andere Benutzer"
+
+msgid "tandems"
+msgstr "Tandems"
+
+msgid "no_tandems"
+msgstr "Es gibt keine Tandems für diesen Benutzer/diese Benutzerin"
+
+msgid "date"
+msgstr "Datum"
+
+msgid "points"
+msgstr "Punkte"
+
+msgid "user_host"
+msgstr "Gastgeber/Gastgeberin"
+
+msgid "user"
+msgstr "Benutzer/Benutzerin"
+
+msgid "user_guest"
+msgstr "Gast"
+
+msgid "date_guest_user_logged"
+msgstr "Login-Daten von Gast-Benutzer/-Benutzerin"
+
+msgid "finalized"
+msgstr "Beendet"
+
+msgid "total_time"
+msgstr "Minuten insgesamt "
+
+msgid "start"
+msgstr "Start!"
+
+msgid "accept"
+msgstr "Akzeptieren"
+
+msgid "select_exercise"
+msgstr "Wählen Sie eine Aufgabe"
+
+msgid "tandem_description_1"
+msgstr ""
+"Willkommen zu Tandem! Dieses Programm funktioniert mit Google Chrome, "
+"Firefox 4 oder höher und Safari 5."
+
+msgid "tandem_description_2"
+msgstr ""
+"Tandem läuft nicht unter Internet Explorer. Wir arbeiten an der Lösung "
+"dieses Problems."
+
+msgid "tandem_logo"
+msgstr "Tandem Logo"
+
+msgid "tandem"
+msgstr "Tandem"
+
+msgid "exercise"
+msgstr "Übung"
+
+msgid "go"
+msgstr "Beginnen"
+
+msgid "waiting"
+msgstr "Warten auf den Benutzer/die Benutzerin..."
+
+msgid "waitingUserX"
+msgstr "Warten auf "
+
+msgid "acceptance"
+msgstr ""
+"Wenn Ihr Tandempartner/Ihre Tandempartnerin nicht innerhalb einer Minute "
+"akzeptiert, verfällt diese Einladung."
+
+msgid "direct_access_to_content"
+msgstr "Direkter Zugriff auf den Inhalt"
+
+msgid "pending_tandems"
+msgstr "offene Einladungen"
+
+msgid "no_pending_tandems"
+msgstr "Sie haben keine offenen Einladungen zu Tandem"
+
+msgid "reload_pending"
+msgstr "offene Tandems neu laden"
+
+msgid "tasks_tandems"
+msgstr "Aufgaben"
+
+msgid "questions_tasks_tandems"
+msgstr "Fragen"
+
+msgid "task"
+msgstr "Aufgabe"
+
+msgid "question"
+msgstr "Frage"
+
+msgid "total_time_seconds"
+msgstr "Gesamtzeit:&#13 %s Minuten&#13 %s Sekunden"
+
+msgid "start_date"
+msgstr "Begonnen am:"
+
+msgid "finish_date"
+msgstr "Beendet am:"
+
+msgid "finished"
+msgstr "Beendet"
+
+msgid "caducado"
+msgstr "Abgelaufen"
+
+msgid "all"
+msgstr "Alle"
+
+msgid "no"
+msgstr "Nein"
+
+msgid "yes"
+msgstr "Ja"
+
+msgid "no_results_found"
+msgstr "Keine Resultate gefunden"
+
+msgid "play_as_user_host"
+msgstr "Als Gastgeber/Gastgeberin teilnehmen"
+
+msgid "play_as_user_guest"
+msgstr "Als Gast teilnehmen"
+
+msgid "play"
+msgstr "Play"
+
+msgid "just_been_invited"
+msgstr "Sie sind zu einem Tandem eingeladen worden von: "
+
+msgid "user_agent_host"
+msgstr "Informationen über den Browser des Gastgebers"
+
+msgid "user_agent_guest"
+msgstr "Informationen über den Browser des Gastes"
+
+msgid "mange_exercises_tandem"
+msgstr "Übungen verwalten"
+
+msgid "choose_zip_file"
+msgstr "Wählen Sie eine ZIP-Datei zum Hochladen"
+
+msgid "zip_upload_ok"
+msgstr "Datei %s wurde hochgeladen und geöffnet"
+
+msgid "error_uploading_file"
+msgstr ""
+"Es gab ein Problem beim Hochladen der Datei. Bitte versuchen Sie es noch "
+"einmal."
+
+msgid "error_no_zip_format"
+msgstr ""
+"Die Datei, die Sie hochladen möchten, ist keine ZIP-Datei. Bitte versuchen "
+"Sie es noch einmal."
+
+msgid "error_getting_information_of_exercise"
+msgstr "Übung wurde in der Datenbank nicht gefunden"
+
+msgid "exercise_name"
+msgstr "Name der Übung"
+
+msgid "name_xml_file"
+msgstr "Xml Name"
+
+msgid "enabled"
+msgstr "Aktiviert"
+
+msgid "delete"
+msgstr "Löschen"
+
+msgid "show_profile"
+msgstr "Profil anzeigen"
+
+msgid "hide_profile"
+msgstr "Profil verbergen"
+
+msgid "quit"
+msgstr "Beenden"
+
+msgid "task_remaining_time"
+msgstr "Verbleibende Zeit der Aufgabe"
+
+msgid "overrides_xml_file"
+msgstr "Überschreibt die XML-Datei, wenn sie den selben Namen hat"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"Datei %s existiert bereits, möchten Sie das Objekt überschreiben? Dazu "
+"wählen Sie \"Überschreiben: Ja\""
+
+msgid "update"
+msgstr "Update"
+
+msgid "upload"
+msgstr "Hochladen"
+
+msgid "error_choose_file"
+msgstr "Sie müssen eine ZIP-Datei für das Hochladen wählen"
+
+msgid "exercise_deleted_ok"
+msgstr "Übung wurde erfolgreich gelöscht"
+
+msgid "error_delete_exercise"
+msgstr ""
+"Die Übung konnte nicht gelöscht werden, prüfen Sie, ob die Datei existiert "
+"und ob Sie die Berechtigung zum Löschen haben."
+
+msgid "main_xml_file_not_found"
+msgstr ""
+"Die Datei konnte nicht bearbeitet werden, weil die XML-Datei nicht gefunden "
+"wurde. "
+
+msgid "no_exercises_found"
+msgstr ""
+"Keine Übungen verfügbar, Ihr Lehrer/Ihre Lehrerin muss sie erst festlegen."

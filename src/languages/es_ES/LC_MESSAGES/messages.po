@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-02-04 14:59+0100\n"
+"PO-Revision-Date: 2014-03-07 14:28+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,18 +12,19 @@ msgstr ""
 "POT-Creation-Date: \n"
 "Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
 "Language-Team: \n"
+"Language: es_ES\n"
 
 msgid "welcome"
-msgstr "Bienvenido"
+msgstr "Hola"
 
 msgid "no estas autoritzat"
-msgstr "no estas autoritzado"
+msgstr "No estás autorizad@"
 
 msgid "back"
-msgstr "volver"
+msgstr "Volver"
 
 msgid "txtOtherUserConn"
-msgstr "Ahora estáis conectados."
+msgstr "Ya estás conectad@ con tu compañer@ de Tandem."
 
 msgid "txtWaiting4User"
 msgstr "Esperando la conexión con Tandem..."
@@ -35,31 +36,31 @@ msgid "txtReplied"
 msgstr ") ha respondido. Esperando tu confirmación</b>"
 
 msgid "no_users_in_course"
-msgstr "No hay usuarios en el curso"
+msgstr "No hay usuarios en este curso."
 
 msgid "user_in_tandem"
-msgstr "El usuario no está disponible, intentalo más tarde"
+msgstr "Tu compañer@ no está disponible. Inténtalo más tarde."
 
 msgid "refresh"
-msgstr "Actualizar Usuarios"
+msgstr "Actualizar usuarios"
 
 msgid "show_tandem"
-msgstr "Mostrar Tándems"
+msgstr "Mostrar tándems"
 
 msgid "txtDesconnected"
 msgstr "Desconexión"
 
 msgid "select_user"
-msgstr "Selecciona un usuario primero"
+msgstr "Seleccionar usuario "
 
 msgid "select_users"
-msgstr "Selecciona usuario  "
+msgstr "Seleccionar usuarios  "
 
 msgid "tandems"
 msgstr "Tándems"
 
 msgid "no_tandems"
-msgstr "No hay Tándems para este usuario"
+msgstr "No hay tándems para este usuario."
 
 msgid "date"
 msgstr "Fecha"
@@ -68,47 +69,47 @@ msgid "points"
 msgstr "Puntos"
 
 msgid "user_host"
-msgstr "Usuario Host"
+msgstr "Usuario host"
 
 msgid "user"
 msgstr "Usuario"
 
 msgid "user_guest"
-msgstr "Usuario Invitado"
+msgstr "Usuario invitado"
 
 msgid "date_guest_user_logged"
-msgstr "Fecha Acceso Otro Usuario"
+msgstr "Fecha conexión usuario invitado"
 
 msgid "finalized"
-msgstr "Fecha Finalizado"
+msgstr "Fecha finalización"
 
 msgid "total_time"
-msgstr "Minutos Total"
+msgstr "Tiempo total"
 
 msgid "start"
-msgstr "Iniciar"
+msgstr "¡Empezar!"
 
 msgid "accept"
-msgstr "Acepta"
+msgstr "Aceptar"
 
 msgid "select_exercise"
-msgstr "Selecciona Ejercicio"
+msgstr "Seleccionar ejercicio"
 
 msgid "tandem_description_1"
 msgstr ""
-"Bienvenid@ %s al Piloto de Tándem. Esta herramienta funciona con Google "
+"Bienvenid@ %s al piloto de Tandem. Esta herramienta funciona con Google "
 "Chrome, Firefox 4 o superior y Safari 5."
 
 msgid "tandem_description_2"
 msgstr ""
-"Tándem NO funciona con Internet Explorer. Estamos trabajando en arreglar el "
-"problema."
+"Tandem NO funciona con Internet Explorer. Estamos trabajando para arreglar "
+"este problema."
 
 msgid "tandem_logo"
-msgstr "Logo Tándem"
+msgstr "Logo Tandem"
 
 msgid "tandem"
-msgstr "Tándem"
+msgstr "Tandem"
 
 msgid "exercise"
 msgstr "Ejercicio"
@@ -124,28 +125,28 @@ msgstr "Esperando a"
 
 msgid "acceptance"
 msgstr ""
-"Si tu compañero/a de tandem no acepta en 1 minuto, esta invitación caducará."
+"Si tu compañer@ de tándem no acepta en 1 minuto, esta invitación caducará."
 
 msgid "direct_access_to_content"
 msgstr "Acceso directo al contenido"
 
 msgid "pending_tandems"
-msgstr "Invitaciones Pendientes"
+msgstr "Invitaciones pendientes"
 
 msgid "no_pending_tandems"
-msgstr "No tienes invitaciones a Tándem pendientes"
+msgstr "No tienes invitaciones pendientes a Tandem."
 
 msgid "reload_pending"
-msgstr "Recargar Tándems Pendientes"
+msgstr "Recargar tándems pendientes"
 
 msgid "tasks_tandems"
-msgstr "Tareas"
+msgstr "Actividades"
 
 msgid "questions_tasks_tandems"
 msgstr "Preguntas"
 
 msgid "task"
-msgstr "Tarea"
+msgstr "Actividad"
 
 msgid "question"
 msgstr "Pregunta"
@@ -157,7 +158,7 @@ msgid "start_date"
 msgstr "Fecha inicio"
 
 msgid "finish_date"
-msgstr "Fecha fin"
+msgstr "Fecha final"
 
 msgid "finished"
 msgstr "Finalizado"
@@ -178,16 +179,16 @@ msgid "no_results_found"
 msgstr "No se han encontrado resultados"
 
 msgid "play_as_user_host"
-msgstr "Mostrar la ejecución del usuario iniciador"
+msgstr "Mostrar ejecución del usuario host"
 
 msgid "play_as_user_guest"
-msgstr "Mostrar la ejecución del usuario invitado"
+msgstr "Mostrar ejecución del usuario invitado"
 
 msgid "play"
-msgstr "Mostrar"
+msgstr "Reproducir"
 
 msgid "just_been_invited"
-msgstr "Te han invitado a hacer Tandem con:"
+msgstr "Te han invitado a hacer tándem con:"
 
 msgid "user_agent_host"
 msgstr "Info navegador host"
@@ -196,79 +197,80 @@ msgid "user_agent_guest"
 msgstr "Info navegador invitado"
 
 msgid "mange_exercises_tandem"
-msgstr "Gestiona Ejercicios"
+msgstr "Gestionar ejercicios"
 
 msgid "choose_zip_file"
-msgstr "Escoge un fichero zip a cargar"
+msgstr "Seleccionar archivo ZIP para enviar"
 
 msgid "zip_upload_ok"
-msgstr "El fichero %s se ha cargado y descomprimido correctamente."
+msgstr "El archivo %s se ha cargado y descomprimido correctamente."
 
 msgid "error_uploading_file"
-msgstr "Se ha producido un error en la carga del fichero. Vuelve a probarlo."
+msgstr ""
+"Se ha producido un error en la descarga del archivo. Vuelve a intentarlo."
 
 msgid "error_no_zip_format"
-msgstr "El fichero que estás cargando no es .zip. Vuelve a probarlo."
+msgstr "El archivo que estás enviando no es un ZIP. Vuelve a intentarlo."
 
 msgid "error_getting_information_of_exercise"
-msgstr "No se ha encontrado el ejercicio en la base de datos"
+msgstr "No se ha encontrado el ejercicio en la base de datos."
 
 msgid "exercise_name"
-msgstr "Nombre Ejercicio"
+msgstr "Nombre ejercicio"
 
 msgid "name_xml_file"
-msgstr "Nombre Xml"
+msgstr "Nombre archivo XML"
 
 msgid "enabled"
-msgstr "Habilitado"
+msgstr "Activado"
 
 msgid "delete"
 msgstr "Eliminar"
 
 msgid "show_profile"
-msgstr "ver perfil"
+msgstr "Ver perfil"
 
 msgid "hide_profile"
-msgstr "ocultar perfil"
+msgstr "Ocultar perfil"
 
 msgid "quit"
 msgstr "Salir"
 
 msgid "task_remaining_time"
-msgstr "Task Remaining Time"
+msgstr "Tiempo restante para la actividad"
 
 msgid "overrides_xml_file"
-msgstr "Sobreescribe el fichero XML si tiene el mismo nombre"
+msgstr "Sobreescribirá el archivo XML si tiene el mismo nombre."
 
 msgid "file_exercise_xml_aready_exists"
 msgstr ""
-"El fichero %s existe, ¿está seguro que quiere ? Para hacerlo selecciona "
-"\"Sobreescribir a Sí\""
+"El archivo %s ya existe. ¿Estás segur@ de que quieres sobreescribirlo ? Para "
+"hacerlo, selecciona \"Sobreescribir - Sí\""
 
 msgid "update"
-msgstr "Actualiza"
+msgstr "Actualizar"
 
 msgid "upload"
-msgstr "Subir"
+msgstr "Enviar"
 
 msgid "error_choose_file"
-msgstr "Has de seleccionar un fichero ZIP para hacer la subida"
+msgstr "Tienes que seleccionar el archivo ZIP que quieres enviar."
 
 msgid "exercise_deleted_ok"
-msgstr "Se ha eliminado correctamente el ejercicio"
+msgstr "Se ha eliminado correctamente el ejercicio."
 
 msgid "error_delete_exercise"
 msgstr ""
-"Error eliminando el ejercicio seleccionado, compruebe que existe y que el "
-"fichero tenga los permisos correctos"
+"Error eliminando el ejercicio seleccionado. Comprueba si el archivo existe y "
+"si tiene los permisos correctos."
 
 msgid "main_xml_file_not_found"
 msgstr ""
-"No se puede procesar el fichero ya que no se puede encontrar el fichero XML "
-"principal"
+"No se puede procesar el archivo porque no se puede encontrar el archivo XML "
+"principal."
 
 msgid "no_exercises_found"
-msgstr "No hay ejercicios disponibles, el profesor tiene que configurarlo"
+msgstr "No hay ejercicios disponibles. "
 
 msgid "Solution"
 msgstr "Solución"
