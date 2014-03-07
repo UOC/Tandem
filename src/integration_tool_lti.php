@@ -184,7 +184,8 @@ try {
 				$_SESSION[CURRENT_TANDEM] = $tandem['id'];
 				//we need to identify the exercise
 				//Now we try to get data course
-				$data_exercise = $tandemBLTI->getDataExercise($exercise);
+				$relative_path = isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0 ? $tandem['relative_path'].DIRECTORY_SEPARATOR:'';
+				$data_exercise = $tandemBLTI->getDataExercise($exercise, true, $relative_path);
 				$user_obj->id_resource = $id_resource;
 				$user_obj->type_user = 'b';
 	

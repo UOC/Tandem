@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Tandem</title>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link media="screen" rel="stylesheet" href="css/init.css" />
 <link media="screen" rel="stylesheet" href="css/colorbox.css" />
 <script src="js/jquery-1.7.2.min.js"></script>

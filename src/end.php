@@ -6,7 +6,7 @@ include_once(dirname(__FILE__).'/classes/register_action_user.php');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Tandem Pantalla Inici_ParaExportar</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- Save for Web Styles (Tandem Pantalla Inici_ParaExportar.psd) -->
 <style type="text/css">
 <!--

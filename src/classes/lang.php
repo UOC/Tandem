@@ -21,6 +21,8 @@ class Language {
 			$locale = 'es_ES';
 			$_SESSION[LANG] = $locale;
 		}
+
+		bind_textdomain_codeset("messages", "UTF-8");
 		putenv('LANG=' . $locale);
 
 		setlocale(LC_ALL, $locale);
