@@ -4,7 +4,7 @@ class IntegrationTandemBLTI {
 	
 	const MAX_USER_TANDEM = 2;
 	
-	function getDataExercise($exercise, $pots_morir=true) {
+	function getDataExercise($exercise, $die_if_not_found=true, $relative_path='') {
 		//Now we try to get data course
 		$path = '';
 		//20120830 abertranb register the course folder
@@ -21,9 +21,9 @@ class IntegrationTandemBLTI {
 		//FIIIII
 		
 		
-		$file = dirname(__FILE__)."/../".$path."/data$exercise.xml";
+		$file = dirname(__FILE__)."/../".$path.$relative_path."/data$exercise.xml";
 		if (!file_exists($file)) {
-			if ($pots_morir)
+			if ($die_if_not_found)
 				die ("Exercise $file not exists");
 			else 
 				return null;	

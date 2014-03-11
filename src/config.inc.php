@@ -15,5 +15,5 @@ define('BD_HOST', 'localhost');
 define('BD_NAME', 'tandem');
 define('BD_USERNAME', 'tandem');
 define('BD_PASSWORD', 'tandem');
-define('PROTECTED_FOLDER', '/Applications/XAMPP/xamppfiles/htdocs/tandemSpeakAppsGitHub/Tandem/src/xml');
+define('PROTECTED_FOLDER', dirname(__FILE__).'/xml');
 define('GOOGLE_ANALYTICS_ID', '');

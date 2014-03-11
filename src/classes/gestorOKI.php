@@ -66,7 +66,6 @@ class GestorOKI
 								while ($keys_iterator->hasNextObject()) {
 									$key = $keys_iterator->nextObject();
 									$value = $properties->getProperty($key);
-									//$value = mb_convert_encoding($value, 'ISO-8859-1', 'UTF-8');
 									if ($key==FULLNAMEOKI) {
 										$current_fullname = $value;
 									} elseif ($key==FIRSTNAMEOKI) {

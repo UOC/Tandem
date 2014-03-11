@@ -331,7 +331,7 @@
                 * @param boolean $return_array
                 */
                 public function get_invited_to_join($id_user, $id_resource_lti, $id_course, $return_array) {
-                	$sql = 'SELECT t.*, e.name, e.name_xml_file, user.firstname, user.surname from tandem as t '.
+                	$sql = 'SELECT t.*, e.name, e.name_xml_file, e.relative_path, user.firstname, user.surname from tandem as t '.
                                 	'inner join exercise e on e.id=t.id_exercise and e.enabled=1 '.
                 					'LEFT outer join user on user.id=t.id_user_host '.
                                 	'where id_course = '.$id_course.' AND id_resource_lti = '.$this->escapeString($id_resource_lti).' and id_user_guest = '.$id_user
@@ -380,7 +380,7 @@
                 * @param boolean $return_array
                 */
                 public function get_new_invited_to_join($id_last_insert, $id_user, $id_resource_lti, $id_course, $return_array) {
-                	$sql = 'SELECT t.*, e.name, e.name_xml_file, user.firstname, user.surname from tandem as t '.
+                	$sql = 'SELECT t.*, e.name, e.name_xml_file, e.relative_path, user.firstname, user.surname from tandem as t '.
                                                 	'inner join exercise e on e.id=t.id_exercise and e.enabled=1 '.
                                 					'LEFT outer join user on user.id=t.id_user_host '.
                                                 	'where t.id>'.$id_last_insert.' AND id_course = '.$id_course.' AND id_resource_lti = '.$this->escapeString($id_resource_lti).' and id_user_guest = '.$id_user
@@ -825,15 +825,20 @@
                 	if ($id_exercise<=0) {
                 		$sql = 'INSERT INTO exercise (name, name_xml_file, enabled, created, created_user_id, modified, modified_user_id)  '.
                 		                         'VALUES '.
-                		                         '('.$this->escapeString($name).', '.$this->escapeString($name_xml_file).', '.$enabled.', NOW(), '.$id_user.', NOW(), '.$id_user.')';
+                		                         '('.$this->escapeString($name).', '.$this->escapeString($name_xml_file).', '.($enabled?1:0).', NOW(), '.$id_user.', NOW(), '.$id_user.')';
                 	} else {
-                		$sql = 'UPDATE exercise SET name='.$this->escapeString($name).', name_xml_file='.$this->escapeString($name_xml_file).', enabled='.$enabled.', modified = NOW(), modified_user_id = '.$id_user.'  '.
+                		$sql = 'UPDATE exercise SET name='.$this->escapeString($name).', name_xml_file='.$this->escapeString($name_xml_file).', enabled='.($enabled?1:0).', modified = NOW(), modified_user_id = '.$id_user.'  '.
 								' WHERE id = '.$id_exercise;
                 	}
                 	$result = $this->consulta($sql);
                 	if ($result) {
 						if ($id_exercise<=0) {
 							$id_exercise = $this->get_last_inserted_id();
+                            $relative_path = DIRECTORY_SEPARATOR.$id_exercise;
+                            $sql = 'UPDATE exercise SET relative_path='.$this->escapeString($relative_path).
+                                ' WHERE id = '.$id_exercise;
+                            $result = $this->consulta($sql);
+
 							//Relacionem amb el curs
 							$sql = 'INSERT INTO course_exercise (id_course, id_exercise, created, created_user_id) '.
 							              'VALUES '.
@@ -966,7 +971,7 @@
 				 * @return resource
 				 */
 				public function obteTandem($id) {
-					$sql = 'select tandem.*, exercise.name_xml_file, exercise.name as name_exercise from tandem '.
+					$sql = 'select tandem.*, exercise.name_xml_file, exercise.relative_path, exercise.name as name_exercise from tandem '.
 					        'inner join exercise on exercise.id = tandem.id_exercise '.
 							'where tandem.id ='.$this->escapeString($id);
 					$result = $this->consulta($sql);
