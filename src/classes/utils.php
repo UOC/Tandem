@@ -71,7 +71,6 @@ function posa_osid_context_session($gestorBD, $course_id, $context) {
 }
 
 function lti_get_lang($context) {
-	$lang = 'en_US';
 	if (isset($context->info[LAUNCH_PRESENTATION_LOCALE])) {
 		$lang = $context->info[LAUNCH_PRESENTATION_LOCALE];
 	}
@@ -113,6 +112,9 @@ function lti_get_lang($context) {
 				$lang="en_US";
 		}
 	}
+	if ($lang=='en_GB') {
+		$lang = 'en_US';
+	}
 
 	return $lang;
 }
@@ -149,7 +151,7 @@ function show_error($msg, $die=false) {
 	if ($die) {
 		echo('<html>
 <title>Tandem Error</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 <!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
