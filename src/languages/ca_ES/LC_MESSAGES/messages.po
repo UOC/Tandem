@@ -14,7 +14,7 @@ msgid "welcome"
 msgstr "Hola"
 
 msgid "no estas autoritzat"
-msgstr "No est‡s autoritzat"
+msgstr "No est√†s autoritzat"
 
 msgid "back"
 msgstr "Tornar"
@@ -26,16 +26,16 @@ msgid "txtTheUser"
 msgstr "<b>L'usuari ("
 
 msgid "txtReplied"
-msgstr ") ha respost. Esperant la teva confirmaciÛ.</b>"
+msgstr ") ha respost. Esperant la teva confirmaci√≥.</b>"
 
 msgid "txtWaiting4User"
-msgstr "Esperant la connexiÛ amb Tandem..."
+msgstr "Esperant la connexi√≥ amb Tandem..."
 
 msgid "no_users_in_course"
 msgstr "No hi ha usuaris en aquest curs."
 
 msgid "user_in_tandem"
-msgstr "L'usuari no est‡ disponible, intenta-ho mÈs tard"
+msgstr "L'usuari no est√† disponible, intenta-ho m√©s tard"
 
 msgid "refresh"
 msgstr "Actualitzar usuaris"
@@ -44,7 +44,7 @@ msgid "show_tandem"
 msgstr "Mostrar Tandems"
 
 msgid "txtDesconnected"
-msgstr "DesconnexiÛ"
+msgstr "Desconnexi√≥"
 
 msgid "select_user"
 msgstr "Selecciona un usuari primer"
@@ -74,13 +74,13 @@ msgid "user_guest"
 msgstr "Usuari convidat"
 
 msgid "date_guest_user_logged"
-msgstr "Data accÈs altre usuari"
+msgstr "Data acc√©s altre usuari"
 
 msgid "finalized"
-msgstr "Data de finalitzaciÛ"
+msgstr "Data de finalitzaci√≥"
 
 msgid "total_time"
-msgstr "DuraciÛ total"
+msgstr "Duraci√≥ total"
 
 msgid "start"
 msgstr "Iniciar!"
@@ -122,10 +122,10 @@ msgstr "Esperant"
 msgid "acceptance"
 msgstr ""
 "Si el teu company o companya de Tandem no accepta en 1 minut, aquesta "
-"invitaciÛ caducar‡."
+"invitaci√≥ caducar√†."
 
 msgid "direct_access_to_content"
-msgstr "AccÈs directe al contingut"
+msgstr "Acc√©s directe al contingut"
 
 msgid "pending_tandems"
 msgstr "Invitacions pendents"
@@ -170,16 +170,16 @@ msgid "no"
 msgstr "No"
 
 msgid "yes"
-msgstr "SÌ"
+msgstr "S√≠"
 
 msgid "no_results_found"
 msgstr "No s'han trobat resultats"
 
 msgid "play_as_user_host"
-msgstr "Mostrar l'execuciÛ de l'usuari hoste"
+msgstr "Mostrar l'execuci√≥ de l'usuari hoste"
 
 msgid "play_as_user_guest"
-msgstr "Mostrar l'execuciÛ de l'usuari convidat"
+msgstr "Mostrar l'execuci√≥ de l'usuari convidat"
 
 msgid "play"
 msgstr "Mostrar"
@@ -203,10 +203,10 @@ msgid "zip_upload_ok"
 msgstr "El fitxer %s s'ha carregat i descomprimit correctament."
 
 msgid "error_uploading_file"
-msgstr "S'ha produÔt un error en la c‡rrega del fitxer. Torna-ho a provar."
+msgstr "S'ha produ√Øt un error en la c√†rrega del fitxer. Torna-ho a provar."
 
 msgid "error_no_zip_format"
-msgstr "El fitxer que est‡s carregant no Ès ZIP. Torna-ho a provar."
+msgstr "El fitxer que est√†s carregant no √©s ZIP. Torna-ho a provar."
 
 msgid "error_getting_information_of_exercise"
 msgstr "No s'ha trobat l'exercici a la base de dades"
@@ -236,12 +236,12 @@ msgid "task_remaining_time"
 msgstr "Temps restant de la tasca"
 
 msgid "overrides_xml_file"
-msgstr "Sobrescriur‡ el fitxer XML si tÈ el mateix nom"
+msgstr "Sobrescriur√† el fitxer XML si t√© el mateix nom"
 
 msgid "file_exercise_xml_aready_exists"
 msgstr ""
-"El fitxer %s existeix, est‡s segur que vols sobrescriure'l? Per fer-ho "
-"selecciona \"Sobrescriu a SÌ\""
+"El fitxer %s existeix, est√†s segur que vols sobrescriure'l? Per fer-ho "
+"selecciona \"Sobrescriu a S√≠\""
 
 msgid "update"
 msgstr "Actualitza"
@@ -250,7 +250,7 @@ msgid "upload"
 msgstr "Carregar"
 
 msgid "error_choose_file"
-msgstr "Has de seleccionar un fitxer ZIP per fer la c‡rrega."
+msgstr "Has de seleccionar un fitxer ZIP per fer la c√†rrega."
 
 msgid "exercise_deleted_ok"
 msgstr "S'ha eliminat correctament l'exercici"
@@ -307,10 +307,10 @@ msgid "browse"
 msgstr "Examinar"
 
 msgid "none_file_selected"
-msgstr "Nessun arxiu seleccionat"
+msgstr "Cap arxiu seleccionat"
 
 msgid "search_criteria"
-msgstr "Criteris de Recerca"
+msgstr "Criteris de cerca"
 
 msgid "date_range"
 msgstr "Rang de Dates"

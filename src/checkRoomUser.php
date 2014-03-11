@@ -49,7 +49,7 @@ $data = $_REQUEST['data'];
 if (!isset($user_obj) && isset($exercise) && strlen($exercise)>0) {
 	//Tornem a l'index
 	?>
-	printError('Error in session');
+	alert('Error in session');
 	<?php
 } else {
 
@@ -60,7 +60,7 @@ if (!isset($user_obj) && isset($exercise) && strlen($exercise)>0) {
 	$data_exercise = $tandemBLTI->getDataExercise($data, false);
 	if ($data_exercise==null) {
 	?>
-	printError('Error exercise <?php echo $data; ?> does not exist');
+	alert('Error exercise <?php echo $data; ?> does not exist');
 	<?php
 	} else {
 			$id_resource = $user_obj->id_resource;

@@ -283,9 +283,18 @@ if (!$user_obj || !$course_id) {
 			room = room.split("_");
 			data = room[0].split("speakApps");
 			data = data[0].split("-");
+
 			data = data[0];//.toUpperCase();
+			var extra_path = '';
+			if (data.indexOf("/")>=0) {
+				data = data.split("/");
+				data.indexOf("/");
+				extra_path = data[0]+"/";
+				data = data[1];
+			}
+
 			room = room_2[1];
-			var url= "<?php echo $path; ?>data"+data+".xml";
+			var url= "<?php echo $path; ?>"+extra_path+"data"+data+".xml";
 			xmlReq.onreadystatechange = processXml;
 			if(!isIEOk){
 					xmlReq.timeout = 100000;
@@ -512,8 +521,10 @@ if (!$user_obj || !$course_id) {
 										<label for="select_exercise" title="2. <?php echo $LanguageInstance->get('select_exercise')?>"><img class="point" src="css/images/p2.png" alt="2. <?php echo $LanguageInstance->get('select_exercise')?>" /></label>
 										<br/><select id="room" name="room"  tabindex="2" onchange="enable_button(this.value);">
 												<option value="-1"><?php echo $LanguageInstance->get('select_exercise')?></option>
-											<?php foreach ($array_exercises as $exercise) {?>
-												<option value="<?php echo $exercise['name_xml_file']?>" <?php echo ($selected_exercise_select==$exercise['name_xml_file']||$selected_exercise==$exercise['name_xml_file'])?'selected="selected"':''?>><?php echo $exercise['name']?></option>
+											<?php foreach ($array_exercises as $exercise) {
+												$extra_exercise = isset($exercise['relative_path']) && strlen($exercise['relative_path'])>0?str_replace("/", "", $exercise['relative_path']).'/':'';
+												?>
+												<option value="<?php echo $extra_exercise.$exercise['name_xml_file']?>" <?php echo ($selected_exercise_select==$exercise['name_xml_file']||$selected_exercise==$exercise['name_xml_file'])?'selected="selected"':''?>><?php echo $exercise['name']?></option>
 											<?php }?>
 										</select>	
 									<?php } else {?>

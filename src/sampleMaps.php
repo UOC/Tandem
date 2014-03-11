@@ -12,6 +12,14 @@ else $node = $_GET["node"]-1;
 //For user A and B only. If more users or login names needed, fetch data from xml :-)
 if($user =='a') $Otheruser='b';
 else $Otheruser='a';
+$path = '';
+$extra = '';
+if (isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0){
+	$extra = $tandem['relative_path'];
+}
+
+if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLDER].$extra.'/';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

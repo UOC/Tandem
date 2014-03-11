@@ -145,7 +145,12 @@ if(!isset($_SESSION)) {
 
 
 $path = '';
-if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLDER].'/';
+$extra = '';
+if (isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0){
+	$extra = $tandem['relative_path'];
+}
+
+if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLDER].$extra.'/';
 ?>
 
 			getInitXML = function(){

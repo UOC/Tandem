@@ -1,6 +1,6 @@
 <?php
 
-if (!defined(PROTECTED_FOLDER)) {
+if (!defined('PROTECTED_FOLDER')) {
 	require_once('config.inc.php');
 }
 

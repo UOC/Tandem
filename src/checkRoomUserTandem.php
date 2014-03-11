@@ -22,6 +22,10 @@ $id_user_host = $user_obj->id;
 $message = '';
 $id_course = $_SESSION[COURSE_ID];
 $id_exercise = $gestorBD->getExerciseByXmlName($data, $id_course);
+$exercise_obj = $gestorBD->get_exercise($id_exercise);
+if (is_array($exercise_obj)){
+	$exercise_obj = $exercise_obj[0];
+}
 $room = '';
 
 ?>
@@ -137,18 +141,19 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
 	if (!isset($user_obj) && isset($exercise) && strlen($exercise)>0) {
 		//Tornem a l'index
 		?>
-		printError('Error in session');
+		alert('Error in session');
 		<?php
 	} else {
 	
 		require_once dirname(__FILE__).'/classes/IntegrationTandemBLTI.php';
 		$tandemBLTI = new IntegrationTandemBLTI();
 		
+		$relative_path = $exercise_obj && isset($exercise_obj['relative_path']) && strlen($exercise_obj['relative_path'])>0?$exercise_obj['relative_path']:'';
 		//Now we try to get data course
-		$data_exercise = $tandemBLTI->getDataExercise($data, false);
+		$data_exercise = $tandemBLTI->getDataExercise($data, false, $relative_path);
 		if ($data_exercise==null) {
 		?>
-		printError('Error exercise <?php echo $data; ?> does not exist');
+		alert('Error exercise <?php echo $data; ?> does not exist');
 		<?php
 		} else {
 				if(isset($room)) $exercise = $data.$id_resource_lti.'_'.$room;
