@@ -18,8 +18,12 @@ class Language {
 
 		$locale = isset($_SESSION[LANG])?$_SESSION[LANG]:false;
 		if (!$locale) {
-			$locale = 'es_ES';
+			$locale = 'en_US';
 			$_SESSION[LANG] = $locale;
+		}
+		if (!file_exists(dirname(__FILE__).'/../languages/'.$locale.'/LC_MESSAGES/messages.po')) {
+			$locale = 'en_US';
+			$_SESSION[LANG] = $locale;	
 		}
 
 		bind_textdomain_codeset("messages", "UTF-8");
