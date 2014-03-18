@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-03-13 23:39+0100\n"
+"PO-Revision-Date: 2014-03-18 08:25+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -274,3 +274,84 @@ msgstr ""
 
 msgid "no_exercises_found"
 msgstr "Il n'y a pas d'exercices disponibles. "
+
+msgid "Solution"
+msgstr "Solution"
+
+msgid "See Solution"
+msgstr "Voir la solution"
+
+msgid "Next Task"
+msgstr "Tâche suivante"
+
+msgid "Click to finish"
+msgstr "Cliquer pour terminer"
+
+msgid "txtEndTask"
+msgstr ") termin&eacute; cette tâche. En attente de confirmation</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "Attendons de votre partenaire termine le travail"
+
+msgid "state"
+msgstr "&Eacute;tat"
+
+msgid "activity_log"
+msgstr "Journal d'activit&eacute;s"
+
+msgid "exercises_list"
+msgstr "Liste d'exercices"
+
+msgid "new_exercise"
+msgstr "Nouvel exercice"
+
+msgid "edit_exercise"
+msgstr "Edita Exercise"
+
+msgid "file_name"
+msgstr "Nom du fichier"
+
+msgid "browse"
+msgstr "Parcourir"
+
+msgid "none_file_selected"
+msgstr "Aucun fichier sélectionn&eacute;"
+
+msgid "search_criteria"
+msgstr "Crit&egrave;res de recherche"
+
+msgid "date_range"
+msgstr "Rang de Dates"
+
+msgid "from"
+msgstr "&Agrave; partir de"
+
+msgid "to"
+msgstr "&agrave;"
+
+msgid "status"
+msgstr "&Eacute;tat"
+
+msgid "duration"
+msgstr "Dur&eacute;e"
+
+msgid "browser_info"
+msgstr "Info navigateur"
+
+msgid "total"
+msgstr "Total"
+
+msgid "complete"
+msgstr "Termin&eacute;"
+
+msgid "incomplete"
+msgstr "inachev&eacute;"
+
+msgid "error"
+msgstr "Erreur"
+
+msgid "search"
+msgstr "Recherche"
+
+msgid "invalid_tool"
+msgstr "Outil invalide"
