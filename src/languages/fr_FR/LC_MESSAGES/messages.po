@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-03-07 14:00+0100\n"
+"PO-Revision-Date: 2014-03-13 23:39+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -141,13 +141,13 @@ msgid "reload_pending"
 msgstr "Recharger les Tandems en attente"
 
 msgid "tasks_tandems"
-msgstr "Activités "
+msgstr "Tâches"
 
 msgid "questions_tasks_tandems"
 msgstr "Questions "
 
 msgid "task"
-msgstr "Activité"
+msgstr "Tâche"
 
 msgid "question"
 msgstr "Question"
@@ -198,7 +198,7 @@ msgid "user_agent_guest"
 msgstr "Info sur le navigateur de l'utilisateur invité"
 
 msgid "mange_exercises_tandem"
-msgstr "Gérer Exercices "
+msgstr "Gérer exercices "
 
 msgid "choose_zip_file"
 msgstr "Choisir un fichier ZIP à télécharger "
@@ -241,7 +241,7 @@ msgid "quit"
 msgstr "Quitter"
 
 msgid "task_remaining_time"
-msgstr "Temps restant pour l'activité"
+msgstr "Temps restant pour la tâche"
 
 msgid "overrides_xml_file"
 msgstr "Écrasera le fichier XML si son nom est identique."
@@ -261,7 +261,7 @@ msgid "error_choose_file"
 msgstr "Vous devez sélectionner un fichier ZIP à envoyer."
 
 msgid "exercise_deleted_ok"
-msgstr "Suppression de l'exercice terminée. "
+msgstr "Suppression de l'exercice terminée "
 
 msgid "error_delete_exercise"
 msgstr ""

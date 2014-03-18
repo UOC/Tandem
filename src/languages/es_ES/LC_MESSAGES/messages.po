@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-03-07 14:28+0100\n"
+"PO-Revision-Date: 2014-03-13 23:39+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -140,13 +140,13 @@ msgid "reload_pending"
 msgstr "Recargar tándems pendientes"
 
 msgid "tasks_tandems"
-msgstr "Actividades"
+msgstr "Tareas"
 
 msgid "questions_tasks_tandems"
 msgstr "Preguntas"
 
 msgid "task"
-msgstr "Actividad"
+msgstr "Tarea"
 
 msgid "question"
 msgstr "Pregunta"
@@ -203,7 +203,7 @@ msgid "choose_zip_file"
 msgstr "Seleccionar archivo ZIP para enviar"
 
 msgid "zip_upload_ok"
-msgstr "El archivo %s se ha cargado y descomprimido correctamente."
+msgstr "El archivo %s se ha descargado y descomprimido correctamente."
 
 msgid "error_uploading_file"
 msgstr ""
@@ -237,7 +237,7 @@ msgid "quit"
 msgstr "Salir"
 
 msgid "task_remaining_time"
-msgstr "Tiempo restante para la actividad"
+msgstr "Tiempo restante para la tarea"
 
 msgid "overrides_xml_file"
 msgstr "Sobreescribirá el archivo XML si tiene el mismo nombre."
@@ -257,7 +257,7 @@ msgid "error_choose_file"
 msgstr "Tienes que seleccionar el archivo ZIP que quieres enviar."
 
 msgid "exercise_deleted_ok"
-msgstr "Se ha eliminado correctamente el ejercicio."
+msgstr "Se ha eliminado correctamente el ejercicio"
 
 msgid "error_delete_exercise"
 msgstr ""
@@ -271,84 +271,3 @@ msgstr ""
 
 msgid "no_exercises_found"
 msgstr "No hay ejercicios disponibles. "
-
-msgid "Solution"
-msgstr "Solución"
-
-msgid "See Solution"
-msgstr "Ver solución"
-
-msgid "Next Task"
-msgstr "Siguiente tarea"
-
-msgid "Click to finish"
-msgstr "Haz click para acabar"
-
-msgid "txtEndTask"
-msgstr ") ha terminado esta tarea. Esperando tu confirmación</b>"
-
-msgid "txtWaiting4UserEndTask"
-msgstr "Esperando que tu compañero finalice la tarea"
-
-msgid "state"
-msgstr "Estado"
-
-msgid "activity_log"
-msgstr "Registro de Actividad"
-
-msgid "exercises_list"
-msgstr "Lista de Ejercicios"
-
-msgid "new_exercise"
-msgstr "Nuevo Ejercicio"
-
-msgid "edit_exercise"
-msgstr "Editar Ejercicio"
-
-msgid "file_name"
-msgstr "Nombre del Archivo"
-
-msgid "browse"
-msgstr "Examinar"
-
-msgid "none_file_selected"
-msgstr "Ningún archivo seleccionado"
-
-msgid "search_criteria"
-msgstr "Criterios de Busqueda"
-
-msgid "date_range"
-msgstr "Rango de Fechas"
-
-msgid "from"
-msgstr "Desde"
-
-msgid "to"
-msgstr "Hasta"
-
-msgid "status"
-msgstr "Estado"
-
-msgid "duration"
-msgstr "Duración"
-
-msgid "browser_info"
-msgstr "Info Navegador"
-
-msgid "total"
-msgstr "Total"
-
-msgid "complete"
-msgstr "Completado"
-
-msgid "incomplete"
-msgstr "Incompleto"
-
-msgid "error"
-msgstr "Error"
-
-msgid "search"
-msgstr "Buscar"
-
-msgid "invalid_tool"
-msgstr "Herramienta inválida"
