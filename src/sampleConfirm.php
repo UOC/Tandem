@@ -655,6 +655,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				  		success: function(){
 				  			notifyTimerDown("<?php echo $LanguageInstance->get("txtWaiting4UserEndTask");?>");
 					  		intervalIfNextQuestion = setInterval('checkIfPass2NextQuestionToJump("<?php echo $user;?>","<?php echo $room;?>")',500);
+					  		$('#next_task').removeClass("active");
 				  		}
 					});
 			}
