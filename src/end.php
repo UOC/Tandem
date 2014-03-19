@@ -1,6 +1,7 @@
 <?php 
 $is_final = true;
 include_once(dirname(__FILE__).'/classes/register_action_user.php');
+require_once dirname(__FILE__).'/classes/lang.php';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -17,6 +18,12 @@ include_once(dirname(__FILE__).'/classes/register_action_user.php');
 	top:0px;
 	width:695px;
 	height:626px;
+}
+.text{
+	text-align: center;
+	margin-top: 10px;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 -->
@@ -38,9 +45,16 @@ include_once(dirname(__FILE__).'/classes/register_action_user.php');
 <!-- End Save for Web Styles -->
 </head>
 <body id="home_" style="background-color:#FFFFFF;">
-<!-- Save for Web Slices (Tandem Pantalla Inici_ParaExportar.psd) -->
-<a href="#" onclick="desconn();"><img id="home" src="images/final.jpg" width="310" height="343" alt="" /></a>
-<!-- a href="#" onclick="parent.window.close();"><img id="home" src="images/final.jpg" width="310" height="343" alt="" /></a> -->
-<!-- End Save for Web Slices -->
+<div>
+	<img id="home" src="images/final1.png" width="310" height="85" alt="" />
+</div>
+<div class="text">
+	<p><?php echo $LanguageInstance->get('Activityhasbeencompleted');?></p>
+	<p><?php echo $LanguageInstance->get('ThankyouforusingTANDEM');?></p>
+</div>
+<div>
+  <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
+</div>
+
 </body>
 </html>
