@@ -321,7 +321,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 
 							<?php if (count($array_exercises)>0) {?>
 							<fieldset>
-								<label for="select_exercise" class="search-lbl"><?php echo $LanguageInstance->get('exercise')?></label>
+								<label for="select_exercise" class="search-lbl"><?php echo $LanguageInstance->get('exercise')?>:</label>
 								<select id="select_exercise" name="select_exercise" tabindex="2" data-title="<?php echo $LanguageInstance->get('exercise')?>">
 									<option value="-1"><?php echo $LanguageInstance->get('select_exercise')?></option>
 									<?php foreach ($array_exercises as $exercise) {?>

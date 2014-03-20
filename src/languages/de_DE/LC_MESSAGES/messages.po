@@ -3,22 +3,22 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-03-19 12:11+0100\n"
+"PO-Revision-Date: 2014-03-20 15:55+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.5.5\n"
 "POT-Creation-Date: \n"
-"Last-Translator: \n"
+"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
 "Language-Team: \n"
-"Language: en_US\n"
+"Language: de_DE\n"
 
 msgid "welcome"
 msgstr "Willkommen"
 
 msgid "no estas autoritzat"
-msgstr "Sie sind nicht autorisiert"
+msgstr "Sie haben nicht die entsprechende Berechtigung"
 
 msgid "back"
 msgstr "Zurück"
@@ -27,22 +27,24 @@ msgid "txtOtherUserConn"
 msgstr "Sie sind jetzt mit Ihrem Tandempartner verbunden."
 
 msgid "txtWaiting4User"
-msgstr "Warten auf Tandemverbindung.."
+msgstr "Die Tandemverbindung wird hergestellt.."
 
 msgid "no_users_in_course"
-msgstr "Keine Benutzer in diesem Kurs."
+msgstr "Keine Benutzer in diesem Kurs"
 
 msgid "txtTheUser"
-msgstr "<b>Ihr Partner/Ihre Partnerin ("
+msgstr "<b>Partner ("
 
 msgid "txtReplied"
-msgstr ") hat geantwortet. Warten auf Bestätigung.</b>"
+msgstr ") hat geantwortet. Warten auf Bestätigung</b>"
 
 msgid "refresh"
 msgstr "Benutzer Update"
 
 msgid "user_in_tandem"
-msgstr "Ihr Partner/Ihre Partnerin ist nicht verfügbar. Versuchen Sie es später noch einmal. "
+msgstr ""
+"Ihr Partner/Ihre Partnerin ist nicht verfügbar. Versuchen Sie es später noch "
+"einmal. "
 
 msgid "show_tandem"
 msgstr "Tandems anzeigen"
@@ -60,7 +62,7 @@ msgid "tandems"
 msgstr "Tandems"
 
 msgid "no_tandems"
-msgstr "Es gibt keine Tandems für diesen Benutzer/diese Benutzerin"
+msgstr "Keine Tandems für diesen Benutzer vorhanden"
 
 msgid "date"
 msgstr "Datum"
@@ -84,7 +86,7 @@ msgid "finalized"
 msgstr "Beendet"
 
 msgid "total_time"
-msgstr "Minuten insgesamt "
+msgstr "Minuten insgesamt"
 
 msgid "start"
 msgstr "Start!"
@@ -93,16 +95,20 @@ msgid "accept"
 msgstr "Akzeptieren"
 
 msgid "select_exercise"
-msgstr "Wählen Sie eine Aufgabe"
+msgstr "Wählen Sie eine Übung"
 
 msgid "tandem_description_1"
-msgstr "Willkommen zu Tandem! Dieses Programm funktioniert mit Google Chrome, Firefox 4 oder höher und Safari 5."
+msgstr ""
+"Willkommen zu Tandem! Dieses Programm funktioniert mit Google Chrome, "
+"Firefox 4 oder höher und Safari 5."
 
 msgid "tandem_description_2"
-msgstr "Tandem läuft nicht unter Internet Explorer. Wir arbeiten an der Lösung dieses Problems."
+msgstr ""
+"Tandem läuft leider NICHT mit dem Internet Explorer. Wir arbeiten an der "
+"Lösung dieses Problems."
 
 msgid "tandem_logo"
-msgstr "Tandem Logo"
+msgstr "Tandemlogo"
 
 msgid "tandem"
 msgstr "Tandem"
@@ -111,7 +117,7 @@ msgid "exercise"
 msgstr "Übung"
 
 msgid "go"
-msgstr "Beginnen"
+msgstr "beginnen"
 
 msgid "waiting"
 msgstr "Warten auf den Benutzer/die Benutzerin..."
@@ -120,7 +126,9 @@ msgid "waitingUserX"
 msgstr "Warten auf "
 
 msgid "acceptance"
-msgstr "Wenn Ihr Tandempartner/Ihre Tandempartnerin nicht innerhalb einer Minute akzeptiert, verfällt diese Einladung."
+msgstr ""
+"Diese Einladung verfällt, wenn Ihr Tandempartner nicht innerhalb einer "
+"Minute akzeptiert."
 
 msgid "direct_access_to_content"
 msgstr "Direkter Zugriff auf den Inhalt"
@@ -153,7 +161,7 @@ msgid "start_date"
 msgstr "Begonnen am:"
 
 msgid "finish_date"
-msgstr "Beendet am:"
+msgstr "beendet am:"
 
 msgid "finished"
 msgstr "Beendet"
@@ -171,7 +179,7 @@ msgid "yes"
 msgstr "Ja"
 
 msgid "no_results_found"
-msgstr "Keine Resultate gefunden"
+msgstr "Keine passenden Einträge gefunden"
 
 msgid "play_as_user_host"
 msgstr "Als Gastgeber/Gastgeberin teilnehmen"
@@ -192,31 +200,33 @@ msgid "user_agent_guest"
 msgstr "Informationen über den Browser des Gastes"
 
 msgid "mange_exercises_tandem"
-msgstr "Übungen verwalten"
+msgstr "Dateien verwalten"
 
 msgid "choose_zip_file"
-msgstr "Wählen Sie eine ZIP-Datei zum Hochladen"
+msgstr "Wählen Sie eine zip-Datei zum Hochladen"
 
 msgid "zip_upload_ok"
 msgstr "Datei %s wurde hochgeladen und geöffnet"
 
 msgid "error_uploading_file"
-msgstr "Es gab ein Problem beim Hochladen der Datei. Bitte versuchen Sie es noch einmal."
+msgstr "Es gab ein Problem beim Hochladen. Bitte versuchen Sie es noch einmal."
 
 msgid "error_no_zip_format"
-msgstr "Die Datei, die Sie hochladen möchten, ist keine ZIP-Datei. Bitte versuchen Sie es noch einmal."
+msgstr ""
+"Die Datei, die Sie hochladen möchten, ist keine .zip-Datei. Bitte versuchen "
+"Sie es bitte noch einmal."
 
 msgid "error_getting_information_of_exercise"
-msgstr "Übung wurde in der Datenbank nicht gefunden"
+msgstr "Übung konnte in der Datenbank nicht gefunden werden."
 
 msgid "exercise_name"
 msgstr "Name der Übung"
 
 msgid "name_xml_file"
-msgstr "Xml Name"
+msgstr "Name der Xml-Datei"
 
 msgid "enabled"
-msgstr "Aktiviert"
+msgstr "aktiviert"
 
 msgid "delete"
 msgstr "Löschen"
@@ -234,10 +244,12 @@ msgid "task_remaining_time"
 msgstr "Verbleibende Zeit der Aufgabe"
 
 msgid "overrides_xml_file"
-msgstr "Überschreibt die XML-Datei, wenn sie den selben Namen hat"
+msgstr "Überschreibt die XML-Datei mit dem selben Namen"
 
 msgid "file_exercise_xml_aready_exists"
-msgstr "Datei %s existiert bereits, möchten Sie das Objekt überschreiben? Dazu wählen Sie \"Überschreiben: Ja\""
+msgstr ""
+"Datei %s existiert bereits. Wenn Sie sicher sind, dass Sie die Datei "
+"überschreiben wollen, wählen Sie \"Überschreiben: Ja\""
 
 msgid "update"
 msgstr "Update"
@@ -249,101 +261,105 @@ msgid "error_choose_file"
 msgstr "Sie müssen eine ZIP-Datei für das Hochladen wählen"
 
 msgid "exercise_deleted_ok"
-msgstr "Übung wurde erfolgreich gelöscht"
+msgstr "Die Übung wurde erfolgreich gelöscht"
 
 msgid "error_delete_exercise"
-msgstr "Die Übung konnte nicht gelöscht werden, prüfen Sie, ob die Datei existiert und ob Sie die Berechtigung zum Löschen haben."
+msgstr ""
+"Fehler: Gewählte Übung konnte nicht gelöscht werden. Überprüfen Sie, ob die "
+"Datei existiert und ob Sie die entsprechenden Rechte besitzen."
 
 msgid "main_xml_file_not_found"
-msgstr "Die Datei konnte nicht bearbeitet werden, weil die XML-Datei nicht gefunden wurde. "
+msgstr ""
+"Die Datei konnte nicht bearbeitet werden, weil die XML-Datei nicht gefunden "
+"wurde. "
 
 msgid "no_exercises_found"
-msgstr "Keine Übungen verfügbar, Ihr Lehrer/Ihre Lehrerin muss sie erst festlegen."
+msgstr ""
+"Keine Übungen verfügbar, Ihr Lehrer/Ihre Lehrerin muss sie erst festlegen."
 
 msgid "Solution"
-msgstr "Soluci&oacute;"
+msgstr "Lösung"
 
 msgid "See Solution"
-msgstr "Veure soluci&oacute;"
+msgstr "Lösung ansehen"
 
 msgid "Next Task"
-msgstr "Seg&uuml;ent tasca"
+msgstr "Nächste Aufgabe"
 
 msgid "Click to finish"
-msgstr "Fes clic per acabar"
+msgstr "Wenn Sie fertig sind, klicken Sie hier"
 
 msgid "txtEndTask"
-msgstr ") ha acabat aquesta tasca. Esperant la teva confirmaci&oacute;</b>"
+msgstr ") hat die Aufgabe beendet. Warten auf Bestätigung</b>"
 
 msgid "txtWaiting4UserEndTask"
-msgstr "Esperant que el teu company/a finalitzi la tasca"
+msgstr "Warten bis Ihr Partner die Aufgabe beendet hat.."
 
 msgid "state"
-msgstr "Estat"
+msgstr "Land"
 
 msgid "activity_log"
-msgstr "Registre d'Activitat"
+msgstr "Aktivitätenprotokoll"
 
 msgid "exercises_list"
-msgstr "Llista d'Exercicis"
+msgstr "Übungsliste"
 
 msgid "new_exercise"
-msgstr "Nou Exercici"
+msgstr "Neue Übung"
 
 msgid "edit_exercise"
-msgstr "Edita Exercise"
+msgstr "Übung bearbeiten"
 
 msgid "file_name"
-msgstr "Nom de l'Arxiu"
+msgstr "Datei Name"
 
 msgid "browse"
-msgstr "Examinar"
+msgstr "Durchsuchen"
 
 msgid "none_file_selected"
-msgstr "Cap arxiu seleccionat"
+msgstr "Keine Datei ausgewählt"
 
 msgid "search_criteria"
-msgstr "Criteris de cerca"
+msgstr "Suchkriterien"
 
 msgid "date_range"
-msgstr "Rang de Dates"
+msgstr "Zeitabschnitt"
 
 msgid "from"
-msgstr "Des"
+msgstr "von"
 
 msgid "to"
-msgstr "Fins"
+msgstr "zu"
 
 msgid "status"
-msgstr "Estat"
+msgstr "Status"
 
 msgid "duration"
-msgstr "Durada"
+msgstr "Länge"
 
 msgid "browser_info"
-msgstr "Info Navegador"
+msgstr "Informationen über den Browser"
 
 msgid "total"
-msgstr "Total"
+msgstr "gesamt"
 
 msgid "complete"
-msgstr "Completat"
+msgstr "abgeschlossen"
 
 msgid "incomplete"
-msgstr "Incomplet"
+msgstr "nicht vollständig"
 
 msgid "error"
-msgstr "Error"
+msgstr "Fehler"
 
 msgid "search"
-msgstr "Buscar"
+msgstr "Suchen"
 
 msgid "invalid_tool"
-msgstr "Eina inv&agrave;lida"
+msgstr "ungültiges Werkzeug"
 
 msgid "Activityhasbeencompleted"
-msgstr "Activity abgeschlossen!"
+msgstr "Aktivität wurde abgeschlossen!"
 
 msgid "ThankyouforusingTANDEM"
-msgstr "Wir danken f&uuml;r TANDEM"
-
+msgstr "Wir freuen uns, dass Sie TANDEM verwendet haben! Vielen Dank!"
