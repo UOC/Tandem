@@ -136,6 +136,10 @@ try {
 	    //Check if course exists
 	    $course_name = $context->getCourseName();
 	    $course_key = $context->getCourseKey();
+	    if (isset($context->info['custom_is_multiple']) && $context->info['custom_is_multiple']) {
+	    	$course_name .= ' - '. $context->getResourceTitle(); 
+	    	$course_key .= '_'. $context->getResourceKey();
+	    }
 	    	
 	    $course = $gestorBD->get_course_by_courseKey($course_key);
 	    if (!$course) {
