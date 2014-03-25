@@ -462,7 +462,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 													</table>
 												</td>
 												<td class="center">
-													<a href="#bi_<?php echo $tandem['id']?>" class="modal_bi">Ver</a>
+													<a href="#bi_<?php echo $tandem['id']?>" class="modal_bi"><?php echo $LanguageInstance->get('See')?></a>
 													<div id="bi_<?php echo $tandem['id']?>" style="display:none">
 														<h3><?php echo $LanguageInstance->get('user_agent_host')?></h3>
 														<p><?php echo $tandem['user_agent_host']?></p>
