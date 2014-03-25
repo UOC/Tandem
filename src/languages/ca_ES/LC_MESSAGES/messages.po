@@ -347,3 +347,9 @@ msgstr "Activitat finalitzada!"
 msgid "ThankyouforusingTANDEM"
 msgstr "Gr&agrave;cies per utilitzar TANDEM"
 
+msgid "Connecting..."
+msgstr "Connectant ..."
+
+msgid "Task"
+msgstr "Tasca"
+

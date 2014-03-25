@@ -189,7 +189,7 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
 				}
 	
 				function openLinkWaiting(){
-					top.document.getElementById('roomStatus').innerHTML="Connecting...";
+					top.document.getElementById('roomStatus').innerHTML="<?php echo $LanguageInstance->get('Connecting...')?>";
 					setTimeout(openLink,3000);
 					//Fem que creii el fitxer per dir que ja esta seleccionada
 					var room = "<?php echo $exercise?>";

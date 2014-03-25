@@ -48,7 +48,7 @@ if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$data.$room.".xml")){?>
 				if(xmlReq.responseXML.getElementsByTagName('usuarios')[0].childNodes.length==2){ 	
 					top.document.getElementById('roomStatus').innerHTML='Please choose another room, this one is currently in use.';
 				}else{ 
-					top.document.getElementById('roomStatus').innerHTML="Connecting...";
+					top.document.getElementById('roomStatus').innerHTML="<?php echo $LanguageInstance->get('Connecting...')?>";
 					setTimeout(openLink,3000);
 				}
 			}

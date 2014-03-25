@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-03-19 12:11+0100\n"
+"PO-Revision-Date: 2014-03-25 10:48+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -345,5 +345,11 @@ msgid "Activityhasbeencompleted"
 msgstr "¡Actividad finalizada!"
 
 msgid "ThankyouforusingTANDEM"
-msgstr "Gracies por utilizar TANDEM"
+msgstr "Gracias por utilizar TANDEM"
+
+msgid "Connecting..."
+msgstr "Conectando ..."
+
+msgid "Task"
+msgstr "Tarea"
 

@@ -333,6 +333,7 @@ font-weight:bold;
 }
 
 #header #content_info{
+	z-index: 1000 !important;
 	display:none;
 	position:absolute;
 	width:880px;
