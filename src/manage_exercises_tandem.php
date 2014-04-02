@@ -71,13 +71,13 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				else 
 				{ 
 					$delete = array();
+					$enabled = 1;
 					$id = $gestorBD->register_tandem_exercise($course_id, -1, $user_obj->id, $name_form, $name_xml_file, $enabled);
 					$target_path = dirname(__FILE__).DIRECTORY_SEPARATOR.$course_folder.DIRECTORY_SEPARATOR.$id;
 			
 					$delete = moveFromTempToCourseFolder($target_path_temp, $target_path, $delete);
 					rrmdir($target_path_temp);
 					
-					$enabled = 1;
 					$message = $LanguageInstance->getTag('zip_upload_ok',$filename);
 					$message_cls = 'alert-info';
 					$exercise_name = '';
