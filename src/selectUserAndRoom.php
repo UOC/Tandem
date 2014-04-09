@@ -95,6 +95,7 @@ if (!$user_obj || !$course_id) {
 <title>Tandem</title>
 <meta charset="UTF-8" />
 <link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/defaultInit.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 <!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
 <link rel="stylesheet" type="text/css" media="all" href="css/colorbox.css" />
@@ -250,7 +251,19 @@ if (!$user_obj || !$course_id) {
 		var node="";
 		var room="";
 		var data="";
-				
+		var TimerSUAR = 2000;
+		var txtNews="";
+
+		notifyTimerDown = function(id){
+			if($.trim(txtNews)!=$.trim(id)){
+				$('#showNewsS').html(id);
+				$('#showNewsS').css("top",-20).fadeIn(1000).slideDown("fast");
+				$('#showNewsS').css("top",-20).fadeIn(1000).slideDown("fast");
+				$("#showNewsS").css("top",-50).delay(3000).fadeOut(1000).slideUp("fast");
+				txtNews=id;
+			}
+		}
+
 		enable_exercise= function(value){
 			value=parseInt(value, 10);
 			if (value!='' && value>0) {
@@ -395,9 +408,10 @@ if (!$user_obj || !$course_id) {
 		//checkExercise_interval();
 		//interval = setInterval("checkExercise_interval",3000);
 		<?php } */?>
-		
-		intervalCheck = setInterval(function(){
 
+
+
+		intervalCheck = setInterval(function(){
 			$.ajax({
 				  type: 'GET',
 				  url: "new_tandems.php",
@@ -408,26 +422,23 @@ if (!$user_obj || !$course_id) {
 				  success: function(xml){
 				  	var id_txt = $(xml).find('id').text();
 				  	if (id_txt &&  id_txt.length>0) {
-					     var created_txt = $(xml).find('created').text();
-					     var nameuser_txt = $(xml).find('nameuser').text();
-					     var exercise_txt = $(xml).find('exercise').text();
-					     $("#info-block").show();
-					     //10092012 nfinney: restyle Invite message
-					     
-					$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo $LanguageInstance->get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo $LanguageInstance->get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo $LanguageInstance->get('accept');?></a></div>");
-					setExpiredNow(60);
-					
-					
-					     //END 10092012
-					     //$("#info-block").append("Created: "+created_txt+"");
-					     //$("#info-block").append("Name: "+nameuser_txt);
-					     //$("#info-block").append("Exercise: "+exercise_txt);
-					     clearInterval(intervalCheck);
+						var created_txt = $(xml).find('created').text();
+						var nameuser_txt = $(xml).find('nameuser').text();
+						var exercise_txt = $(xml).find('exercise').text();
+						$("#info-block").show();
+						$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo $LanguageInstance->get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo $LanguageInstance->get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo $LanguageInstance->get('accept');?></a></div>");
+						setExpiredNow(60);
+						clearInterval(intervalCheck);
 				  	}
-
+				  },
+				  error: function(){
+				  		clearInterval(intervalCheck);
+						TimerSUAR+=500;
+						intervalCheck = setInterval(intervalCheck,TimerSUAR);
+						notifyTimerDown('<?php echo $LanguageInstance->get('SlowConn')?>');
 				  }
 			});
-		},2000);			
+		},TimerSUAR);			
 		<?php if ($selected_exercise && strlen($selected_exercise)>0){ echo 'getXML();'; }?>
 
 
@@ -485,6 +496,14 @@ if (!$user_obj || !$course_id) {
 	
 	<!-- /wrapper -->
 	<div id="wrapper">
+
+		<div id="head-containerS">
+			<div id="headerS">
+            	<div id="logoS">
+            		<div id="showNewsS"></div>
+            	</div>
+       		</div>
+        </div>
 		<!-- main-container -->
   		<div id="main-container">
   			<!-- main -->

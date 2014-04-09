@@ -1,0 +1,49 @@
+#showNewsS{
+	
+	top:-20px;
+	min-width:400px;
+	overflow:visible;
+	position:absolute;
+	text-align:center;
+	line-height:23px;
+	display:block;
+	margin-left: 210px;
+	color:#2B3F26;
+	font-size:18px;
+	line-height:20px;
+	padding-left:50px;
+	padding-right:50px;
+	z-index:1000;
+	background-color:#fff; 
+	border:1px solid #2B3F27; 
+	border-top:0;
+	padding:15px 25px 5px 25px;
+	-moz-box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow:3px 3px 6px rgba(0, 0, 0, 0.3);
+	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+#head-containerS{
+	width:100%;
+	min-width:920px;
+	height:45px;
+	background: #ecefe4;
+	position:relative;
+}
+
+#headerS {
+	width:920px; 
+	padding:0;
+	margin:0 auto;
+	position:relative;
+}
+
+#headerS #logoS {
+	position:relative;
+	top:auto;
+	right:auto;
+	float:left;
+	margin:20px 20px 0 5px;
+	padding-right:25px;
+	background: transparent url('../img/ln_dot_v.gif') repeat-y 100% 0;
+}

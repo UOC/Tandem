@@ -63,6 +63,7 @@ if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
 //timer
 		var intTimerNow;
 		var limitTimer = 500;
+		var limitTimerConn = 1000;
 		function setExpiredNow(itNow){
 			intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
 		}
@@ -319,7 +320,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				clearInterval(intervalUpdateLogin);
 				limitTimer+=500;
 				intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
-				console.log(limitTimer);
+				notifyTimerDown('<?php echo $LanguageInstance->get('SlowConn')?>');
 			}
 
 			processXmlOverDone = function(){
@@ -345,7 +346,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 //when both connected stop checking for connex, starts interval for checking answers, show intro page, ready for desconnex
 					clearInterval(intervalUpdateLogin);
-					intervalUpdateAction = setInterval(check4BothChecked,1000);
+					intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 					//if(numExerc==1) $.colorbox({href:"home.php?id=<?php echo $data;?>",escKey:true,overlayClose: false});
 					if(numExerc==1){
 						clearInterval(intTimerNow); 
@@ -367,47 +368,53 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					    	hideText();
 							hideButtons();
 							userDesconn=1;
-					    }
-					  },
-				  success: function(xml){
-
-					    users = xml.getElementsByTagName('usuarios');	
-						total = users.length;
-						if (total>0) {
-							users = users[0].childNodes;
+						},
+						408: function(){
+						  	clearInterval(intervalUpdateAction);
+						  	limitTimerConn+=500;
+						  	intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
+						  	notifyTimerDown('<?php echo $LanguageInstance->get('SlowConn')?>');
+						},
+						success: function(xml){
+						    users = xml.getElementsByTagName('usuarios');	
 							total = users.length;
-							if (total>totalUser) {
+							if (total>0) {
+								users = users[0].childNodes;
+								total = users.length;
+								if (total>totalUser) {
+								}
+								totalUser = total;
 							}
-							totalUser = total;
-						}
-						var countNodesXML = <?php echo $node-1;?>;
-						var cad = $(xml).find('actions');
-						if(cad.length>countNodesXML){
-							if(cad[countNodesXML]!=null && cad[countNodesXML].getElementsByTagName('action').length>accionNum){	
-								var isFinishedFirst = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('firstUser');
-								var isFinishedSecond = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('secondUser');						
-								if(isFinishedFirst!=null && isFinishedSecond!=null){
-									accionNumPrev = parseInt(accionNum);
-									accionNum = parseInt(accionNum)+1;
-									EndwaitStep(accionNum);
-	//if true, exercise finished	
-										if(accionNum==numBtn) {
-											// 20121004 - abertranb - change to show sholution instead of go to next question
-											//showNextQuestion();
-											//MODIFIED
-											enableSolution();
-											//END
-											
-										}
-	//First answer, notify the other user
-								}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-										notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
-									  }
+							var countNodesXML = <?php echo $node-1;?>;
+							var cad = $(xml).find('actions');
+							if(cad.length>countNodesXML){
+								if(cad[countNodesXML]!=null && cad[countNodesXML].getElementsByTagName('action').length>accionNum){	
+									var isFinishedFirst = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('firstUser');
+									var isFinishedSecond = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('secondUser');						
+									if(isFinishedFirst!=null && isFinishedSecond!=null){
+										accionNumPrev = parseInt(accionNum);
+										accionNum = parseInt(accionNum)+1;
+										EndwaitStep(accionNum);
+		//if true, exercise finished	
+											if(accionNum==numBtn) {
+												// 20121004 - abertranb - change to show sholution instead of go to next question
+												//showNextQuestion();
+												//MODIFIED
+												enableSolution();
+												//END
+												
+											}
+		//First answer, notify the other user
+									}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
+											notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
+										  }
+								}
 							}
 						}
-				},
+				}
 			})
-			},
+			}
+
 //Interval (1000ms) checking for both users to write down answer into xml
 			check4BothChecked_old = function(){
 				var url="<?php echo $room; ?>.xml";
