@@ -62,6 +62,7 @@ var isie8PlusF = (function(){var undef,v = 3,div = document.createElement('div')
 if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
 //timer
 		var intTimerNow;
+		var limitTimer = 500;
 		function setExpiredNow(itNow){
 			intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
 		}
@@ -203,7 +204,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 						endHTML = cad[<?php echo $node;?>].getAttribute("endHTML");
 						textE=cad[<?php echo $node;?>].getElementsByTagName("textE")[0].childNodes[0].data;
 						getXML("<?php echo $user;?>","<?php echo $room;?>");
-						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
+						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
 	//thread is so quick...
 						writeButtons();
 						setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},250);
@@ -280,7 +281,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					numBtn=cad[<?php echo $node;?>].getAttribute("numBtns");
 					textE=cad[<?php echo $node;?>].getElementsByTagName("textE")[0].childNodes[0].data;
 					getXML("<?php echo $user;?>","<?php echo $room;?>");
-					intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',500);
+					intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
 //thread is so quick...
 					writeButtons();
 					setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},150);
@@ -309,9 +310,18 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 					xmlReq.timeout = 100000;
 					xmlReq.overrideMimeType("text/xml");
 				}
+				xmlReq.onerror = onError;
 				xmlReq.open("GET", url, true);
 				xmlReq.send(null);
 			}
+
+			onError = function(){
+				clearInterval(intervalUpdateLogin);
+				limitTimer+=500;
+				intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
+				console.log(limitTimer);
+			}
+
 			processXmlOverDone = function(){
 				if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
 					if(check4UsersConex()){
