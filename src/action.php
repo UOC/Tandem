@@ -34,6 +34,7 @@ function editXMLConfirm($room,$user,$number,$nextSample){
   	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 }
 
+
 function preTimer($room,$user,$nextSample){
 	$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	$number=0;
@@ -41,6 +42,7 @@ function preTimer($room,$user,$nextSample){
 		$xml->addChild('actions');
 		$xml->actions[$nextSample]->addAttribute('sample',$nextSample);		
 		$xml->actions[$nextSample]->addAttribute('firstUser',$user);
+		$xml->actions[$nextSample]->addChild('action','0');
 	}else{		
 		if(findAttribute($xml->actions[$nextSample],firstUser)){
 			//encuentra y existe confirmacion primer usuario
@@ -81,6 +83,8 @@ function editXMLMap($room,$user,$number,$nextSample) {
 		$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 }
 
+
+
 function thruTimer($nextSample,$numBtn){
 	for($i=0;$i<$numBtn;$i++) editXMLConfirm($_GET["room"],$_GET["user"],$i,$nextSample);
 }
@@ -91,7 +95,7 @@ $nextSample = $_GET["nextSample"]-1;
 $numBtn = isset($_GET["numBtn"])?$_GET["numBtn"]:0;
 
 if($_GET["user"]!="" && $_GET["room"]!=""){
-	if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$_GET["room"].".xml")) {		
+	if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$_GET["room"].".xml")) {
 		switch($_GET["tipo"]){
 			case 'confirm': editXMLConfirm($_GET["room"],$_GET["user"],$_GET["number"],$nextSample,"");break;
 			
