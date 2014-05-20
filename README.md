@@ -8,23 +8,25 @@ Tandem is a content management system for synchronous oral tasks for language le
 * Install MySQL
 * Import attached data base structure file (tandem_2.sql)
 * Modify config.inc.php file:
-``` define('BD_HOST', 'localhost'); 
- define('BD_NAME', 'tandem_2'); 
- define('BD_USERNAME', 'XXX'); 
- define('BD_PASSWORD', 'XXX'); 
- define('GOOGLE_ANALYTICS_ID', 'XXX'); 
- ```
+``` php
+define('BD_HOST', 'localhost'); 
+define('BD_NAME', 'tandem_2'); 
+define('BD_USERNAME', 'XXX'); 
+define('BD_PASSWORD', 'XXX'); 
+define('GOOGLE_ANALYTICS_ID', 'XXX'); 
+```
 * Copy files from deliverable to web server's root folder.
 * Configure Interoperability model
 ⋅⋅* LTI http://imsglobal.org/lti/ - LTI Configuration:
-⋅⋅* Consumer's enabled are located at:
+⋅⋅*  Consumer's enabled are located at:
  IMSBasicLTI/configuration/authorizedConsumersKey.cfg
 ⋅⋅* Parameters:
-``` consumer_key."name_consumer".enabled=1
- consumer_key."name_consumer".secret=secret
- for example to add new with resource key “test” and password “testpasswd” 
- consumer_key.test.enabled=1
- consumer_key.test.secret=testpasswd ```
+```php
+consumer_key."name_consumer".enabled=1
+consumer_key."name_consumer".secret=secret
+for example to add new with resource key “test” and password “testpasswd” 
+consumer_key.test.enabled=1
+consumer_key.test.secret=testpasswd ```
 ⋅⋅* LTI provider's URL is as shown:
 http://<ip>/tandem/integration_tool.php
 
