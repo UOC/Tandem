@@ -17,7 +17,8 @@ define('GOOGLE_ANALYTICS_ID', 'XXX');
 ```
 ### Copy files from deliverable to web server's root folder.
 ### Configure Interoperability model
-* LTI http://imsglobal.org/lti/ - LTI Configuration:
+* IMS LTI http://imsglobal.org/lti/ 
+#### LTI Configuration:
 *  Consumer's enabled are located at:
  IMSBasicLTI/configuration/authorizedConsumersKey.cfg
 * Parameters:
