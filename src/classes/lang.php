@@ -5,7 +5,7 @@ session_start();
 class Language {
 
 
-	function &_instance() {
+	static function &_instance() {
 	    static $instance = null;
 	    if (is_null($instance)) {
 	      $instance = new Language();
@@ -14,7 +14,7 @@ class Language {
 	    return $instance;
 	}
 
-	function init() {
+	static function init() {
 
 		$locale = isset($_SESSION[LANG])?$_SESSION[LANG]:false;
 		if (!$locale) {

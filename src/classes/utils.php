@@ -116,6 +116,11 @@ function lti_get_lang($context) {
 		$lang = 'en_US';
 	}
 
+    if (strlen($lang)==5) {
+      //To Moodle 2 because send all as lowercase
+      $lang = substr($lang, 0, 3).strtoupper(substr($lang, 3, 2));
+    }
+
 	return $lang;
 }
 
