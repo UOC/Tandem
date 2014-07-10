@@ -7,6 +7,7 @@ Tandem is a content management system for synchronous oral tasks for language le
 ### Install Apache
 ### Install MySQL
 ### Import attached data base structure file (tandem_2.sql)
+
 * Modify config.inc.php file:
 ``` php
 define('BD_HOST', 'localhost'); 
