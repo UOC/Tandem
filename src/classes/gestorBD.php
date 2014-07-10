@@ -277,8 +277,8 @@
                 public function join_course($course_id, $user_id, $isInstructor, $lis_result_sourceid) {
                 	$result = false;
                 	if (!$this->obte_rol($course_id, $user_id)) {
-                		$sql = 'INSERT INTO user_course (id_user, id_course, is_instructor, lis_result_sourceid) 
-                												VALUES ('.$this->escapeString($user_id).','.$this->escapeString($course_id).','.($isInstructor?1:0).', '.$this->escapeString($lis_result_sourceid).')';
+                		$sql = 'INSERT INTO user_course (id_user, id_course, is_instructor, lis_result_sourceid, lastAccessTandem) 
+                												VALUES ('.$this->escapeString($user_id).','.$this->escapeString($course_id).','.($isInstructor?1:0).', '.$this->escapeString($lis_result_sourceid).', '.$this->escapeString(date('Y-m-d H:i:s')).')';
                 	} else {
                 		$sql = 'UPDATE user_course SET is_instructor ='.($isInstructor?1:0).',lis_result_sourceid='.$this->escapeString($lis_result_sourceid).' where id_user = '.$user_id.' AND id_course = '.$course_id;
                 	}
