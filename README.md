@@ -14,8 +14,10 @@ define('BD_HOST', 'localhost');
 define('BD_NAME', 'tandem_2'); 
 define('BD_USERNAME', 'XXX'); 
 define('BD_PASSWORD', 'XXX'); 
+define('PROTECTED_FOLDER', dirname(__FILE__).'/xml');
 define('GOOGLE_ANALYTICS_ID', 'XXX'); 
 ```
+##
 ### Copy files from deliverable to web server's root folder.
 ### Configure Interoperability model
 * IMS LTI http://imsglobal.org/lti/ 
