@@ -231,6 +231,8 @@ if (!$user_obj || !$course_id) {
 
 	$(document).ready(function(){
 
+		$('#showNewsS').slideUp();
+		
 //IE DETECTION - ERROR MSG TO USER
 		var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
 		var isie8PlusF = (function(){var undef,v = 3,div = document.createElement('div'),all = div.getElementsByTagName('i');while(div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',all[0]);return v > 4 ? v : undef;}());if(isie8PlusF>=8) isie8Plus=true;else isie8Plus=false;
