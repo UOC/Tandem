@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_29" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_65" class="java.beans.XMLDecoder"> 
  <object class="com.horstmann.violet.ClassDiagramGraph"> 
   <void method="addNode"> 
    <object id="ClassNode0" class="com.horstmann.violet.ClassNode"> 
@@ -177,6 +177,169 @@ created_user_id</string>
     <void method="setLocation"> 
      <double>701.0</double> 
      <double>67.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>id int(11) NOT NULL AUTO_INCREMENT,
+toolurl varchar(150) NOT NULL,
+name varchar(150) NOT NULL,
+description mediumtext NOT NULL,
+resourcekey varchar(150) NOT NULL,
+password varchar(150) NOT NULL,
+preferheight varchar(50) DEFAULT NULL,
+sendname decimal(1,0) NOT NULL DEFAULT &apos;0&apos;,
+sendemailaddr decimal(1,0) NOT NULL DEFAULT &apos;0&apos;,
+acceptgrades decimal(1,0) NOT NULL DEFAULT &apos;0&apos;,
+allowroster decimal(1,0) NOT NULL DEFAULT &apos;0&apos;,
+allowsetting decimal(1,0) NOT NULL DEFAULT &apos;0&apos;,
+customparameters text,
+allowinstructorcustom decimal(1,0) 
+organizationid varchar(150) NOT NULL,
+organizationurl varchar(150) NOT NULL,
+launchinpopup decimal(1,0) DEFAULT &apos;0&apos;,
+debugmode decimal(1,0) ,
+registered timestamp 
+updated timestamp </string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>lti_application</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>673.0</double> 
+     <double>403.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>id_tool
+id_context</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>lti_disabled_application_context</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>730.0</double> 
+     <double>753.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>id int(11) NOT NULL AUTO_INCREMENT,
+toolurl varchar(150) NOT NULL,
+name varchar(150) NOT NULL,
+description mediumtext NOT NULL,
+launchinpopup decimal(1,0) DEFAULT &apos;0&apos;,
+debugmode decimal(1,0) NOT NULL DEFAULT &apos;0&apos;,
+registered timestamp NOT NULL DEFAULT 
+updated timestamp </string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>remote_application</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>13.0</double> 
+     <double>601.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>id_tool
+id_context</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>remote_disabled_application_context</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>238.0</double> 
+     <double>775.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>id_user
+id_tandem
+task_number
+total_time
+points
+is_finished
+finalized
+created</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>user_tandem_task</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>498.0</double> 
+     <double>457.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="addNode"> 
+   <object class="com.horstmann.violet.ClassNode"> 
+    <void property="attributes"> 
+     <void property="text"> 
+      <string>id_user
+id_tandem
+task_number
+question_number
+total_time
+points
+is_finished
+finalized
+created</string> 
+     </void> 
+    </void> 
+    <void property="name"> 
+     <void property="text"> 
+      <string>user_tandem_task_question</string> 
+     </void> 
+    </void> 
+   </object> 
+   <object class="java.awt.geom.Point2D$Double"> 
+    <void method="setLocation"> 
+     <double>428.0</double> 
+     <double>654.0</double> 
     </void> 
    </object> 
   </void> 
