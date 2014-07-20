@@ -104,7 +104,7 @@ class bltiUocWrapper extends BLTI {
 		 	//abertranb - 20120905 - Adding ext services
 		 	$consumer_instance = new stdClass();
 		 	$consumer_instance->guid	= $this->getConsumerKeyFromPost();
-		 	$consumer_instance->secret = $secret;
+                        $consumer_instance->secret = $secret;
 		 	$consumer_instance->lti_context_id = $this->context_id;
 		 	$consumer_instance->lti_resource_id = $this->info['resource_link_id']; 
 		 	$consumer_instance->title = $this->info['context_title']; 

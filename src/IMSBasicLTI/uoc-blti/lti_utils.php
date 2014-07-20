@@ -61,6 +61,7 @@ class LTI_Context {
 	private $ext_doc = NULL;
 	private $ext_nodes = NULL;
 	private $token_session_lti = NULL;
+        private $consumer = NULL;
 	
 	//
 	//    Class constructor
@@ -603,6 +604,9 @@ EOF;
 		$this->title 							= $consumer_instance->title;
 		$this->settings		 					= $consumer_instance->settings;
 		$this->settings 						= unserialize($this->settings);
+                if ($consumer_instance->guid) {
+                    $this->key = $consumer_instance->guid;
+                }
 		if (!is_array($this->settings)) {
 			$this->settings = array();
 		}
@@ -775,15 +779,15 @@ EOF;
 				}
 				// Connect to tool consumer
 				$this->ext_response = $this->do_post_request($url, $params);
-					// Parse XML response
-				$this->ext_doc = new DOMDocument();
+                                	// Parse XML response
+                                $this->ext_doc = new DOMDocument();
 				$this->ext_doc->loadXML($this->ext_response);
-				$this->ext_nodes = $this->domnode_to_array($this->ext_doc->documentElement);
-				if (!isset($this->ext_nodes['statusinfo']['codemajor']) || ($this->ext_nodes['statusinfo']['codemajor'] != 'Success')) {
+                        	$this->ext_nodes = $this->domnode_to_array($this->ext_doc->documentElement);
+                        	if (!isset($this->ext_nodes['statusinfo']['codemajor']) || ($this->ext_nodes['statusinfo']['codemajor'] != 'Success')) {
 					$this->ext_response = NULL;
 				}
 			}
-
+                        
 			return !is_null($this->ext_response);
 
 		}
@@ -1141,8 +1145,10 @@ EOF;
 		public function getId($id_scope = NULL) {
 	
 			if (empty($id_scope)) {
+                            if( $this->context && $this->context->getConsumer() && $this->context->getConsumer()->id_scope)
 				$id_scope = $this->context->getConsumer()->id_scope;
 			}
+                        
 			switch ($id_scope) {
 				case bltiUocWrapper::ID_SCOPE_GLOBAL:
 					$id = $this->context->getKey() . bltiUocWrapper::ID_SCOPE_SEPARATOR . $this->id;
@@ -1165,7 +1171,6 @@ EOF;
 					$id = $this->id;
 				break;
 			}
-	
 			return $id;
 	
 		}

@@ -311,3 +311,13 @@ function check_user_session() {
 		die();
 	}
 }
+/**
+ * This function convert to utf8
+ * @param type $s
+ */
+function convertToUtf8 ($s) {
+    if (mb_detect_encoding ($s, 'ISO-8859-1', true)){
+        $s = mb_convert_encoding($s, 'ISO-8859-1', 'UTF-8');
+    }
+    return $s;
+}
