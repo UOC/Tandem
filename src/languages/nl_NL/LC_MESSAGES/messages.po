@@ -1,0 +1,374 @@
+# Translation of Tandem (trunk) in English
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2014-08-02 17:45+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.5\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+
+msgid "welcome"
+msgstr "Welkom"
+
+msgid "no estas autoritzat"
+msgstr "niet geautoriseerd"
+
+msgid "back"
+msgstr "terug"
+
+msgid "txtOtherUserConn"
+msgstr "Je bent nu verbonden met je Tandempartner. "
+
+msgid "txtWaiting4User"
+msgstr "Wacht op de Tandemverbinding"
+
+msgid "no_users_in_course"
+msgstr "Geen cursisten in deze cursus"
+
+msgid "txtTheUser"
+msgstr "<b>Partner ("
+
+msgid "txtReplied"
+msgstr ") heeft geantwoord. Wacht op de bevestiging</b>"
+
+msgid "refresh"
+msgstr "Update cursisten"
+
+msgid "user_in_tandem"
+msgstr "Je partner is niet bereikbaar. Probeer het later nog eens. "
+
+msgid "show_tandem"
+msgstr "Toon Tandem"
+
+msgid "txtDesconnected"
+msgstr "Geen verbinding"
+
+msgid "select_user"
+msgstr "Selecteer cursist"
+
+msgid "select_users"
+msgstr "Selecteer cursisten"
+
+msgid "tandems"
+msgstr "Tandems"
+
+msgid "no_tandems"
+msgstr "Er zijn geen tandems voor deze cursist. "
+
+msgid "date"
+msgstr "datum"
+
+msgid "points"
+msgstr "punten"
+
+msgid "user_host"
+msgstr "Gastheer"
+
+msgid "user"
+msgstr "Cursist"
+
+msgid "user_guest"
+msgstr "Gast"
+
+msgid "date_guest_user_logged"
+msgstr "Datum opgeslagen gast"
+
+msgid "finalized"
+msgstr "Afgerond"
+
+msgid "total_time"
+msgstr "Totaal aantal minuten"
+
+msgid "start"
+msgstr "Start!"
+
+msgid "accept"
+msgstr "Accepteer"
+
+msgid "select_exercise"
+msgstr "Selecteer oefening"
+
+msgid "tandem_description_1"
+msgstr ""
+"Welkom bij %s de Tandempilot. Deze applicatie werkt met Google Chrome, "
+"Firefox 4 onwards, Safari 5."
+
+msgid "tandem_description_2"
+msgstr ""
+"De Tandemapplicatie werkt niet met Internet Explorer. We werken aan een "
+"oplossing voor dit probleem. "
+
+msgid "tandem_logo"
+msgstr "Logo Tandem"
+
+msgid "tandem"
+msgstr "Tandem"
+
+msgid "exercise"
+msgstr "Oefening"
+
+msgid "go"
+msgstr "Start"
+
+msgid "waiting"
+msgstr "Wachten voor cursist..."
+
+msgid "waitingUserX"
+msgstr "Wachten op"
+
+msgid "acceptance"
+msgstr ""
+"Als je partner de uitnodiging niet binnen 1 minuuut accepteert, verloopt "
+"deze uitnodiging."
+
+msgid "direct_access_to_content"
+msgstr "Directe toegang tot de inhoud"
+
+msgid "pending_tandems"
+msgstr "Uitstaande uitnodigingen"
+
+msgid "no_pending_tandems"
+msgstr "Je hebt geen uitstaande uitnodigingen voor Tandem"
+
+msgid "reload_pending"
+msgstr "Herladen van de uitstaande Tandems"
+
+msgid "tasks_tandems"
+msgstr "Taken"
+
+msgid "questions_tasks_tandems"
+msgstr "Vragen"
+
+msgid "task"
+msgstr "Taak"
+
+msgid "question"
+msgstr "Vraag"
+
+msgid "total_time_seconds"
+msgstr "Totaal aantal: &#13 %s minutes&#13 %s seconden"
+
+msgid "start_date"
+msgstr "Startdatum"
+
+msgid "finish_date"
+msgstr "Einddatum"
+
+msgid "finished"
+msgstr "Klaar"
+
+msgid "caducado"
+msgstr "Verlopen"
+
+msgid "all"
+msgstr "Alles"
+
+msgid "no"
+msgstr "Nee"
+
+msgid "yes"
+msgstr "Ja"
+
+msgid "no_results_found"
+msgstr "Geen resultaten gevonden"
+
+msgid "play_as_user_host"
+msgstr "Speel als gastheer"
+
+msgid "play_as_user_guest"
+msgstr "Speel als gast"
+
+msgid "play"
+msgstr "Speel"
+
+msgid "just_been_invited"
+msgstr "Je bent uitgenodigd voor een Tandem met:"
+
+msgid "user_agent_host"
+msgstr "Informatie over de browser van de gastheer"
+
+msgid "user_agent_guest"
+msgstr "Informatie over de browser van de gast"
+
+msgid "mange_exercises_tandem"
+msgstr "Beheer oefeningen"
+
+msgid "choose_zip_file"
+msgstr "Kies een zipbestand om te uploaden"
+
+msgid "zip_upload_ok"
+msgstr "Bestand %s is geüpload en uitgepakt."
+
+msgid "error_uploading_file"
+msgstr "Er was een probleem bij de upload. Probeer het nog een keer. "
+
+msgid "error_no_zip_format"
+msgstr ""
+"Het bestand dat je probeert te uploaden, is geen zipbestand. Probeer het nog "
+"een keer."
+
+msgid "error_getting_information_of_exercise"
+msgstr "Oefening komt niet voor in de database"
+
+msgid "exercise_name"
+msgstr "Naam van de oefening"
+
+msgid "name_xml_file"
+msgstr "Xml Naam"
+
+msgid "enabled"
+msgstr "Ingeschakeld"
+
+msgid "delete"
+msgstr "Verwijderen"
+
+msgid "show_profile"
+msgstr "profiel tonen"
+
+msgid "hide_profile"
+msgstr "profiel verbergen"
+
+msgid "quit"
+msgstr "Afsluiten"
+
+msgid "task_remaining_time"
+msgstr "Resterende tijd voor de taak"
+
+msgid "overrides_xml_file"
+msgstr "Overschrijft het XML bestand als het dezelfde naam heeft"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"Bestand %s bestaat, weet je zeker dat je dit wilt overschrijven? Om dit te "
+"doen selecteer \"Overschrijven  Ja\""
+
+msgid "update"
+msgstr "Updaten"
+
+msgid "upload"
+msgstr "Uploaden"
+
+msgid "error_choose_file"
+msgstr "Je moet een zipbestand selecteren om te uploaden"
+
+msgid "exercise_deleted_ok"
+msgstr "Oefening werd succesvol verwijderd. "
+
+msgid "error_delete_exercise"
+msgstr ""
+"Fout bij het verwijderen van de geselecteerde oefening, controleer of het "
+"bestand bestaat en de juiste machtigingen heeft"
+
+msgid "main_xml_file_not_found"
+msgstr ""
+"Niet mogelijk om het bestand te verwerken omdat het XML bestand niet kan "
+"worden gevonden"
+
+msgid "no_exercises_found"
+msgstr "Geen oefeningen beschikbaar, de docent moet deze configureren. "
+
+msgid "Solution"
+msgstr "Oplossing"
+
+msgid "See Solution"
+msgstr "Bekijk de oplossing"
+
+msgid "Next Task"
+msgstr "Volgende taak"
+
+msgid "Click to finish"
+msgstr "Klik om te beëindigen"
+
+msgid "txtEndTask"
+msgstr ") is klaar met deze taak. Wacht op bevestiging</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "Wachten totdat je partner klaar is met deze taak"
+
+msgid "state"
+msgstr "Status"
+
+msgid "activity_log"
+msgstr "Activiteitslog"
+
+msgid "exercises_list"
+msgstr "Lijst met oefeningen"
+
+msgid "new_exercise"
+msgstr "Nieuwe oefening"
+
+msgid "edit_exercise"
+msgstr "Wijzig oefening"
+
+msgid "file_name"
+msgstr "Bestandsnaam"
+
+msgid "browse"
+msgstr "Blader"
+
+msgid "none_file_selected"
+msgstr "Geen bestand geselecteerd"
+
+msgid "search_criteria"
+msgstr "Zoekcriteria"
+
+msgid "date_range"
+msgstr "Datumbereik"
+
+msgid "from"
+msgstr "Van"
+
+msgid "to"
+msgstr "Naar"
+
+msgid "status"
+msgstr "Status"
+
+msgid "duration"
+msgstr "Duur"
+
+msgid "browser_info"
+msgstr "Browser info"
+
+msgid "total"
+msgstr "totaal"
+
+msgid "complete"
+msgstr "compleet"
+
+msgid "incomplete"
+msgstr "incompleet"
+
+msgid "error"
+msgstr "Fout"
+
+msgid "search"
+msgstr "Zoeken"
+
+msgid "invalid_tool"
+msgstr "Ongeldige handeling"
+
+msgid "Activityhasbeencompleted"
+msgstr "De activiteit is voltooid! "
+
+msgid "ThankyouforusingTANDEM"
+msgstr "Hartelijk dank voor het gebruiken van Tandem"
+
+msgid "Connecting..."
+msgstr "Verbinden... "
+
+msgid "Task"
+msgstr "Taak"
+
+msgid "See"
+msgstr "Bekijk"
+
+msgid "SlowConn"
+msgstr "Langzame verbinding"

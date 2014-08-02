@@ -108,6 +108,12 @@ function lti_get_lang($context) {
 			case "fr":
 				$lang="fr_FR";
 				break;
+			case "nl":
+				$lang="nl_NL";
+				break;
+			case "de":
+				$lang="de_DE";
+				break;
 			default:
 				$lang="en_US";
 		}
