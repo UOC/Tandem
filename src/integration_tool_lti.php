@@ -86,7 +86,7 @@ debugMessageIT('LTI call validated', $debug);
 
 
 try {
-
+       
 	$gestorBD = new gestorBD();
 	$tandemBLTI = new IntegrationTandemBLTI();
 	//Getting BLTI data
@@ -131,8 +131,8 @@ try {
     if ($user) {
 	    $user_id = $user['id'];
 	    $user_obj->id = $user_id;
-	    
-	    
+	    $waiting_room = $tandemBLTI->getDataInfo($context, 'custom_waiting_room')==1;
+            
 	    //Check if course exists
 	    $course_name = $context->getCourseName();
 	    $course_key = $context->getCourseKey();
@@ -143,7 +143,7 @@ try {
 	    	
 	    $course = $gestorBD->get_course_by_courseKey($course_key);
 	    if (!$course) {
-	    	if (!$gestorBD->register_course($course_key, $course_name)) {
+	    	if (!$gestorBD->register_course($course_key, $course_name, $waiting_room)) {
 	    		show_error('lti:errorregistercourse');
 	    	}
 	    	else {
@@ -151,7 +151,7 @@ try {
 	    	}
 	    }
 	    else {
-	    	if (!$gestorBD->update_course($course_key, $course_name)) {
+	    	if (!$gestorBD->update_course($course_key, $course_name, $waiting_room)) {
 	    		show_error('lti:errorupdatingcourse');
 	    	}
 	    }
@@ -168,15 +168,20 @@ try {
 		    $tandem = false;
 		    //disabled to select current tandem // $tandem = $gestorBD->is_invited_to_join($user_id, $id_resource, $course_id);
 		    $_SESSION[ID_RESOURCE] = $id_resource;
+                    $_SESSION[USE_WAITING_ROOM] = $waiting_room;
+		    		
 		    if (!$tandem) {
 		    	if (posa_osid_context_session($gestorBD, $course_id, $context)) {
 					$user_obj->is_host = true;
 		    	
 		    		//Anem a seleccionar la room
-					$_SESSION[CURRENT_USER] = $user_obj;
+                                $_SESSION[CURRENT_USER] = $user_obj;
 		    		$_SESSION[COURSE_ID] = $course_id;
-		    	
-		    		header ('Location: selectUserAndRoom.php');
+                                $redirectTo = 'selectUserAndRoom';
+                                if ($waiting_room==1) {
+                                    $redirectTo = 'tandemRoom';
+                                }
+		    		header ('Location: '.$redirectTo.'.php');
 		    	} 
 		    	//sino ja mostrara error
 		    } else {
@@ -188,7 +193,7 @@ try {
 				$_SESSION[CURRENT_TANDEM] = $tandem['id'];
 				//we need to identify the exercise
 				//Now we try to get data course
-				$relative_path = isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0 ? $tandem['relative_path'].DIRECTORY_SEPARATOR:'';
+				$relative_path = isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0 ? $tandem['relative_path'].'/':'';
 				$data_exercise = $tandemBLTI->getDataExercise($exercise, true, $relative_path);
 				$user_obj->id_resource = $id_resource;
 				$user_obj->type_user = 'b';

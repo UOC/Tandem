@@ -35,6 +35,7 @@ define ('IMAGEOKI', 'photo');
 define ('OATUH_CONSUMER_KEY', 'oauth_consumer_key');
 define ('DELIMITER', ':');
 define ('CURRENT_USER', 'current_user');
+define ('USE_WAITING_ROOM', 'use_waiting_room');
 if (!defined('HTTPATTRIBUTEKEY_OSIDCONTEXT'))
 	define ('HTTPATTRIBUTEKEY_OSIDCONTEXT', 'osid_context');
 define ('OKIBUSPHP_COMPONENTS', 'okibusPHP_components');

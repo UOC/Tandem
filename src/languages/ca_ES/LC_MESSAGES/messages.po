@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "Language-Team: \n"
 "Language: ca_ES\n"
 
@@ -96,10 +96,14 @@ msgid "select_exercise"
 msgstr "Selecciona Exercici"
 
 msgid "tandem_description_1"
-msgstr "Benvingut/da %s al pilot de Tandem. Aquesta eina funciona amb Google Chrome, Firefox 4 o superior i Safari 5."
+msgstr ""
+"Benvingut/da %s al pilot de Tandem. Aquesta eina funciona amb Google Chrome, "
+"Firefox 4 o superior i Safari 5."
 
 msgid "tandem_description_2"
-msgstr "Tandem NO funciona amb Internet Explorer. Estem treballant per arreglar el problema."
+msgstr ""
+"Tandem NO funciona amb Internet Explorer. Estem treballant per arreglar el "
+"problema."
 
 msgid "tandem_logo"
 msgstr "Logo Tandem"
@@ -120,7 +124,9 @@ msgid "waitingUserX"
 msgstr "Esperant"
 
 msgid "acceptance"
-msgstr "Si el teu company o companya de Tandem no accepta en 1 minut, aquesta invitació caducarà."
+msgstr ""
+"Si el teu company o companya de Tandem no accepta en 1 minut, aquesta "
+"invitació caducarà."
 
 msgid "direct_access_to_content"
 msgstr "Accés directe al contingut"
@@ -192,7 +198,7 @@ msgid "user_agent_guest"
 msgstr "Info navegador convidat"
 
 msgid "mange_exercises_tandem"
-msgstr "Gestiona exercicis"
+msgstr "Gestionar exercicis"
 
 msgid "choose_zip_file"
 msgstr "Escull un fitxer ZIP per carregar."
@@ -237,7 +243,9 @@ msgid "overrides_xml_file"
 msgstr "Sobrescriurà el fitxer XML si té el mateix nom"
 
 msgid "file_exercise_xml_aready_exists"
-msgstr "El fitxer %s existeix, estàs segur que vols sobrescriure'l? Per fer-ho selecciona \"Sobrescriu a Sí\""
+msgstr "" 		
+"El fitxer %s existeix, estàs segur que vols sobrescriure'l? Per fer-ho "
+"selecciona \"Sobrescriu a Sí\""
 
 msgid "update"
 msgstr "Actualitza"
@@ -252,10 +260,13 @@ msgid "exercise_deleted_ok"
 msgstr "S'ha eliminat correctament l'exercici"
 
 msgid "error_delete_exercise"
-msgstr "Error eliminant l'exercici seleccionat, comprova que existeix i que el fitxer tingui els permisos correctes."
+msgstr ""
+"Error eliminant l'exercici seleccionat, comprova que existeix i que el "
+"fitxer tingui els permisos correctes."
 
 msgid "main_xml_file_not_found"
-msgstr "No es pot processar el fitxer ja que no es troba el fitxer XML principal."
+msgstr ""
+"No es pot processar el fitxer ja que no es troba el fitxer XML principal."
 
 msgid "no_exercises_found"
 msgstr "No hi ha exercicis disponibles."
@@ -359,3 +370,37 @@ msgstr "Veure"
 msgid "SlowConn"
 msgstr "Connexi&oacute; lenta"
 
+msgid "waiting_remaining_time"
+msgstr "Temps per finalitzar"
+
+msgid "Tandem"
+msgstr "Emparallats"
+
+msgid "users_tandem"
+msgstr "Usuaris Emparallats"
+
+msgid "Waiting"
+msgstr "Esperant"
+
+msgid "users_waiting"
+msgstr "Usuaris en Espera"
+
+msgid "time_up"
+msgstr "Temps Finalitzat !!"
+
+msgid "close"
+msgstr "Tanquem !!"
+
+msgid "please_stand_by"
+msgstr "Si us plau, mantinguis a l'espera !!"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "Esperant per connectar usuari amb la sala d'espera !!"
+
+msgid "waiting_for_tandem_connexion"
+msgstr "Esperant per emparallar l'usuari !!"
+
+msgid "room_taken"
+msgstr ""
+"Ho sentim per&ograve; aquest t&agrave;ndem ja est&agrave; actiu, si us plau "
+"seleccioneu un altre tandem.."

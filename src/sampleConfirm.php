@@ -64,20 +64,21 @@ if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
 		var intTimerNow;
 		var limitTimer = 500;
 		var limitTimerConn = 1000;
+                
 		function setExpiredNow(itNow){
-			intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
+                    intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
 		}
 		function getTimeNow(itNow){
-			var tNow;
-			itNow--;
-			if(itNow<10) tNow ="0"+itNow;
-			else tNow = itNow;
-			$("#startNowBtn").html("00:"+tNow);
-			if(itNow<=1){ 
-				clearInterval(intTimerNow);
-				desconn();
-			}
-			else setExpiredNow(itNow);
+                    var tNow;
+                    itNow--;
+                    if(itNow<10) tNow ="0"+itNow;
+                    else tNow = itNow;
+                    $("#startNowBtn").html("00:"+tNow);
+                    if(itNow<=1){ 
+                            clearInterval(intTimerNow);
+                            desconn();
+                    }
+                    else setExpiredNow(itNow);
 		}
 //timer
 		var totalUser = 0;
@@ -494,7 +495,13 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				hideText();
 				//20121005 - abertranb - Go back to the selectUserAndRomm and disble onbeforeunload message
 				salir = 1;
-				setTimeout("document.location.href='selectUserAndRoom.php'",250);
+                                
+                            <?php if ($_SESSION[USE_WAITING_ROOM]) { ?>
+				setTimeout("document.location.href='tandemRoom.php'",250);
+                            <?php  } else {?>
+                                setTimeout("document.location.href='selectUserAndRoom.php'",250);
+                                 <?php  } ?>
+				
 				//END
 			}
 //hide all kind of stuff in page

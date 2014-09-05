@@ -3,15 +3,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-04-09 20:12+0100\n"
+"PO-Revision-Date: 2014-09-03 10:56+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "POT-Creation-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: en_US\n"
 
 msgid "welcome"
 msgstr "Welcome"
@@ -95,10 +96,14 @@ msgid "select_exercise"
 msgstr "Select Exercise"
 
 msgid "tandem_description_1"
-msgstr "Welcome %s to the Tandem Pilot. This tool works with Google Chrome, Firefox 4 onwards, Safari 5."
+msgstr ""
+"Welcome %s to the Tandem Pilot. This tool works with Google Chrome, Firefox "
+"4 onwards, Safari 5."
 
 msgid "tandem_description_2"
-msgstr "The Tandem Tool does NOT work with Internet Explorer. We are working on solving this problem."
+msgstr ""
+"The Tandem Tool does NOT work with Internet Explorer. We are working on "
+"solving this problem."
 
 msgid "tandem_logo"
 msgstr "Logo Tandem"
@@ -119,7 +124,9 @@ msgid "waitingUserX"
 msgstr "Waiting for"
 
 msgid "acceptance"
-msgstr "If your tandem partner does not accept within 1 min, this invitation will expire."
+msgstr ""
+"If your tandem partner does not accept within 1 min, this invitation will "
+"expire."
 
 msgid "direct_access_to_content"
 msgstr "Direct access to content"
@@ -203,7 +210,8 @@ msgid "error_uploading_file"
 msgstr "There was a problem with the upload. Please try again."
 
 msgid "error_no_zip_format"
-msgstr "The file you are trying to upload is not a .zip file. Please try again."
+msgstr ""
+"The file you are trying to upload is not a .zip file. Please try again."
 
 msgid "error_getting_information_of_exercise"
 msgstr "Exercise not found in data base"
@@ -236,7 +244,9 @@ msgid "overrides_xml_file"
 msgstr "Overrides the XML file if it has the same name"
 
 msgid "file_exercise_xml_aready_exists"
-msgstr "File %s exists, are you sure you want to overwrite? To do this select \"Overwrite to Yes\""
+msgstr ""
+"File %s exists, are you sure you want to overwrite? To do this select "
+"\"Overwrite to Yes\""
 
 msgid "update"
 msgstr "Update"
@@ -251,7 +261,9 @@ msgid "exercise_deleted_ok"
 msgstr "Exercise was successfully removed"
 
 msgid "error_delete_exercise"
-msgstr "Error deleting the selected exercise, verify that the file exists and has the correct permissions"
+msgstr ""
+"Error deleting the selected exercise, verify that the file exists and has "
+"the correct permissions"
 
 msgid "main_xml_file_not_found"
 msgstr "Unable to process the file because can not find main XML file"
@@ -358,3 +370,35 @@ msgstr "See"
 msgid "SlowConn"
 msgstr "Slow connection"
 
+msgid "waiting_remaining_time"
+msgstr "Time for ending Task"
+
+msgid "Tandem"
+msgstr "Tandem"
+
+msgid "users_tandem"
+msgstr "Users Tandem"
+
+msgid "Waiting"
+msgstr "Waiting"
+
+msgid "users_waiting"
+msgstr "Users Waiting"
+
+msgid "time_up"
+msgstr "Time Up !!"
+
+msgid "close"
+msgstr "Close !!"
+
+msgid "please_stand_by"
+msgstr "Please Stand By !!"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "Waiting for Waiting User Connexion !!"
+
+msgid "waiting_for_tandem_connexion"
+msgstr "Waiting for Tandem Connexion !!"
+
+msgid "room_taken"
+msgstr "Sorry this room is already in a tandem, please choose again."

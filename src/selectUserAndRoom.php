@@ -353,7 +353,7 @@ if (!$user_obj || !$course_id) {
 					user_selected=$('#user_selected').val();
 					document.getElementById('roomStatus').innerHTML="";
 	$('#idfrm').attr('src','checkRoomUserTandem.php?id_user_guest='+user_selected+'&nextSample='+nextSample+'&node='+node+'&classOf='+classOf+'&data='+data);
-				} else {
+				}else{
 					$('#roomStatus').html('Error loading exercise '+data+' contact with the administrators');
 				}
 			} else if ((xmlReq.readyState	==	4) && (xmlReq.status == 404)) {
@@ -689,11 +689,13 @@ if (!$user_obj || !$course_id) {
 							}
 						</div>
 						*/ ?>
+                                                    
 						<div class="clear">
 							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo $LanguageInstance->get('refresh')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('activity_log')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo $LanguageInstance->get('mange_exercises_tandem')?>" />
 						</div>	
+                                                    
 						<?php } //is instructor ?>  
 						
 						<div class="clear">

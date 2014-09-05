@@ -21,14 +21,14 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor || $id<=0 
 	$user = $is_user_host==1?'a':'b';
 	$exercise = $tandem['name_xml_file'];
 	$xml = $tandem['xml'];
-	$relative_path = isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0 ? $tandem['relative_path'].DIRECTORY_SEPARATOR:'';
+	$relative_path = isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0 ? $tandem['relative_path'].'/':'';
 	$data_exercise = $tandemBLTI->getDataExercise($exercise, true, $relative_path);
 	$file = $data_exercise->classOf;
 	$node = $data_exercise->node;
 	$nextSample = $data_exercise->nextSample;
-	if (!file_exists(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
+	if (!file_exists(PROTECTED_FOLDER.'/'.$room.".xml")) {
 		
-		$handle = fopen(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml", 'w');
+		$handle = fopen(PROTECTED_FOLDER.'/'.$room.".xml", 'w');
 		if ($handle) {
 			fwrite($handle, $xml);
 			fclose($handle);

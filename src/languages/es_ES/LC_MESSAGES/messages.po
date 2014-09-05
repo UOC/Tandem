@@ -3,12 +3,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-05-14 17:14+0100\n"
+"PO-Revision-Date: 2014-09-03 11:06+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "POT-Creation-Date: \n"
 "Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
 "Language-Team: \n"
@@ -370,3 +370,36 @@ msgstr "Ver"
 
 msgid "SlowConn"
 msgstr "Conexi&oacute;n lenta"
+
+msgid "waiting_remaining_time"
+msgstr "Tiempo restante"
+
+msgid "Tandem"
+msgstr "Emparejar"
+
+msgid "users_tandem"
+msgstr "Usuarios Emparejados"
+
+msgid "Waiting"
+msgstr "Esperando"
+
+msgid "users_waiting"
+msgstr "Usuarios Esperando"
+
+msgid "time_up"
+msgstr "Tiempo Finalizado !!"
+
+msgid "close"
+msgstr "Cerrando !!"
+
+msgid "please_stand_by"
+msgstr "Por favor mantengase a la espera !!"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "Esperando para conectar con un usuario en espera !!"
+
+msgid "waiting_for_tandem_connexion"
+msgstr "Esperando para emparejarte con un usuario !!"
+
+msgid "room_taken"
+msgstr "Lo sentimos pero este tandem ya est&aacute; activo, por favor seleccione otro tandem."

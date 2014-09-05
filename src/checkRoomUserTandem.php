@@ -11,6 +11,8 @@ $node = $_REQUEST['node'];
 $classOf = $_REQUEST['classOf'];
 $data = $_REQUEST['data'];
 
+$use_waiting_room = $_SESSION[USE_WAITING_ROOM];
+
 
 $id_resource_lti = $_SESSION[ID_RESOURCE];
 $id_user_guest = $_REQUEST['id_user_guest'];
@@ -35,6 +37,7 @@ $room = '';
 <?php
 
 function getinTandemStatus($user,$id_course){
+        if ($user<0) return false;
 	$gestorBD = new GestorBD();
 	$val = $gestorBD->get_userInTandem($user,$id_course);
 	//error_log("User:".$user." - course:".$id_course."getinTandemStatus:".$val);
@@ -56,6 +59,7 @@ function setlastAccessTandemStatus($user,$id_course,$date){
 }
 
 function getlastAccessTandemStatus($user,$id_course){
+        if ($user<0) return false;
 	$gestorBD = new GestorBD();
 	$val = $gestorBD->get_lastAccessTandemStatus($user,$id_course);
 	//error_log("User:".$user." - course:".$id_course);
@@ -96,7 +100,7 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
 	//Crea la room
 	$room = $gestorBD->has_invited_to_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest);
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
-	if ($room <= 0) {
+	if ($room <= 0){
 		$room = $gestorBD->register_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest, $message, $user_agent);
 	}
 	$_SESSION[CURRENT_TANDEM] = $room;
@@ -159,7 +163,7 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
 				if(isset($room)) $exercise = $data.$id_resource_lti.'_'.$room;
 				$redirect_to_room = false;
 				$user_obj->type_user = 'b';
-				if(!is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$exercise.".xml")) { 
+				if(!is_file(PROTECTED_FOLDER.'/'.$exercise.".xml")) { 
 						$user_obj->type_user = 'a';
 						$tandemBLTI->makeXMLUserLTI($user_obj,$exercise,$data);
 						$redirect_to_room = true;
@@ -185,8 +189,18 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
 					openLinkWaiting(); });
 	
 				function openLink(){
-					top.document.location.href="<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>&userb=<?php echo $id_user_guest;?>";
-				}
+                                        <?php if ($use_waiting_room) {
+                                            ?>
+                                           top.showWaitingMessage("<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>&userb=<?php echo $id_user_guest;?>", "<?php echo $_SESSION[CURRENT_TANDEM] ?>");
+				
+                                        <?php } else {
+                                            ?>
+                                            //we can have an error .... see later.        
+                                           top.showWaitingMessage("<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>&userb=<?php echo $id_user_guest;?>", "<?php echo $_SESSION[CURRENT_TANDEM] ?>");
+				
+                                        <?php } 
+                                            ?>
+					}
 	
 				function openLinkWaiting(){
 					top.document.getElementById('roomStatus').innerHTML="<?php echo $LanguageInstance->get('Connecting...')?>";

@@ -22,18 +22,16 @@ if (!$user_obj || !$course_id) {
 } else {
 echo '<tandems>';
 	$id_resource_lti = $_SESSION[ID_RESOURCE];
-	$id_last_insert = isset($_REQUEST['id'])?$_REQUEST['id']:0;
+	$id = isset($_REQUEST['id'])?$_REQUEST['id']:0;
 	$gestorBD = new gestorBD();
-	$pending_invitations = $gestorBD->get_new_invited_to_join($id_last_insert, $user_obj->id, $id_resource_lti, $course_id, true);
-	if ($pending_invitations){
-		foreach ($pending_invitations as $tandem) {
+	$tandem = $gestorBD->obteTandem($id);
+	if ($tandem && $tandem['id_user_guest']>0){
+		
 		echo '<tandem>';
 			echo '<id>'.$tandem['id'].'</id>';
-			echo '<created>'.$tandem['created'].'</created>';
-			echo '<nameuser>'.$tandem['surname'].', '.$tandem['firstname'].'</nameuser>';
-			echo '<exercise>'.$tandem['name'].'</exercise>';
+			
 		echo '</tandem>';
-		}
+		
 	}
 echo '</tandems>';
 } 

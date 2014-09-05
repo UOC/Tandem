@@ -36,7 +36,11 @@ require_once dirname(__FILE__).'/classes/lang.php';
 			url: "desconn.php",
 			data: {'room':'<?php echo $_GET["room"];?>'},
 			success: function(){
-				top.document.location.href="selectUserAndRoom.php";
+                            <?php if ($_SESSION[USE_WAITING_ROOM]) { ?>
+				top.document.location.href="tandemRoom.php";
+                            <?php  } else {?>
+                                top.document.location.href="selectUserAndRoom.php";
+                                 <?php  } ?>
 			}
 		});
 	}

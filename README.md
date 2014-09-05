@@ -17,6 +17,11 @@ define('BD_PASSWORD', 'XXX');
 define('PROTECTED_FOLDER', dirname(__FILE__).'/xml');
 define('GOOGLE_ANALYTICS_ID', 'XXX'); 
 ```
+* Modify configuration_oki.cfg if you have enable OKI OSIDS:
+```
+Indicate the location for each configuration OkiBusWebAppClient
+....
+```
 ##
 ### Copy files from deliverable to web server's root folder.
 ### Configure Interoperability model
