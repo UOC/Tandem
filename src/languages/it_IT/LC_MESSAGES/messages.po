@@ -1,0 +1,404 @@
+# Translation of Tandem (trunk) in English
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2014-10-02 16:32+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.5\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
+"Language-Team: \n"
+"Language: it_IT\n"
+
+msgid "welcome"
+msgstr "Ciao"
+
+msgid "no estas autoritzat"
+msgstr "Non sei autorizzato"
+
+msgid "back"
+msgstr "Indietro"
+
+msgid "txtOtherUserConn"
+msgstr "Adesso sei connesso al tuo compagno di Tandem"
+
+msgid "txtWaiting4User"
+msgstr "In attesa di connettersi a Tandem"
+
+msgid "no_users_in_course"
+msgstr "Non ci sono utenti in questo corso. "
+
+msgid "txtTheUser"
+msgstr "<b>L'utente ("
+
+msgid "txtReplied"
+msgstr ") ha risposto. In attesa di una conferma</b>"
+
+msgid "refresh"
+msgstr "Aggiorna la pagina"
+
+msgid "user_in_tandem"
+msgstr "Il tuo compagno non è raggiungibile, riprova più tardi"
+
+msgid "show_tandem"
+msgstr "Mostra i tandem"
+
+msgid "txtDesconnected"
+msgstr "Disconnesso"
+
+msgid "select_user"
+msgstr "Seleziona l'utente"
+
+msgid "select_users"
+msgstr "Seleziona gli utenti"
+
+msgid "tandems"
+msgstr "Tandem disponibili"
+
+msgid "no_tandems"
+msgstr "Non ci sono tandem per quest'utente"
+
+msgid "date"
+msgstr "Data"
+
+msgid "points"
+msgstr "Punti"
+
+msgid "user_host"
+msgstr "Utente host"
+
+msgid "user"
+msgstr "Utente"
+
+msgid "user_guest"
+msgstr "Utente guest"
+
+msgid "date_guest_user_logged"
+msgstr "Data connessione utente guest"
+
+msgid "finalized"
+msgstr "Data di finalizzazione"
+
+msgid "total_time"
+msgstr "Tempo totale"
+
+msgid "start"
+msgstr "Inizio!"
+
+msgid "accept"
+msgstr "Accetta"
+
+msgid "select_exercise"
+msgstr "Seleziona esercizio"
+
+msgid "tandem_description_1"
+msgstr ""
+"Benvenuto %s alla prova Tandem. Questo strumento funziona con Google Chrome, "
+"Firefox 4 e oltre, Safari 5."
+
+msgid "tandem_description_2"
+msgstr ""
+"Tandem NON funziona con Internet Explorer. Stiamo lavorando per risolvere "
+"questo problema. "
+
+msgid "tandem_logo"
+msgstr "Logo Tandem"
+
+msgid "tandem"
+msgstr "Tandem"
+
+msgid "exercise"
+msgstr "Esercizio"
+
+msgid "go"
+msgstr "Accedi"
+
+msgid "waiting"
+msgstr "In attesa di una risposta dall'utente"
+
+msgid "waitingUserX"
+msgstr "In attesa"
+
+msgid "acceptance"
+msgstr ""
+"Se il tuo compagno di tandem non accetta nel prossimo minuto, l'invito "
+"scadrà."
+
+msgid "direct_access_to_content"
+msgstr "Accesso diretto ai contenuti"
+
+msgid "pending_tandems"
+msgstr "Inviti ricevuti per il Tandem "
+
+msgid "no_pending_tandems"
+msgstr "Non hai nessun invito al Tandem"
+
+msgid "reload_pending"
+msgstr "Ricarica gli inviti ricevuti per il Tandem"
+
+msgid "tasks_tandems"
+msgstr "Attività"
+
+msgid "questions_tasks_tandems"
+msgstr "Domande"
+
+msgid "task"
+msgstr "Attività"
+
+msgid "question"
+msgstr "Domanda"
+
+msgid "total_time_seconds"
+msgstr "Tempo totale:&#13 %s minuti&#13 %s secondi"
+
+msgid "start_date"
+msgstr "Data d'inizio"
+
+msgid "finish_date"
+msgstr "Data di fine"
+
+msgid "finished"
+msgstr "Finito"
+
+msgid "caducado"
+msgstr "Scaduto"
+
+msgid "all"
+msgstr "Tutti"
+
+msgid "no"
+msgstr "No"
+
+msgid "yes"
+msgstr "Sì"
+
+msgid "no_results_found"
+msgstr "Non è stato trovato nessun risultato"
+
+msgid "play_as_user_host"
+msgstr "Riproduci l'utente host"
+
+msgid "play_as_user_guest"
+msgstr "Riproduci l'utente guest"
+
+msgid "play"
+msgstr "Riproduci"
+
+msgid "just_been_invited"
+msgstr "Ti hanno invitato a fare un Tandem con:"
+
+msgid "user_agent_host"
+msgstr "Info browser host"
+
+msgid "user_agent_guest"
+msgstr "Info browser guest"
+
+msgid "mange_exercises_tandem"
+msgstr "Gestire esercizi"
+
+msgid "choose_zip_file"
+msgstr "Seleziona un file ZIP da inviare"
+
+msgid "zip_upload_ok"
+msgstr "Il file %s è stato caricato correttamente "
+
+msgid "error_uploading_file"
+msgstr "C'è stato un problema con il caricamento del file. Riprova."
+
+msgid "error_no_zip_format"
+msgstr "Il file che stai inviando non è un file ZIP. Riprova. "
+
+msgid "error_getting_information_of_exercise"
+msgstr "L'esercizio non è stato trovato nella base di dati."
+
+msgid "exercise_name"
+msgstr "Nome esercizio"
+
+msgid "name_xml_file"
+msgstr "Nome file XML"
+
+msgid "enabled"
+msgstr "Attivato"
+
+msgid "delete"
+msgstr "Elimina"
+
+msgid "show_profile"
+msgstr "Mostra il profilo"
+
+msgid "hide_profile"
+msgstr "Nascondi il profilo"
+
+msgid "quit"
+msgstr "Esci"
+
+msgid "task_remaining_time"
+msgstr "Tempo rimanente per realizzare l'attività"
+
+msgid "overrides_xml_file"
+msgstr "Il file XML verrà sovrascritto se ha lo stesso nome"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"Il file %s esiste già, vuoi davvero sovrascriverlo? Se sì, seleziona "
+"\"Sovrascrivere-Sì\""
+
+msgid "update"
+msgstr "Aggiorna"
+
+msgid "upload"
+msgstr "Invia"
+
+msgid "error_choose_file"
+msgstr "Devi selezionare un file ZIP da inviare"
+
+msgid "exercise_deleted_ok"
+msgstr "L'esercizio è stato rimosso correttamente."
+
+msgid "error_delete_exercise"
+msgstr ""
+"Errore eliminando l'esercizio selezionato, verifica che il file esista e che "
+"vi siano i permessi adeguati."
+
+msgid "main_xml_file_not_found"
+msgstr ""
+"Non si può processare il file perché non si trova il file XML principale. "
+
+msgid "no_exercises_found"
+msgstr "Non vi sono esercizi disponibili."
+
+msgid "Solution"
+msgstr "Soluzione"
+
+msgid "See Solution"
+msgstr "Mostra la soluzione"
+
+msgid "Next Task"
+msgstr "Attività seguente"
+
+msgid "Click to finish"
+msgstr "Clicca per terminare"
+
+msgid "txtEndTask"
+msgstr ") ha completato quest'attività. In attesa di una conferma</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "In attesa che il tuo compagno finisca l'esercizio."
+
+msgid "state"
+msgstr "Stato"
+
+msgid "activity_log"
+msgstr "Registro attività"
+
+msgid "exercises_list"
+msgstr "Elenco esercizi"
+
+msgid "new_exercise"
+msgstr "Nuovo esercizio"
+
+msgid "edit_exercise"
+msgstr "Modifica esercizio"
+
+msgid "file_name"
+msgstr "Nome file"
+
+msgid "browse"
+msgstr "Sfoglia"
+
+msgid "none_file_selected"
+msgstr "Nessun file selezionato"
+
+msgid "search_criteria"
+msgstr "Criteri di ricerca"
+
+msgid "date_range"
+msgstr "Intervallo di date"
+
+msgid "from"
+msgstr "Da"
+
+msgid "to"
+msgstr "A"
+
+msgid "status"
+msgstr "Status"
+
+msgid "duration"
+msgstr "Durata"
+
+msgid "browser_info"
+msgstr "Info browser"
+
+msgid "total"
+msgstr "Totale"
+
+msgid "complete"
+msgstr "Completato"
+
+msgid "incomplete"
+msgstr "Incompleto"
+
+msgid "error"
+msgstr "Errore"
+
+msgid "search"
+msgstr "Ricerca"
+
+msgid "invalid_tool"
+msgstr "Strumento non valido"
+
+msgid "Activityhasbeencompleted"
+msgstr "L'attività è stata completata!"
+
+msgid "ThankyouforusingTANDEM"
+msgstr "Grazie per aver usato TANDEM"
+
+msgid "Connecting..."
+msgstr "In connessione..."
+
+msgid "Task"
+msgstr "Esercizio"
+
+msgid "See"
+msgstr "Mostra"
+
+msgid "SlowConn"
+msgstr "Connessione lenta"
+
+msgid "waiting_remaining_time"
+msgstr "Tempo rimanente per completare l'esercizio."
+
+msgid "Tandem"
+msgstr "Tandem"
+
+msgid "users_tandem"
+msgstr "Utenti Tandem"
+
+msgid "Waiting"
+msgstr "In attesa"
+
+msgid "users_waiting"
+msgstr "Utenti in attesa"
+
+msgid "time_up"
+msgstr "Tempo scaduto !!"
+
+msgid "close"
+msgstr "Chiudi !!"
+
+msgid "please_stand_by"
+msgstr "Attendi qualche istante !!"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "In attesa che l'utente si connetta !!"
+
+msgid "waiting_for_tandem_connexion"
+msgstr "In attesa della connessione a Tandem !!"
+
+msgid "room_taken"
+msgstr "Questa chat room è già occupata in un tandem, scegline un'altra."
