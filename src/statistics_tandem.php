@@ -81,7 +81,13 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 <script src="js/jquery.colorbox-min.js"></script>
 <script src="js/jquery.simplemodal.1.4.2.min.js"></script>
 <script src="js/common.js"></script>
-<?php include_once dirname(__FILE__).'/js/google_analytics.php'?>
+<?php include_once dirname(__FILE__).'/js/google_analytics.php' ?>
+<script>
+$(document).ready(function(){
+// victor - Lets change the go back link depending on if the custom parameter USE_WAITING_ROOM exists.
+$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) ? 'tandemRoom.php' : 'selectUserAndRoom.php' ?>");
+});
+</script>
 <script type="text/javascript">
 
 (function( $ ) {
@@ -283,7 +289,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 			<div id="main">
 				<!-- content -->
 				<div id="content">
-					<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
+					<a href="selectUserAndRoom.php" id='GoBack' class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
 
 					<div id="logo">
 						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>

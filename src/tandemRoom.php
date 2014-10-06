@@ -4,7 +4,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+ini_set("display_errors",0);
 require_once dirname(__FILE__) . '/classes/lang.php';
 require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';

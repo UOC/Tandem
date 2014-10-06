@@ -33,6 +33,7 @@
  * then if users exists in system updates (if not create), the same with courses and roles in a course 
  *
  */
+ini_set("display_errors",0);
 require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/utils.php';
 
