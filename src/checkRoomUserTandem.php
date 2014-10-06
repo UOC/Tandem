@@ -196,7 +196,8 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
                                         <?php } else {
                                             ?>
                                             //we can have an error .... see later.        
-                                           top.showWaitingMessage("<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>&userb=<?php echo $id_user_guest;?>", "<?php echo $_SESSION[CURRENT_TANDEM] ?>");
+                                           top.document.location.href="<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>";
+			
 				
                                         <?php } 
                                             ?>
