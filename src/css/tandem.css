@@ -194,9 +194,9 @@ html, body { height: 100%; }
 
 #footer-container {
 	position: relative;
-	margin-top: -335px;
-	height: 335px;
-	clear:both;
+	margin-top: -233px;
+	height: 222px;
+	clear: both;
 	background:#f7faf5 url('../img/footer_paisaje.png') repeat-x 0 100%;
 }
 
@@ -802,8 +802,8 @@ margin-right:24px;
 #footer .footer-tandem {
 	display:block;
 	float:right;
-	width:269px;
-	height:256px;
+	width: 151px;
+	height: 144px;
 	margin-right:20px;
 	background: transparent url('../img/footer_tandem.png');
 }
@@ -815,7 +815,7 @@ margin-right:24px;
 	height:36px;
 	margin:26px 20px 0 0;
 }
-
+	
 #footer img {
 	display:block;
 	float:left;

@@ -876,14 +876,6 @@ jQuery(document).ready(function(){
             <!-- /accessibility -->
             <!-- /wrapper -->
             <div id="wrapper">
-
-                <div id="head-containerS">
-                    <div id="headerS">
-                        <div id="logoS">
-                            <div id="showNewsS"></div>
-                        </div>
-                    </div>
-                </div>
                 <!-- main-container -->
                 <div id="main-container">
                     <!-- main -->
@@ -1004,22 +996,7 @@ jQuery(document).ready(function(){
                                 
                             </div>
                             <div class="cleaner"></div> 
-                            
-                    <table id="statisticsWaiting" class="table" style="float:left;">
-                    <thead>
-                            <tr>
-                                    <th style="width:100px;">Waiting</th>
-                                    <th style="width:100px;">Users Waiting</th>
-                            </tr>
-                    </thead>
-                    <tbody class="leftTable">
-                        
-                    </tbody>
-                    </table>
-                            
-                    
-                            
-                    <table id="statisticsTandem" class="table" style="float:left;margin-left:10px;">
+                 <table id="statisticsTandem" class="table" style="margin-left:10px;">
                     <thead>
                             <tr>
                                     <th style="width:100px;">Tandem</th>
@@ -1029,7 +1006,18 @@ jQuery(document).ready(function(){
                     <tbody class="rightTable">
                         
                     </tbody>
-                    </table>    
+                    </table>   
+                 <table id="statisticsWaiting" class="table"  style="margin-left:10px;">
+                    <thead>
+                            <tr>
+                                    <th style="width:100px;">Waiting</th>
+                                    <th style="width:100px;">Users Waiting</th>
+                            </tr>
+                    </thead>
+                    <tbody class="leftTable">
+                        
+                    </tbody>
+                    </table> 
                                 <?php
                                // echo '<div><h2>Lenguaje: ' . $lang = $_SESSION[LANG] . '</h2></div>' . '<br>';
                                // echo 'ID del Curso: ' . $course_id . '<br>';
