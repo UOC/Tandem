@@ -29,6 +29,12 @@ require_once dirname(__FILE__).'/classes/lang.php';
 <p style="text-align:center;"><?php echo $LanguageInstance->get('waitingUserX');?><?php echo " <b>".$_GET["fn"]." ".$_GET["sn"]."</b>";?></p>
 <p style="text-align:center;"><?php echo $LanguageInstance->get('acceptance');?><br/>
 <h4 style="text-align:center;"><span id="startNowBtn"></span></h4></p>
-
+<?php 
+if ($_SESSION[OPEN_TOOL_ID]>0){?>
+<script language="javascript">
+window.onbeforeunload = function() {};
+document.location.href='ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>';
+</script>
+<?php }?>
 </body>
 </html>

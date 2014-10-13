@@ -36,6 +36,7 @@ define ('OATUH_CONSUMER_KEY', 'oauth_consumer_key');
 define ('DELIMITER', ':');
 define ('CURRENT_USER', 'current_user');
 define ('USE_WAITING_ROOM', 'use_waiting_room');
+define ('OPEN_TOOL_ID', 'open_tool_id');
 if (!defined('HTTPATTRIBUTEKEY_OSIDCONTEXT'))
 	define ('HTTPATTRIBUTEKEY_OSIDCONTEXT', 'osid_context');
 define ('OKIBUSPHP_COMPONENTS', 'okibusPHP_components');
