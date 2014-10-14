@@ -497,7 +497,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				salir = 1;
                                 
                             <?php if ($_SESSION[USE_WAITING_ROOM]) { ?>
-				setTimeout("document.location.href='tandemRoom.php'",250);
+				setTimeout("document.location.href='autoAssignTandemRoom.php'",250);
                             <?php  } else {?>
                                 setTimeout("document.location.href='selectUserAndRoom.php'",250);
                                  <?php  } ?>

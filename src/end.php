@@ -37,7 +37,7 @@ require_once dirname(__FILE__).'/classes/lang.php';
 			data: {'room':'<?php echo $_GET["room"];?>'},
 			success: function(){
                             <?php if ($_SESSION[USE_WAITING_ROOM]) { ?>
-				top.document.location.href="tandemRoom.php";
+				top.document.location.href="autoAssignTandemRoom.php";
                             <?php  } else {?>
                                 top.document.location.href="selectUserAndRoom.php";
                                  <?php  } ?>

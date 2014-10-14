@@ -156,7 +156,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 <script>
 $(document).ready(function(){
 // victor - Lets change the go back link depending on if the custom parameter USE_WAITING_ROOM exists.
-$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) ? 'tandemRoom.php' : 'selectUserAndRoom.php' ?>");
+$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) ? 'autoAssignTandemRoom.php' : 'selectUserAndRoom.php' ?>");
 });
 </script>
 </head>
@@ -183,7 +183,7 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) ? 'tande
 
 				<?php /* if($message) echo '<div class="info">'.$message.'</div>'; */ ?>
 				<div id="content">
-					<a href="tandemRoom.php" id='GoBack' class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
+					<a href="autoAssignTandemRoom.php" id='GoBack' class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
 					<div id="logo">
 						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
 					</div>
