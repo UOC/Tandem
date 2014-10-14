@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-08-02 17:45+0100\n"
+"PO-Revision-Date: 2014-10-14 19:56+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -372,3 +372,12 @@ msgstr "Bekijk"
 
 msgid "SlowConn"
 msgstr "Langzame verbinding"
+
+msgid "Time expired"
+msgstr "Time expired"
+
+msgid "waiting_remaining_time"
+msgstr "Time for ending Task"
+
+msgid "waiting_for_tandem_assignment"
+msgstr "Waiting tandem time for assignment"
