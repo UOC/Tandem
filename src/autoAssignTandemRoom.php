@@ -44,7 +44,6 @@ if (!$user_obj || !$course_id) {
 	//lets see first if we have people waiting in the waiting room that matches our exercises. 
 	if(!empty($areThereTandems)){
 		//ok so we are here cause we have someone waiting for one of our exercices.
-	die("22".serialize($areThereTandems));
 		$tId = $gestorBD->createTandemFromWaiting($areThereTandems[0],$user_obj->id,$id_resource_lti);
 		header("location: accessTandem.php?id=".$tId."&not_init=1");
 		die();
@@ -184,6 +183,20 @@ if (!$user_obj || !$course_id) {
 		</div>
 		<!-- /main-container -->
 	</div>
+    <div id="modal-end-task" class="modal">
+        <script>
+                 
+        </script>
+        <div>
+                <img id="home" src="images/final1.png" width="310" height="85" alt="" />
+        </div>
+        <div class="text">
+                <p><?php echo $LanguageInstance->get('Time expired');?></p>
+        </div>
+        <div class="waitingImagePosition">
+          <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
+        </div>
+    </div>
 	<!-- /wrapper -->
 	<!-- footer -->
 	<div id="footer-container">
