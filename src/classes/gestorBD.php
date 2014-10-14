@@ -829,11 +829,11 @@ class GestorBD {
     public function register_tandem_exercise($id_course, $id_exercise, $id_user, $name, $name_xml_file, $enabled, $week=0) {
         $sql = '';
         if ($id_exercise <= 0) {
-            $sql = 'INSERT INTO exercise (name, name_xml_file, enabled, created, created_user_id, modified, modified_user_id, week)  ' .
+            $sql = 'INSERT INTO exercise (name, name_xml_file, enabled, created, created_user_id, modified, modified_user_id)  ' .
                     'VALUES ' .
-                    '(' . $this->escapeString($name) . ', ' . $this->escapeString($name_xml_file) . ', ' . ($enabled ? 1 : 0) . ', NOW(), ' . $id_user . ', NOW(), ' . $id_user . ', ' . $this->escapeString($week) . ')';
+                    '(' . $this->escapeString($name) . ', ' . $this->escapeString($name_xml_file) . ', ' . ($enabled ? 1 : 0) . ', NOW(), ' . $id_user . ', NOW(), ' . $id_user . ')';
         } else {
-            $sql = 'UPDATE exercise SET name=' . $this->escapeString($name) . ', name_xml_file=' . $this->escapeString($name_xml_file) . ', enabled=' . ($enabled ? 1 : 0) . ', modified = NOW(), modified_user_id = ' . $id_user . ' , week = ' . $this->escapeString($name) . ' ' .
+            $sql = 'UPDATE exercise SET name=' . $this->escapeString($name) . ', name_xml_file=' . $this->escapeString($name_xml_file) . ', enabled=' . ($enabled ? 1 : 0) . ', modified = NOW(), modified_user_id = ' . $id_user . ' ' .
                     ' WHERE id = ' . $id_exercise;
         }
         $result = $this->consulta($sql);
@@ -846,9 +846,9 @@ class GestorBD {
                 $result = $this->consulta($sql);
 
                 //Relacionem amb el curs
-                $sql = 'INSERT INTO course_exercise (id_course, id_exercise, created, created_user_id) ' .
+                $sql = 'INSERT INTO course_exercise (id_course, id_exercise, created, created_user_id, week) ' .
                         'VALUES ' .
-                        '(' . $id_course . ', ' . $id_exercise . ', NOW(), ' . $id_user . ')';
+                        '(' . $id_course . ', ' . $id_exercise . ', NOW(), ' . $id_user . ', ' . $this->escapeString($week) . ')';
                 $result = $this->consulta($sql);
             }
         }

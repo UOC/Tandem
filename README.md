@@ -54,5 +54,8 @@ http://<ip>/tandem/integration_tool.php
 ** %ID_TANDEM% that represents the current id.
 ** %URL_TANDEM% that represents the url of.
 
-To launch an lti you have to go: http://yourlocaltandem/ltiConsumer.php?id=ID_NUMBER
+To launch an lti you have to go: http://yourlocaltandem/ltiConsumer.php?id=%ID_TANDEM%
+url_notify_started_recording=%URL_TANDEM%/api.php?id=%ID_TANDEM%&started=1
+url_notify_ended_recording=%URL_TANDEM%/api.php?id=%ID_TANDEM%&ended=1
+
 
