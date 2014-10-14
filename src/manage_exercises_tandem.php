@@ -16,12 +16,14 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 	header ('Location: index.php');
 } else {
 	$exercise_name = '';
+	$exercise_week = '';
 	$exercise_id = -1;
 	$gestorBD	= new GestorBD();
 	if(isset($_FILES["zip_file"]) && $_FILES["zip_file"]["name"]) {
 		$filename = $_FILES["zip_file"]["name"];
 		$source = $_FILES["zip_file"]["tmp_name"];
 		$type = $_FILES["zip_file"]["type"];
+		$exercise_week = isset($_POST["week"])?$_POST["week"]:0;
 		
 		$name = explode(".", $filename);
 		$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
@@ -72,7 +74,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				{ 
 					$delete = array();
 					$enabled = 1;
-					$id = $gestorBD->register_tandem_exercise($course_id, -1, $user_obj->id, $name_form, $name_xml_file, $enabled);
+					$id = $gestorBD->register_tandem_exercise($course_id, -1, $user_obj->id, $name_form, $name_xml_file, $enabled, $exercise_week);
 					$target_path = dirname(__FILE__).DIRECTORY_SEPARATOR.$course_folder.DIRECTORY_SEPARATOR.$id;
 			
 					$delete = moveFromTempToCourseFolder($target_path_temp, $target_path, $delete);
@@ -214,6 +216,21 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) ? 'tande
 					                <span class="attach-input-help">Max. <?php echo $upload_mb; ?> MB</span>
 					            </span>
 							</div>
+							<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
+							<div class="frm-group">
+								<label class="frm-label"><?php echo $LanguageInstance->get('select week')?>:</label> 
+								<select name="week" >
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="0"><?php echo $LanguageInstance->get('not apply')?>:</option>
+								</select>
+							</div>
+							
+							<?php } ?>
 							<div class="frm-foot">
 								<input type="hidden" name="id" value="-1" />
 								<input type="hidden" name="overrides_xml_file" value="1" />

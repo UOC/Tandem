@@ -826,14 +826,14 @@ class GestorBD {
      * @param unknown_type $name_xml_file
      * @param unknown_type $enabled
      */
-    public function register_tandem_exercise($id_course, $id_exercise, $id_user, $name, $name_xml_file, $enabled) {
+    public function register_tandem_exercise($id_course, $id_exercise, $id_user, $name, $name_xml_file, $enabled, $week=0) {
         $sql = '';
         if ($id_exercise <= 0) {
-            $sql = 'INSERT INTO exercise (name, name_xml_file, enabled, created, created_user_id, modified, modified_user_id)  ' .
+            $sql = 'INSERT INTO exercise (name, name_xml_file, enabled, created, created_user_id, modified, modified_user_id, week)  ' .
                     'VALUES ' .
-                    '(' . $this->escapeString($name) . ', ' . $this->escapeString($name_xml_file) . ', ' . ($enabled ? 1 : 0) . ', NOW(), ' . $id_user . ', NOW(), ' . $id_user . ')';
+                    '(' . $this->escapeString($name) . ', ' . $this->escapeString($name_xml_file) . ', ' . ($enabled ? 1 : 0) . ', NOW(), ' . $id_user . ', NOW(), ' . $id_user . ', ' . $this->escapeString($week) . ')';
         } else {
-            $sql = 'UPDATE exercise SET name=' . $this->escapeString($name) . ', name_xml_file=' . $this->escapeString($name_xml_file) . ', enabled=' . ($enabled ? 1 : 0) . ', modified = NOW(), modified_user_id = ' . $id_user . '  ' .
+            $sql = 'UPDATE exercise SET name=' . $this->escapeString($name) . ', name_xml_file=' . $this->escapeString($name_xml_file) . ', enabled=' . ($enabled ? 1 : 0) . ', modified = NOW(), modified_user_id = ' . $id_user . ' , week = ' . $this->escapeString($name) . ' ' .
                     ' WHERE id = ' . $id_exercise;
         }
         $result = $this->consulta($sql);
