@@ -26,16 +26,42 @@ if(empty($otherlanguage) or empty($courseID) or empty($exercisesID)){
 $gestordb = new GestorBD();
 $response = $gestordb->checkForTandems($exercisesID, $courseID, $otherlanguage);
 
+$debug = false;
+
+if ($debug) {
+	error_log("checking for ".$exercisesID." with user ".$user_id." otherlanguage ".$otherlanguage);
+}
 //if we have a positive response , it means we have found someone to do a tandem with.
 if($response){
+	if ($debug) {
+		error_log("has response");
+	}
 	
 	$response = $response[0];
 	$tandem_id = $gestordb->createTandemFromWaiting($response,$user_id,$id_resource_lti);
 	echo json_encode(array("tandem_id" => $tandem_id));
-	
+	if ($debug) {
+		error_log("RESPONSE tandem ID ".$tandem_id);
+	}
 } else {
-	//then update my timestamp
-	$gestordb->updateMyWaitingTime($user_id, $exercisesID, $courseID, $otherlanguage);
+	if ($debug) {
+		error_log("NOOO has response");
+	}
+	//check if I had been invited
+	$tandem_id = $gestordb->checkForInvitedTandems($user_id, $exercisesID,$courseID);
+	if ($tandem_id) {
+		if ($debug) {
+			error_log("tandem ID ".$tandem_id);
+		}
+		echo json_encode(array("tandem_id" => $tandem_id));
+	}
+	else {
+		//then update my timestamp
+		$gestordb->updateMyWaitingTime($user_id);
+		if ($debug) {
+			error_log("updated my waiting ");
+		}
+	}
 }
 
 
