@@ -182,7 +182,7 @@ try {
 		    		$_SESSION[COURSE_ID] = $course_id;
                                 $redirectTo = 'selectUserAndRoom';
                                 if ($waiting_room==1) {
-                                    $redirectTo = 'tandemRoom';
+                                    $redirectTo = 'autoAssignTandemRoom';
                                 }
 		    		header ('Location: '.$redirectTo.'.php');
 		    	} 

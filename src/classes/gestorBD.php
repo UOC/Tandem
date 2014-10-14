@@ -1719,12 +1719,7 @@ class GestorBD {
                }*/
            
             $ok  = $this->offer_exercise($language, $idCourse, $onlyExID,$idUser);
-
-          
-           
         }else{
-
-            
             //return 'tandem_exercise';
             $array=array();
             
@@ -1800,7 +1795,158 @@ class GestorBD {
         }
     }
 
+
+
+
+    /****************************
+     * Victor - auto load tandem.
+     ****************************/
+
+    /**
+     *  Get all the exercices of the week that the user hasnt finished yet.
+     */    
+    function getExercicesNotDoneWeek($id_course,$user_id){
+        $id_course = 2;
+        $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select max(week) from course_exercise) and id_course = '.$id_course;
+        $result = $this->consulta($sql);
+
+        if ($this->numResultats($result) > 0) {        
+            $ids_exercise = array_values($this->obteComArray($result));             
+            foreach($ids_exercise as $value){
+                $ids[] = $value['id_exercise'];
+            }           
+            $sql = "SELECT distinct(id_exercise) from tandem where id_exercise in('".implode(",",$ids)."')
+                    and id_user_guest != '".$user_id."' and id_user_host != '".$user_id."' ";               
+             $result = $this->consulta($sql);
+              if ($this->numResultats($result) > 0) {
+                 $r =  $this->obteComArray($result);                  
+                    foreach($r as $value){
+                      $ids[] = $value['id_exercise'];
+                     }
+                     return $ids;
+              }
+        }
+        return false;
+    }
+    
+    /**
+     *  We pass an array of exercices the user is waiting or 
+     */
+    public function checkIfAvailableTandemForExercise($exercises_ids,$id_course,$language,$user_id){
+    
+        foreach($exercises_ids as $id_ex){
+            $val = $this->getFirstUserWaiting($id_course,$id_ex,$language);
+            if(!empty($val)){
+                // We have someone already waiting for one of the exercises :)
+                return $val;
+            }        
+        }
+
+        $this->deleteUserFromWaitingRooms($user_id,$id_course);
+        //if we are here is because there is no one for this exercise, so lets offer them.         
+        foreach($exercises_ids as $id_ex){          
+         $this->offer_exercise_autoassign($language, $id_course, $id_ex,$user_id);
+        }  
+
+        return false;     
+    }  
+    /**
+     * Here we check if there are any tandems available from all the exercises id of the user.
+     */
+    public function checkForTandems($exercises_ids,$id_course,$otherlanguage){
+
+         if(strpos($exercises_ids,",") !== false){
+            $exs = explode(",",$exercises_ids);
+         }else
+         {
+           $exs[] = $exercises_ids; 
+         }
+
+         foreach($exs as $id_ex){            
+            $sql = "select wr.*,wru.id_user as guest_user_id from waiting_room as wr
+                    inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
+             where wr.language='".$otherlanguage."' 
+             and wr.id_course ='".$id_course."' 
+             and wr.id_exercise= '".$id_ex."'";          
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0) { 
+                return $this->obteComArray($result);
+            }                    
+        }
+        return false;
+    }
+
+    /**
+     * Delete the user from the waiting rooms the first time they come
+     * TODO : update waiting_room table aswell.
+     */
+    public function deleteUserFromWaitingRooms($user_id,$course_id){
+        $sql = "delete from waiting_room_user where id_user ='".$user_id."'";
+        $this->consulta($sql);
+    }  
+
+
+    /**
+     * We INSERT a user with a new exercise if don't exists or UPDATE the
+     * existing exercise increasing +1 in the comput global in the waiting_room table
+     * @param type $language
+     * @param type $courseID
+     * @param type $exerciseID
+     */
+    public function offer_exercise_autoassign($language, $courseID, $exerciseID,$idUser)
+    {
+        $ok = false;
+
+        $sqlDelete = 'delete from waiting_room where number_user_waiting = 0 and id_course = '.$courseID.' and id_exercise = ' . $exerciseID;
+        $resultDelete = $this->consulta($sqlDelete);
+        
+        $sqlSelect = 'select number_user_waiting, id from waiting_room where id_course = '.$courseID.' and id_exercise = ' . $exerciseID .' and language="'.$language.'"';
+        $resultSelect = $this->consulta($sqlSelect);
+        $waiting_room_id = -1;
+        
+        if ($this->numResultats($resultSelect) > 0){
+            
+            $resultSelect = $this->obteComArray($resultSelect);
+            
+            $waiting_room_id = $resultSelect[0]['id'];
+            
+            $sql= "UPDATE waiting_room SET number_user_waiting = number_user_waiting + 1  WHERE id = ".$waiting_room_id." and id_course = ".$courseID." and id_exercise = ".$exerciseID;
+            $ok = $this->consulta($sql);
+            
+        }else{
+            $sqlInsert = 'INSERT INTO waiting_room (language, id_course, id_exercise,number_user_waiting,created) VALUES (' . $this->escapeString($language) . ',' . $courseID . ',' . $exerciseID . ',1,now())';
+            $ok = $this->consulta($sqlInsert);
+            if ($ok) {
+                
+                $waiting_room_id = mysql_insert_id();
+            }
+            
+        }
+        if ($ok) {
+            $this->insertUserIntoWaitingRoom($waiting_room_id, $language, $courseID, $exerciseID, $idUser);
+        }
+        return $ok;
+    }
+
+
+    /**
+     * Lets delete a user_id from all the waiting rooms
+     */
+    function deleteFromWaitingRoom($user_id){
+
+        $resultSelect  = $this->consulta("select * from waiting_room_user where id_user =".$user_id);
+        if ($this->numResultats($resultSelect) > 0){            
+            $resultSelect = $this->obteComArray($resultSelect);
+            foreach($resultSelect as $key => $val){
+
+
+            }
+        }
+        $this->consulta("delete from waiting_room_user where id_user = ".$user_id);
+
+    }
+    
  
-}
+}//end of class
 
 ?>

@@ -5,9 +5,9 @@ require_once dirname(__FILE__).'/constants.php';
 require_once dirname(__FILE__).'/gestorBD.php';
 require_once dirname(__FILE__).'/utils.php';
 
-$gestorBDRegister = new GestorBD();
+$gestorBDRegister   = new GestorBD();
 
-$user_register_obj = isset($_SESSION[CURRENT_USER])?$_SESSION[CURRENT_USER]:false;
+$user_register_obj  = isset($_SESSION[CURRENT_USER])?$_SESSION[CURRENT_USER]:false;
 $course_register_id = isset($_SESSION[COURSE_ID])?$_SESSION[COURSE_ID]:false;
 $id_register_tandem = isset($_SESSION[CURRENT_TANDEM])?$_SESSION[CURRENT_TANDEM]:false;
 

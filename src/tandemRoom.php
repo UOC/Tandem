@@ -130,7 +130,7 @@ if(!empty($_GET['locale'])){
 <script type="text/javascript">
 
 jQuery(document).ready(function(){
-		jQuery('#showNewsS').slideUp();
+
 		
 //IE DETECTION - ERROR MSG TO USER
 		var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
@@ -696,8 +696,7 @@ jQuery(document).ready(function(){
 			$.modal($('#modal-end-task'));
 			//accionTimer();
 		}
-	}
-        
+	}        
         //conectando tandem
         function tandemStandBy(){
 		if ($("#waitingUser").length > 0){
@@ -733,13 +732,11 @@ jQuery(document).ready(function(){
 				  success: function(xml){
 				  	var id_txt = $(xml).find('id').text();
 				  	if (id_txt &&  id_txt.length>0) {
-
 						document.location.href = urlToRedirect;						
                          /*ja no afectaria*/
 						//$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo $LanguageInstance->get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo $LanguageInstance->get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo $LanguageInstance->get('accept');?></a></div>");
 					//	setExpiredNow(60);
-						clearInterval(intervalCheckHavePartner);
-                                               
+						clearInterval(intervalCheckHavePartner);                     
 				  	}
 				  },
 				  error: function(){
