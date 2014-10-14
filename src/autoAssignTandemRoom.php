@@ -133,6 +133,9 @@ if (!$user_obj || !$course_id) {
 				}
 			}        
 	         StartTandemTimer();	
+	         desconn = function(){
+				self.close();
+			}
 	        <?php 
 	        /****** END MANAGING TIME BAR ****/ 
 	       ?>
@@ -166,7 +169,7 @@ if (!$user_obj || !$course_id) {
 					<!-- WAITING MODAL -->
 					<!-- TANDEM MODAL -->
 					<div class='waitingForTandem'>
-						<img class='loaderImg' src="css/images/loading_2.gif" width="128" height="128" alt="" />
+						<img class='loaderImg' src="css/images/loading_2.gif" />
 						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?></span>
 					</div>
 					<div class="clear">
@@ -193,7 +196,7 @@ if (!$user_obj || !$course_id) {
         <div class="text">
                 <p><?php echo $LanguageInstance->get('Time expired');?></p>
         </div>
-        <div class="waitingImagePosition">
+        <div class="">
           <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
         </div>
     </div>
