@@ -40,3 +40,19 @@ consumer_key.test.secret=testpasswd
 * LTI provider's URL is as shown:
 http://<ip>/tandem/integration_tool.php
 
+## LTI consumer: you can configure the LTI providers in the lti_application indicanting the following parameters:
+* toolurl: the url to launch
+* name: the name of the tool
+* resourcekey: the consumer key
+* password: the secret
+* sendname: set preference to send name or not
+* sendemail: set preference to send email or not
+* acceptgrades: set preference to accept grades or not
+* acceptroster: set preference to accept roster or not
+* acceptsetting: set preference to accept setting service or not
+* customparameters: separated by new line you can specify each custom parameter. You can set some variables like:
+** %ID_TANDEM% that represents the current id.
+** %URL_TANDEM% that represents the url of.
+
+To launch an lti you have to go: http://yourlocaltandem/ltiConsumer.php?id=ID_NUMBER
+

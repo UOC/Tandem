@@ -64,9 +64,13 @@ class ManageLTI {
 	    $customstr = $consumer->get('customparameters');
 	    if ( $customstr ) {
 	        $custom = $this->blti_consumer_split_custom_parameters($customstr);
+	        foreach ($custom as $key => $value) {
+		    	$custom[$key] = self::replace_custom_variables($value);
+	        }
 	        $requestparams = array_merge($custom, $requestparams);
 	    }
 	    foreach ($extra_custom_params as $key => $custom_value) {
+	    	$custom_value = self::replace_custom_variables($custom_value);
 	    	$requestparams['custom_'.$key] = $custom_value;
 	    } 
 	    //TODO to get simple user 
@@ -100,6 +104,30 @@ class ManageLTI {
 	    $requestparams = $this->encodeBase64($requestparams);
 	    return $this->blti_consumer_sign_parameters($requestparams, $endpoint, $key, $secret, $submit_text, $org_id, $debug, $callbackUrl, $launch, $height);
 	
+	}
+
+/**
+ * Replace
+ * %ID_TANDEM% that represents the current id.
+ * %URL_TANDEM% that represents the url of.
+ * @param  [type] $value [description]
+ * @return [type]        [description]
+ */
+	function replace_custom_variables($value){
+		if (strpos($value, '%ID_TANDEM%')!==false){
+			$value = str_replace('%ID_TANDEM%', $_SESSION[CURRENT_TANDEM], $value);
+		}
+		if (strpos($value, '%URL_TANDEM%')!==false){
+			require_once(dirname(__FILE__).'/utils.php');
+			$cur_url = curPageURL();
+			$parts=parse_url($cur_url);
+			$start = $cur_url;
+			$path_parts=explode('/', $parts['path']);
+			unset($path_parts[count($path_parts)-1]);
+			$value = str_replace('%URL_TANDEM%', $parts['scheme'].'://'.$parts['host'].$start, $value);
+		}
+
+		return $value;
 	}
 	
 	/**
