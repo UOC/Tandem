@@ -1998,7 +1998,7 @@ class GestorBD {
     }
 
     public function checkForOpenTandemRooms($user_id){
-        $this->consulta("select id from tandem where id_user_guest =".$user_id." and created < DATE_SUB(NOW(),INTERVAL 1 MINUTE)");
+        $result = $this->consulta("select id from tandem where id_user_guest =".$user_id." and created < DATE_SUB(NOW(),INTERVAL 1 MINUTE)");
          if ($this->numResultats($result) > 0){ 
             $result = $this->obteComArray($result);
             return $result[0]['id'];
