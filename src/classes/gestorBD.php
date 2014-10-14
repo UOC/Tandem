@@ -1823,19 +1823,20 @@ class GestorBD {
                     foreach($r as $value){
                       $ids[] = $value['id_exercise'];
                      }
-                     return $ids;
               }
+              return $ids;
         }
-        return false;
+        return array();
     }
     
     /**
      *  We pass an array of exercices the user is waiting or 
      */
-    public function checkIfAvailableTandemForExercise($exercises_ids,$id_course,$language,$user_id){
-    
+    public function checkIfAvailableTandemForExercise($exercises_ids,$id_course,$language,$user_id,$otherlanguage){
+        
+        //lets see if there is someone waiting for one ot these exercises.
         foreach($exercises_ids as $id_ex){
-            $val = $this->getFirstUserWaiting($id_course,$id_ex,$language);
+            $val = $this->checkForTandems($id_ex,$id_course,$otherlanguage);
             if(!empty($val)){
                 // We have someone already waiting for one of the exercises :)
                 return $val;
@@ -1867,7 +1868,8 @@ class GestorBD {
                     inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
              where wr.language='".$otherlanguage."' 
              and wr.id_course ='".$id_course."' 
-             and wr.id_exercise= '".$id_ex."'";          
+             and wr.id_exercise= '".$id_ex."'";  
+             echo $sql;        
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
                 return $this->obteComArray($result);
@@ -1932,21 +1934,74 @@ class GestorBD {
     /**
      * Lets delete a user_id from all the waiting rooms
      */
-    function deleteFromWaitingRoom($user_id){
+    function deleteFromWaitingRoom($user_id,$tandem_id){
 
         $resultSelect  = $this->consulta("select * from waiting_room_user where id_user =".$user_id);
         if ($this->numResultats($resultSelect) > 0){            
             $resultSelect = $this->obteComArray($resultSelect);
-            foreach($resultSelect as $key => $val){
-
-
+            foreach($resultSelect as $key){
+                //insert into waiting_room_user_history
+                $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,created,created_history) 
+                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."','".$key['created']."',NOW()) ");
+               
+                if(mysql_affected_rows($this->conn) > 0){
+                    //once we have copied it to the history , we delete it.
+                    $e =$this->consulta("delete from waiting_room_user where id =".$key['id']);
+                     if(mysql_affected_rows($this->conn) > 0){
+                        //now lets backup the waiting_room table
+                        $resultSelect2 = $this->consulta("select * from waiting_room where id=".$key['id_waiting_room']);
+                        if ($this->numResultats($resultSelect2) > 0){  
+                            $res = $this->obteComArray($resultSelect2);
+                             $i = $this->consulta("insert into waiting_room_history(id_waiting_room,language,id_course,id_exercise,number_user_waiting,created,created_history) 
+                                                    values('".$res['id']."','".$res['language']."','".$res['id_course']."','".$res['id_exercise']."','1','".$res['created']."',NOW()) ");
+                             if(mysql_affected_rows($this->conn) > 0){
+                                $e =$this->consulta("delete from waiting_room where id =".$res['id']);
+                             }
+                        }                        
+                    }
+                }
             }
-        }
-        $this->consulta("delete from waiting_room_user where id_user = ".$user_id);
-
+        }       
     }
-    
- 
+
+    //When we find someone to make a tandem, we create the tandem room here and return the id
+    public function createTandemFromWaiting($response,$user_id,$id_resource_lti){
+
+    //first of all lets see if isnt there already an open tandem room with our id in there
+    $openTandem = $this->checkForOpenTandemRooms($user_id); 
+    if(!empty($openTandem)){
+        return $openTandem;
+    }
+
+    //ok lets see if this tandem isnt already created by the user.
+    $sql= "select id from tandem where id_exercise = ".$response['id_exercise']." 
+            and id_course = ".$response['id_course']."
+            and (id_user_host = ".$response['guest_user_id']." and id_user_guest = ".$user_id.")";
+    $result = $this->consulta($sql);
+
+    //if the tandem was already created by the other user, then we are the guests.
+    if ($this->numResultats($result) > 0){ 
+        
+        //to make sure we will delete ourselfs from all the waiting rooms
+        //$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
+        $result = $this->obteComArray($result);
+       return  $result[0]['id'];
+    }else{ 
+        
+        //the tandem is not yet created, lets created it and we will be he host.
+        $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", "");
+        
+        //$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
+         return $tandem_id;
+        die();
+    }
+    }
+
+    public function checkForOpenTandemRooms($user_id){
+
+        $this->consulta("select id from tandem where id_user_host ");
+    }
+     
 }//end of class
 
 ?>
