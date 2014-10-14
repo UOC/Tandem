@@ -28,13 +28,13 @@ class ManageLTI {
 	    $locale = $this->basiclti_get_locale($locale);
 		*/
 	    $requestparams = array(
-	        BasicLTIConstants::RESOURCE_LINK_ID => $consumer->get('id'),
+	        BasicLTIConstants::RESOURCE_LINK_ID => isset($_SESSION[CURRENT_TANDEM])?$_SESSION[CURRENT_TANDEM]:$consumer->get('id'),
 	        BasicLTIConstants::RESOURCE_LINK_TITLE => $consumer->get('title'),
 	        BasicLTIConstants::RESOURCE_LINK_DESCRIPTION => $consumer->get('description'),
 	        BasicLTIConstants::USER_ID => $user->id,
 	        BasicLTIConstants::ROLES => $role,
 	        //TODO revisar si cal
-	        BasicLTIConstants::CONTEXT_ID => 'uoccom-'.$consumer->get('id'),
+	        BasicLTIConstants::CONTEXT_ID => isset($_SESSION[CURRENT_TANDEM])?$_SESSION[CURRENT_TANDEM]:$consumer->get('id'),
 	        BasicLTIConstants::CONTEXT_LABEL => $consumer->get('title'),
 	        BasicLTIConstants::CONTEXT_TITLE => $consumer->get('description'),
 	        BasicLTIConstants::LAUNCH_PRESENTATION_LOCALE => $locale,
