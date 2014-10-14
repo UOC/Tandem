@@ -1869,7 +1869,7 @@ class GestorBD {
              where wr.language='".$otherlanguage."' 
              and wr.id_course ='".$id_course."' 
              and wr.id_exercise= '".$id_ex."'";  
-             echo $sql;        
+                   
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
                 return $this->obteComArray($result);
@@ -1998,8 +1998,12 @@ class GestorBD {
     }
 
     public function checkForOpenTandemRooms($user_id){
-
-        $this->consulta("select id from tandem where id_user_host ");
+        $this->consulta("select id from tandem where id_user_guest =".$user_id." and created < DATE_SUB(NOW(),INTERVAL 1 MINUTE)");
+         if ($this->numResultats($result) > 0){ 
+            $result = $this->obteComArray($result);
+            return $result[0]['id'];
+         }
+         return false;
     }
      
 }//end of class
