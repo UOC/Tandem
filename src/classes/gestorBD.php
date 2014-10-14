@@ -1816,7 +1816,7 @@ class GestorBD {
                 $ids[] = $value['id_exercise'];
             }           
             $sql = "SELECT distinct(id_exercise) from tandem where id_exercise in('".implode(",",$ids)."')
-                    and id_user_guest != '".$user_id."' and id_user_host != '".$user_id."' ";               
+                    and id_course = ".$this->escapeString($id_course)." and (id_user_guest != '".$user_id."' and id_user_host != '".$user_id."')";               
              $result = $this->consulta($sql);
               if ($this->numResultats($result) > 0) {
                  $r =  $this->obteComArray($result);                  
@@ -1869,12 +1869,12 @@ class GestorBD {
              where wr.language='".$otherlanguage."' 
              and wr.id_course ='".$id_course."' 
              and wr.id_exercise= '".$id_ex."'
-             and wr.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 15 seconds before
+             and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 30 seconds before
 
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
                 return $this->obteComArray($result);
-            }                    
+            }                 
         }
         return false;
     }
@@ -1884,6 +1884,16 @@ class GestorBD {
     public function updateMyWaitingTime($id_user){
 
         $sql = 'update waiting_room_user set  created = NOW() where 
+        id_user = ' . $this->escapeString($id_user) ; //Don't care about course
+        return $this->consulta($sql);
+    }
+
+    /**
+     * Here we delete the old waiting room
+     */
+    public function cleanMyWaitingRoom($id_user){
+
+        $sql = 'delete from waiting_room_user set  created = NOW() where 
         id_user = ' . $this->escapeString($id_user) ; //Don't care about course
         return $this->consulta($sql);
     }
@@ -1985,7 +1995,8 @@ class GestorBD {
     //ok lets see if this tandem isnt already created by the user.
     $sql= "select id from tandem where id_exercise = ".$response['id_exercise']." 
             and id_course = ".$response['id_course']."
-            and (id_user_host = ".$response['guest_user_id']." and id_user_guest = ".$user_id.")";
+            and (id_user_host = ".$response['guest_user_id']." and id_user_guest = ".$user_id.")
+            and created >= DATE_SUB(NOW(),INTERVAL 30 SECOND)"; //chekc if has 30 seconds if not can be a reload
     $result = $this->consulta($sql);
 
     //if the tandem was already created by the other user, then we are the guests.
@@ -2005,9 +2016,29 @@ class GestorBD {
         die();
     }
     }
+     /**
+     * Here we check if there are any tandems available from all the exercises id of the user.
+     */
+    public function checkForInvitedTandems($user_id, $exercises_ids,$id_course){
+
+        if (strlen($exercises_ids)>0){
+            $sql = "select * from tandem where 
+               id_exercise in ('".$exercises_ids."') "
+            ." and id_course = ".$this->escapeString($id_course) 
+            ." and created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) "//check the wr has been created 30 seconds before
+            ." and (id_user_guest = ".$this->escapeString($user_id)." OR id_user_host = ".$this->escapeString($user_id).")";  
+
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0) { 
+                $arr = $this->obteComArray($result);
+                return $arr[0]['id'];
+            }                    
+        }
+        return false;
+    }
 
     public function checkForOpenTandemRooms($user_id){
-        $result = $this->consulta("select id from tandem where id_user_guest =".$user_id." and created < DATE_SUB(NOW(),INTERVAL 1 MINUTE)");
+        $result = $this->consulta("select id from tandem where id_user_guest =".$user_id." and created >= DATE_SUB(NOW(),INTERVAL 30 SECOND)");
          if ($this->numResultats($result) > 0){ 
             $result = $this->obteComArray($result);
             return $result[0]['id'];
