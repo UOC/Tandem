@@ -722,7 +722,9 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			}
 
 //init
+			<?php if (!isset($_GET['not_init']) || $_GET['not_init']!=1) {?>
 			getInitXML();
+			<?php } ?>
 //prevents from closing
 			window.onbeforeunload = function() {
 			    if(salir==0) return "Do you want to leave this page?. Please logout before exit tandem.";

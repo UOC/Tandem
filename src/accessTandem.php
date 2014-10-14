@@ -43,7 +43,8 @@ if ($tandem) {
 	if (!$gestorBD->update_user_guest_tandem_others($tandem)) {
 		die(show_error('Error updating tandem logged guest user'));
 	}
-	header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise);
+	$extra_params = isset($_GET['not_init'])?'&not_init='.$_GET['not_init']:'';
+	header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise.$extra_params);
 } else {
 	echo $LanguageInstance->get('no estas autoritzat');
 }
