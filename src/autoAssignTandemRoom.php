@@ -101,7 +101,40 @@ if (!$user_obj || !$course_id) {
 	        			}
 	        		}
 	        	});
-	        },2500);	
+	        },2500);
+	        <?php 
+	        /****** MANAGING TIME BAR ****/ 
+	       ?>
+            StartTandemTimer = function(){
+                $("#timeline").show("fast");
+                var minutos = 30;
+                var segundos = 0;
+                timerOn(minutos,segundos);
+                timeline.start();
+	        }
+			var lwidth = $('#timeline').outerWidth() - ($('#timeline .lbl').outerWidth() + $('#timeline .clock').outerWidth()) + 5;
+			var lmargin = $('#timeline .lbl').outerWidth() - 5;
+			$('#timeline .linewrap').css({'width': lwidth + 'px', 'margin-left' : lmargin + 'px'});
+			var timeline;
+			timerOn = function(minutos,segundos){
+				// Configuración timeline
+		               
+				timeline = $('#timeline').timeLineClock({
+					time: {hh:0,mm:parseInt(minutos),ss:parseInt(segundos)},
+					onEnd: theEnd
+				}); 
+			}    
+			function theEnd(){
+				if ($("#modal-end-task").length > 0){
+					$.modal($('#modal-end-task'));
+					//accionTimer();
+				}
+			}        
+	         StartTandemTimer();	
+	        <?php 
+	        /****** END MANAGING TIME BAR ****/ 
+	       ?>
+
 		});
     </script>   	
 </head>
