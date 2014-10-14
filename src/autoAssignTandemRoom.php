@@ -35,18 +35,20 @@ if (!$user_obj || !$course_id) {
 	$gestorBD = new GestorBD();    
 	$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
 	$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
-
+	
+	//abertranb not need it mange all using the autoAssingCheckTandem.php
+	/*
     //Ok we have the exercises the user has not done this week. Lets find someone waiting to do that exercise if not we offer it.
 	$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
 
-	error_log("user_language: $user_language ".serialize($areThereTandems));
 	//lets see first if we have people waiting in the waiting room that matches our exercises. 
 	if(!empty($areThereTandems)){
 		//ok so we are here cause we have someone waiting for one of our exercices.
+	die("22".serialize($areThereTandems));
 		$tId = $gestorBD->createTandemFromWaiting($areThereTandems[0],$user_obj->id,$id_resource_lti);
 		header("location: accessTandem.php?id=".$tId."&not_init=1");
 		die();
-	}
+	}*/
 	
 
 	?>                    
@@ -126,6 +128,7 @@ if (!$user_obj || !$course_id) {
 			}    
 			function theEnd(){
 				if ($("#modal-end-task").length > 0){
+					//TODO put modal
 					$.modal($('#modal-end-task'));
 					//accionTimer();
 				}
