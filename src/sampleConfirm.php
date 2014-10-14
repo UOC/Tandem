@@ -724,6 +724,8 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 //init
 			<?php if (!isset($_GET['not_init']) || $_GET['not_init']!=1) {?>
 			getInitXML();
+			<?php } else { ?>
+				$.colorbox({href:"waiting4user.php",escKey:false,overlayClose:false,width:380,height:280,onLoad:function(){$('#cboxClose').hide();}});
 			<?php } ?>
 //prevents from closing
 			window.onbeforeunload = function() {
