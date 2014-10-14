@@ -1868,8 +1868,9 @@ class GestorBD {
                     inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
              where wr.language='".$otherlanguage."' 
              and wr.id_course ='".$id_course."' 
-             and wr.id_exercise= '".$id_ex."'";  
-                   
+             and wr.id_exercise= '".$id_ex."'
+             and wr.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 15 seconds before
+
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
                 return $this->obteComArray($result);
@@ -1877,7 +1878,15 @@ class GestorBD {
         }
         return false;
     }
+    /**
+     * Here we update the waiting timestamp
+     */
+    public function updateMyWaitingTime($id_user){
 
+        $sql = 'update waiting_room_user set  created = NOW() where 
+        id_user = ' . $this->escapeString($id_user) ; //Don't care about course
+        return $this->consulta($sql);
+    }
     /**
      * Delete the user from the waiting rooms the first time they come
      * TODO : update waiting_room table aswell.

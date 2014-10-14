@@ -30,7 +30,7 @@ if (!$user_obj || !$course_id) {
 
 	$id_resource_lti = $_SESSION[ID_RESOURCE];
 	$lti_context = unserialize($_SESSION[LTI_CONTEXT]);
-	$user_language = !empty($_REQUEST['locale']) ? $_REQUEST['locale'] : "es_ES";
+	$user_language = $_SESSION[LANG];//!empty($_REQUEST['locale']) ? $_REQUEST['locale'] : "es_ES";
 	$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
 	$gestorBD = new GestorBD();    
 	$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
@@ -39,6 +39,7 @@ if (!$user_obj || !$course_id) {
     //Ok we have the exercises the user has not done this week. Lets find someone waiting to do that exercise if not we offer it.
 	$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
 
+	error_log("user_language: $user_language ".serialize($areThereTandems));
 	//lets see first if we have people waiting in the waiting room that matches our exercises. 
 	if(!empty($areThereTandems)){
 		//ok so we are here cause we have someone waiting for one of our exercices.

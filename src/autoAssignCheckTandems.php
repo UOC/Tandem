@@ -32,6 +32,10 @@ if($response){
 	$response = $response[0];
 	$tandem_id = $gestordb->createTandemFromWaiting($response,$user_id,$id_resource_lti);
 	echo json_encode(array("tandem_id" => $tandem_id));
+	
+} else {
+	//then update my timestamp
+	$gestordb->updateMyWaitingTime($user_id, $exercisesID, $courseID, $otherlanguage);
 }
 
 
