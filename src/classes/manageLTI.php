@@ -121,10 +121,11 @@ class ManageLTI {
 			require_once(dirname(__FILE__).'/utils.php');
 			$cur_url = curPageURL();
 			$parts=parse_url($cur_url);
-			$start = $cur_url;
+			
 			$path_parts=explode('/', $parts['path']);
 			unset($path_parts[count($path_parts)-1]);
-			$value = str_replace('%URL_TANDEM%', $parts['scheme'].'://'.$parts['host'].$start, $value);
+			$value = str_replace('%URL_TANDEM%', $parts['scheme'].'://'.$parts['host'], $value);
+			
 		}
 
 		return $value;
@@ -149,7 +150,7 @@ class ManageLTI {
 	
 	function blti_consumer_sign_parameters($requestparams, $endpoint, $key, $secret, $submit_text, $org_id, $debuglaunch=false, $callbackUrl, $launch=2, $height) {
 	    // Make sure we let the tool know what LMS they are being called from
-	    $requestparams["ext_lms"] = "uoccom";
+	    $requestparams["ext_lms"] = "tandem";
 	
 	    $makeiframe = $launch==1;
 	    // Add oauth_callback to be compliant with the 1.0A spec

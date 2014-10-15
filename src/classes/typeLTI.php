@@ -25,7 +25,7 @@
 	    protected $organizationurl = null;
 	    protected $organizationdescr = null;
 	    protected $launchinpopup = 1;
-	    protected $debuglaunch = 0;
+	    protected $debugmode = 0;
 	    protected $registered = null;
 	    protected $update = null;
 	    
@@ -90,7 +90,7 @@
 	    		$this->organizationurl = $array['organizationurl'];
 	    		$this->organizationdescr = isset($array['organizationdescr'])?$array['organizationdescr']:'';
 	    		$this->launchinpopup = $array['launchinpopup'];
-	    		$this->debuglaunch = $array['debugmode']=="1";
+	    		$this->debugmode = $array['debugmode']=="1";
 	    		$this->registered = $array['registered'];
 	    		$this->updated = $array['updated'];
 	    		 
