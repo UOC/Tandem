@@ -95,7 +95,7 @@ if (!$user_obj || !$course_id) {
 	        		},
 	        		dataType: "JSON",
 	        		success: function(json){	        			
-	        			if(json !== null && json.tandem_id.length > 0){
+	        			if(json  &&  typeof json.tandem_id !== "undefined"){
 	        			window.location.replace("accessTandem.php?id="+json.tandem_id+"&not_init=1");                             
 						clearInterval(interval);
 	        			}
