@@ -156,7 +156,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 <script>
 $(document).ready(function(){
 // victor - Lets change the go back link depending on if the custom parameter USE_WAITING_ROOM exists.
-$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) ? 'autoAssignTandemRoom.php' : 'selectUserAndRoom.php' ?>");
+$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 ? 'autoAssignTandemRoom.php' : 'selectUserAndRoom.php' ?>");
 });
 </script>
 </head>
