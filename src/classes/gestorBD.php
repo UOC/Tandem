@@ -2080,6 +2080,42 @@ class GestorBD {
         return 0;
      }
 
+     /**
+      * Creates a new externale tandem
+      * @param  [type] $id_tandem        [description]
+      * @param  [type] $id_external_tool [description]
+      * @param  [type] $id_user          [description]
+      * @param  [type] $language         [description]
+      * @param  [type] $id_partner       [description]
+      * @param  [type] $partner_language [description]
+      * @return [type]                   [description]
+      */
+     function createFeedbackTandem($id_tandem, $id_external_tool, $id_user, $language, $id_partner, $partner_language) {
+        //1st. check if it is necessary
+        $result = $this->consulta("select id from feedback_tandem where id_tandem =".$this->escapeString($id_tandem)." 
+                         and id_external_tool =".$this->escapeString($id_external_tool)." 
+                         and id_user =".$this->escapeString($id_user)." 
+                         and language=".$this->escapeString($language)."
+                         and id_partner =".$this->escapeString($id_partner)." 
+                         and partner_language=".$this->escapeString($partner_language));
+        $id = 0;
+        if ($this->numResultats($result) > 0){ 
+            $r = $this->obteComArray($result);
+            $id = $r[0]['id'];
+        } else {
+            //insert
+            $sql = 'INSERT INTO feedback_tandem (id_tandem, id_external_tool, id_user, language, id_partner, partner_language, created) 
+                        VALUES (' . $this->escapeString($id_tandem) . ',' . $this->escapeString($id_external_tool) . ',' . $this->escapeString($id_user) . ',' .
+                    $this->escapeString($language) . ',' . $this->escapeString($id_partner) . ', ' . $this->escapeString($partner_language) . ', now())';
+            $result = $this->consulta($sql);
+            if ($result) {
+                $id = $this->get_last_inserted_id();
+            }
+                        
+        }
+        return $id;
+     }
+
 }//end of class
 
 ?>

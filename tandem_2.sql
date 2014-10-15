@@ -1474,7 +1474,7 @@ CREATE TABLE `waiting_room_user_history` (
 
 
 
-create table external_tandem
+create table feedback_tandem
 (
 id bigint auto_increment,
 id_tandem int (11),
@@ -1488,9 +1488,9 @@ primary key (id)
 );
 
 
-create table external_tandem_form(
-id_mooc_tandem bigint,
+create table feedback_tandem_form(
+id_feedback_tandem bigint,
 feedback_form longtext,
 rating_partner_feedback_form longtext,
-primary key (id_mooc_tandem) 
+primary key (id_feedback_tandem) 
 );

@@ -42,6 +42,14 @@ if ($tandem) {
 		die(show_error('Error updating tandem logged guest user'));
 	}
 	$extra_params = isset($_GET['not_init'])?'&not_init='.$_GET['not_init']:'';
+	if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 && isset($_GET['return_id'])) {
+		//Lets go to insert the current tandem data
+		$user_language = $_SESSION[LANG];
+		$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
+		$id_partner = $tandem['id_user_guest']==$user_obj->id?$tandem['id_user_host']:$tandem['id_user_guest'];
+		$gestorBD->createFeedbackTandem($tandem['id'], $_GET['return_id'], $user_obj->id, $user_language, $id_partner, $other_language);
+	}
+	
 
 	header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise.$extra_params);
 } else {
