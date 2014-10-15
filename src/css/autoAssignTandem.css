@@ -1952,3 +1952,13 @@ overflow-x: hidden;
  display:block;
  margin-top:30px;
 }
+
+.manageSection{margin-top:30px;}
+.manageSection a{
+	padding:4px;
+	background-color:#7E9F0B;
+	text-align:center;
+	color:#FFF;
+	text-decoration:none;
+
+}

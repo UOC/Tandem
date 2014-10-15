@@ -24,10 +24,9 @@ if(empty($otherlanguage) or empty($courseID) or empty($exercisesID)){
 }
 
 $gestordb = new GestorBD();
-$response = $gestordb->checkForTandems($exercisesID, $courseID, $otherlanguage);
+$response = $gestordb->checkForTandems($exercisesID, $courseID, $otherlanguage,$user_id);
 
 $debug = false;
-
 if ($debug) {
 	error_log("checking for ".$exercisesID." with user ".$user_id." otherlanguage ".$otherlanguage);
 }
@@ -35,10 +34,14 @@ if ($debug) {
 if($response){
 	if ($debug) {
 		error_log("has response");
-	}
-	
+	}	
 	$response = $response[0];
+	if(isset($response['tandem_id'])){
+		$tandem_id = $response['tandem_id'];
+	}else
 	$tandem_id = $gestordb->createTandemFromWaiting($response,$user_id,$id_resource_lti);
+
+	$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
 	echo json_encode(array("tandem_id" => $tandem_id));
 	if ($debug) {
 		error_log("RESPONSE tandem ID ".$tandem_id);
@@ -53,6 +56,7 @@ if($response){
 		if ($debug) {
 			error_log("tandem ID ".$tandem_id);
 		}
+		$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
 		echo json_encode(array("tandem_id" => $tandem_id));
 	}
 	else {

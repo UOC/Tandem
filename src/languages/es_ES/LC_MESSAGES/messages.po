@@ -411,3 +411,6 @@ msgstr "El tiempo se ha acabado"
 
 msgid "waiting_for_tandem_assignment"
 msgstr "Tiempo de espera para asignar"
+
+msgid "number_of_people_waiting_for_tandem"
+msgstr "N&uacute;mero de personas esperando"

@@ -35,12 +35,12 @@ if (!$user_obj || !$course_id) {
 	$gestorBD = new GestorBD();    
 	$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
 	$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
-	
-	//abertranb not need it mange all using the autoAssingCheckTandem.php
+	$numPeopleWaitingForTandem = $gestorBD->sameLanguagePeopleWaiting($user_language,$course_id);
+	$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
+//abertranb not need it mange all using the autoAssingCheckTandem.php
 	/*
     //Ok we have the exercises the user has not done this week. Lets find someone waiting to do that exercise if not we offer it.
-	$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
-
+	
 	//lets see first if we have people waiting in the waiting room that matches our exercises. 
 	if(!empty($areThereTandems)){
 		//ok so we are here cause we have someone waiting for one of our exercices.
@@ -48,7 +48,6 @@ if (!$user_obj || !$course_id) {
 		header("location: accessTandem.php?id=".$tId."&not_init=1");
 		die();
 	}*/
-	
 
 	?>                    
 	<!DOCTYPE html>
@@ -96,7 +95,7 @@ if (!$user_obj || !$course_id) {
 	        		},
 	        		dataType: "JSON",
 	        		success: function(json){	        			
-	        			if(json !== null){
+	        			if(json !== null && json.tandem_id.length > 0){
 	        			window.location.replace("accessTandem.php?id="+json.tandem_id+"&not_init=1");                             
 						clearInterval(interval);
 	        			}
@@ -171,6 +170,16 @@ if (!$user_obj || !$course_id) {
 					<div class='waitingForTandem'>
 						<img class='loaderImg' src="css/images/loading_2.gif" />
 						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?></span>
+						<span><?php echo $LanguageInstance->get("number_of_people_waiting_for_tandem")." ".$numPeopleWaitingForTandem;?> </span>
+					</div>
+					<div class='manageSection'>
+ 					<?php  					
+ 					if ($user_obj->instructor || $user_obj->admin) { ?>                            
+                                <div class="clear">
+                                <a href='manage_exercises_tandem.php'>Manager Exercises</a>
+                                <a href='statistics_tandem.php'>Statistics Tandem</a>
+                            </div>                                
+                     <?php } ?>                            
 					</div>
 					<div class="clear">
 						<p id="roomStatus"></p>

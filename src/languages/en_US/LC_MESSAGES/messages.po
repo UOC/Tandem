@@ -408,3 +408,6 @@ msgstr "Time expired"
 
 msgid "waiting_for_tandem_assignment"
 msgstr "Waiting tandem time for assignment"
+
+msgid "number_of_people_waiting_for_tandem"
+msgstr "Number of people waiting for a tandem"

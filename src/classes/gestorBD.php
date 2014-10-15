@@ -1806,9 +1806,14 @@ class GestorBD {
      *  Get all the exercices of the week that the user hasnt finished yet.
      */    
     function getExercicesNotDoneWeek($id_course,$user_id){
-        $id_course = 2;
-        $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select max(week) from course_exercise) and id_course = '.$id_course;
-        $result = $this->consulta($sql);
+     
+        //if they passed the custom parameter WEEK with the LTIcall , then we use that week, if not then we use the max week there is.
+        if(!empty($_SESSION[WEEK]))
+            $sql = 'SELECT id_exercise from course_exercise  WHERE week ="'.$_SESSION[WEEK].'" and id_course = '.$id_course;
+         else
+            $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select max(week) from course_exercise) and id_course = '.$id_course;
+            
+            $result = $this->consulta($sql);
 
         if ($this->numResultats($result) > 0) {        
             $ids_exercise = array_values($this->obteComArray($result));             
@@ -1819,12 +1824,25 @@ class GestorBD {
                     and id_course = ".$this->escapeString($id_course)." and (id_user_guest != '".$user_id."' and id_user_host != '".$user_id."')";               
              $result = $this->consulta($sql);
               if ($this->numResultats($result) > 0) {
-                 $r =  $this->obteComArray($result);                  
+                 $r =  $this->obteComArray($result);  
+                    $ids = array();                
                     foreach($r as $value){
-                      $ids[] = $value['id_exercise'];
+                      $id[] = $value['id_exercise'];
                      }
               }
               return $ids;
+        }else{
+            //there is nothing for that week, lets just grab them all :o
+             $sql = 'SELECT id_exercise,created from course_exercise  WHERE  id_course = '.$id_course.' order by created desc limit 10' ;
+             $result = $this->consulta($sql);
+             $ids = array();
+             if ($this->numResultats($result) > 0) {   
+                   $ids_exercise = array_values($this->obteComArray($result));  
+                  foreach($ids_exercise as $value){
+                     $ids[] = $value['id_exercise'];
+                  }
+             }
+             return $ids;
         }
         return array();
     }
@@ -1836,7 +1854,7 @@ class GestorBD {
         
         //lets see if there is someone waiting for one ot these exercises.
         foreach($exercises_ids as $id_ex){
-            $val = $this->checkForTandems($id_ex,$id_course,$otherlanguage);
+            $val = $this->checkForTandems($id_ex,$id_course,$otherlanguage,$user_id);
             if(!empty($val)){
                 // We have someone already waiting for one of the exercises :)
                 return $val;
@@ -1854,7 +1872,7 @@ class GestorBD {
     /**
      * Here we check if there are any tandems available from all the exercises id of the user.
      */
-    public function checkForTandems($exercises_ids,$id_course,$otherlanguage){
+    public function checkForTandems($exercises_ids,$id_course,$otherlanguage,$user_id){
 
          if(strpos($exercises_ids,",") !== false){
             $exs = explode(",",$exercises_ids);
@@ -1863,6 +1881,7 @@ class GestorBD {
            $exs[] = $exercises_ids; 
          }
 
+         //lets see if there anyone waiting that we can do a tandem with
          foreach($exs as $id_ex){            
             $sql = "select wr.*,wru.id_user as guest_user_id from waiting_room as wr
                     inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
@@ -1870,12 +1889,24 @@ class GestorBD {
              and wr.id_course ='".$id_course."' 
              and wr.id_exercise= '".$id_ex."'
              and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 30 seconds before
-
+             
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
                 return $this->obteComArray($result);
             }                 
         }
+
+        //if not lets check if there is someoe already created a tandem for us and is waiting.
+         foreach($exs as $id_ex){   
+            $sql = "select id from tandem where id_exercise ='".$id_ex."' and id_course='".$id_course."' 
+                    and id_user_guest ='".$user_id."'";
+            $this->consulta($sql);
+            if ($this->numResultats($result) > 0) { 
+               $val = $this->obteComArray($result);
+               return array("tandem_id" => $val[0]['id']);
+             }  
+
+         }
         return false;
     }
     /**
@@ -1951,19 +1982,20 @@ class GestorBD {
 
 
     /**
-     * Lets delete a user_id from all the waiting rooms
+     * Lets delete a user_id from all the waiting rooms and copy this data to the history tables
      */
     function deleteFromWaitingRoom($user_id,$tandem_id){
 
         $resultSelect  = $this->consulta("select * from waiting_room_user where id_user =".$user_id);
         if ($this->numResultats($resultSelect) > 0){            
             $resultSelect = $this->obteComArray($resultSelect);
+
             foreach($resultSelect as $key){
                 //insert into waiting_room_user_history
                 $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,created,created_history) 
-                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."','".$key['created']."',NOW()) ");
-               
+                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."','".$key['created']."',NOW()) ");               
                 if(mysql_affected_rows($this->conn) > 0){
+                    
                     //once we have copied it to the history , we delete it.
                     $e =$this->consulta("delete from waiting_room_user where id =".$key['id']);
                      if(mysql_affected_rows($this->conn) > 0){
@@ -1972,9 +2004,9 @@ class GestorBD {
                         if ($this->numResultats($resultSelect2) > 0){  
                             $res = $this->obteComArray($resultSelect2);
                              $i = $this->consulta("insert into waiting_room_history(id_waiting_room,language,id_course,id_exercise,number_user_waiting,created,created_history) 
-                                                    values('".$res['id']."','".$res['language']."','".$res['id_course']."','".$res['id_exercise']."','1','".$res['created']."',NOW()) ");
+                                                    values('".$res[0]['id']."','".$res[0]['language']."','".$res[0]['id_course']."','".$res[0]['id_exercise']."','1','".$res[0]['created']."',NOW()) ");
                              if(mysql_affected_rows($this->conn) > 0){
-                                $e =$this->consulta("delete from waiting_room where id =".$res['id']);
+                                $e =$this->consulta("delete from waiting_room where id =".$res[0]['id']);
                              }
                         }                        
                     }
@@ -1986,34 +2018,15 @@ class GestorBD {
     //When we find someone to make a tandem, we create the tandem room here and return the id
     public function createTandemFromWaiting($response,$user_id,$id_resource_lti){
 
-    //first of all lets see if isnt there already an open tandem room with our id in there
-    $openTandem = $this->checkForOpenTandemRooms($user_id); 
-    if(!empty($openTandem)){
-        return $openTandem;
-    }
 
-    //ok lets see if this tandem isnt already created by the user.
-    $sql= "select id from tandem where id_exercise = ".$response['id_exercise']." 
-            and id_course = ".$response['id_course']."
-            and (id_user_host = ".$response['guest_user_id']." and id_user_guest = ".$user_id.")
-            and created >= DATE_SUB(NOW(),INTERVAL 30 SECOND)"; //chekc if has 30 seconds if not can be a reload
-    $result = $this->consulta($sql);
-
+    $tandem_id = $this->checkForOpenTandemRooms($user_id,$response['id_exercise'],$response['id_course']);
     //if the tandem was already created by the other user, then we are the guests.
-    if ($this->numResultats($result) > 0){ 
-        
-        //to make sure we will delete ourselfs from all the waiting rooms
-        //$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
-        $result = $this->obteComArray($result);
+    if (!empty($tandem_id)){ 
        return  $result[0]['id'];
     }else{ 
-        
         //the tandem is not yet created, lets created it and we will be he host.
-        $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", "");
-        
-        //$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
-         return $tandem_id;
-        die();
+        $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", "");               
+         return $tandem_id;        
     }
     }
      /**
@@ -2037,8 +2050,14 @@ class GestorBD {
         return false;
     }
 
-    public function checkForOpenTandemRooms($user_id){
-        $result = $this->consulta("select id from tandem where id_user_guest =".$user_id." and created >= DATE_SUB(NOW(),INTERVAL 30 SECOND)");
+    public function checkForOpenTandemRooms($user_id,$id_exercise,$id_course){
+
+        $sql= "select id from tandem where id_exercise = ".$response['id_exercise']." 
+            and id_course = ".$id_course."
+            and (id_user_host = ".$guest_user_id." and id_user_guest = ".$user_id.")
+            and created >= DATE_SUB(NOW(),INTERVAL 30 SECOND)"; //chekc if has 30 seconds if not can be a reload
+        
+        $result = $this->consulta($sql);
          if ($this->numResultats($result) > 0){ 
             $result = $this->obteComArray($result);
             return $result[0]['id'];
@@ -2046,6 +2065,21 @@ class GestorBD {
          return false;
     }
      
+     /**
+      * Numer of people waiting for the same language.
+      */
+
+     function sameLanguagePeopleWaiting($lang,$id_course){
+        $result = $this->consulta("select count(id) as total from waiting_room where id_course =".$this->escapeString($id_course)." 
+                         and language=".$this->escapeString($lang)."");
+        if ($this->numResultats($result) > 0){ 
+            $r = $this->obteComArray($result);
+            return $r[0]['total'];
+        }
+        
+        return 0;
+     }
+
 }//end of class
 
 ?>

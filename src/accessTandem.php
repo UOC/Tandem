@@ -7,9 +7,8 @@ require_once dirname(__FILE__).'/classes/IntegrationTandemBLTI.php';
 
 $id = intval($_REQUEST['id'],10);
 $tandem = false;
+$gestorBD = new GestorBD();
 if ($id>0) {
-	$gestorBD	= new GestorBD();
-	
 	$tandem = $gestorBD->obteTandem($id); 
 }
 $user_obj = $_SESSION['current_user'];
@@ -29,7 +28,6 @@ if ($tandem) {
 	$user_obj->id_resource = $id_resource;
 	$user_obj->type_user = 'b';
 
-
 	if(!is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
 		$user_obj->type_user = 'a';
 		$tandemBLTI->makeXMLUser($user_obj,$room,$exercise);
@@ -44,6 +42,7 @@ if ($tandem) {
 		die(show_error('Error updating tandem logged guest user'));
 	}
 	$extra_params = isset($_GET['not_init'])?'&not_init='.$_GET['not_init']:'';
+
 	header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise.$extra_params);
 } else {
 	echo $LanguageInstance->get('no estas autoritzat');
