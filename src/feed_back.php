@@ -22,11 +22,32 @@ if (!$user_obj || !$course_id) {
 	header('Location: index.php');
 } else {
 	require_once(dirname(__FILE__) . '/classes/constants.php');
-	$path = '';
-	if (isset($_SESSION[TANDEM_COURSE_FOLDER]))
-		$path = $_SESSION[TANDEM_COURSE_FOLDER] . '/';
+	$id_feedback = $_SESSION[ID_FEEDBACK];
+	$gestorBD = new GestorBD();    
+	$error= false;
+	
+	if ($_POST) {
+		//try to save it!
+		if (isset($_POST['grade']) && strlen($_POST['grade'])>0 &&
+			isset($_POST['pronunciation']) && strlen($_POST['pronunciation'])>0 &&
+			isset($_POST['vocabulary']) && strlen($_POST['vocabulary'])>0 &&
+			isset($_POST['grammar']) && strlen($_POST['grammar'])>0){
+			$feedback_form = stdClass();
+			$feedback_form->fluency = $_POST['fluency'];
+			$feedback_form->accuracy = $_POST['accuracy'];
+			$feedback_form->grade = $_POST['grade'];
+			$feedback_form->pronunciation = $_POST['pronunciation'];
+			$feedback_form->vocabulary = $_POST['vocabulary'];
+			$feedback_form->grammar = $_POST['grammar'];
+			$feedback_form->other_observations = $_POST['other_observations'];
 
-
+			if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form))) {
+				echo "saved"; //todo go to the list
+			}
+		} else {
+			$error = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('Fill all required params').'</div>';
+		}
+	}
 
 	?>                    
 	<!DOCTYPE html>
@@ -81,6 +102,9 @@ if (!$user_obj || !$course_id) {
       <div class="page-header">
         <h1><?php echo $LanguageInstance->get('General Evaluation / General Impression') ?></h1>
       </div>
+      <?php if ($error){
+      	echo $error;
+      }?>
 		<div id="main-container_old">
 					<!-- main -->
 					<div id="main_old">
@@ -88,7 +112,7 @@ if (!$user_obj || !$course_id) {
 						<div id="content_old">
 		
 					
-						<form data-toggle="validator" role="form">
+						<form data-toggle="validator" role="form" method="POST">
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
 						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="fluency" id="fluency" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/>%
@@ -137,6 +161,7 @@ if (!$user_obj || !$course_id) {
 						  <div class="form-group">
 						    <button type="submit" class="btn btn-primary"><?php echo $LanguageInstance->get('Send')?></button>
 						  </div>
+						  <input type="submit" name="id" value="<?php echo $id_feedback?>" />
 						</form>
 				<!-- /content -->
 			</div>

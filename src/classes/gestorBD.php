@@ -2116,6 +2116,30 @@ class GestorBD {
         return $id;
      }
 
+     /**
+      * Creates and can update!
+      * @param  [type] $id_feedback   [description]
+      * @param  [type] $feedback_form [description]
+      * @return [type]                [description]
+      */
+     function createFeedbackTandemDetail($id_feedback, $feedback_form) {
+            //insert
+        $sql = 'INSERT INTO feedback_tandem_form (id_feedback_tandem, feedback_form) 
+                    VALUES (' . $this->escapeString($id_feedback) . ',' . $this->escapeString($feedback_form) . ')';
+        return $this->consulta($sql);
+     }
+     /**
+      * Adds the rating partner
+      * @param  [type] $id_feedback                  [description]
+      * @param  [type] $rating_partner_feedback_form [description]
+      * @return [type]                               [description]
+      */
+     function updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form) {
+        //1st. check if it is necessary
+        return $this->consulta("update  feedback_tandem_form set rating_partner_feedback_form=". $this->escapeString($rating_partner_feedback_form) . 
+            " where id_feedback_tandem =".$this->escapeString($id_feedback));
+     }
+
 }//end of class
 
 ?>
