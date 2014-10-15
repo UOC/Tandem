@@ -1473,7 +1473,7 @@ CREATE TABLE `waiting_room_user_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
-drop table mooc_tandem;
+
 create table external_tandem
 (
 id bigint auto_increment,
@@ -1483,6 +1483,7 @@ id_user int (11),
 language varchar(10),
 id_partner int (11),
 partner_language varchar(10),
+created  datetime DEFAULT NULL,
 primary key (id)
 );
 
