@@ -9,8 +9,6 @@ require_once dirname(__FILE__) . '/classes/lang.php';
 require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';
 require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
-error_reporting(E_ALL ^ E_DEPRECATED);
-ini_set("display_errors",1);
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
 

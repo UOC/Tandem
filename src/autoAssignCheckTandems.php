@@ -1,6 +1,4 @@
 <?php
- ini_set("display_errors",1);
- error_reporting(E_ALL ^ E_DEPRECATED);
 //Here we will be checking if there is there is on the waiting room we can do a tandem with.
 require_once dirname(__FILE__) . '/classes/gestorBD.php';  
 
