@@ -2098,7 +2098,7 @@ class GestorBD {
                          and language=".$this->escapeString($language)."
                          and id_partner =".$this->escapeString($id_partner)." 
                          and partner_language=".$this->escapeString($partner_language));
-        $id = 0;
+        $id = false;
         if ($this->numResultats($result) > 0){ 
             $r = $this->obteComArray($result);
             $id = $r[0]['id'];

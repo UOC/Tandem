@@ -47,7 +47,10 @@ if ($tandem) {
 		$user_language = $_SESSION[LANG];
 		$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
 		$id_partner = $tandem['id_user_guest']==$user_obj->id?$tandem['id_user_host']:$tandem['id_user_guest'];
-		$gestorBD->createFeedbackTandem($tandem['id'], $_GET['return_id'], $user_obj->id, $user_language, $id_partner, $other_language);
+		$id = $gestorBD->createFeedbackTandem($tandem['id'], $_GET['return_id'], $user_obj->id, $user_language, $id_partner, $other_language);
+		if (!$id) {
+			die ($LanguageInstance->get('There are a problem storing data, try it again'));		
+		}
 	}
 	
 
