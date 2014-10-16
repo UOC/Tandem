@@ -5,6 +5,7 @@
  * and open the template in the editor.
  */
 
+
 require_once dirname(__FILE__) . '/classes/lang.php';
 require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';
@@ -86,8 +87,13 @@ if (!$user_obj || !$course_id) {
 			$can_edit = false;
 		}
 	}	
-	$partnerFeedback = $gestorBD->checkPartnerFeedback($feedback_form->id_tandem,$id_feedback);
-	
+	$partnerFeedback = $gestorBD->checkPartnerFeedback($feedbackDetails->id_tandem,$id_feedback);
+
+	if(!empty($_POST['rating_partner'])){	
+		
+		updateRatingPartnerFeedbackTandemDetail($id_feedback, serialize($_POST));
+	}
+
 	?>                    
 	<!DOCTYPE html>
 	<html>
@@ -103,13 +109,7 @@ if (!$user_obj || !$course_id) {
 		#footer-container{margin-top:-222px;position:inherit;}
 		#wrapper{padding:0px 58px}
 		</style>
-		<script>
-		$(document).ready(function(){
-			$("#checkFeedbacks").onclick(function(){
-				window.location.reload();
-			})
-		});
-		</script>
+
 </head>
 <body>
     <!-- Begin page content -->
@@ -137,21 +137,81 @@ if (!$user_obj || !$course_id) {
 		<div id='other' class="tab-pane">
 			<?php
 				if(!empty($partnerFeedback)){
-					print_r($partnerFeedback);					
+					$feedBackFormPartner = unserialize($partnerFeedback[0]['feedback_form']);
+				 ?>
+
+						  <div class="form-group">
+						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
+						  	<?php echo $feedBackFormPartner->fluency?> %
+						  </div>
+						  <div class="form-group">
+						    <label for="accuracy" class="control-label"><?php echo $LanguageInstance->get('Accuracy') ?></label>
+						  	<?php echo $feedBackFormPartner->accuracy?> %
+						  </div>
+						  <div class="form-group">
+						    <label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?></label>
+						  	<select disabled id="grade" name="grade" required>
+						  		<option><?php echo $LanguageInstance->get('Select one')?></option>
+						  		<option value="A" <?php echo $feedBackFormPartner->grade=='A'?'selected':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
+						  		<option value="B" <?php echo $feedBackFormPartner->grade=='B'?'selected':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
+						  		<option value="C" <?php echo $feedBackFormPartner->grade=='C'?'selected':''?>><?php echo $LanguageInstance->get('Good')?></option>
+						  		<option value="D" <?php echo $feedBackFormPartner->grade=='D'?'selected':''?>><?php echo $LanguageInstance->get('Pass')?></option>
+						  		<option value="F" <?php echo $feedBackFormPartner->grade=='F'?'selected':''?>><?php echo $LanguageInstance->get('Fail')?></option>
+						  	</select>
+						  </div>
+						  <div class="row"><h3><?php echo $LanguageInstance->get('Room for improvement')?></h3></div>
+
+						  <div class="form-group">
+						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
+						    <div class="input-group">
+						      <textarea readonly rows="3" cols="200" class="form-control" id="pronunciation" name='pronunciation' placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" required><?php echo $feedBackFormPartner->pronunciation?></textarea>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="vocabulary" class="control-label"><?php echo $LanguageInstance->get('Vocabulary')?></label>
+						    <div class="input-group">
+						      <textarea readonly rows="3" cols="200" class="form-control" id="vocabulary"  name='vocabulary' placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" required><?php echo $feedBackFormPartner->vocabulary?></textarea>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Grammar')?></label>
+						    <div class="input-group">
+						      <textarea readonly rows="3" cols="200" class="form-control" id="grammar"  name="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required><?php echo $feedBackFormPartner->grammar?></textarea>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
+						    <div class="input-group">
+						      <textarea  readonly rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate Other Observations')?>"><?php echo $feedBackFormPartner->other_observations?></textarea>
+						    </div>
+						  </div>						 
+						
+						<div class='row'>
+						<p>
+							<?php echo $LanguageInstance->get('Rating Partner’s Feedback Form') ?>
+						</p>
+						 <form action='' method='POST'>
+						 	<div class="form-group">
+						     <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Rate your partners feedback') ?></label>
+						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="partner_rate" id="partner_rate" type="text" data-slider-min="0" data-slider-max="5" data-slider-step="1" data-slider-value=""/>%
+						  </div>
+		
+						  <div class="form-group">
+						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Comments')?>:</label>
+						    <div class="input-group">
+						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>" required></textarea>
+						    </div>
+						  </div>
+						   <input type='hidden' name='rating_partner' value='1' />
+						   <button type="submit" class="btn btn-primary"><?php echo $LanguageInstance->get('Send')?></button>
+						 </form>
+						</div>	
+				 <?php					
 				}else
 				echo "<p>". $LanguageInstance->get('Your partner feedback is not yet available.')."</p>";
 			?>
 			
-			<div class='row'>
-			<p>
-				<?php echo $LanguageInstance->get('Rating Partner’s Feedback Form') ?>
-			</p>
-			 <form action=''>
-
-			 </form>
-			</div>
 		</div>
-
 		<div id="main-container_old" class='tab-pane active'>
 		<div class='row'>
 		<div class='col-md-12'>
@@ -258,8 +318,16 @@ if (!$user_obj || !$course_id) {
 					return 'Current value: ' + value;
 				}
 			});
+			
+
+			$(document).ready(function(){
+				$(".sliderdisabled").slider("disable");
+				$("#checkFeedbacks").onclick(function(){
+					window.location.reload();
+				})
+			});
 		//});
     	</script>   
 </body>
 </html>
-<?php } ?>
+<?php  } ?>

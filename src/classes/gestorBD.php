@@ -2200,7 +2200,7 @@ class GestorBD {
      */
     function checkPartnerFeedback($tandem_id,$feedback_id){
 
-        $result = $this->consulta("select *,FTF.feedback_form  from feedback_tandem  as FT
+        $result = $this->consulta("select FT.*,FTF.feedback_form  from feedback_tandem  as FT
                             inner join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
                          where FT.id_tandem=".$this->escapeString($tandem_id)." and FT.id != ".$this->escapeString($feedback_id)." ");
 
