@@ -46,6 +46,7 @@ if (!$user_obj || !$course_id) {
 		header("location: accessTandem.php?id=".$tId."&not_init=1");
 		die();
 	}*/
+	
 
 	?>                    
 	<!DOCTYPE html>
@@ -106,7 +107,7 @@ if (!$user_obj || !$course_id) {
             StartTandemTimer = function(){
                 $("#timeline").show("fast");
                 var minutos = 30;
-                var segundos = 0;
+                var segundos = 10;
                 timerOn(minutos,segundos);
                 timeline.start();
 	        }
@@ -130,13 +131,14 @@ if (!$user_obj || !$course_id) {
 				}
 			}        
 	         StartTandemTimer();	
-	         desconn = function(){
-				self.close();
-			}
-	        <?php 
-	        /****** END MANAGING TIME BAR ****/ 
-	       ?>
-
+	         desconn = function(){	         
+	         	<?php 
+	         	if(!empty($_SESSION[BasicLTIConstants::LAUNCH_PRESENTATION_RETURN_URL])){ 
+	         		echo "window.location.replace('".$_SESSION[BasicLTIConstants::LAUNCH_PRESENTATION_RETURN_URL]."') ";
+	         	}else
+	         	echo "self.close();"; 
+	         	?>
+			} 	      
 		});
     </script>   	
 </head>
