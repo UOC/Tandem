@@ -67,6 +67,8 @@ require_once dirname(__FILE__).'/classes/lang.php';
 	<p><?php echo $LanguageInstance->get('peer_review_form');?></p>
 </div>
 
-
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </body>
 </html>

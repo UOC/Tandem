@@ -2211,6 +2211,22 @@ class GestorBD {
             return false;
     }
 
+    /**
+     *  Get all the user submitted feedbacks 
+     */
+
+    function getAllUserFeedbacks($user_id){
+
+        $result = $this->consulta("select * from feedback_tandem as FT 
+                         inner join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
+                         where FT.id_user = ".$this->escapeString($user_id));
+                         
+        if ($this->numResultats($result) > 0){ 
+             return $this->obteComArray($result);
+         }
+         return false;
+    }
+
 }//end of class
 
 ?>
