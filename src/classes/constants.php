@@ -51,6 +51,7 @@ define ('LTI_CONTEXT', 'lti_context_obj');
 define ('LIS_RESULT_SOURCEID', 'lis_result_sourceid');
 define ('ID_USER_GUEST', 'id_user_guest');
 define ('ID_FEEDBACK', 'id_feedback');
+define ('ID_EXTERNAL', 'id_external');
 
 class BasicLTIConstants {
    /**

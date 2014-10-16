@@ -117,6 +117,9 @@ class ManageLTI {
 		if (strpos($value, '%ID_TANDEM%')!==false){
 			$value = str_replace('%ID_TANDEM%', $_SESSION[CURRENT_TANDEM], $value);
 		}
+		if (strpos($value, '%EXTERNAL_ID%')!==false){
+			$value = str_replace('%EXTERNAL_ID%', $_SESSION[ID_EXTERNAL], $value);
+		}
 		if (strpos($value, '%URL_TANDEM%')!==false){
 			require_once(dirname(__FILE__).'/utils.php');
 			$cur_url = curPageURL();

@@ -52,6 +52,7 @@ if ($tandem) {
 			die ($LanguageInstance->get('There are a problem storing data, try it again'));		
 		}
 		$_SESSION[ID_FEEDBACK] = $id_feedback;
+		$_SESSION[ID_EXTERNAL] = $_GET['return_id'];
 	}
 	
 
