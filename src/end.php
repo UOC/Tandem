@@ -36,11 +36,15 @@ require_once dirname(__FILE__).'/classes/lang.php';
 			url: "desconn.php",
 			data: {'room':'<?php echo $_GET["room"];?>'},
 			success: function(){
-                            <?php if ($_SESSION[USE_WAITING_ROOM]) { ?>
-				top.document.location.href="autoAssignTandemRoom.php";
-                            <?php  } else {?>
-                                top.document.location.href="selectUserAndRoom.php";
-                                 <?php  } ?>
+                    <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { 
+                    	  //if(!empty($_SESSION[BasicLTIConstants::LAUNCH_PRESENTATION_RETURN_URL])){ 
+     						  echo "window.location.href = 'feedback.php' ";
+     					  //}else
+     					  //echo 'top.document.location.href="autoAssignTandemRoom.php";';
+                    ?>				
+                    <?php  } else { ?>
+                        top.document.location.href="selectUserAndRoom.php";
+                    <?php  } ?>
 			}
 		});
 	}
