@@ -414,3 +414,22 @@ msgstr "Number of people waiting for a tandem"
 
 msgid "check_if_feedbacks_are_submitted"
 msgstr "Check if other feedback is already sent"
+
+msgid "peer_review_form"
+msgstr "Peer review form"
+
+msgid "review_partner_feedback"
+msgstr "Review your partners contribution"
+
+msgid "partner_feedback_not_available"
+msgstr "Your partner feedback is not yet available"
+
+msgid "fill_required_fields"
+msgstr "Rellena todos los campos oblitagorios"
+
+msgid "my_feedback"
+msgstr "View received Feedback"
+
+msgid "cannot_be_modified"
+msgstr "You will not be able to modify this form later."
+

@@ -80,7 +80,7 @@ if (!$user_obj || !$course_id) {
 						$can_edit = false;
 					}
 				} else {
-					$message = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('Fill all required params').'</div>';
+					$message = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('fill_required_fields').'</div>';
 				}
 			}
 		} else {
@@ -120,7 +120,7 @@ if (!$user_obj || !$course_id) {
     <!-- Begin page content -->
     <div id="wrapper" class="container">
       <div class="page-header">
-        <h1><?php echo $LanguageInstance->get('General Evaluation / General Impression') ?></h1>
+        <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
       </div>
       <?php if ($message){
       	echo $message;
@@ -133,8 +133,8 @@ if (!$user_obj || !$course_id) {
      <div class='row'>
 	     <div class='col-md-12'>
 				<ul class="nav nav-tabs" role="tablist">
-				  <li class="active"><a href="#main-container_old" role="tab" data-toggle="tab"><?php echo $LanguageInstance->get('My feedback') ?></a></li>
-				  <li><a href="#other" role="tab" data-toggle="tab"><?php echo $LanguageInstance->get('Partner feedback') ?></a></li>
+				  <li class="active"><a href="#main-container_old" role="tab" data-toggle="tab"><?php echo $LanguageInstance->get('my_feedback') ?></a></li>
+				  <li><a href="#other" role="tab" data-toggle="tab"><?php echo $LanguageInstance->get('review_partner_feedback') ?></a></li>
 				</ul>
 		</div>
 	</div>
@@ -145,7 +145,6 @@ if (!$user_obj || !$course_id) {
 				if(!empty($partnerFeedback)){
 					$feedBackFormPartner = unserialize($partnerFeedback[0]['feedback_form']);
 				 ?>
-
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
 						  	<?php echo $feedBackFormPartner->fluency?> %
@@ -155,7 +154,7 @@ if (!$user_obj || !$course_id) {
 						  	<?php echo $feedBackFormPartner->accuracy?> %
 						  </div>
 						  <div class="form-group">
-						    <label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?></label>
+						    <label for="grade" class="control-label">* <?php echo $LanguageInstance->get('Overall Grade:') ?></label>
 						  	<select disabled id="grade" name="grade" required>
 						  		<option><?php echo $LanguageInstance->get('Select one')?></option>
 						  		<option value="A" <?php echo $feedBackFormPartner->grade=='A'?'selected':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
@@ -168,19 +167,19 @@ if (!$user_obj || !$course_id) {
 						  <div class="row"><h3><?php echo $LanguageInstance->get('Room for improvement')?></h3></div>
 
 						  <div class="form-group">
-						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
+						    <label for="pronunciation" class="control-label">* <?php echo $LanguageInstance->get('Pronunciation')?></label>
 						    <div class="input-group">
 						      <textarea readonly rows="3" cols="200" class="form-control" id="pronunciation" name='pronunciation' placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" required><?php echo $feedBackFormPartner->pronunciation?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
-						    <label for="vocabulary" class="control-label"><?php echo $LanguageInstance->get('Vocabulary')?></label>
+						    <label for="vocabulary" class="control-label">* <?php echo $LanguageInstance->get('Vocabulary')?></label>
 						    <div class="input-group">
 						      <textarea readonly rows="3" cols="200" class="form-control" id="vocabulary"  name='vocabulary' placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" required><?php echo $feedBackFormPartner->vocabulary?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
-						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Grammar')?></label>
+						    <label for="grammar" class="control-label">* <?php echo $LanguageInstance->get('Grammar')?></label>
 						    <div class="input-group">
 						      <textarea readonly rows="3" cols="200" class="form-control" id="grammar"  name="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required><?php echo $feedBackFormPartner->grammar?></textarea>
 						    </div>
@@ -203,18 +202,19 @@ if (!$user_obj || !$course_id) {
 						  </div>
 		
 						  <div class="form-group">
-						    <label for="partner_comment" class="control-label"><?php echo $LanguageInstance->get('Comments')?>:</label>
+						    <label for="partner_comment" class="control-label">* <?php echo $LanguageInstance->get('Comments')?>:</label>
 						    <div class="input-group">
 						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>" required></textarea>
 						    </div>
 						  </div>
 						   <input type='hidden' name='rating_partner' value='1' />
 						   <button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
+						   <span><?php echo $LanguageInstance->get('cannot_be_modified')?></span>
 						 </form>
 						</div>	
 				 <?php					
 				}else
-				echo "<p>". $LanguageInstance->get('Your partner feedback is not yet available.')."</p>";
+				echo "<p>". $LanguageInstance->get('partner_feedback_not_available.')."</p>";
 			?>
 			
 		</div>
@@ -235,7 +235,7 @@ if (!$user_obj || !$course_id) {
 						  	<input data-slider-id='ex2Slider' class="sliderTandem" name="accuracy" id="accuracy" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->accuracy?>"/>%
 						  </div>
 						  <div class="form-group">
-						    <label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?></label>
+						    <label for="grade" class="control-label">* <?php echo $LanguageInstance->get('Overall Grade:') ?></label>
 						  	<select id="grade" name="grade" required>
 						  		<option><?php echo $LanguageInstance->get('Select one')?></option>
 						  		<option value="A" <?php echo $feedback_form->grade=='A'?'selected':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
@@ -248,19 +248,19 @@ if (!$user_obj || !$course_id) {
 						  <div class="row"><h3><?php echo $LanguageInstance->get('Room for improvement')?></h3></div>
 
 						  <div class="form-group">
-						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
+						    <label for="pronunciation" class="control-label">* <?php echo $LanguageInstance->get('Pronunciation')?></label>
 						    <div class="input-group">
 						      <textarea rows="3" cols="200" class="form-control" id="pronunciation" name='pronunciation' placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" required><?php echo $feedback_form->pronunciation?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
-						    <label for="vocabulary" class="control-label"><?php echo $LanguageInstance->get('Vocabulary')?></label>
+						    <label for="vocabulary" class="control-label">* <?php echo $LanguageInstance->get('Vocabulary')?></label>
 						    <div class="input-group">
 						      <textarea rows="3" cols="200" class="form-control" id="vocabulary"  name='vocabulary' placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" required><?php echo $feedback_form->vocabulary?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
-						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Grammar')?></label>
+						    <label for="grammar" class="control-label">* <?php echo $LanguageInstance->get('Grammar')?></label>
 						    <div class="input-group">
 						      <textarea rows="3" cols="200" class="form-control" id="grammar"  name="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required><?php echo $feedback_form->grammar?></textarea>
 						    </div>

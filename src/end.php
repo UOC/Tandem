@@ -63,6 +63,10 @@ require_once dirname(__FILE__).'/classes/lang.php';
 <div>
   <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
 </div>
+<div class="text">
+	<p><?php echo $LanguageInstance->get('peer_review_form');?></p>
+</div>
+
 
 </body>
 </html>

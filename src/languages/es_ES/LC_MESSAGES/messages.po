@@ -417,3 +417,21 @@ msgstr "N&uacute;mero de personas esperando"
 
 msgid "check_if_feedbacks_are_submitted"
 msgstr "Verificar si la otra persona ha enviado el feedback"
+
+msgid "peer_review_form"
+msgstr "Valora la evaluación de tu compa&ntilde;ero"
+
+msgid "review_partner_feedback"
+msgstr "Valora la intervención de tu compa&ntilde;ero"
+
+msgid "partner_feedback_not_available"
+msgstr "La valoraraci&oacute; de tu compa&ntilde; no esta aun disponible"
+
+msgid "fill_required_fields"
+msgstr "Fill all required fields"
+
+msgid "my_feedback"
+msgstr "Valoración recibida"
+
+msgid "cannot_be_modified"
+msgstr "Este formulario no se podra modificar"
