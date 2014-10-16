@@ -22,30 +22,59 @@ if (!$user_obj || !$course_id) {
 	header('Location: index.php');
 } else {
 	require_once(dirname(__FILE__) . '/classes/constants.php');
-	$id_feedback = $_SESSION[ID_FEEDBACK];
-	$gestorBD = new GestorBD();    
-	$error= false;
-	
-	if ($_POST) {
-		//try to save it!
-		if (isset($_POST['grade']) && strlen($_POST['grade'])>0 &&
-			isset($_POST['pronunciation']) && strlen($_POST['pronunciation'])>0 &&
-			isset($_POST['vocabulary']) && strlen($_POST['vocabulary'])>0 &&
-			isset($_POST['grammar']) && strlen($_POST['grammar'])>0){
-			$feedback_form = stdClass();
-			$feedback_form->fluency = $_POST['fluency'];
-			$feedback_form->accuracy = $_POST['accuracy'];
-			$feedback_form->grade = $_POST['grade'];
-			$feedback_form->pronunciation = $_POST['pronunciation'];
-			$feedback_form->vocabulary = $_POST['vocabulary'];
-			$feedback_form->grammar = $_POST['grammar'];
-			$feedback_form->other_observations = $_POST['other_observations'];
+	$id_feedback = isset($_GET['id_feedback']) && $_GET['id_feedback']>0?$_GET['id_feedback']:$_SESSION[ID_FEEDBACK];
 
-			if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form))) {
-				echo "saved"; //todo go to the list
+	if (!$id_feedback ) {
+		die($LanguageInstance->get('Missing feedback parameter'));
+	}
+
+	if ($user_obj->id!=$feedbackDetails->id_user && $user_obj->id!=$feedbackDetails->id_partner &&
+		!$user_obj->instructor && !$user_obj->admin) { //check if is the user of feedback if not can't not set feedback
+		die($LanguageInstance->get('no estas autoritzat'));
+	}
+
+	$gestorBD = new GestorBD();    
+	$message= false;
+	$can_edit = true;
+	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
+
+	$feedback_form = new stdClass();
+	$feedback_form->fluency = 50;
+	$feedback_form->accuracy = 50;
+	$feedback_form->grade = "";
+	$feedback_form->pronunciation = "";
+	$feedback_form->vocabulary = "";
+	$feedback_form->grammar = "";
+	$feedback_form->other_observations = "";
+	if ($feedbackDetails->feedback_form) { //if it is false can edit
+		$can_edit = false;
+		$message = '<div class="alert alert-info" role="alert">'.$LanguageInstance->get('The information is stored you can only review it').'</div>';
+		$feedback_form = $feedbackDetails->feedback_form;
+	} else{
+		if ($user_obj->id==$feedbackDetails->id_user) { //check if is the user of feedback if not can't not set feedback
+			if ($_POST) {
+				//try to save it!
+				if (isset($_POST['grade']) && strlen($_POST['grade'])>0 &&
+					isset($_POST['pronunciation']) && strlen($_POST['pronunciation'])>0 &&
+					isset($_POST['vocabulary']) && strlen($_POST['vocabulary'])>0 &&
+					isset($_POST['grammar']) && strlen($_POST['grammar'])>0){
+					$feedback_form->fluency = $_POST['fluency'];
+					$feedback_form->accuracy = $_POST['accuracy'];
+					$feedback_form->grade = $_POST['grade'];
+					$feedback_form->pronunciation = $_POST['pronunciation'];
+					$feedback_form->vocabulary = $_POST['vocabulary'];
+					$feedback_form->grammar = $_POST['grammar'];
+					$feedback_form->other_observations = $_POST['other_observations'];
+
+					if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form))) {
+						$message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
+					}
+				} else {
+					$message = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('Fill all required params').'</div>';
+				}
 			}
 		} else {
-			$error = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('Fill all required params').'</div>';
+			$can_edit = false;
 		}
 	}
 
@@ -102,8 +131,8 @@ if (!$user_obj || !$course_id) {
       <div class="page-header">
         <h1><?php echo $LanguageInstance->get('General Evaluation / General Impression') ?></h1>
       </div>
-      <?php if ($error){
-      	echo $error;
+      <?php if ($message){
+      	echo $message;
       }?>
 		<div id="main-container_old">
 					<!-- main -->
@@ -115,21 +144,21 @@ if (!$user_obj || !$course_id) {
 						<form data-toggle="validator" role="form" method="POST">
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
-						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="fluency" id="fluency" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/>%
+						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="fluency" id="fluency" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->fluency?>"/>%
 						  </div>
 						  <div class="form-group">
 						    <label for="accuracy" class="control-label"><?php echo $LanguageInstance->get('Accuracy') ?></label>
-						  	<input data-slider-id='ex2Slider' class="sliderTandem" name="accuracy" id="accuracy" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="0"/>%
+						  	<input data-slider-id='ex2Slider' class="sliderTandem" name="accuracy" id="accuracy" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->accuracy?>"/>%
 						  </div>
 						  <div class="form-group">
 						    <label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?></label>
 						  	<select id="grade" name="grade" required>
 						  		<option><?php echo $LanguageInstance->get('Select one')?></option>
-						  		<option value="A"><?php echo $LanguageInstance->get('Excellent')?></option>
-						  		<option value="B"><?php echo $LanguageInstance->get('Very Good')?></option>
-						  		<option value="C"><?php echo $LanguageInstance->get('Good')?></option>
-						  		<option value="D"><?php echo $LanguageInstance->get('Pass')?></option>
-						  		<option value="F"><?php echo $LanguageInstance->get('Fail')?></option>
+						  		<option value="A" <?php echo $feedback_form->grade=='A'?'select':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
+						  		<option value="B" <?php echo $feedback_form->grade=='B'?'select':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
+						  		<option value="C" <?php echo $feedback_form->grade=='C'?'select':''?>><?php echo $LanguageInstance->get('Good')?></option>
+						  		<option value="D" <?php echo $feedback_form->grade=='D'?'select':''?>><?php echo $LanguageInstance->get('Pass')?></option>
+						  		<option value="F" <?php echo $feedback_form->grade=='F'?'select':''?>><?php echo $LanguageInstance->get('Fail')?></option>
 						  	</select>
 						  </div>
 						  <div class="row"><h3><?php echo $LanguageInstance->get('Room for improvement')?></h3></div>
@@ -137,31 +166,33 @@ if (!$user_obj || !$course_id) {
 						  <div class="form-group">
 						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="pronunciation" placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" required></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="pronunciation" placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" required><?php echo $feedback_form->pronunciation?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="vocabulary" class="control-label"><?php echo $LanguageInstance->get('Vocabulary')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="vocabulary" placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" required></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="vocabulary" placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" required><?php echo $feedback_form->vocabulary?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Grammar')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required><?php echo $feedback_form->grammar?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate Other Observations')?>"></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate Other Observations')?>"><?php echo $feedback_form->other_observations?></textarea>
 						    </div>
 						  </div>
+						  <?php if ($can_edit) {?>
 						  <div class="form-group">
 						    <button type="submit" class="btn btn-primary"><?php echo $LanguageInstance->get('Send')?></button>
 						  </div>
 						  <input type="submit" name="id" value="<?php echo $id_feedback?>" />
+						  <?php } ?>
 						</form>
 				<!-- /content -->
 			</div>
