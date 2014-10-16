@@ -38,6 +38,10 @@ if (!$user_obj || !$course_id) {
 	$can_edit = true;
 	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
 
+	if (!$feedbackDetails) {
+		die($LanguageInstance->get('Can not find feedback'));
+	}
+
 	$feedback_form = new stdClass();
 	$feedback_form->fluency = 50;
 	$feedback_form->accuracy = 50;
@@ -93,7 +97,7 @@ if (!$user_obj || !$course_id) {
 </head>
 <body>
 
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<!--div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -123,8 +127,8 @@ if (!$user_obj || !$course_id) {
             </li>
           </ul>
         </div><!--/.nav-collapse -->
-      </div>
-    </div>
+      <!--/div>
+    </div-->
 
     <!-- Begin page content -->
     <div id="wrapper" class="container">
