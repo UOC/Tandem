@@ -414,3 +414,6 @@ msgstr "Tiempo de espera para asignar"
 
 msgid "number_of_people_waiting_for_tandem"
 msgstr "N&uacute;mero de personas esperando"
+
+msgid "check_if_feedbacks_are_submitted"
+msgstr "Verificar si la otra persona ha enviado el feedback"

@@ -1806,7 +1806,7 @@ class GestorBD {
      *  Get all the exercices of the week that the user hasnt finished yet.
      */    
     function getExercicesNotDoneWeek($id_course,$user_id){
-     
+     error_reporting(E_ALL);
         //if they passed the custom parameter WEEK with the LTIcall , then we use that week, if not then we use the max week there is.
         if(!empty($_SESSION[WEEK]))
             $sql = 'SELECT id_exercise from course_exercise  WHERE week ="'.$_SESSION[WEEK].'" and id_course = '.$id_course;
@@ -1814,8 +1814,10 @@ class GestorBD {
             $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select max(week) from course_exercise) and id_course = '.$id_course;
             
             $result = $this->consulta($sql);
+            $ids  = array();
 
-        if ($this->numResultats($result) > 0) {        
+        if ($this->numResultats($result) > 0) { 
+
             $ids_exercise = array_values($this->obteComArray($result));             
             foreach($ids_exercise as $value){
                 $ids[] = $value['id_exercise'];
@@ -1827,24 +1829,29 @@ class GestorBD {
                  $r =  $this->obteComArray($result);  
                     $ids = array();                
                     foreach($r as $value){
-                      $id[] = $value['id_exercise'];
+                      $ids[] = $value['id_exercise'];
                      }
               }
-              return $ids;
-        }else{
+             
+        }
+
+        if (count($ids)==0) {
+            
             //there is nothing for that week, lets just grab them all :o
              $sql = 'SELECT id_exercise,created from course_exercise  WHERE  id_course = '.$id_course.' order by created desc limit 10' ;
              $result = $this->consulta($sql);
              $ids = array();
-             if ($this->numResultats($result) > 0) {   
+
+             if ($this->numResultats($result) > 0) { 
+
                    $ids_exercise = array_values($this->obteComArray($result));  
+                   error_log(serialize($ids_exercise));
                   foreach($ids_exercise as $value){
                      $ids[] = $value['id_exercise'];
                   }
              }
-             return $ids;
         }
-        return array();
+        return $ids;
     }
     
     /**
@@ -2019,7 +2026,7 @@ class GestorBD {
     public function createTandemFromWaiting($response,$user_id,$id_resource_lti){
 
 
-    $tandem_id = $this->checkForOpenTandemRooms($user_id,$response['id_exercise'],$response['id_course']);
+    $tandem_id = $this->checkForOpenTandemRooms($user_id,$response['id_exercise'],$response['id_course'],$response['guest_user_id']);
     //if the tandem was already created by the other user, then we are the guests.
     if (!empty($tandem_id)){ 
        return  $result[0]['id'];
@@ -2050,9 +2057,9 @@ class GestorBD {
         return false;
     }
 
-    public function checkForOpenTandemRooms($user_id,$id_exercise,$id_course){
+    public function checkForOpenTandemRooms($user_id,$id_exercise,$id_course,$guest_user_id){
 
-        $sql= "select id from tandem where id_exercise = ".$response['id_exercise']." 
+        $sql= "select id from tandem where id_exercise = ".$id_exercise." 
             and id_course = ".$id_course."
             and (id_user_host = ".$guest_user_id." and id_user_guest = ".$user_id.")
             and created >= DATE_SUB(NOW(),INTERVAL 30 SECOND)"; //chekc if has 30 seconds if not can be a reload
@@ -2186,6 +2193,22 @@ class GestorBD {
             }
         }    
         return $feedback;
+    }
+
+    /**
+     * Check if the partner has sent the feedback
+     */
+    function checkPartnerFeedback($tandem_id,$feedback_id){
+
+        $result = $this->consulta("select *,FTF.feedback_form  from feedback_tandem  as FT
+                            inner join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
+                         where FT.id_tandem=".$this->escapeString($tandem_id)." and FT.id != ".$this->escapeString($feedback_id)." ");
+
+          if ($this->numResultats($result) > 0){ 
+             $res = $this->obteComArray($result);
+              return $res;
+            }else
+            return false;
     }
 
 }//end of class

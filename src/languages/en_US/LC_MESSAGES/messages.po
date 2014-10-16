@@ -411,3 +411,6 @@ msgstr "Waiting tandem time for assignment"
 
 msgid "number_of_people_waiting_for_tandem"
 msgstr "Number of people waiting for a tandem"
+
+msgid "check_if_feedbacks_are_submitted"
+msgstr "Check if other feedback is already sent"

@@ -28,6 +28,8 @@ if (!$user_obj || !$course_id) {
 		die($LanguageInstance->get('Missing feedback parameter'));
 	}
 
+	$gestorBD = new GestorBD();  
+	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
 	if (!$feedbackDetails) {
 		die($LanguageInstance->get('Can not find feedback'));
 	}
@@ -37,10 +39,9 @@ if (!$user_obj || !$course_id) {
 		die($LanguageInstance->get('no estas autoritzat'));
 	}
 
-	$gestorBD = new GestorBD();    
+	  
 	$message= false;
 	$can_edit = true;
-	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
 
 	$feedback_form = new stdClass();
 	$feedback_form->fluency = 50;
@@ -58,20 +59,24 @@ if (!$user_obj || !$course_id) {
 		if ($user_obj->id==$feedbackDetails->id_user) { //check if is the user of feedback if not can't not set feedback
 			if ($_POST) {
 				//try to save it!
-				if (isset($_POST['grade']) && strlen($_POST['grade'])>0 &&
+				$feedback_form->fluency = isset($_POST['fluency'])?$_POST['fluency']:50;
+				$feedback_form->accuracy = $_POST['accuracy'];
+				$feedback_form->grade = $_POST['grade'];
+				$feedback_form->pronunciation = $_POST['pronunciation'];
+				$feedback_form->vocabulary = $_POST['vocabulary'];
+				$feedback_form->grammar = $_POST['grammar'];
+				$feedback_form->other_observations = $_POST['other_observations'];
+
+				if (isset($_POST['fluency']) && strlen($_POST['fluency'])>0 &&
+					isset($_POST['accuracy']) && strlen($_POST['accuracy'])>0 &&
+					isset($_POST['grade']) && strlen($_POST['grade'])>0 &&
 					isset($_POST['pronunciation']) && strlen($_POST['pronunciation'])>0 &&
 					isset($_POST['vocabulary']) && strlen($_POST['vocabulary'])>0 &&
 					isset($_POST['grammar']) && strlen($_POST['grammar'])>0){
-					$feedback_form->fluency = $_POST['fluency'];
-					$feedback_form->accuracy = $_POST['accuracy'];
-					$feedback_form->grade = $_POST['grade'];
-					$feedback_form->pronunciation = $_POST['pronunciation'];
-					$feedback_form->vocabulary = $_POST['vocabulary'];
-					$feedback_form->grammar = $_POST['grammar'];
-					$feedback_form->other_observations = $_POST['other_observations'];
-
+					
 					if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form))) {
 						$message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
+						$can_edit = false;
 					}
 				} else {
 					$message = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('Fill all required params').'</div>';
@@ -80,8 +85,9 @@ if (!$user_obj || !$course_id) {
 		} else {
 			$can_edit = false;
 		}
-	}
-
+	}	
+	$partnerFeedback = $gestorBD->checkPartnerFeedback($feedback_form->id_tandem,$id_feedback);
+	
 	?>                    
 	<!DOCTYPE html>
 	<html>
@@ -93,43 +99,19 @@ if (!$user_obj || !$course_id) {
 		<link rel="stylesheet" type="text/css" media="all" href="css/defaultInit.css" />
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" media="all" href="css/slider.css" />
-			
+		<style>
+		#footer-container{margin-top:-222px;position:inherit;}
+		#wrapper{padding:0px 58px}
+		</style>
+		<script>
+		$(document).ready(function(){
+			$("#checkFeedbacks").onclick(function(){
+				window.location.reload();
+			})
+		});
+		</script>
 </head>
 <body>
-
-<!--div class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Action</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a href="#">Separated link</a></li>
-                <li><a href="#">One more separated link</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      <!--/div>
-    </div-->
-
     <!-- Begin page content -->
     <div id="wrapper" class="container">
       <div class="page-header">
@@ -138,13 +120,45 @@ if (!$user_obj || !$course_id) {
       <?php if ($message){
       	echo $message;
       }?>
-		<div id="main-container_old">
+      <p>
+	      	<button id="checkFeedbacks" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('Check if feedbacks are submitted') ?></button>
+	   </p>
+      <!-- Nav tabs -->
+     <div class='row'>
+	     <div class='col-md-12'>
+				<ul class="nav nav-tabs" role="tablist">
+				  <li class="active"><a href="#main-container_old" role="tab" data-toggle="tab"><?php echo $LanguageInstance->get('My feedback') ?></a></li>
+				  <li><a href="#other" role="tab" data-toggle="tab"><?php echo $LanguageInstance->get('Partner feedback') ?></a></li>
+				</ul>
+		</div>
+	</div>
+	<div class="tab-content">
+		<br />
+		<div id='other' class="tab-pane">
+			<?php
+				if(!empty($partnerFeedback)){
+					print_r($partnerFeedback);					
+				}else
+				echo "<p>". $LanguageInstance->get('Your partner feedback is not yet available.')."</p>";
+			?>
+			
+			<div class='row'>
+			<p>
+				<?php echo $LanguageInstance->get('Rating Partner’s Feedback Form') ?>
+			</p>
+			 <form action=''>
+
+			 </form>
+			</div>
+		</div>
+
+		<div id="main-container_old" class='tab-pane active'>
+		<div class='row'>
+		<div class='col-md-12'>
 					<!-- main -->
 					<div id="main_old">
 						<!-- content -->
 						<div id="content_old">
-		
-					
 						<form data-toggle="validator" role="form" method="POST">
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
@@ -158,11 +172,11 @@ if (!$user_obj || !$course_id) {
 						    <label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?></label>
 						  	<select id="grade" name="grade" required>
 						  		<option><?php echo $LanguageInstance->get('Select one')?></option>
-						  		<option value="A" <?php echo $feedback_form->grade=='A'?'select':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
-						  		<option value="B" <?php echo $feedback_form->grade=='B'?'select':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
-						  		<option value="C" <?php echo $feedback_form->grade=='C'?'select':''?>><?php echo $LanguageInstance->get('Good')?></option>
-						  		<option value="D" <?php echo $feedback_form->grade=='D'?'select':''?>><?php echo $LanguageInstance->get('Pass')?></option>
-						  		<option value="F" <?php echo $feedback_form->grade=='F'?'select':''?>><?php echo $LanguageInstance->get('Fail')?></option>
+						  		<option value="A" <?php echo $feedback_form->grade=='A'?'selected':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
+						  		<option value="B" <?php echo $feedback_form->grade=='B'?'selected':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
+						  		<option value="C" <?php echo $feedback_form->grade=='C'?'selected':''?>><?php echo $LanguageInstance->get('Good')?></option>
+						  		<option value="D" <?php echo $feedback_form->grade=='D'?'selected':''?>><?php echo $LanguageInstance->get('Pass')?></option>
+						  		<option value="F" <?php echo $feedback_form->grade=='F'?'selected':''?>><?php echo $LanguageInstance->get('Fail')?></option>
 						  	</select>
 						  </div>
 						  <div class="row"><h3><?php echo $LanguageInstance->get('Room for improvement')?></h3></div>
@@ -170,45 +184,45 @@ if (!$user_obj || !$course_id) {
 						  <div class="form-group">
 						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="pronunciation" placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" required><?php echo $feedback_form->pronunciation?></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="pronunciation" name='pronunciation' placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" required><?php echo $feedback_form->pronunciation?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="vocabulary" class="control-label"><?php echo $LanguageInstance->get('Vocabulary')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="vocabulary" placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" required><?php echo $feedback_form->vocabulary?></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="vocabulary"  name='vocabulary' placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" required><?php echo $feedback_form->vocabulary?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Grammar')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required><?php echo $feedback_form->grammar?></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="grammar"  name="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required><?php echo $feedback_form->grammar?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate Other Observations')?>"><?php echo $feedback_form->other_observations?></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate Other Observations')?>"><?php echo $feedback_form->other_observations?></textarea>
 						    </div>
 						  </div>
 						  <?php if ($can_edit) {?>
 						  <div class="form-group">
 						    <button type="submit" class="btn btn-primary"><?php echo $LanguageInstance->get('Send')?></button>
 						  </div>
-						  <input type="submit" name="id" value="<?php echo $id_feedback?>" />
+						  <?php //<input type="submit" name="id" value="<?php echo $id_feedback" /> ?>
 						  <?php } ?>
 						</form>
 				<!-- /content -->
 			</div>
 			<!-- /main -->
 		</div>
+		</div>
+		</div>
 		<!-- /main-container -->
 	</div>
-
-
     </div>
 
-    <div class="footer">
+    <!--<div class="footer">
       <div class="container">
 			<div id="logo">
 				<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo') ?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo') ?>" /></a>
@@ -225,7 +239,7 @@ if (!$user_obj || !$course_id) {
 			</div>
 
       </div>
-    </div>
+    </div>-->
 	
 	<!-- /footer -->
 	<?php include_once dirname(__FILE__) . '/js/google_analytics.php' ?>
