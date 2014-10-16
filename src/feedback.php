@@ -91,7 +91,12 @@ if (!$user_obj || !$course_id) {
 
 	if(!empty($_POST['rating_partner'])){	
 		
-		updateRatingPartnerFeedbackTandemDetail($id_feedback, serialize($_POST));
+		$rating_partner_feedback_form = new stdClass();
+		
+		$rating_partner_feedback_form->fluency = isset($_POST['partner_rate'])?$_POST['partner_rate']:0;
+		$rating_partner_feedback_form->partner_comment = isset($_POST['partner_comment'])?$_POST['partner_comment']:'';
+
+		$gestorBD->updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form);
 	}
 
 	?>                    
@@ -121,7 +126,8 @@ if (!$user_obj || !$course_id) {
       	echo $message;
       }?>
       <p>
-	      	<button id="checkFeedbacks" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('Check if feedbacks are submitted') ?></button>
+	    <button id="checkFeedbacks" type="button" onclick="window.location.reload();" class="btn btn-success"><?php echo $LanguageInstance->get('Check if feedbacks are submitted') ?></button>
+	   	<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
 	   </p>
       <!-- Nav tabs -->
      <div class='row'>
@@ -192,18 +198,18 @@ if (!$user_obj || !$course_id) {
 						</p>
 						 <form action='' method='POST'>
 						 	<div class="form-group">
-						     <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Rate your partners feedback') ?></label>
+						     <label for="partner_rate" class="control-label"><?php echo $LanguageInstance->get('Rate your partners feedback') ?></label>
 						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="partner_rate" id="partner_rate" type="text" data-slider-min="0" data-slider-max="5" data-slider-step="1" data-slider-value=""/>%
 						  </div>
 		
 						  <div class="form-group">
-						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Comments')?>:</label>
+						    <label for="partner_comment" class="control-label"><?php echo $LanguageInstance->get('Comments')?>:</label>
 						    <div class="input-group">
 						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>" required></textarea>
 						    </div>
 						  </div>
 						   <input type='hidden' name='rating_partner' value='1' />
-						   <button type="submit" class="btn btn-primary"><?php echo $LanguageInstance->get('Send')?></button>
+						   <button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
 						 </form>
 						</div>	
 				 <?php					
@@ -267,7 +273,7 @@ if (!$user_obj || !$course_id) {
 						  </div>
 						  <?php if ($can_edit) {?>
 						  <div class="form-group">
-						    <button type="submit" class="btn btn-primary"><?php echo $LanguageInstance->get('Send')?></button>
+						    <button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
 						  </div>
 						  <?php //<input type="submit" name="id" value="<?php echo $id_feedback" /> ?>
 						  <?php } ?>
@@ -322,9 +328,6 @@ if (!$user_obj || !$course_id) {
 
 			$(document).ready(function(){
 				$(".sliderdisabled").slider("disable");
-				$("#checkFeedbacks").onclick(function(){
-					window.location.reload();
-				})
 			});
 		//});
     	</script>   
