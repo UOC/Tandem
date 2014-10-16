@@ -2140,6 +2140,54 @@ class GestorBD {
             " where id_feedback_tandem =".$this->escapeString($id_feedback));
      }
 
+     /**
+      * Returns the feedback details or false if is not found
+      * @param  [type] $id_feedback [description]
+      * @return [type]              [description]
+      */
+   function getFeedbackDetails($id_feedback) {
+        //1st. check if it is necessary
+        $result = $this->consulta("select feedback_tandem.*, tandem.created as tandem_created, tandem.is_finished as tandem_is_finished,
+            tandem.finalized as tandem_finalized,
+            user_host.fullname as user_host_fullname, user_host.email as user_host_email,
+            user_guest.fullname as user_guest_fullname, user_guest.email as user_guest_email,
+            feedback_tandem_form.* from feedback_tandem 
+            inner join tandem on tandem.id=feedback_tandem.id_tandem 
+            inner join user as user_host on user_host.id=feedback_tandem.id_user 
+            inner join user as user_guest on user_guest.id=feedback_tandem.id_partner 
+            left join feedback_tandem_form on feedback_tandem_form.id_feedback_tandem=feedback_tandem.id 
+            where feedback_tandem.id =".$this->escapeString($id_feedback));
+        $feedback = false;
+        if ($this->numResultats($result) > 0){ 
+            $r = $this->obteComArray($result);
+            $feedback = new stdClass();
+            $feedback->id = $r[0]['id'];
+            $feedback->id_tandem = $r[0]['id_tandem'];
+            $feedback->id_external_tool = $r[0]['id_external_tool'];
+            $feedback->id_user = $r[0]['id_user'];
+            $feedback->language = $r[0]['language'];
+            $feedback->id_partner = $r[0]['id_partner'];
+            $feedback->partner_language = $r[0]['partner_language'];
+            $feedback->created = $r[0]['created'];
+            $feedback->tandem_created = $r[0]['tandem_created'];
+            $feedback->tandem_is_finished = $r[0]['tandem_is_finished'];
+            $feedback->tandem_finalized = $r[0]['tandem_finalized'];
+            $feedback_form = $r[0]['feedback_form'];
+            if ($feedback_form && strlen($feedback_form)>0) {
+                $feedback->feedback_form = unserialize($feedback_form);
+            } else {
+                $feedback->feedback_form = false;
+            }
+            $rating_partner_feedback_form = $r[0]['rating_partner_feedback_form'];
+            if ($rating_partner_feedback_form && strlen($rating_partner_feedback_form)>0) {
+                $feedback->rating_partner_feedback_form = unserialize($rating_partner_feedback_form);
+            } else {
+                $feedback->rating_partner_feedback_form = false;
+            }
+        }    
+        return $feedback;
+    }
+
 }//end of class
 
 ?>
