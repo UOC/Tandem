@@ -28,6 +28,10 @@ if (!$user_obj || !$course_id) {
 		die($LanguageInstance->get('Missing feedback parameter'));
 	}
 
+	if (!$feedbackDetails) {
+		die($LanguageInstance->get('Can not find feedback'));
+	}
+
 	if ($user_obj->id!=$feedbackDetails->id_user && $user_obj->id!=$feedbackDetails->id_partner &&
 		!$user_obj->instructor && !$user_obj->admin) { //check if is the user of feedback if not can't not set feedback
 		die($LanguageInstance->get('no estas autoritzat'));
@@ -37,10 +41,6 @@ if (!$user_obj || !$course_id) {
 	$message= false;
 	$can_edit = true;
 	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
-
-	if (!$feedbackDetails) {
-		die($LanguageInstance->get('Can not find feedback'));
-	}
 
 	$feedback_form = new stdClass();
 	$feedback_form->fluency = 50;
