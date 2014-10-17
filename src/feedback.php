@@ -39,7 +39,6 @@ if (!$user_obj || !$course_id) {
 		!$user_obj->instructor && !$user_obj->admin) { //check if is the user of feedback if not can't not set feedback
 		die($LanguageInstance->get('no estas autoritzat'));
 	}
-
 	  
 	$message= false;
 	$can_edit = true;
@@ -58,7 +57,7 @@ if (!$user_obj || !$course_id) {
 		$feedback_form = $feedbackDetails->feedback_form;
 	} else{
 		if ($user_obj->id==$feedbackDetails->id_user) { //check if is the user of feedback if not can't not set feedback
-			if ($_POST) {
+			if (!empty($_POST['save_feedback'])) {
 				//try to save it!
 				$feedback_form->fluency = isset($_POST['fluency'])?$_POST['fluency']:50;
 				$feedback_form->accuracy = $_POST['accuracy'];
@@ -93,12 +92,12 @@ if (!$user_obj || !$course_id) {
 		
 		$rating_partner_feedback_form = new stdClass();
 		
-		$rating_partner_feedback_form->fluency = isset($_POST['partner_rate'])?$_POST['partner_rate']:0;
+		$rating_partner_feedback_form->partner_rate = isset($_POST['partner_rate'])?$_POST['partner_rate']:0;
 		$rating_partner_feedback_form->partner_comment = isset($_POST['partner_comment'])?$_POST['partner_comment']:'';
 
 		$gestorBD->updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form);
 	}
-
+	
 	?>                    
 	<!DOCTYPE html>
 	<html>
@@ -143,7 +142,7 @@ if (!$user_obj || !$course_id) {
 		<div id='other' class="tab-pane">
 			<?php
 				if(!empty($partnerFeedback)){
-					$feedBackFormPartner = unserialize($partnerFeedback[0]['feedback_form']);
+					$feedBackFormPartner = unserialize($partnerFeedback);					
 				 ?>
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
@@ -191,6 +190,7 @@ if (!$user_obj || !$course_id) {
 						    </div>
 						  </div>						 
 						
+
 						<div class='row'>
 						<p>
 							<?php echo $LanguageInstance->get('Rating Partner’s Feedback Form') ?>
@@ -198,7 +198,7 @@ if (!$user_obj || !$course_id) {
 						 <form action='' method='POST'>
 						 	<div class="form-group">
 						     <label for="partner_rate" class="control-label"><?php echo $LanguageInstance->get('Rate your partners feedback') ?></label>
-						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="partner_rate" id="partner_rate" type="text" data-slider-min="0" data-slider-max="5" data-slider-step="1" data-slider-value=""/>%
+						  	<input data-slider-id='ex1Slider2' class="sliderTandem" name="partner_rate" id="partner_rate" type="text" data-slider-min="0" data-slider-max="5" data-slider-step="1" data-slider-value="0"/>%
 						  </div>
 		
 						  <div class="form-group">
@@ -212,9 +212,11 @@ if (!$user_obj || !$course_id) {
 						   <span><?php echo $LanguageInstance->get('cannot_be_modified')?></span>
 						 </form>
 						</div>	
+
+
 				 <?php					
 				}else
-				echo "<p>". $LanguageInstance->get('partner_feedback_not_available.')."</p>";
+				echo "<p>". $LanguageInstance->get('partner_feedback_not_available')."</p>";
 			?>
 			
 		</div>
@@ -273,7 +275,9 @@ if (!$user_obj || !$course_id) {
 						  </div>
 						  <?php if ($can_edit) {?>
 						  <div class="form-group">
+						  <input type='hidden' name='save_feedback' value='1' >
 						    <button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
+						     <span><?php echo $LanguageInstance->get('cannot_be_modified')?></span>
 						  </div>
 						  <?php //<input type="submit" name="id" value="<?php echo $id_feedback" /> ?>
 						  <?php } ?>
@@ -324,10 +328,13 @@ if (!$user_obj || !$course_id) {
 					return 'Current value: ' + value;
 				}
 			});
+
 			
 
 			$(document).ready(function(){
 				$(".sliderdisabled").slider("disable");
+				$("#ex1Slider2").width("50px");//TODO temporary fix
+				
 			});
 		//});
     	</script>   

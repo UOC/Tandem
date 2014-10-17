@@ -425,7 +425,7 @@ msgid "review_partner_feedback"
 msgstr "Valora la intervención de tu compa&ntilde;ero"
 
 msgid "partner_feedback_not_available"
-msgstr "La valoraraci&oacute; de tu compa&ntilde; no esta aun disponible"
+msgstr "La valoraraci&oacute; de tu compa&ntilde;ero no esta aun disponible"
 
 msgid "fill_required_fields"
 msgstr "Fill all required fields"

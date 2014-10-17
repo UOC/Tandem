@@ -10,7 +10,7 @@ require_once dirname(__FILE__).'/classes/lang.php';
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- Save for Web Styles (Tandem Pantalla Inici_ParaExportar.psd) -->
 <style type="text/css">
-<!--
+
 
 #home_ {
 	position:absolute;
@@ -26,7 +26,17 @@ require_once dirname(__FILE__).'/classes/lang.php';
 	font-size: 14px;
 }
 
--->
+.btn_review{text-align:center;}
+.btn_review a{
+	padding:6px;
+	background-color:#5CB85C;
+	border-radius:4px;
+	color:#FFF;
+	text-align:center;
+	border:1px solid #4CAE4C;
+}
+
+
 </style>
 
 <script type="text/javascript">
@@ -49,7 +59,6 @@ require_once dirname(__FILE__).'/classes/lang.php';
 		});
 	}
 </script>
-
 <!-- End Save for Web Styles -->
 </head>
 <body id="home_" style="background-color:#FFFFFF;">
@@ -60,12 +69,11 @@ require_once dirname(__FILE__).'/classes/lang.php';
 	<p><?php echo $LanguageInstance->get('Activityhasbeencompleted');?></p>
 	<p><?php echo $LanguageInstance->get('ThankyouforusingTANDEM');?></p>
 </div>
-<div>
-  <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
+<p></p>
+<div class='btn_review'>
+  <a  href="#" onclick="desconn();"><?php echo $LanguageInstance->get('peer_review_form');?></a>
 </div>
-<div class="text">
-	<p><?php echo $LanguageInstance->get('peer_review_form');?></p>
-</div>
+<br /><br />
 
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

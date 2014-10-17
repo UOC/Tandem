@@ -2143,8 +2143,11 @@ class GestorBD {
       */
      function updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form) {
         //1st. check if it is necessary
-        return $this->consulta("update  feedback_tandem_form set rating_partner_feedback_form=". $this->escapeString($rating_partner_feedback_form) . 
+
+         return $this->consulta("update  feedback_tandem_form set rating_partner_feedback_form=". $this->escapeString(serialize($rating_partner_feedback_form)) . 
             " where id_feedback_tandem =".$this->escapeString($id_feedback));
+
+
      }
 
      /**
@@ -2200,15 +2203,17 @@ class GestorBD {
      */
     function checkPartnerFeedback($tandem_id,$feedback_id){
 
-        $result = $this->consulta("select FT.*,FTF.feedback_form  from feedback_tandem  as FT
-                            inner join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
-                         where FT.id_tandem=".$this->escapeString($tandem_id)." and FT.id != ".$this->escapeString($feedback_id)." ");
-
-          if ($this->numResultats($result) > 0){ 
+    
+        $result = $this->consulta("SELECT FT.id, FTF.feedback_form,FTF.rating_partner_feedback_form
+                                    FROM feedback_tandem AS FT
+                                    INNER JOIN feedback_tandem_form AS FTF ON FTF.id_feedback_tandem = FT.id
+                                    WHERE FT.id_tandem =".$this->escapeString($tandem_id)." and FTF.feedback_form != ''");
+        if ($this->numResultats($result) == 2){ 
              $res = $this->obteComArray($result);
-              return $res;
-            }else
-            return false;
+        
+             return  ($res[0]['id'] == $feedback_id) ? $res[1]['feedback_form'] :  $res[0]['feedback_form'];
+        }else
+             return false;
     }
 
     /**
