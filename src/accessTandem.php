@@ -11,7 +11,7 @@ $gestorBD = new GestorBD();
 if ($id>0) {
 	$tandem = $gestorBD->obteTandem($id); 
 }
-$user_obj = $_SESSION['current_user'];
+$user_obj = $_SESSION[CURRENT_USER];
 if ($tandem) {
 	$_SESSION[CURRENT_TANDEM] = $id;
 	$id_resource = $_SESSION[ID_RESOURCE];
