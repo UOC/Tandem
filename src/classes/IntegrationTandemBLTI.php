@@ -145,6 +145,18 @@ class IntegrationTandemBLTI {
 	}
 	/**
 	 * 
+	 * Set user disconnected from External Tool
+	 * @param stdClass $user_obj
+	 * @param String $room
+	 */
+	function endSessionExternalToolXMLUser($user_id,$room){  
+		$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+		$externalToolClosed = $this->addDataXML($xml, 'externalToolClosed',$user_id);
+		
+	  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+	}
+	/**
+	 * 
 	 * gets if user can login in Tandem
 	 * @param stdClass $user_obj
 	 * @param String $room
