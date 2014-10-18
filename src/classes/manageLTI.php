@@ -117,6 +117,9 @@ class ManageLTI {
 		if (strpos($value, '%ID_TANDEM%')!==false){
 			$value = str_replace('%ID_TANDEM%', $_SESSION[CURRENT_TANDEM], $value);
 		}
+		if (strpos($value, '%ID_USER%')!==false && isset($_SESSION[CURRENT_USER])){
+			$value = str_replace('%ID_USER%', $_SESSION[CURRENT_USER]->id, $value);
+		}
 		if (strpos($value, '%EXTERNAL_ID%')!==false){
 			$value = str_replace('%EXTERNAL_ID%', $_SESSION[ID_EXTERNAL], $value);
 		}
