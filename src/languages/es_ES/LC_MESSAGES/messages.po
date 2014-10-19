@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-10-14 19:55+0100\n"
+"PO-Revision-Date: 2014-10-19 11:27+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -421,17 +421,83 @@ msgstr "Verificar si la otra persona ha enviado el feedback"
 msgid "peer_review_form"
 msgstr "Valora la evaluación de tu compa&ntilde;ero"
 
-msgid "review_partner_feedback"
+msgid "Review your partner's contribution"
 msgstr "Valora la intervención de tu compa&ntilde;ero"
 
 msgid "partner_feedback_not_available"
-msgstr "La valoraraci&oacute; de tu compa&ntilde;ero no esta aun disponible"
+msgstr "La valoraraci&oacute;n de tu compa&ntilde;ero no esta aun disponible"
 
 msgid "fill_required_fields"
-msgstr "Fill all required fields"
+msgstr "Rellena todos los campos obligatorios"
 
-msgid "my_feedback"
+msgid "View received Feedback"
 msgstr "Valoración recibida"
 
 msgid "cannot_be_modified"
 msgstr "Este formulario no se podra modificar"
+
+msgid "Required fields are noted with an asterisk (*)"
+msgstr "Todos los campos marcados con asterisco (*) son obligatorios"
+
+msgid "View video session"
+msgstr "Ver la sesión de vídeo"
+
+msgid "Check if feedback are submitted"
+msgstr "Comprueba si tu compañero ha enviado su valoración"
+
+msgid "Select one"
+msgstr "Selecciona uno"
+
+msgid "Excellent"
+msgstr "Excelente"
+
+msgid "Very Good"
+msgstr "Muy Bien"
+
+msgid "Good"
+msgstr "Bien"
+
+msgid "Pass"
+msgstr "Justo"
+
+msgid "Fail"
+msgstr "Suspenso"
+
+msgid "Accuracy"
+msgstr "Precisión"
+
+msgid "Fluency"
+msgstr "Fluidez"
+
+msgid "Overall Grade"
+msgstr "Evaluación General"
+
+msgid "Rate your partners feedback"
+msgstr "Puntúa la valoración de tu compañero"
+
+msgid "Comments"
+msgstr "Commentatios"
+
+msgid "Pronunciation"
+msgstr "Pronunciación"
+
+msgid "Indicate the level of pronunciation"
+msgstr "Indica el nivel de pronunciación"
+
+msgid "Vocabulary"
+msgstr "Vocabulario"
+
+msgid "Indicate the level of vocabulary"
+msgstr "Indica el nivel de vocabulario"
+
+msgid "Grammar"
+msgstr "Gramática"
+
+msgid "Indicate the level of grammar"
+msgstr "Indica el nivel de gramática"
+
+msgid "Other Observations"
+msgstr "Otras Observaciones"
+
+msgid "Indicate other observations"
+msgstr "Indica otras observaciones"

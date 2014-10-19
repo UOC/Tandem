@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-10-14 19:55+0100\n"
+"PO-Revision-Date: 2014-10-19 11:13+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -418,18 +418,83 @@ msgstr "Check if other feedback is already sent"
 msgid "peer_review_form"
 msgstr "Peer review form"
 
-msgid "review_partner_feedback"
-msgstr "Review your partners contribution"
+msgid "Review your partner's contribution"
+msgstr "Review your partner's contribution"
 
 msgid "partner_feedback_not_available"
 msgstr "Your partner feedback is not yet available"
 
 msgid "fill_required_fields"
-msgstr "Rellena todos los campos oblitagorios"
+msgstr "Fill all required fields"
 
-msgid "my_feedback"
+msgid "View received Feedback"
 msgstr "View received Feedback"
 
 msgid "cannot_be_modified"
 msgstr "You will not be able to modify this form later."
 
+msgid "Required fields are noted with an asterisk (*)"
+msgstr "Required fields are noted with an asterisk (*)"
+
+msgid "View video session"
+msgstr "View video session"
+
+msgid "Check if feedback are submitted"
+msgstr "Check if feedback are submitted"
+
+msgid "Select one"
+msgstr "Select one"
+
+msgid "Excellent"
+msgstr "Excellent"
+
+msgid "Very Good"
+msgstr "Very Good"
+
+msgid "Good"
+msgstr "Good"
+
+msgid "Pass"
+msgstr "Pass"
+
+msgid "Fail"
+msgstr "Fail"
+
+msgid "Accuracy"
+msgstr "Accuracy"
+
+msgid "Fluency"
+msgstr "Fluency"
+
+msgid "Overall Grade"
+msgstr "Overall Grade"
+
+msgid "Rate your partners feedback"
+msgstr "Rate your partners feedback"
+
+msgid "Comments"
+msgstr "Comments"
+
+msgid "Pronunciation"
+msgstr "Pronunciation"
+
+msgid "Indicate the level of pronunciation"
+msgstr "Indicate the level of pronunciation"
+
+msgid "Vocabulary"
+msgstr "Vocabulary"
+
+msgid "Indicate the level of vocabulary"
+msgstr "Indicate the level of vocabulary"
+
+msgid "Grammar"
+msgstr "Grammar"
+
+msgid "Indicate the level of grammar"
+msgstr "Indicate the level of grammar"
+
+msgid "Other Observations"
+msgstr "Other Observations"
+
+msgid "Indicate other observations"
+msgstr "Indicate other observations"
