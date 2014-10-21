@@ -2223,14 +2223,76 @@ class GestorBD {
     function getAllUserFeedbacks($user_id){
 
         $result = $this->consulta("select * from feedback_tandem as FT 
-                         inner join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
-                         where FT.id_user = ".$this->escapeString($user_id));
-                         
-        if ($this->numResultats($result) > 0){ 
-             return $this->obteComArray($result);
-         }
-         return false;
+           inner join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
+           where FT.id_user = ".$this->escapeString($user_id));
+
+        if ($this->numResultats($result) > 0){            
+           $feedback_tandem =  $this->obteComArray($result);
+           $return = array();
+           foreach($feedback_tandem as $ft){
+
+           $tandemDurations = $this->getUserTandemDurations($user_id,$ft['id_tandem']);           
+           $seconds = isset($tandemDurations[0]['total_time']) ? $tandemDurations[0]['total_time']:0;
+           $minutes = $this->minutes($seconds);
+           $total_time = $this->time_format($seconds);
+           $subTP=explode(":",$total_time);
+           if($subTP[0]>0) $subTimerP=substr($subTP[0],1).":".$subTP[1].":".$subTP[2];
+           else $subTimerP=$subTP[1].":".$subTP[2];
+           $task_tandemsSubTime = $this->getUserTandemTasksDurations($user_id,$ft['id_tandem']);
+           $subTimer= array();
+           $j=0;$i=0;
+
+           foreach ($task_tandemsSubTime as $question) {   
+            $j++;
+            $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
+            $minutesSt = $this->minutes($secondsSt);
+            $total_timeSt = $this->time_format($secondsSt);
+            if(!isset($subTimer[$i])) $subTimer[$i]="00:00:00";
+            if($subTimer[$i]<$total_timeSt){
+                $subT=explode(":",$total_timeSt);
+                $subT[0]>0 ? $subTimer[$i]=$subT[0].":".$subT[1].":".$subT[2] : $subTimer[$i]=$subT[1].":".$subT[2];
+            }
+            if($j%2==0) $i++;
+        }
+         $ft['total_time'] = $subTimerP;
+         $ft['total_time_tasks'] = $subTimer;
+         $return[] = $ft;
+        }
+        return $return;
     }
+
+    }
+
+    public function getUserTandemDurations($user_id,$tandem_id){
+           $sql = " select * from user_tandem where id_tandem = ".$tandem_id." and id_user = ".$user_id;
+           $result = $this->consulta($sql);
+
+           if ($this->numResultats($result) > 0){ 
+            return $this->obteComArray($result);
+           }
+           return false;
+    }
+
+     public function getUserTandemTasksDurations($user_id,$tandem_id){
+           $sql = " select * from user_tandem_task where id_tandem = ".$tandem_id." and id_user = ".$user_id;
+           $result = $this->consulta($sql);
+
+           if ($this->numResultats($result) > 0){ 
+            return $this->obteComArray($result);
+           }
+           return false;
+    }
+
+        function minutes( $seconds )
+        {
+            return sprintf( "%02.2d:%02.2d", floor( $seconds / 60 ), $seconds % 60 );
+        }
+
+
+        function time_format( $seconds )
+        {
+            return  gmdate("H:i:s", $seconds);
+        }
 
 }//end of class
 

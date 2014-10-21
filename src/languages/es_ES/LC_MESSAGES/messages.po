@@ -504,3 +504,6 @@ msgstr "Indica otras observaciones"
 
 msgid "Rating Partner’s Feedback Form"
 msgstr "Formulario para puntúar la valoración de tu compañero"
+
+msgid "Back to list"
+msgstr "Regresar a la lista"

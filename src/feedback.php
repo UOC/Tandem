@@ -115,7 +115,9 @@ if (!$user_obj || !$course_id) {
 <body>
     <!-- Begin page content -->
     <div id="wrapper" class="container">
+
       <div class="page-header">
+      <button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
         <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
       </div>
       <?php if ($message){
