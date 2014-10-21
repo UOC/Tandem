@@ -30,6 +30,14 @@ if (!$user_obj || !$course_id) {
 	}
 
 	$gestorBD = new GestorBD();  
+
+	if(!empty($_POST['rating_partner'])){			
+		$rating_partner_feedback_form = new stdClass();		
+		$rating_partner_feedback_form->partner_rate = isset($_POST['partner_rate'])?$_POST['partner_rate']:0;
+		$rating_partner_feedback_form->partner_comment = isset($_POST['partner_comment'])?$_POST['partner_comment']:'';
+		$gestorBD->updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form);
+	}
+
 	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
 	if (!$feedbackDetails) {
 		die($LanguageInstance->get('Can not find feedback'));
@@ -72,8 +80,7 @@ if (!$user_obj || !$course_id) {
 					isset($_POST['grade']) && strlen($_POST['grade'])>0 &&
 					isset($_POST['pronunciation']) && strlen($_POST['pronunciation'])>0 &&
 					isset($_POST['vocabulary']) && strlen($_POST['vocabulary'])>0 &&
-					isset($_POST['grammar']) && strlen($_POST['grammar'])>0){
-					
+					isset($_POST['grammar']) && strlen($_POST['grammar'])>0){					
 					if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form))) {
 						$message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
 						$can_edit = false;
@@ -87,16 +94,6 @@ if (!$user_obj || !$course_id) {
 		}
 	}	
 	$partnerFeedback = $gestorBD->checkPartnerFeedback($feedbackDetails->id_tandem,$id_feedback);
-
-	if(!empty($_POST['rating_partner'])){	
-		
-		$rating_partner_feedback_form = new stdClass();
-		
-		$rating_partner_feedback_form->partner_rate = isset($_POST['partner_rate'])?$_POST['partner_rate']:0;
-		$rating_partner_feedback_form->partner_comment = isset($_POST['partner_comment'])?$_POST['partner_comment']:'';
-
-		$gestorBD->updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form);
-	}
 	
 	?>                    
 	<!DOCTYPE html>
@@ -109,6 +106,7 @@ if (!$user_obj || !$course_id) {
 		<link rel="stylesheet" type="text/css" media="all" href="css/defaultInit.css" />
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" media="all" href="css/slider.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="css/star-rating.min.css" />
 		<style>
 		#footer-container{margin-top:-222px;position:inherit;}
 		#wrapper{padding:0px 58px}
@@ -125,7 +123,9 @@ if (!$user_obj || !$course_id) {
       	echo $message;
       }?>
       <p>
+      <?php if(empty($feedbackDetails->rating_partner_feedback_form)){  ?>
 	    <button id="checkFeedbacks" type="button" onclick="window.location.reload();" class="btn btn-success"><?php echo $LanguageInstance->get('Check if feedback are submitted') ?></button>
+	   <?php } ?>
 	   	<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
 	   </p>
       <!-- Nav tabs -->
@@ -163,7 +163,7 @@ if (!$user_obj || !$course_id) {
 						  		<option value="F" <?php echo $feedBackFormPartner->grade=='F'?'selected':''?>><?php echo $LanguageInstance->get('Fail')?></option>
 						  	</select>
 						  </div>
-						  <!--div class="row"><h3><?php echo $LanguageInstance->get('Room for improvement')?></h3></div-->
+						  <!--div class="row"><h3><?php //echo $LanguageInstance->get('Room for improvement')?></h3></div-->
 
 						  <div class="form-group">
 						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
@@ -188,31 +188,31 @@ if (!$user_obj || !$course_id) {
 						    <div class="input-group">
 						      <textarea  readonly rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedBackFormPartner->other_observations?></textarea>
 						    </div>
-						  </div>						 
-						
-
-						<div class='row'>
-						<p>
-							<?php echo $LanguageInstance->get('Rating Partner’s Feedback Form') ?>
-						</p>
+						  </div>
+						  <!-- Rate your partner form -->
+						<div class='row well'>					
+							<h3><?php echo $LanguageInstance->get('rating_partner_feedback_form') ?></h3>					
 						 <form action='' method='POST'>
 						 	<div class="form-group">
 						     <label for="partner_rate" class="control-label"><?php echo $LanguageInstance->get('Rate your partners feedback') ?></label>
-						  	<input data-slider-id='ex1Slider2' class="sliderTandem" name="partner_rate" id="partner_rate" type="text" data-slider-min="0" data-slider-max="5" data-slider-step="1" data-slider-value="0"/>%
-						  </div>
-		
+						  	<input name="partner_rate" id="partner_rate" type="text" class="rating" data-min="0" data-max="5" data-step="1" data-size="sm" />
+						  </div>		
 						  <div class="form-group">
 						    <label for="partner_comment" class="control-label"><?php echo $LanguageInstance->get('Comments')?>:</label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>" required></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>" required  <?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo "readonly";} ?> ><?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo $feedbackDetails->rating_partner_feedback_form->partner_comment;
+						      	}
+						      ?>
+						      </textarea>
 						    </div>
 						  </div>
 						   <input type='hidden' name='rating_partner' value='1' />
-						   <button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
+						   <?php if(empty($feedbackDetails->rating_partner_feedback_form)){ ?>
+						    <button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
+						   <?php } ?>
 						   <span class="small"><?php echo $LanguageInstance->get('cannot_be_modified')?></span>
 						 </form>
 						</div>	
-
 
 				 <?php					
 				}else
@@ -246,9 +246,7 @@ if (!$user_obj || !$course_id) {
 						  		<option value="D" <?php echo $feedback_form->grade=='D'?'selected':''?>><?php echo $LanguageInstance->get('Pass')?></option>
 						  		<option value="F" <?php echo $feedback_form->grade=='F'?'selected':''?>><?php echo $LanguageInstance->get('Fail')?></option>
 						  	</select>
-						  </div>
-						  <!--div class="row"><h3><?php echo $LanguageInstance->get('Room for improvement')?></h3></div-->
-
+						  </div>			
 						  <div class="form-group">
 						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?> *</label>
 						    <div class="input-group">
@@ -294,27 +292,7 @@ if (!$user_obj || !$course_id) {
 		<!-- /main-container -->
 	</div>
     </div>
-
-    <!--<div class="footer">
-      <div class="container">
-			<div id="logo">
-				<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo') ?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo') ?>" /></a>
-			</div>
-			<div id="footer-container">
-				<div id="footer">
-					<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem') ?>"></div>
-					<div class="footer-logos">
-						<img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
-						<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
-						<img src="css/images/logo_speakapps.png" alt="Speakapps" />
-					</div>
-				</div>
-			</div>
-
-      </div>
-    </div>-->
 	
-	<!-- /footer -->
 	<?php include_once dirname(__FILE__) . '/js/google_analytics.php' ?>
 
 <!-- Placed at the end of the document so the pages load faster -->
@@ -322,25 +300,29 @@ if (!$user_obj || !$course_id) {
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="js/validator.min.js"></script>
 <script src="js/bootstrap-slider.js"></script>
+<script src="js/star-rating.min.js"></script>
 <script>
-		//$( document ).ready(function() {
-			//$('.slider').slider()
-			// With JQuery
-			$('.sliderTandem').slider({
-				formatter: function(value) {
-					return 'Current value: ' + value;
-				}
-			});
-
-			
-
-			$(document).ready(function(){
-				$(".sliderdisabled").slider("disable");
-				$("#ex1Slider2").width("50px");//TODO temporary fix
-				
-			});
-		//});
-    	</script>   
+$('.sliderTandem').slider({
+	formatter: function(value) {
+		return 'Current value: ' + value;
+	}
+});
+$(document).ready(function(){
+	$(".sliderdisabled").slider("disable");	
+	<?php  
+	//We need to translate the star rating plugin.
+	if($_SESSION['lang'] == "es_ES"){ ?>
+	$("#partner_rate").rating('refresh', {clearCaption : 'Sin valoración', starCaptions : {										    
+							    1: '1 estrella',2: '2 estrellas',3: '3 estrellas',4: '4 estrellas',5: '5 estrellas',
+							   }});		
+	<?php }
+	   if(!empty($feedbackDetails->rating_partner_feedback_form->partner_rate)){  
+			echo "$('#partner_rate').rating('update', ".$feedbackDetails->rating_partner_feedback_form->partner_rate.");";
+			echo "$('#partner_rate').rating('refresh', {disabled: true});";
+		}
+	 ?>
+} );		
+</script>   
 </body>
 </html>
 <?php  } ?>
