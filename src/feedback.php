@@ -111,7 +111,6 @@ if (!$user_obj || !$course_id) {
 		#footer-container{margin-top:-222px;position:inherit;}
 		#wrapper{padding:0px 58px}
 		</style>
-
 </head>
 <body>
     <!-- Begin page content -->
@@ -191,7 +190,7 @@ if (!$user_obj || !$course_id) {
 						  </div>
 						  <!-- Rate your partner form -->
 						<div class='row well'>					
-							<h3><?php echo $LanguageInstance->get('rating_partner_feedback_form') ?></h3>					
+							<h3><?php echo $LanguageInstance->get('Rating Partner’s Feedback Form') ?></h3>					
 						 <form action='' method='POST'>
 						 	<div class="form-group">
 						     <label for="partner_rate" class="control-label"><?php echo $LanguageInstance->get('Rate your partners feedback') ?></label>
@@ -200,10 +199,7 @@ if (!$user_obj || !$course_id) {
 						  <div class="form-group">
 						    <label for="partner_comment" class="control-label"><?php echo $LanguageInstance->get('Comments')?>:</label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>" required  <?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo "readonly";} ?> ><?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo $feedbackDetails->rating_partner_feedback_form->partner_comment;
-						      	}
-						      ?>
-						      </textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>" required  <?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo "readonly";} ?> ><?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo $feedbackDetails->rating_partner_feedback_form->partner_comment;}?></textarea>
 						    </div>
 						  </div>
 						   <input type='hidden' name='rating_partner' value='1' />
@@ -213,7 +209,6 @@ if (!$user_obj || !$course_id) {
 						   <span class="small"><?php echo $LanguageInstance->get('cannot_be_modified')?></span>
 						 </form>
 						</div>	
-
 				 <?php					
 				}else
 				echo "<p>". $LanguageInstance->get('partner_feedback_not_available')."</p>";

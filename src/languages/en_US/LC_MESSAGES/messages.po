@@ -499,5 +499,5 @@ msgstr "Other Observations"
 msgid "Indicate other observations"
 msgstr "Indicate other observations"
 
-msgid "rating_feedback_partner_form"
+msgid "Rating Partner’s Feedback Form"
 msgstr "Rating Partner’s Feedback Form"

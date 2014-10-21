@@ -434,7 +434,7 @@ msgid "View received Feedback"
 msgstr "Valoración recibida"
 
 msgid "cannot_be_modified"
-msgstr "Este formulario no se podra modificar"
+msgstr "Este formulario no se podrá modificar"
 
 msgid "Required fields are noted with an asterisk (*)"
 msgstr "Todos los campos marcados con asterisco (*) son obligatorios"
@@ -502,5 +502,5 @@ msgstr "Otras Observaciones"
 msgid "Indicate other observations"
 msgstr "Indica otras observaciones"
 
-msgid "rating_feedback_partner_form"
+msgid "Rating Partner’s Feedback Form"
 msgstr "Formulario para puntúar la valoración de tu compañero"
