@@ -16,7 +16,6 @@ if (!$user_obj) {
 //Tornem a l'index
 	header('Location: index.php');
 } else {
-
 	require_once(dirname(__FILE__) . '/classes/constants.php');	
 	$gestorBD = new GestorBD();  	
 	$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id);
@@ -63,17 +62,16 @@ if (!$user_obj) {
  	<?php
 	  if(!empty($feedbacks)){
 	  	foreach($feedbacks as $f){
-
 	  	//we have all the tasks total_time in an array, but we need the T1=00:00 format.
-	  	$tt = "";
+	  	$tt = array();
 	  	foreach($f['total_time_tasks'] as $key => $val){
-	  		$tt .= "T".++$key." = ".$val.",";
+	  		$tt[] = "T".++$key." = ".$val;
 	  	}
 	  	echo "<tr><td>".substr($f['language'],0,-3)."</td>
 	  			  <td>".substr($f['partner_language'],0,-3)."</td>
 	  			  <td>".$f['created']."</td>
-	  			  <td>".$f['total_time']."</td>
-	  			  <td>".$tt."</td>
+	  			  <td >".$f['total_time']."</td>
+	  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
 	  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >View</button></td>
 	  			  </tr>";	
 	  	}
