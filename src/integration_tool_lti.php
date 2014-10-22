@@ -133,6 +133,7 @@ try {
 	    $user_id 	  = $user['id'];
 	    $user_obj->id = $user_id;
 	    $waiting_room = $tandemBLTI->getDataInfo($context, 'custom_waiting_room')==1;
+	    $portfolio 		= $tandemBLTI->getDataInfo($context, 'custom_portfolio')==1;
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
 	    $week 		  = $tandemBLTI->getDataInfo($context, 'custom_week');
             
@@ -185,7 +186,10 @@ try {
                                 $redirectTo = 'selectUserAndRoom';
                                 if ($waiting_room==1) {
                                     $redirectTo = 'autoAssignTandemRoom';
-                                }
+                                } 
+                                if ($portfolio){
+                                    $redirectTo = 'portfolio';
+                                } 
 		    		header ('Location: '.$redirectTo.'.php');
 		    	} 
 		    	//sino ja mostrara error
