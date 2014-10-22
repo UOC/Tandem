@@ -149,10 +149,10 @@ class IntegrationTandemBLTI {
 	 * @param stdClass $user_obj
 	 * @param String $room
 	 */
-	function endSessionExternalToolXMLUser($user_id,$room){  
+	function endSessionExternalToolXMLUser($user_id,$room,$username=''){  
 		$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
-		$externalToolClosed = $this->addDataXML($xml, 'externalToolClosed',$user_id);
-		
+
+		$externalToolClosed = $this->addDataXML($xml, 'externalToolClosed',$username);		
 	  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	}
 	/**

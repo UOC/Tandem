@@ -2294,6 +2294,18 @@ class GestorBD {
             return  gmdate("H:i:s", $seconds);
         }
 
+        function getUserName($user_id){
+             $sql = " select username from user where  id_user = ".$user_id;
+             $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){ 
+                 $names =  $this->obteComArray($result);
+                 return $names[0]['username'];
+             }
+            
+             return false;
+
+        }
+
 }//end of class
 
 ?>

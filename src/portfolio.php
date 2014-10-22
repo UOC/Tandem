@@ -18,7 +18,6 @@ if (!$user_obj) {
 	require_once(dirname(__FILE__) . '/classes/constants.php');	
 	$gestorBD = new GestorBD();  	
 	$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id);
-
 }
 ?>
 <!DOCTYPE html>
@@ -49,7 +48,7 @@ if (!$user_obj) {
   	</p>
   	</div>
   <div class="col-md-12">
-  	<table class="table table-striped">
+  	<table class="table">
   	<tr>
   	<th><?php echo $LanguageInstance->get('My language');?></th>
   	<th><?php echo $LanguageInstance->get('Partner Language');?></th>
@@ -66,10 +65,14 @@ if (!$user_obj) {
 	  	foreach($f['total_time_tasks'] as $key => $val){
 	  		$tt[] = "T".++$key." = ".$val;
 	  	}
-	  	echo "<tr><td>".substr($f['language'],0,-3)."</td>
+	  	$tr ="";
+	  	if(empty($f['feedback_form'])){
+	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="left" data-toggle="tooltip" ';
+	  	}
+	  	echo "<tr $tr><td>".substr($f['language'],0,-3)."</td>
 	  			  <td>".substr($f['partner_language'],0,-3)."</td>
 	  			  <td>".$f['created']."</td>
-	  			  <td >".$f['total_time']."</td>
+	  			  <td>".$f['total_time']."</td>
 	  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
 	  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >View</button></td>
 	  			  </tr>";	

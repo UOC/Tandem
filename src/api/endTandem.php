@@ -19,7 +19,7 @@ if ($id>0) {
 }
 
 if ($tandem && $user_id > 0) {	
-	
+	$username = $gestorDB->getUserNames($user_id);
 	$exercise = $tandem['name_xml_file'];
 	$room = sanitise_string($exercise.getTandemIdentifier($id, $tandem['id_resource_lti']));
 	$tandemBLTI = new IntegrationTandemBLTI();
@@ -29,7 +29,7 @@ if ($tandem && $user_id > 0) {
 	$data_exercise = $tandemBLTI->getDataExercise($exercise, true, $relative_path);
 
 	$room = $tandem['name_xml_file'].$tandem['id_resource_lti']."_".$tandem['id'];
-	$tandemBLTI->endSessionExternalToolXMLUser($user_id, $room);
+	$tandemBLTI->endSessionExternalToolXMLUser($user_id, $room,$username);
 	$return->ok = true;
 	
 }

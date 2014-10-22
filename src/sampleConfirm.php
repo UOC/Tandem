@@ -146,7 +146,6 @@ if(!isset($_SESSION)) {
 	session_start();
 }
 
-
 $path = '';
 $extra = '';
 if (isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0){
@@ -344,8 +343,8 @@ showImage('<?php echo $user;?>');
 var UserGotDisconnectedMessage = 0;
 //here if isDisconnected is true, then we call the drop down popup to alert about this
 userGotDisconnected = function(isDisconnected){				
-		if(isDisconnected.length > 0 && UserGotDisconnectedMessage == 0){
-			notifyTimerDown("<?php echo $LanguageInstance->get('The user %1 disconnected has closed the video chat session')?>");
+		if(isDisconnected.length > 0 && UserGotDisconnectedMessage == 0){			
+			notifyTimerDown("<?php echo $LanguageInstance->get('The user %1 has been disconnected or closed the video chat session')?>".replace("$1",isDisconnected));
 			UserGotDisconnectedMessage = 1;
 		}
 }
