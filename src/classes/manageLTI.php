@@ -27,14 +27,19 @@ class ManageLTI {
 	    $locale = '';//empty($USER->id) ? get_config('lang') : get_user_language($USER->id);
 	    $locale = $this->basiclti_get_locale($locale);
 		*/
+		$context_id = $consumer->get('id');
+		if (isset($_SESSION[CURRENT_TANDEM])||isset($_GET[CURRENT_TANDEM])) {
+			$context_id = isset($_GET[CURRENT_TANDEM]) && $_GET[CURRENT_TANDEM]>0?$_GET[CURRENT_TANDEM]:$_SESSION[CURRENT_TANDEM];
+		}
 	    $requestparams = array(
-	        BasicLTIConstants::RESOURCE_LINK_ID => isset($_SESSION[CURRENT_TANDEM])?$_SESSION[CURRENT_TANDEM]:$consumer->get('id'),
+
+	        BasicLTIConstants::RESOURCE_LINK_ID => $context_id,
 	        BasicLTIConstants::RESOURCE_LINK_TITLE => $consumer->get('title'),
 	        BasicLTIConstants::RESOURCE_LINK_DESCRIPTION => $consumer->get('description'),
 	        BasicLTIConstants::USER_ID => $user->id,
 	        BasicLTIConstants::ROLES => $role,
 	        //TODO revisar si cal
-	        BasicLTIConstants::CONTEXT_ID => isset($_SESSION[CURRENT_TANDEM])?$_SESSION[CURRENT_TANDEM]:$consumer->get('id'),
+	        BasicLTIConstants::CONTEXT_ID => $context_id,
 	        BasicLTIConstants::CONTEXT_LABEL => $consumer->get('title'),
 	        BasicLTIConstants::CONTEXT_TITLE => $consumer->get('description'),
 	        BasicLTIConstants::LAUNCH_PRESENTATION_LOCALE => $locale,
@@ -116,13 +121,13 @@ class ManageLTI {
  */
 	function replace_custom_variables($value){
 		if (strpos($value, '%ID_TANDEM%')!==false){
-			$value = str_replace('%ID_TANDEM%', $_SESSION[CURRENT_TANDEM], $value);
+			$value = str_replace('%EXTERNAL_ID%', isset($_GET[CURRENT_TANDEM]) && $_GET[CURRENT_TANDEM]>0?$_GET[CURRENT_TANDEM]:$_SESSION[CURRENT_TANDEM], $value);
 		}
 		if (strpos($value, '%ID_USER%')!==false && isset($_SESSION[CURRENT_USER])){
 			$value = str_replace('%ID_USER%', $_SESSION[CURRENT_USER]->id, $value);
 		}
 		if (strpos($value, '%EXTERNAL_ID%')!==false){
-			$value = str_replace('%EXTERNAL_ID%', $_SESSION[ID_EXTERNAL], $value);
+			$value = str_replace('%EXTERNAL_ID%', isset($_GET[ID_EXTERNAL]) && $_GET[ID_EXTERNAL]>0?$_GET[ID_EXTERNAL]:$_SESSION[ID_EXTERNAL], $value);
 		}
 		if (strpos($value, '%URL_TANDEM%')!==false){
 			require_once(dirname(__FILE__).'/utils.php');

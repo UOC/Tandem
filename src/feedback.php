@@ -127,7 +127,7 @@ if (!$user_obj || !$course_id) {
       <?php if(empty($feedbackDetails->rating_partner_feedback_form)){  ?>
 	    <button id="checkFeedbacks" type="button" onclick="window.location.reload();" class="btn btn-success"><?php echo $LanguageInstance->get('Check if feedback are submitted') ?></button>
 	   <?php } ?>
-	   	<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
+	   	<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100&<?php echo $feedbackDetails->id_external_tool>0? (ID_EXTERNAL.'='. $feedbackDetails->id_external_tool):''?>&<?php echo $feedbackDetails->id_tandem>0? (CURRENT_TANDEM.'='. $feedbackDetails->id_tandem):''?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
 	   </p>
       <!-- Nav tabs -->
      <div class='row'>
