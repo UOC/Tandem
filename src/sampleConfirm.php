@@ -213,7 +213,7 @@ getInitXML = function(){
 }   
 });
 }
-
+	
 	//timer
 	StartTandemTimer = function(){
 		$("#lnk-start-task").addClass("btnOff");
@@ -238,7 +238,8 @@ getInitXML = function(){
 				}
 			},
 			success: function(xml){
-				var cad = $(xml).find('actions');
+
+				var cad = $(xml).find('actions');				
 				var isFinishedFirst = cad[<?php echo $node-1;?>].getAttribute('firstUser');
 				var isFinishedSecond = cad[<?php echo $node-1;?>].getAttribute('secondUser');
 				if(isFinishedFirst!=null && isFinishedSecond!=null){ 
@@ -315,6 +316,7 @@ getXMLDone = function(user,room){
 	xmlReq.onerror = onError;
 	xmlReq.open("GET", url, true);
 	xmlReq.send(null);
+	
 }
 
 onError = function(){
@@ -338,6 +340,16 @@ showImage('<?php echo $user;?>');
 }
 }
 }
+
+var UserGotDisconnectedMessage = 0;
+//here if isDisconnected is true, then we call the drop down popup to alert about this
+userGotDisconnected = function(isDisconnected){				
+		if(isDisconnected.length > 0 && UserGotDisconnectedMessage == 0){
+			notifyTimerDown("<?php echo $LanguageInstance->get('The user %1 disconnected has closed the video chat session')?>");
+			UserGotDisconnectedMessage = 1;
+		}
+}
+
 //check for both connected
 check4UsersConex = function(){
 	var cad=xmlReq.responseXML.getElementsByTagName('usuario');
@@ -357,7 +369,7 @@ intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 					return true;
 				}else return false;
 			}
-			check4BothChecked = function(){
+			check4BothChecked = function(){				
 				$.ajax({
 					type: 'GET',
 					url: "check.php?room=<?php echo $room; ?>",
@@ -365,56 +377,62 @@ intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 					},
 					dataType: "xml",
 					statusCode: {
-						404: function() {
+						404: function() {							
 							hideText();
 							hideButtons();
 							userDesconn=1;
 						},
-						408: function(){
+						408: function(){							
 							clearInterval(intervalUpdateAction);
 							limitTimerConn+=500;
 							intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 							notifyTimerDown('<?php echo $LanguageInstance->get('SlowConn')?>');
-						},
-						success: function(xml){
-							users = xml.getElementsByTagName('usuarios');	
+						}
+					},
+					success: function(xml){
+						//lets see if the other user got disconnected from the external tool							
+						userGotDisconnected(xml.getElementsByTagName('externalToolClosed'));
+						
+						// This code is not used anymore because we only have solution buttons right now 20141022 .
+						/*users = xml.getElementsByTagName('usuarios');
+						total = users.length;
+						if (total>0) {
+							users = users[0].childNodes;
 							total = users.length;
-							if (total>0) {
-								users = users[0].childNodes;
-								total = users.length;
-								if (total>totalUser) {
-								}
-								totalUser = total;
+							if (total>totalUser) {
 							}
-							var countNodesXML = <?php echo $node-1;?>;
-							var cad = $(xml).find('actions');
-							if(cad.length>countNodesXML){
-								if(cad[countNodesXML]!=null && cad[countNodesXML].getElementsByTagName('action').length>accionNum){	
-									var isFinishedFirst = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('firstUser');
-									var isFinishedSecond = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('secondUser');						
-									if(isFinishedFirst!=null && isFinishedSecond!=null){
-										accionNumPrev = parseInt(accionNum);
-										accionNum = parseInt(accionNum)+1;
-										EndwaitStep(accionNum);
-		//if true, exercise finished	
-		if(accionNum==numBtn) {
-												// 20121004 - abertranb - change to show sholution instead of go to next question
-												//showNextQuestion();
-												//MODIFIED
-												enableSolution();
-												//END
-												
-											}
-		//First answer, notify the other user
-	}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-		notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
-	}
+							totalUser = total;
+						}
+						var countNodesXML = <?php echo $node-1;?>;
+						var cad = $(xml).find('actions');
+						if(cad.length>countNodesXML){
+							if(cad[countNodesXML]!=null && cad[countNodesXML].getElementsByTagName('action').length>accionNum){	
+								var isFinishedFirst = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('firstUser');
+								var isFinishedSecond = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('secondUser');						
+								if(isFinishedFirst!=null && isFinishedSecond!=null){
+									accionNumPrev = parseInt(accionNum);
+									accionNum = parseInt(accionNum)+1;
+									EndwaitStep(accionNum);
+									//if true, exercise finished	
+									if(accionNum==numBtn) {
+											// 20121004 - abertranb - change to show sholution instead of go to next question
+											//showNextQuestion();
+											//MODIFIED
+											enableSolution();
+											//END
+									}
+									//First answer, notify the other user
+								}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
+									notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
+								}					
+						}
+					}*/
 }
-}
-}
-}
+
 })
+
 }
+
 
 //Interval (1000ms) checking for both users to write down answer into xml
 check4BothChecked_old = function(){
@@ -703,6 +721,7 @@ accion = function(id,number){
 						}
 					},
 					success: function(xml){
+
 						var cad = $(xml).find('actions');
 						var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
 						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');
@@ -724,7 +743,6 @@ accion = function(id,number){
 showImage = function(id){
 	$('#image').show('slow');
 }
-
 //init
 <?php if (!isset($_GET['not_init']) || $_GET['not_init']!=1) {?>
 	getInitXML();
@@ -736,6 +754,9 @@ window.onbeforeunload = function() {
 	if(salir==0) return "Do you want to leave this page?. Please logout before exit tandem.";
 }
 getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
+
+
+
 });
 
 </script>

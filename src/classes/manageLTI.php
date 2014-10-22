@@ -110,6 +110,7 @@ class ManageLTI {
  * Replace
  * %ID_TANDEM% that represents the current id.
  * %URL_TANDEM% that represents the url of.
+ * %ID_USER% 
  * @param  [type] $value [description]
  * @return [type]        [description]
  */

@@ -54,7 +54,7 @@ function preTimer($room,$user,$nextSample){
 
 function editShowNextQuestion($room,$user,$nextSample){
 	$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
-	if(findAttribute($xml->actions[$nextSample],firstUserEnd))
+	if(findAttribute($xml->actions[$nextSample],'firstUserEnd'))
 			$xml->actions[$nextSample]->addAttribute('secondUserEnd',$user);
 	else 
 			$xml->actions[$nextSample]->addAttribute('firstUserEnd',$user);
