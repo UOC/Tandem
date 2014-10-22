@@ -121,7 +121,7 @@ class ManageLTI {
  */
 	function replace_custom_variables($value){
 		if (strpos($value, '%ID_TANDEM%')!==false){
-			$value = str_replace('%EXTERNAL_ID%', isset($_GET[CURRENT_TANDEM]) && $_GET[CURRENT_TANDEM]>0?$_GET[CURRENT_TANDEM]:$_SESSION[CURRENT_TANDEM], $value);
+			$value = str_replace('%ID_TANDEM%', isset($_GET[CURRENT_TANDEM]) && $_GET[CURRENT_TANDEM]>0?$_GET[CURRENT_TANDEM]:$_SESSION[CURRENT_TANDEM], $value);
 		}
 		if (strpos($value, '%ID_USER%')!==false && isset($_SESSION[CURRENT_USER])){
 			$value = str_replace('%ID_USER%', $_SESSION[CURRENT_USER]->id, $value);
