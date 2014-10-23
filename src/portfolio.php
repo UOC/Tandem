@@ -33,11 +33,24 @@ if (!$user_obj) {
 			var feedbackId = $this.data("feedback-id");
 			window.location = "feedback.php?id_feedback="+feedbackId;
 		})
+		$('.alert').tooltip();
 	});
 </script>
 </head>
 <body>
 <div class="container" style='margin-top:20px'>
+	<div class='row'>
+		<div class='col-md-12'>
+			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';">
+				<?php echo $LanguageInstance->get('Go to the ranking') ?></button>
+				<?php 
+				$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id);			
+				$positionInRankingTxt =  $LanguageInstance->get('Hello %1, your position in the ranking is ');
+				$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
+				echo $positionInRankingTxt."<b>".$getUserRankingPosition."</b>";			
+			?>
+		</div>
+	</div>
   <div class="row">
   	<div class='col-md-6'>
   	<h2 class='title'><?php echo $LanguageInstance->get('My feedbacks portfolio');?></h2>
@@ -67,7 +80,7 @@ if (!$user_obj) {
 	  	}
 	  	$tr ="";
 	  	if(empty($f['feedback_form'])){
-	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="left" data-toggle="tooltip" ';
+	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="top" data-toggle="tooltip" ';
 	  	}
 	  	echo "<tr $tr><td>".substr($f['language'],0,-3)."</td>
 	  			  <td>".substr($f['partner_language'],0,-3)."</td>
@@ -75,7 +88,7 @@ if (!$user_obj) {
 	  			  <td>".$f['total_time']."</td>
 	  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
 	  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >View</button></td>
-	  			  </tr>";	
+	  		  </tr>";	
 	  	}
 	  }
   	?>

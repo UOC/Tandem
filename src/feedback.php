@@ -16,6 +16,9 @@ $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
 $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 $use_waiting_room = isset($_SESSION[USE_WAITING_ROOM]) ? $_SESSION[USE_WAITING_ROOM] : false;
 
+
+
+
 require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 //si no existeix objecte usuari o no existeix curs redireccionem cap a l'index....preguntar Antoni cap a on redirigir...
 if (!$user_obj || !$course_id) {
@@ -84,6 +87,9 @@ if (!$user_obj || !$course_id) {
 					if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form))) {
 						$message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
 						$can_edit = false;
+
+						//ok so they have created filled the feedback , so now we can save the ranking data for this tandem.
+						$gestorBD->insertRankingData($user_obj->id,$course_id,$_SESSION['lang'],$feedbackDetails->id_tandem);
 					}
 				} else {
 					$message = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('fill_required_fields').'</div>';
@@ -115,7 +121,6 @@ if (!$user_obj || !$course_id) {
 <body>
     <!-- Begin page content -->
     <div id="wrapper" class="container">
-
       <div class="page-header">
       <button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
         <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
@@ -214,8 +219,7 @@ if (!$user_obj || !$course_id) {
 				 <?php					
 				}else
 				echo "<p>". $LanguageInstance->get('partner_feedback_not_available')."</p>";
-			?>
-			
+			?>			
 		</div>
 		<div id="main-container_old" class='tab-pane active'>
 		<div class='row'>
@@ -228,10 +232,12 @@ if (!$user_obj || !$course_id) {
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?> *</label>
 						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="fluency" id="fluency" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->fluency?>"/>%
+						  	<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
 						  </div>
 						  <div class="form-group">
 						    <label for="accuracy" class="control-label"><?php echo $LanguageInstance->get('Accuracy') ?> *</label>
 						  	<input data-slider-id='ex2Slider' class="sliderTandem" name="accuracy" id="accuracy" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->accuracy?>"/>%
+						  	<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
 						  </div>
 						  <div class="form-group">
 						    <label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?> *</label>

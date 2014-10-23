@@ -2300,11 +2300,65 @@ class GestorBD {
              if ($this->numResultats($result) > 0){ 
                  $names =  $this->obteComArray($result);
                  return $names[0]['username'];
-             }
-            
+             }            
              return false;
-
         }
+
+        /**
+         * Lets update or add the information to the user_ranking table when they filled the feedbacks.
+         */
+        function insertRankingData($user_id,$course_id,$language,$id_tandem){
+
+                $sql = "select * from user_tandem where id_tandem = ".$this->escapeString($id_tandem)." and id_user = ".$this->escapeString($user_id)." ";
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                    $data =  $this->obteComArray($result);
+                    //now we have the tandem 
+                    $result =  $this->consulta("select * from user_ranking where id_user = ".$this->escapeString($user_id)." ");
+                    if ($this->numResultats($result) > 0){ 
+                        //we already this user in the ranking table, lets update the time.
+                        $this->consulta("update user_ranking set total_time = total_time + ".$data[0]['total_time']." where id_user = ".$this->escapeString($user_id)." ");
+                    }else
+                        $this->consulta("insert into user_ranking (id_user,id_course,language,total_time) 
+                                         values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",".$this->escapeString($language).",'".$data[0]['total_time']."')");
+                }
+        }
+
+        /**
+         * Gets all the users total time ranking for a specific course 
+         */
+
+        function getUsersRanking($course_id){
+
+                $result = $this->consulta("select * from user_ranking where id_course = ".$this->escapeString($course_id)." order by total_time desc");
+                $r = array();
+                if ($this->numResultats($result) > 0){ 
+                    $data =  $this->obteComArray($result);                        
+                    foreach($data as $key => $value){
+                        $r[$value['id_user']]['user'] = $this->getUserName($value['id_user']);
+                        $r[$value['id_user']]['total_time'] = $this->minutes($value['total_time']);
+                    }
+                }
+                return $r;
+        }
+
+        /**
+         * This function gets the position in the ranking of someone
+         * TODO : improve this code :P
+         */
+         function  getUserRankingPosition($user_id){
+
+                 $result = $this->consulta("select id_user from user_ranking  order by total_time desc");
+                 if ($this->numResultats($result) > 0){ 
+                    $data =  $this->obteComArray($result);                    
+                    foreach($data as $key => $val){
+                         if($val['id_user'] == $user_id) 
+                            return $key+1;
+                    }
+                 }
+                 return false;
+         }
+
 
 }//end of class
 
