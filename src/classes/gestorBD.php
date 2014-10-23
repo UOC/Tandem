@@ -2295,7 +2295,7 @@ class GestorBD {
         }
 
         function getUserName($user_id){
-             $sql = " select username from user where  id_user = ".$user_id;
+             $sql = " select username from user where id = ".$user_id;
              $result = $this->consulta($sql);
              if ($this->numResultats($result) > 0){ 
                  $names =  $this->obteComArray($result);

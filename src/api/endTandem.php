@@ -19,7 +19,7 @@ if ($id>0) {
 }
 
 if ($tandem && $user_id > 0) {	
-	$username = $gestorDB->getUserNames($user_id);
+	$username = $gestorBD->getUserName($user_id);
 	$exercise = $tandem['name_xml_file'];
 	$room = sanitise_string($exercise.getTandemIdentifier($id, $tandem['id_resource_lti']));
 	$tandemBLTI = new IntegrationTandemBLTI();

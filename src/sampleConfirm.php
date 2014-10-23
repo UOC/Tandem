@@ -342,13 +342,12 @@ showImage('<?php echo $user;?>');
 
 var UserGotDisconnectedMessage = 0;
 //here if isDisconnected is true, then we call the drop down popup to alert about this
-userGotDisconnected = function(isDisconnected){				
-		if(isDisconnected.length > 0 && UserGotDisconnectedMessage == 0){			
-			notifyTimerDown("<?php echo $LanguageInstance->get('The user %1 has been disconnected or closed the video chat session')?>".replace("$1",isDisconnected));
+userGotDisconnected = function(UserName){	
+		if(UserName.length > 0 && UserGotDisconnectedMessage == 0){			
+			notifyTimerDown("<?php echo $LanguageInstance->get('The user %1 has been disconnected or closed the video chat session')?>".replace("%1",UserName));
 			UserGotDisconnectedMessage = 1;
 		}
 }
-
 //check for both connected
 check4UsersConex = function(){
 	var cad=xmlReq.responseXML.getElementsByTagName('usuario');
@@ -389,9 +388,12 @@ intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 						}
 					},
 					success: function(xml){
-						//lets see if the other user got disconnected from the external tool							
-						userGotDisconnected(xml.getElementsByTagName('externalToolClosed'));
-						
+
+						//lets see if the other user got disconnected from the external tool
+						var externalToolClosed = xml.getElementsByTagName('externalToolClosed');
+						if(externalToolClosed.length > 0){												
+							userGotDisconnected(externalToolClosed[0].childNodes[0].nodeValue);
+						}
 						// This code is not used anymore because we only have solution buttons right now 20141022 .
 						/*users = xml.getElementsByTagName('usuarios');
 						total = users.length;
