@@ -270,3 +270,12 @@ table td{
     
 }
 
+
+.slider-handle{
+	background-color:#62257b !important;
+	background-image: linear-gradient(to bottom, #62257b, #62257b) !important;
+}
+
+#ex1Slider .slider-selection,#ex2Slider .slider-selection {
+	background: #BABABA;
+}
