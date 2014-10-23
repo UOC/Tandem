@@ -279,3 +279,8 @@ table td{
 #ex1Slider .slider-selection,#ex2Slider .slider-selection {
 	background: #BABABA;
 }
+
+.btn-success {
+background-color: #7E9F0B !important;
+border-color: #7E9F0B !important;
+}
