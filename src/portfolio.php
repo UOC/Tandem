@@ -18,12 +18,14 @@ if (!$user_obj) {
 	require_once(dirname(__FILE__) . '/classes/constants.php');	
 	$gestorBD = new GestorBD();  	
 	$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id);
+	
 }
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/tandem-waiting-room.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script>
@@ -63,8 +65,7 @@ if (!$user_obj) {
   <div class="col-md-12">
   	<table class="table">
   	<tr>
-  	<th><?php echo $LanguageInstance->get('My language');?></th>
-  	<th><?php echo $LanguageInstance->get('Partner Language');?></th>
+  	<th><?php echo $LanguageInstance->get('Overall rating');?></th>
   	<th><?php echo $LanguageInstance->get('Created');?></th>
   	<th><?php echo $LanguageInstance->get('Total Duration');?></th>
   	<th><?php echo $LanguageInstance->get('Duration per task');?></th>
@@ -82,8 +83,7 @@ if (!$user_obj) {
 	  	if(empty($f['feedback_form'])){
 	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="top" data-toggle="tooltip" ';
 	  	}
-	  	echo "<tr $tr><td>".substr($f['language'],0,-3)."</td>
-	  			  <td>".substr($f['partner_language'],0,-3)."</td>
+	  	echo "<tr $tr><td class='text-center'>".$f['overall_grade']."</td>
 	  			  <td>".$f['created']."</td>
 	  			  <td>".$f['total_time']."</td>
 	  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>

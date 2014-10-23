@@ -77,7 +77,6 @@ if (!$user_obj || !$course_id) {
 				$feedback_form->vocabulary = $_POST['vocabulary'];
 				$feedback_form->grammar = $_POST['grammar'];
 				$feedback_form->other_observations = $_POST['other_observations'];
-
 				if (isset($_POST['fluency']) && strlen($_POST['fluency'])>0 &&
 					isset($_POST['accuracy']) && strlen($_POST['accuracy'])>0 &&
 					isset($_POST['grade']) && strlen($_POST['grade'])>0 &&
