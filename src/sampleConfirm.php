@@ -155,7 +155,7 @@ if (isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0){
 if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLDER].$extra.'/';
 ?>
 
-getInitXML = function(){
+ function getInitXML(){
 	$.ajax({
 		type: 'GET',
 		url: "<?php echo $path;?>data<?php echo $data;?>.xml",
@@ -749,6 +749,26 @@ showImage = function(id){
 	getInitXML();
 <?php } else { ?>
 		$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
+		var intervalVideochat = setInterval(function() {checkVideochat(getInitXML)},2500);
+
+		function checkVideochat(callback){
+			$.ajax({
+				type: 'POST',
+				url: "api/checkSession.php",
+				data : {
+					   id : '<?php echo $_SESSION[CURRENT_TANDEM];?>',
+				},
+				dataType: "JSON",
+				success: function(json){	
+					if(json  &&   json.result !== "undefined" && json.result == "ok"){
+						clearInterval(intervalVideochat);		
+						$.colorbox.close();
+						callback();			     			
+					}
+				}
+			});
+		}
+
 <?php
 } 
 ?>

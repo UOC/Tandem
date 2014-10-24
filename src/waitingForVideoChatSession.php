@@ -40,22 +40,6 @@ $url_2_return .= $separtor.'id='.$id_register_tandem;
 ?>
 window.open('ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>&return_url=<?php echo $url_2_return?>');		
 <?php } ?>  
-
-interval = setInterval(function(){
-	$.ajax({
-		type: 'POST',
-		url: "api/checkSession.php",
-		data : {
-			   id : '<?php echo $tandem_id;?>',
-		},
-		dataType: "JSON",
-		success: function(json){	
-			if(json  &&   json.result !== "undefined" && json.result == "ok"){
-			opener.getInitXml();					     			
-		}
-	}
-	});
-},2500);
 </script>
 </head>
 <body id="home" style="background-color:#FFFFFF;">
