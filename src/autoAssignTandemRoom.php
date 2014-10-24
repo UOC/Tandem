@@ -174,7 +174,7 @@ if (!$user_obj || !$course_id) {
 					</div>
 					<div class='manageSection'>
  					<?php  					
- 					if ($user_obj->instructor || $user_obj->admin) { ?>                            
+ 					if ($user_obj->instructor==1 || $user_obj->admin==1) { ?>                            
                                 <div class="clear">
                                 <a href='manage_exercises_tandem.php'>Manager Exercises</a>
                                 <a href='statistics_tandem.php'>Statistics Tandem</a>

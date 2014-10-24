@@ -736,27 +736,27 @@ accion = function(id,number){
 
 
 
-			showFinishedAlert = function(){
-				endOfTandem=1;
-				$.colorbox({href:"end.php?room=<?php echo $room;?>",escKey:true,overlayClose:false,onLoad:function(){$('#cboxClose').hide();}});
-			}
+showFinishedAlert = function(){
+	endOfTandem=1;
+	$.colorbox({href:"end.php?room=<?php echo $room;?>",escKey:true,overlayClose:false,onLoad:function(){$('#cboxClose').hide();}});
+}
 //shows central image
 showImage = function(id){
 	$('#image').show('slow');
 }
-//init
+
 <?php if (!isset($_GET['not_init']) || $_GET['not_init']!=1) {?>
 	getInitXML();
-	<?php } else { ?>
-		$.colorbox({href:"waiting4user.php",escKey:false,overlayClose:false,width:380,height:280,onLoad:function(){$('#cboxClose').hide();}});
-		<?php } ?>
+<?php } else { ?>
+		$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
+<?php
+} 
+?>
 //prevents from closing
 window.onbeforeunload = function() {
 	if(salir==0) return "Do you want to leave this page?. Please logout before exit tandem.";
 }
 getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
-
-
 
 });
 

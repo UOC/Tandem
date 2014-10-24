@@ -16,9 +16,6 @@ $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
 $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 $use_waiting_room = isset($_SESSION[USE_WAITING_ROOM]) ? $_SESSION[USE_WAITING_ROOM] : false;
 
-
-
-
 require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 //si no existeix objecte usuari o no existeix curs redireccionem cap a l'index....preguntar Antoni cap a on redirigir...
 if (!$user_obj || !$course_id) {

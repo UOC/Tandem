@@ -2207,6 +2207,7 @@ class GestorBD {
                                     FROM feedback_tandem AS FT
                                     INNER JOIN feedback_tandem_form AS FTF ON FTF.id_feedback_tandem = FT.id
                                     WHERE FT.id_tandem =".$this->escapeString($tandem_id)." and FTF.feedback_form != ''");
+
         if ($this->numResultats($result) == 2){ 
              $res = $this->obteComArray($result);
         
@@ -2263,7 +2264,7 @@ class GestorBD {
                  $overall_grade = unserialize($overall_grade);               
                  $overall_grade_tmp = $overall_grade->grade;
              }
-           
+
              $ft['overall_grade'] = $overall_grade_tmp;
 
              $return[] = $ft;
@@ -2340,14 +2341,23 @@ class GestorBD {
          */
 
         function getUsersRanking($course_id){
-
-                $result = $this->consulta("select * from user_ranking where id_course = ".$this->escapeString($course_id)." order by total_time desc");
                 $r = array();
+
+                $result = $this->consulta("select * from user_ranking where id_course = ".$this->escapeString($course_id)." and language='en_US' order by total_time desc");               
                 if ($this->numResultats($result) > 0){ 
                     $data =  $this->obteComArray($result);                        
                     foreach($data as $key => $value){
-                        $r[$value['id_user']]['user'] = $this->getUserName($value['id_user']);
-                        $r[$value['id_user']]['total_time'] = $this->minutes($value['total_time']);
+                        $r['en'][$value['id_user']]['user'] = $this->getUserName($value['id_user']);
+                        $r['en'][$value['id_user']]['total_time'] = $this->minutes($value['total_time']);
+                    }
+                } 
+
+                $result = $this->consulta("select * from user_ranking where id_course = ".$this->escapeString($course_id)." and language='es_ES' order by total_time desc");                
+                if ($this->numResultats($result) > 0){ 
+                    $data =  $this->obteComArray($result);                        
+                    foreach($data as $key => $value){
+                        $r['es'][$value['id_user']]['user'] = $this->getUserName($value['id_user']);
+                        $r['es'][$value['id_user']]['total_time'] = $this->minutes($value['total_time']);
                     }
                 }
                 return $r;
@@ -2369,6 +2379,45 @@ class GestorBD {
                  }
                  return false;
          }
+
+         /**
+          * Returns an array with all users
+          */
+         function getAllUsers(){
+                $result = $this->consulta("select id,fullname from user  order by fullname");
+                $data = array();
+                if ($this->numResultats($result) > 0){ 
+                    $data =  $this->obteComArray($result); 
+                }
+                return $data;
+         }
+
+         /**
+          *  Activates a session to start a tandem
+          */
+
+         function startTandemSession($tandem_id){
+
+            $result = $this->consulta("select * from session where id_tandem =".$this->escapeString($tandem_id)." ");
+            $data = array();
+            if ($this->numResultats($result) > 0){ 
+                $this->consulta("update session set status = 1 where id_tandem = ".$this->escapeString($tandem_id)." ");
+            }else
+                $this->consulta("insert into session(id_tandem,status,created) values(".$this->escapeString($tandem_id).",1,NOW()) ");
+         }
+
+         /**
+          * Check if a session has been activated to start the tandem
+          */
+         function checkTandemSession($tandem_id){   
+            $result = $this->consulta("select * from session where id_tandem =".$this->escapeString($tandem_id)." and status = 1");
+            $data = array();
+            if ($this->numResultats($result) > 0){ 
+                return true;
+            }
+            return false;
+         }
+
 
 
 }//end of class
