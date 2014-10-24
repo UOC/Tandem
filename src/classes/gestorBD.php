@@ -2202,8 +2202,7 @@ class GestorBD {
      * Check if the partner has sent the feedback
      */
     function checkPartnerFeedback($tandem_id,$feedback_id){
-
-    
+ 
         $result = $this->consulta("SELECT FT.id, FTF.feedback_form,FTF.rating_partner_feedback_form
                                     FROM feedback_tandem AS FT
                                     INNER JOIN feedback_tandem_form AS FTF ON FTF.id_feedback_tandem = FT.id
@@ -2223,45 +2222,57 @@ class GestorBD {
     function getAllUserFeedbacks($user_id){
 
         $result = $this->consulta("select * from feedback_tandem as FT 
-           left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
+           left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id           
            where FT.id_user = ".$this->escapeString($user_id));
 
         if ($this->numResultats($result) > 0){            
            $feedback_tandem =  $this->obteComArray($result);
            $return = array();
+
            foreach($feedback_tandem as $ft){
 
-           $tandemDurations = $this->getUserTandemDurations($user_id,$ft['id_tandem']);           
-           $seconds = isset($tandemDurations[0]['total_time']) ? $tandemDurations[0]['total_time']:0;
-           $minutes = $this->minutes($seconds);
-           $total_time = $this->time_format($seconds);
-           $subTP=explode(":",$total_time);
-           if($subTP[0]>0) $subTimerP=substr($subTP[0],1).":".$subTP[1].":".$subTP[2];
-           else $subTimerP=$subTP[1].":".$subTP[2];
-           $task_tandemsSubTime = $this->getUserTandemTasksDurations($user_id,$ft['id_tandem']);
-           $subTimer= array();
-           $j=0;$i=0;
+               $tandemDurations = $this->getUserTandemDurations($user_id,$ft['id_tandem']);           
+               $seconds = isset($tandemDurations[0]['total_time']) ? $tandemDurations[0]['total_time']:0;
+               $minutes = $this->minutes($seconds);
+               $total_time = $this->time_format($seconds);
+               $subTP=explode(":",$total_time);
+               if($subTP[0]>0) $subTimerP=substr($subTP[0],1).":".$subTP[1].":".$subTP[2];
+               else $subTimerP=$subTP[1].":".$subTP[2];
+               $task_tandemsSubTime = $this->getUserTandemTasksDurations($user_id,$ft['id_tandem']);
+               $subTimer= array();
+               $j=0;$i=0;
 
-           foreach ($task_tandemsSubTime as $question) {   
-            $j++;
-            $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
-            $minutesSt = $this->minutes($secondsSt);
-            $total_timeSt = $this->time_format($secondsSt);
-            if(!isset($subTimer[$i])) $subTimer[$i]="00:00:00";
-            if($subTimer[$i]<$total_timeSt){
-                $subT=explode(":",$total_timeSt);
-                $subT[0]>0 ? $subTimer[$i]=$subT[0].":".$subT[1].":".$subT[2] : $subTimer[$i]=$subT[1].":".$subT[2];
-            }
-            if($j%2==0) $i++;
-        }
-         $ft['total_time'] = $subTimerP;
-         $ft['total_time_tasks'] = $subTimer;
-         $return[] = $ft;
+               foreach ($task_tandemsSubTime as $question) {   
+                    $j++;
+                    $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
+                    $minutesSt = $this->minutes($secondsSt);
+                    $total_timeSt = $this->time_format($secondsSt);
+                    if(!isset($subTimer[$i])) $subTimer[$i]="00:00:00";
+                    if($subTimer[$i]<$total_timeSt){
+                        $subT=explode(":",$total_timeSt);
+                        $subT[0]>0 ? $subTimer[$i]=$subT[0].":".$subT[1].":".$subT[2] : $subTimer[$i]=$subT[1].":".$subT[2];
+                    }
+                    if($j%2==0) $i++;
+                 }
+             $ft['total_time'] = $subTimerP;
+             $ft['total_time_tasks'] = $subTimer;
+
+             $overall_grade = $this->checkPartnerFeedback($ft['id_tandem'],$ft['id']);
+             $overall_grade_tmp = "";
+             if(!empty($overall_grade)){
+                 $overall_grade = unserialize($overall_grade);               
+                 $overall_grade_tmp = $overall_grade->grade;
+             }
+           
+             $ft['overall_grade'] = $overall_grade_tmp;
+
+             $return[] = $ft;
         }
         return $return;
     }
 
     }
+
 
     public function getUserTandemDurations($user_id,$tandem_id){
            $sql = " select * from user_tandem where id_tandem = ".$tandem_id." and id_user = ".$user_id;
@@ -2295,11 +2306,11 @@ class GestorBD {
         }
 
         function getUserName($user_id){
-             $sql = " select username from user where id = ".$user_id;
+             $sql = " select fullname from user where id = ".$user_id;
              $result = $this->consulta($sql);
              if ($this->numResultats($result) > 0){ 
                  $names =  $this->obteComArray($result);
-                 return $names[0]['username'];
+                 return $names[0]['fullname'];
              }            
              return false;
         }
