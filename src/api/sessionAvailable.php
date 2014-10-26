@@ -19,6 +19,9 @@ if ($id>0) {
 
 if ($tandem) {	
 
+	$gestorBD->updateTandemSessionAvailable($id);
+	$return->result = 'ok';	
+
 	
 }
 else {

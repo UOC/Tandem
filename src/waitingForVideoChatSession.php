@@ -38,7 +38,7 @@ if (strpos($url_2_return, '?')!==false){
 }
 $url_2_return .= $separtor.'id='.$id_register_tandem;
 ?>
-window.open('ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>&return_url=<?php echo $url_2_return?>');		
+//window.open('ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>&return_url=<?php echo $url_2_return?>');		
 <?php } ?>  
 </script>
 </head>
