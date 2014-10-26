@@ -70,10 +70,14 @@ require_once dirname(__FILE__).'/classes/lang.php';
 	<p><?php echo $LanguageInstance->get('ThankyouforusingTANDEM');?></p>
 </div>
 <p></p>
-<div class='btn_review'>
-  <a  href="#" onclick="desconn();"><?php echo $LanguageInstance->get('peer_review_form');?></a>
+<div <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>class='btn_review'<?php } ?>>
+	<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+	<a  href="#" onclick="desconn();"><?php echo $LanguageInstance->get('peer_review_form');?></a>
+    <?php  } else { ?>
+	<a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
+	<?php  } ?>
+    
 </div>
-<br /><br />
 
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
