@@ -4,6 +4,7 @@ $room = $_GET["room"];
 $data = $_GET["data"];
 $user = $_GET["user"];
 $is_final = false;
+
 include_once(dirname(__FILE__).'/classes/register_action_user.php');
 include_once(dirname(__FILE__).'/classes/gestorBD.php');
 require_once dirname(__FILE__).'/classes/lang.php';
@@ -69,6 +70,9 @@ if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
 var intTimerNow;
 var limitTimer = 500;
 var limitTimerConn = 1000;
+var node = <?php echo $node;?>;
+var ExerFolder = '<?php echo $ExerFolder?>';
+
 
 function setExpiredNow(itNow){
 	intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
@@ -183,16 +187,16 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 							$("#infoT"+i+"txt").html(txtInfoTask);
 						}
 
-						if(<?php echo $node+1;?><=numNodes){
-							classOf=cad[<?php echo $node+1;?>].getAttribute("classOf");
-							nextSample=cad[<?php echo $node+1;?>].getAttribute("currSample");
+						if((node+1)<=numNodes){
+							classOf=cad[node+1].getAttribute("classOf");
+							nextSample=cad[node+1].getAttribute("currSample");
 						}
-						numExerc=<?php echo $node;?>;
-						numUsers=cad[<?php echo $node;?>].getAttribute("numUsers");
-						numBtn=cad[<?php echo $node;?>].getAttribute("numBtns");
+						numExerc=node;
+						numUsers=cad[node].getAttribute("numUsers");
+						numBtn=cad[node].getAttribute("numBtns");
 						
 						//timer
-						isTimerOn = cad[<?php echo $node;?>].getAttribute("timer");
+						isTimerOn = cad[node].getAttribute("timer");
 						if(isTimerOn!=null){
 							minutos = isTimerOn.split(":")[0];
 							segundos = isTimerOn.split(":")[1];
@@ -205,10 +209,10 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 							}
 							timerOn(minutos,segundos);
 						}
-						initHTML = cad[<?php echo $node;?>].getAttribute("initHTML");
-						initHTMLB = cad[<?php echo $node;?>].getAttribute("initHTMLB");
-						endHTML = cad[<?php echo $node;?>].getAttribute("endHTML");
-						textE=cad[<?php echo $node;?>].getElementsByTagName("textE")[0].childNodes[0].data;
+						initHTML = cad[node].getAttribute("initHTML");
+						initHTMLB = cad[node].getAttribute("initHTMLB");
+						endHTML = cad[node].getAttribute("endHTML");
+						textE=cad[node].getElementsByTagName("textE")[0].childNodes[0].data;
 						getXML("<?php echo $user;?>","<?php echo $room;?>");
 						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
 	//thread is so quick...
@@ -230,7 +234,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 	timerChecker = function(){
 		$.ajax({
 			type: 'GET',
-			url: "check.php?room=<?php echo $room; ?>",
+			url: "check.php?room=<?php echo $room; ?>&t=1",
 			data: {
 			},
 			dataType: "xml",
@@ -244,8 +248,8 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 			success: function(xml){
 
 				var cad = $(xml).find('actions');				
-				var isFinishedFirst = cad[<?php echo $node-1;?>].getAttribute('firstUser');
-				var isFinishedSecond = cad[<?php echo $node-1;?>].getAttribute('secondUser');
+				var isFinishedFirst = cad[node-1].getAttribute('firstUser');
+				var isFinishedSecond = cad[node-1].getAttribute('secondUser');
 				if(isFinishedFirst!=null && isFinishedSecond!=null){ 
 					clearInterval(intervalTimerAction);
 					partnerTimerTaskReady();
@@ -257,7 +261,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 		$.ajax({
 			type: 'GET',
 			url: "action.php",
-			data: {'room':'<?php echo $room;?>','user':'<?php echo $user?>','nextSample':'<?php echo $node;?>','tipo':'confirmPreTimer'},
+			data: {'room':'<?php echo $room;?>','user':'<?php echo $user?>','nextSample':node,'tipo':'confirmPreTimer'},
 			dataType: "xml"
 		});
 	}		
@@ -266,7 +270,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 				$.ajax({
 					type: 'GET',
 					url: "action.php",
-					data: {'room':'<?php echo $room;?>','numBtn':numBtn,'user':'<?php echo $user?>','nextSample':'<?php echo $node;?>','tipo':'confirmTimer'},
+					data: {'room':'<?php echo $room;?>','numBtn':numBtn,'user':'<?php echo $user?>','nextSample':node,'tipo':'confirmTimer'},
 					dataType: "xml"
 				});
 				showSolutionAndShowNextTask();
@@ -279,14 +283,14 @@ processInitXml = function(){
 	if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
 		var cad=xmlReq.responseXML.getElementsByTagName('nextType');
 		numNodes=cad.length-1;
-		if(<?php echo $node+1;?><=numNodes){
-			classOf=cad[<?php echo $node+1;?>].getAttribute("classOf");
-			nextSample=cad[<?php echo $node+1;?>].getAttribute("currSample");
+		if(node+1<=numNodes){
+			classOf=cad[node+1].getAttribute("classOf");
+			nextSample=cad[node+1].getAttribute("currSample");
 		}
-		numExerc=<?php echo $node;?>;
-		numUsers=cad[<?php echo $node;?>].getAttribute("numUsers");
-		numBtn=cad[<?php echo $node;?>].getAttribute("numBtns");
-		textE=cad[<?php echo $node;?>].getElementsByTagName("textE")[0].childNodes[0].data;
+		numExerc=node;
+		numUsers=cad[node].getAttribute("numUsers");
+		numBtn=cad[node].getAttribute("numBtns");
+		textE=cad[node].getElementsByTagName("textE")[0].childNodes[0].data;
 		getXML("<?php echo $user;?>","<?php echo $room;?>");
 		intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
 //thread is so quick...
@@ -311,7 +315,7 @@ getXML = function(user,room){
 processXml = function(){}
 //Interval (500ms) checking xml and waiting for both users to be connected
 getXMLDone = function(user,room){
-	var url="check.php?room=<?php echo $room; ?>";
+	var url="check.php?room=<?php echo $room; ?>&t=2";
 	xmlReq.onreadystatechange = processXmlOverDone;
 	if(!isIEOk){
 		xmlReq.timeout = 100000;
@@ -375,7 +379,7 @@ intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 			check4BothChecked = function(){				
 				$.ajax({
 					type: 'GET',
-					url: "check.php?room=<?php echo $room; ?>",
+					url: "check.php?room=<?php echo $room; ?>&t=3",
 					data: {
 					},
 					dataType: "xml",
@@ -466,41 +470,41 @@ xmlDontExists = function(url){
 ///////////////////////////////////////////////////
 //main function. Checks user's answers
 processXmlOverChecked = function(){
-//checks that room's xml exists
-if(xmlDontExists("<?php echo $room; ?>.xml") == 404){
-	hideText();
-	hideButtons();
-	userDesconn=1;
-}else if(xmlReq.readyState == 4 && xmlReq.status == 200){
-	var users=xmlReqUser.responseXML.getElementsByTagName('usuarios');	
-	total = users.length;
-	if (total>0) {
-		users = users[0].childNodes;
+	//checks that room's xml exists
+	if(xmlDontExists("<?php echo $room; ?>.xml") == 404){
+		hideText();
+		hideButtons();
+		userDesconn=1;
+	}else if(xmlReq.readyState == 4 && xmlReq.status == 200){
+		var users=xmlReqUser.responseXML.getElementsByTagName('usuarios');	
 		total = users.length;
-		if (total>totalUser) {
+		if (total>0) {
+			users = users[0].childNodes;
+			total = users.length;
+			if (total>totalUser) {
+			}
+			totalUser = total;
 		}
-		totalUser = total;
-	}
-	var countNodesXML = <?php echo $node-1;?>;
-	if(xmlReq.responseXML.getElementsByTagName('actions').length>countNodesXML){
-		var cad=xmlReq.responseXML.getElementsByTagName('actions');										
-		if(cad[countNodesXML]!=null && cad[countNodesXML].getElementsByTagName('action').length>accionNum){	
-			var isFinishedFirst = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('firstUser');
-			var isFinishedSecond = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('secondUser');						
-			if(isFinishedFirst!=null && isFinishedSecond!=null){
-				accionNumPrev = parseInt(accionNum);
-				accionNum = parseInt(accionNum)+1;
-				txtNews="";
-				if(accionNum==numBtn) {
-					enableSolution();
+		var countNodesXML = node-1;
+		if(xmlReq.responseXML.getElementsByTagName('actions').length>countNodesXML){
+			var cad=xmlReq.responseXML.getElementsByTagName('actions');										
+			if(cad[countNodesXML]!=null && cad[countNodesXML].getElementsByTagName('action').length>accionNum){	
+				var isFinishedFirst = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('firstUser');
+				var isFinishedSecond = cad[countNodesXML].getElementsByTagName('action')[accionNum].getAttribute('secondUser');						
+				if(isFinishedFirst!=null && isFinishedSecond!=null){
+					accionNumPrev = parseInt(accionNum);
+					accionNum = parseInt(accionNum)+1;
+					txtNews="";
+					if(accionNum==numBtn) {
+						enableSolution();
+					}
+				//First answer, notify the other user
+				}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
+					notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
 				}
-	//First answer, notify the other user
-}else if(isFinishedFirst!=null && isFinishedSecond==null && isFinishedFirst!='<?php echo $user;?>'){
-	notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
-}
-}
-}
-}
+			}
+		}
+	}
 }
 ///////////////////////////////////////////////////
 //desconnex, stop check for answers
@@ -580,13 +584,16 @@ writeButtons = function(){
 				
 				//monta el iframe de inicio
 				if(initHTMLB==null)
-					$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTML+"?user=<?php echo $user;?>");
+					$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/"+ExerFolder+"/"+initHTML+"?user=<?php echo $user;?>");
 				else{
 					if("<?php echo $user;?>"=="a")
-					$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTML);
+					$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/"+ExerFolder+"/"+initHTML);
 					else
-						$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+initHTMLB);
+						$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/"+ExerFolder+"/"+initHTMLB);
 				}
+
+				<?php 
+				if (!isset($_SESSION[USE_WAITING_ROOM]) || $_SESSION[USE_WAITING_ROOM]==0) { ?>
 
 				if(numExerc==1) 
 					if('<?php echo $user;?>'=='a') {	
@@ -604,6 +611,7 @@ writeButtons = function(){
 						?>
 						$.colorbox({href:"waiting4user.php?fn=<?php echo $fn;?>&sn=<?php echo $sn; ?>",escKey:false,overlayClose:false,width:380,height:280,onLoad:function(){$('#cboxClose').hide();}});
 					}
+				<?php } ?>
 				}  
 //executes action->action.php writes in room.xml data got from user's activity (button pressed), shows next button
 accion = function(id,number){
@@ -614,7 +622,8 @@ accion = function(id,number){
 				$.ajax({
 					type: 'GET',
 					url: "action.php",
-					data: {'room':'<?php echo $room;?>','user':'<?php echo $user;?>','number':number,'nextSample':'<?php echo $node;?>','tipo':'confirm'},
+					//OTOD 
+					data: {'room':'<?php echo $room;?>','user':'<?php echo $user;?>','number':number,'nextSample':node,'tipo':'confirm'},
 					dataType: "xml",
 					statusCode: {
 						404: function() {
@@ -639,10 +648,10 @@ accion = function(id,number){
 			showSolutionAndShowNextTask = function() {
 				showSolution();
 				$('#next_task').attr('onclick',"");
-				if(numNodes!=<?php echo $node;?>){
+				if(numNodes!=node){
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Next Task');?>");
 				}
-				$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/<?php echo $ExerFolder;?>/"+endHTML);
+				$('#ifrmHTML').attr("src","<?php echo $path; ?>ejercicios/"+ExerFolder+"/"+endHTML);
 				showNextQuestion();
 			}
 			// END
@@ -653,7 +662,7 @@ accion = function(id,number){
 				if(intervalTimerAction!=null) clearInterval(intervalTimerAction);
 				
 				//muestra el iframe de la solución
-				if(numNodes!=<?php echo $node;?>){
+				if(numNodes!=node){
 					$('#next_task').attr('onclick',"pass2NextQuestion();return false;");
 					if(document.getElementById('next1Item')) document.getElementById('next1Item').style.display='inline';
 				}else{
@@ -668,7 +677,7 @@ accion = function(id,number){
 			checkIfPass2NextQuestion = function(){
 				$.ajax({
 					type: 'GET',
-					url: "check.php?room=<?php echo $room; ?>",
+					url: "check.php?room=<?php echo $room; ?>&t=4",
 					data: {
 					},
 					dataType: "xml",
@@ -695,7 +704,7 @@ accion = function(id,number){
 				$.ajax({
 					type: 'GET',
 					url: "action.php",
-					data: {'room':'<?php echo $room;?>','user':'<?php echo $user;?>','nextSample':'<?php echo $node;?>','tipo':'SetNextQuestion'},
+					data: {'room':'<?php echo $room;?>','user':'<?php echo $user;?>','nextSample':node,'tipo':'SetNextQuestion'},
 					dataType: "xml",
 					statusCode: {
 						404: function() {
@@ -715,7 +724,7 @@ accion = function(id,number){
 			checkIfPass2NextQuestionToJump = function(){
 				$.ajax({
 					type: 'GET',
-					url: "check.php?room=<?php echo $room; ?>",
+					url: "check.php?room=<?php echo $room; ?>&t=5",
 					data: {
 					},
 					dataType: "xml",
@@ -733,7 +742,15 @@ accion = function(id,number){
 						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');
 						if(isFirstUserEnd!=null && isSecondUserEnd!=null){ 
 							clearInterval(intervalIfNextQuestion);
+							<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+								ExerFolder = nextSample;
+								node = node+1;
+								clearInterval(intervalUpdateLogin);
+								getInitXML();
+								//location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
+							<?php } else {?>
 							location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
+							<?php } ?>
 						}
 					}
 				})
@@ -752,7 +769,23 @@ showImage = function(id){
 
 <?php if (!isset($_GET['not_init']) || $_GET['not_init']!=1) {?>
 	getInitXML();
-<?php } else { ?>
+<?php } else { 
+//Store in database
+if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
+		//Lets go to insert the current tandem data
+		$user_language = $_SESSION[LANG];
+		$user_obj = $_SESSION[CURRENT_USER];
+		$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
+		$id_partner = $tandem['id_user_guest']==$user_obj->id?$tandem['id_user_host']:$tandem['id_user_guest'];
+		$id_feedback = $gestorBDSample->createFeedbackTandem($tandem['id'], 0, $user_obj->id, $user_language, $id_partner, $other_language);
+		if (!$id_feedback) {
+			die ($LanguageInstance->get('There are a problem storing data, try it again'));		
+		}
+		$_SESSION[ID_FEEDBACK] = $id_feedback;
+	}
+	
+
+	?>
 		//$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
 		var windowVideochat = false;
 		var intervalVideochat = false;
@@ -1006,15 +1039,6 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 		<p><a href='#' id="lnk-end-task" class="btn simplemodal-close">Close</a></p>
 	</div>
 	<!-- /modals -->
-	<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
-	        <!--div id="modal-content-video" class="jquery-modal">
-                <iframe src="ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>" style="position: absolute; width: 100%; height: 100%" class="launch-frame" name="iframe-modal" id="iframe-modal-video"></iframe>
-            </div>
-            <div style="display:none">
-                <img src="img/x.png"/>
-            </div-->
-	<?php } ?>
-
 	<!-- /footer -->
 	<script type="text/javascript" src="js/tandem.js"></script>
 	<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
