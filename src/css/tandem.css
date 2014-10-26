@@ -1936,3 +1936,8 @@ overflow-x: hidden;
 * html .ui-autocomplete {
 	height: 100px;
 }
+#videochatButtons{
+	float:left; 
+	margin-left:5px;
+	margin-top:5px
+}
