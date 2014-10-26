@@ -2436,7 +2436,7 @@ class GestorBD {
           *  Set as available video session  a tandem (set a 2)
           */
 
-         function startTandemSession($tandem_id){
+         function updateTandemSessionAvailable($tandem_id){
             return $this->consulta("update session set status = 2 where id_tandem = ".$this->escapeString($tandem_id)." ");
          }
 
