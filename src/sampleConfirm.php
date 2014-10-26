@@ -50,11 +50,16 @@ else $Otheruser='a';
 	<script src="js/jquery.ui.progressbar.js"></script>
 	<script src="js/loadUserData.js"></script>
 	<script type="text/javascript" src="js/jquery.animate-colors.min.js"></script>
-	<script type="text/javascript" src="js/jquery.simplemodal.1.4.2.min.js"></script>
 	<script type="text/javascript" src="js/jquery.iframe-auto-height.plugin.1.7.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.infotip.min.js"></script>
 	<script type="text/javascript" src="js/jquery.timeline-clock.min.js"></script>
 	<?php include_once dirname(__FILE__).'/js/google_analytics.php';?>
+	<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
+	<link type="text/css" href="js/window/css/jquery.window.css" rel="stylesheet" />
+	<script src="js/jquery-ui-1.9.2.custom.min.js"></script>
+	<?php }?>
+	<script type="text/javascript" src="js/jquery.simplemodal.1.4.2.min.js"></script>
+
 	
 	<script>
 var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
@@ -748,10 +753,92 @@ showImage = function(id){
 <?php if (!isset($_GET['not_init']) || $_GET['not_init']!=1) {?>
 	getInitXML();
 <?php } else { ?>
-		$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
-		var intervalVideochat = setInterval(function() {checkVideochat(getInitXML)},2500);
+		//$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
+		var windowVideochat = false;
+		var intervalVideochat = false;
+		var widthWindowVideochat = $( document ).width()*0.98;
+		var heightWindowVideochat = $( document ).height()*0.98;
+		$(document).ready(function(){
+			var myButtons = [
+			   // facebook button
+			   {
+			   id: "btn_minimize_videochat",           // required, it must be unique in this array data
+			   title: "<?php echo $LanguageInstance->get('Hide Videochat')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
+			   clazz: "minimizeImg",           // optional, don't set border, padding, margin or any style which will change element position or size
+			   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
+			   //image: "img/facebook.gif",    // required, the url of button icon(16x16 pixels)
+			   callback:                     // required, the callback function while click it
+			      function(btn, wnd) {
+			         hideVideochat(wnd, true);
+			      }
+			   }
+			];
 
-		function checkVideochat(callback){
+		var windowVideochat = $.window({
+			   title: "Videochat",
+			   url: "ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>",
+			   width: $( document ).width()*0.98,
+			   height: $( document ).height()*0.98,
+			   maxWidth: $( document ).width(),
+			   maxHeight: $( document ).height(),
+			   closable: false,
+			   draggable: false,
+			   resizable: false,
+			   maximizable: false,
+			   minimizable: false,
+			   showFooter: false,
+			   showRoundCorner: true,
+   			   custBtns: myButtons
+			});
+			
+			
+			intervalVideochat = setInterval(function() {checkVideochat(getInitXML, windowVideochat)},2500);
+			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
+		});
+
+		function hideVideochat(winVideochat, changeButtons) {
+			winVideochat.resize(1,1);
+			if (changeButtons) {
+				$('#hide_videochat').hide();
+				$('#show_videochat').show();
+			}
+		}
+
+		function showVideochat(winVideochat, widthWinVideochat, heightWinVideochat) {
+			winVideochat.resize(widthWindowVideochat, heightWindowVideochat);
+		}
+
+		function createVideochatButtons(winVideochat, widthWinVideochat, heightWinVideochat) {
+			$('#videochatButtons').html('<input type="button" id="show_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/>'+
+				'<input type="button" id="hide_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Hide Videochat')?>"/>');
+			$('#hide_videochat').hide();
+			$('#hide_videochat').click({winVideochat: winVideochat}, function(event) {
+				hideVideochat(event.data.winVideochat, true);
+			});
+			$('#show_videochat').click({winVideochat: winVideochat, widthWinVideochat: widthWinVideochat, heightWinVideochat: heightWinVideochat}, function(event) {
+				showVideochat(event.data.winVideochat, event.data.widthWinVideochat, event.data.heightWinVideochat);
+				$('#show_videochat').hide();
+				$('#hide_videochat').show();
+			});
+		}
+
+		
+	        /*jQuery("#modal-content-video").modal(
+	            {
+	                escClose: true,
+	                opacity: 100,
+	                minHeight:jQuery( document ).height()<400?(jQuery( document ).height()*0.80):400,
+	                minWidth: jQuery( document ).width()<700?(jQuery( document ).width()*0.80):600,
+	                onShow: function (dialog) {
+	                },
+	                onClose: function (dialog) {
+	                    jQuery("#iframe-modal-video").attr("src","about:blank");
+	                    jQuery.modal.close();
+	                }
+	            });*/
+	        
+
+		function checkVideochat(callback, winV){
 			$.ajax({
 				type: 'POST',
 				url: "api/checkSession.php",
@@ -761,9 +848,13 @@ showImage = function(id){
 				dataType: "JSON",
 				success: function(json){	
 					if(json  &&   json.result !== "undefined" && json.result == "ok"){
-						clearInterval(intervalVideochat);		
-						$.colorbox.close();
-						callback();			     			
+						if (intervalVideochat){
+							clearInterval(intervalVideochat);	
+						}
+						//$.colorbox.close();
+						callback();	
+						hideVideochat(winV, false);
+
 					}
 				}
 			});
@@ -803,6 +894,9 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 		</noscript>
 
 		<div id="head-container">
+			<?php if (isset($_GET['not_init']) || $_GET['not_init']==1) {?>
+			<div id="videochatButtons"></div>
+			<?php } ?>
 			<!-- header -->
 			<div id="header">
 				<div id="logo">
@@ -912,9 +1006,21 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 		<p><a href='#' id="lnk-end-task" class="btn simplemodal-close">Close</a></p>
 	</div>
 	<!-- /modals -->
+	<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
+	        <!--div id="modal-content-video" class="jquery-modal">
+                <iframe src="ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>" style="position: absolute; width: 100%; height: 100%" class="launch-frame" name="iframe-modal" id="iframe-modal-video"></iframe>
+            </div>
+            <div style="display:none">
+                <img src="img/x.png"/>
+            </div-->
+	<?php } ?>
 
 	<!-- /footer -->
 	<script type="text/javascript" src="js/tandem.js"></script>
+	<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
+	<!--link media="screen" rel="stylesheet" href="css/jquery_modal.css" /-->
+	<script type="text/javascript" src="js/window/jquery.window.min.js"></script>
+	<?php }?>
 	
 </body>
 
