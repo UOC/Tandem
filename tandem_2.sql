@@ -351,3 +351,11 @@ feedback_form longtext,
 rating_partner_feedback_form longtext,
 primary key (id_feedback_tandem) 
 );
+
+
+CREATE TABLE `session` (
+  `id_tandem` int(10) NOT NULL,
+  `status` int(10) DEFAULT '0' COMMENT '0, is not set, 1 started video sessio, 2 session available',
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_tandem`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
