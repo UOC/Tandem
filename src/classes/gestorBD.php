@@ -2100,7 +2100,6 @@ class GestorBD {
      function createFeedbackTandem($id_tandem, $id_external_tool, $id_user, $language, $id_partner, $partner_language) {
         //1st. check if it is necessary
         $result = $this->consulta("select id from feedback_tandem where id_tandem =".$this->escapeString($id_tandem)." 
-                         and id_external_tool =".$this->escapeString($id_external_tool)." 
                          and id_user =".$this->escapeString($id_user)." 
                          and language=".$this->escapeString($language)."
                          and id_partner =".$this->escapeString($id_partner)." 
@@ -2124,6 +2123,36 @@ class GestorBD {
      }
 
      /**
+      * Get the external tool id
+      * @param  [type] $id [description]
+      * @return [type]     [description]
+      */
+     function getFeedbackExternalIdTool($id) {
+        //1st. check if it is necessary
+        $result = $this->consulta("select id_external_tool from feedback_tandem where id =".$this->escapeString($id));
+        $id_external_tool = false;
+        if ($this->numResultats($result) > 0){ 
+            $r = $this->obteComArray($result);
+            $id_external_tool = $r[0]['id_external_tool'];
+       }
+       return $id_external_tool;
+    }
+
+
+     /**
+      * Updtes the id_external_tool based on id_tandem
+      * @param  [type] $id_tandem      [description]
+      * @param  [type] $id_external_tool [description]
+      * @return [type]                   [description]
+      */
+     function updateExternalToolFeedbackTandemByTandemId($id_tandem, $id_external_tool) {
+
+         return $this->consulta("update  feedback_tandem set id_external_tool=". $this->escapeString($id_external_tool) . 
+            " where id_tandem =".$this->escapeString($id_tandem));
+
+     }
+
+     /**
       * Creates and can update!
       * @param  [type] $id_feedback   [description]
       * @param  [type] $feedback_form [description]
@@ -2142,11 +2171,9 @@ class GestorBD {
       * @return [type]                               [description]
       */
      function updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form) {
-        //1st. check if it is necessary
 
          return $this->consulta("update  feedback_tandem_form set rating_partner_feedback_form=". $this->escapeString(serialize($rating_partner_feedback_form)) . 
             " where id_feedback_tandem =".$this->escapeString($id_feedback));
-
 
      }
 
@@ -2405,6 +2432,13 @@ class GestorBD {
             }else
                 $this->consulta("insert into session(id_tandem,status,created) values(".$this->escapeString($tandem_id).",1,NOW()) ");
          }
+         /**
+          *  Set as available video session  a tandem (set a 2)
+          */
+
+         function startTandemSession($tandem_id){
+            return $this->consulta("update session set status = 2 where id_tandem = ".$this->escapeString($tandem_id)." ");
+         }
 
          /**
           * Check if a session has been activated to start the tandem
@@ -2413,7 +2447,8 @@ class GestorBD {
             $result = $this->consulta("select * from session where id_tandem =".$this->escapeString($tandem_id)." and status = 1");
             $data = array();
             if ($this->numResultats($result) > 0){ 
-                return true;
+                $res = $this->obteComArray($result);
+                return $res[0]['status']>0;
             }
             return false;
          }
