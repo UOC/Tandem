@@ -17,7 +17,6 @@ if (!$user_obj) {
 } else {
 	require_once(dirname(__FILE__) . '/classes/constants.php');	
 	$gestorBD = new GestorBD();
-
 	
 	if(!empty($_POST['selectUser']) && $user_obj->instructor == 1){
 			$selectedUser = (int)$_POST['selectUser'];
@@ -27,11 +26,31 @@ if (!$user_obj) {
 		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser);		
 	}else  	
 		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id);	
-
-
 }
 
-
+//lets check if the user has filled the first profile form.
+$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);
+//lets save the registration form
+if(isset($_POST['extra-info-form'])){
+    $inputs  = array("skills_grade","fluency","accuracy","improve_pronunciation","improve_vocabulary","improve_grammar","s2_pronunciation_txt","s2_vowels_txt","s2_consonants_txt","s2_stress_txt","s2_intonation_txt","s2_vocabulary_txt","s2_vocab_txt","s2_false_friends_txt","s2_grammar_txt","s2_verb_agreement_txt","s2_noun_agreement_txt","s2_sentence_txt","s2_connectors_txt","s2_aspects_txt");
+	$save = new stdclass();
+	foreach($inputs as $in){
+		if(!empty($_POST[$in])){
+			$save->$in = $_POST[$in];
+		}
+	}
+	$data = serialize($save);
+	//first lets make sure they dont already have filled this formulary
+	if(!$firstProfileForm){
+		$gestorBD->consulta("insert into user_portfolio_profile(user_id,data,type,created) values ('".$user_obj->id."','".$data."','first',NOW())");
+		$firstProfileForm = true;
+	}
+	//if we have this value then we are updating
+	if(!empty($_POST['portfolio_form_id'])){
+		$gestorBD->consulta("update user_portfolio_profile set data ='".$data."' where id= ".$gestorBD->escapeString($_POST['portfolio_form_id'])." ");
+		$firstProfileForm['data'] = $save;
+	}
+}
 
 ?>
 <!DOCTYPE html>
@@ -40,8 +59,10 @@ if (!$user_obj) {
 <meta charset="utf-8">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="css/tandem-waiting-room.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="all" href="css/slider.css" />
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="js/bootstrap-slider2.js"></script>
 <script>
 	$(document).ready(function(){
 		$(".viewFeedback").click(function(){
@@ -53,7 +74,18 @@ if (!$user_obj) {
 
 		$("#selectUser").change(function(){
 			$("#selectUserForm").submit();
+		});
+
+		<?php if(!$firstProfileForm){ ?>
+			  $("#registry-modal-form").modal("show");
+		<?php } ?>
+		//slider
+		$('.slider').slider({min: '0',max : '5'});
+
+		$("#viewProfileForm").click(function(){
+			$("#registry-modal-form").modal("show");
 		})
+
 	});
 </script>
 <style>
@@ -65,12 +97,14 @@ if (!$user_obj) {
 	<div class='row'>
 		<div class='col-md-12'>
 			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';"><?php echo $LanguageInstance->get('Go to the ranking') ?></button>
-				<?php 
+			<button class="btn btn-success" type='button' id='viewProfileForm'><?php echo $LanguageInstance->get('View and modify your profile form') ?></button>
+			<span class='text-right'><?php 
 					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id);			
 					$positionInRankingTxt =  $LanguageInstance->get('Hello %1, your position in the ranking is ');
 					$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
 					echo $positionInRankingTxt."<b>".$getUserRankingPosition."</b>";			
 				?>
+			</span>
 		</div>
 	</div>
   	<div class="row">
@@ -144,5 +178,196 @@ if($user_obj->instructor == 1){
   </div>
   </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade bs-example-modal-lg" id="registry-modal-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?php echo $LanguageInstance->get('Personal portfolio profile');?></h4>
+      </div>
+      <div class="modal-body">
+     <!-- EXTRA INFO FORM  -->
+	<form  id='extra-info' role="form" method="POST">	
+	 <div class="form-group">
+   		<label for="input1" ><?php echo $LanguageInstance->get('Grade your speaking skills');?></label>   	 	
+      		<select name='skills_grade' class="form-control">  
+      			<option><?php echo $LanguageInstance->get('Select one')?></option>
+						  		<option value="A" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='A')?'selected':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
+						  		<option value="B" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='B')?'selected':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
+						  		<option value="C" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='C')?'selected':''?>><?php echo $LanguageInstance->get('Good')?></option>
+						  		<option value="D" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='D')?'selected':''?>><?php echo $LanguageInstance->get('Pass')?></option>
+						  		<option value="E" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='E')?'selected':''?>><?php echo $LanguageInstance->get('Fail')?></option>  		
+      		</select>    	
+  	</div>
+  	<h4><?php echo $LanguageInstance->get('During the course I want to improve my');?></h4>
+  	  	<div class="form-group">
+	   		<label for="input2" >
+	   			<?php echo $LanguageInstance->get('Fluency');?>
+	   		</label>
+	   		<input type='text' name='fluency' class='slider'  data-slider-value='<?php echo isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '' ?>' />
+  		</div>	
+  		<div class="form-group">
+	   		<label for="input2">
+	   			<?php echo $LanguageInstance->get('Accuracy');?>
+	   		</label>
+	   		<input type='text' name='accuracy' class='slider' value="" data-slider-value='<?php echo isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '' ?>' data-slider-min="0" data-slider-max="5" data-slider-step="1"  data-slider-orientation="horizontal"  />
+  		</div> 
+  	<h4><?php echo $LanguageInstance->get('During the course I also want to improve');?></h4>
+	  	<div class="form-group">
+	   		<label for="input2">
+	   			<?php echo $LanguageInstance->get('My pronunciation');?>
+	   		</label>	   	
+	 		<textarea name='improve_pronunciation' class="form-control" rows="3"><?php echo isset($firstProfileForm['data']->improve_pronunciation) ? $firstProfileForm['data']->improve_pronunciation : '' ?></textarea>	    
+	  	</div>  	
+	  	<div class="form-group">
+	   		<label for="input3" >
+	   			<?php echo $LanguageInstance->get('My vocabulary');?>
+	   		</label>	   	 	
+	 			<textarea name='improve_vocabulary' class="form-control" rows="3"><?php echo isset($firstProfileForm['data']->improve_vocabulary) ? $firstProfileForm['data']->improve_vocabulary : '' ?></textarea>	    	
+	  	</div>  
+	  	<div class="form-group">
+	   		<label for="input4" >
+	   			<?php echo $LanguageInstance->get('My grammar');?>
+	   		</label>	   	 	
+	 			<textarea name='improve_grammar' class="form-control" rows="3"><?php echo isset($firstProfileForm['data']->improve_grammar) ? $firstProfileForm['data']->improve_grammar : '' ?></textarea>	    	
+	  	</div>  
+
+
+	  	<!-- checkboxes -->
+	  	<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-pronunciation' value="" <?php echo !empty($firstProfileForm['data']->s2_pronunciation_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('Pronunciation');?>
+		    <textarea name='s2_pronunciation_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_pronunciation_txt) ? $firstProfileForm['data']->s2_pronunciation_txt : '' ?></textarea>
+		  </label>
+		</div>	
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-vowels' value="" <?php echo !empty($firstProfileForm['data']->s2_vowels_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('Problems with some vowels');?>
+		     <textarea name='s2_vowels_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_vowels_txt) ? $firstProfileForm['data']->s2_vowels_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-consonants' value="" <?php echo !empty($firstProfileForm['data']->s2_consonants_txt) ? "checked='checked' " : '' ?>>
+		    <?php echo $LanguageInstance->get('Difficulties with some consonants');?>
+		     <textarea name='s2_consonants_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_consonants_txt) ? $firstProfileForm['data']->s2_consonants_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-stress' value="" <?php echo !empty($firstProfileForm['data']->s2_stress_txt) ? "checked='checked'": '' ?>>
+		    <?php echo $LanguageInstance->get('Problems with stress');?>
+		     <textarea name='s2_stress_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_stress_txt) ? $firstProfileForm['data']->s2_stress_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-intonation' value="" <?php echo !empty($firstProfileForm['data']->s2_intonation_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('No clear intonation');?>
+		     <textarea name='s2_intonation_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_intonation_txt) ? $firstProfileForm['data']->s2_intonation_txt : '' ?></textarea>
+		  </label>
+		</div>	
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-vocabulary' value="" <?php echo !empty($firstProfileForm['data']->s2_vocabulary_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('Vocabulary');?>
+		     <textarea name='s2_vocabulary_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_vocabulary_txt) ? $firstProfileForm['data']->s2_vocabulary_txt : '' ?></textarea>
+		  </label>
+		</div>	
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-vocab' value="" <?php echo !empty($firstProfileForm['data']->s2_vocab_txt) ? "checked='checked' " : '' ?>>
+		    <?php echo $LanguageInstance->get('Misused vocab');?>
+		     <textarea name='s2_vocab_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_vocab_txt) ? $firstProfileForm['data']->s2_vocab_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-false-friends' value="" <?php echo !empty($firstProfileForm['data']->s2_false_friends_txt) ? "checked='checked' ": '' ?>>
+		    <?php echo $LanguageInstance->get('False friends');?>
+		     <textarea name='s2_false_friends_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_false_friends_txt) ? $firstProfileForm['data']->s2_false_friends_txt : '' ?></textarea>
+		  </label>
+		</div>	
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-grammar' value="" <?php echo !empty($firstProfileForm['data']->s2_grammar_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('Grammar');?>
+		     <textarea name='s2_grammar_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_grammar_txt) ? $firstProfileForm['data']->s2_grammar_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-verb-agreement' value="" <?php echo !empty($firstProfileForm['data']->s2_verb_agreement_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('Verb agreement');?>
+		     <textarea name='s2_verb_agreement_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_verb_agreement_txt) ? $firstProfileForm['data']->s2_verb_agreement_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-noun-agreement' value="" <?php echo !empty($firstProfileForm['data']->s2_noun_agreement_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('Noun agreement');?>
+		     <textarea name='s2_noun_agreement_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_noun_agreement_txt) ? $firstProfileForm['data']->s2_noun_agreement_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-sentence' value="" <?php echo !empty($firstProfileForm['data']->s2_sentence_txt) ? "checked='checked' " : '' ?>>
+		    <?php echo $LanguageInstance->get('Problems with sentence construction');?>
+		     <textarea name='s2_sentence_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_sentence_txt) ? $firstProfileForm['data']->s2_sentence_txt : '' ?></textarea>
+		  </label>
+		</div>	
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-connectors' value="" <?php echo !empty($firstProfileForm['data']->s2_connectors_txt) ? "checked='checked' " : '' ?>>
+		    <?php echo $LanguageInstance->get('Lack of connectors');?>
+		     <textarea name='s2_connectors_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_connectors_txt) ? $firstProfileForm['data']->s2_connectors_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<div class="checkbox">
+		  <label>
+		    <input type="checkbox" name='s2-aspects' value="" <?php echo !empty($firstProfileForm['data']->s2_aspects_txt) ? "checked='checked'" : '' ?>>
+		    <?php echo $LanguageInstance->get('Other aspects');?>
+		     <textarea name='s2_aspects_txt' class='form-control hide' ><?php echo isset($firstProfileForm['data']->s2_aspects_txt) ? $firstProfileForm['data']->s2_aspects_txt : '' ?></textarea>
+		  </label>
+		</div>
+		<input type='hidden' name='extra-info-form' value='1' />
+		<?php 
+		if(!empty($firstProfileForm['id'])){
+			echo "<input type='hidden' name='portfolio_form_id' value='".$firstProfileForm['id']."' />";
+		}
+		?>
+	</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $LanguageInstance->get('Close');?></button>
+        <button type="button" id='submit-extra-info' class="btn btn-success"><?php echo $LanguageInstance->get('Save changes');?></button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function(){
+	$("#extra-info input[type=checkbox]").change(function(){		
+		$textarea = $(this).parent().find("textarea");
+		$textarea.toggleClass("hide");
+		$textarea.val("");
+	});
+
+	$("#submit-extra-info").click(function(){
+		$("#extra-info").submit();
+	});
+
+	//find all checked checkboxes and open the textarea
+	$("#extra-info input[type=checkbox]:checked").each(function(){
+		$textarea = $(this).parent().find("textarea");
+		$textarea.toggleClass("hide");
+	})
+})
+</script>
 </body>
 </html>

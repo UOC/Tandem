@@ -194,7 +194,7 @@ try {
                                 if ($portfolio){
                                     $redirectTo = 'portfolio';
                                 } 
-                                if ($ranking){
+                                if ($ranking==1){
                                     $redirectTo = 'ranking';
                                 } 
 		    		header ('Location: '.$redirectTo.'.php');

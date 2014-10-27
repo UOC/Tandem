@@ -1806,18 +1806,19 @@ class GestorBD {
      *  Get all the exercices of the week that the user hasnt finished yet.
      */    
     function getExercicesNotDoneWeek($id_course,$user_id){
-     error_reporting(E_ALL);
+     
         //if they passed the custom parameter WEEK with the LTIcall , then we use that week, if not then we use the max week there is.
         if(!empty($_SESSION[WEEK]))
             $sql = 'SELECT id_exercise from course_exercise  WHERE week ="'.$_SESSION[WEEK].'" and id_course = '.$id_course;
-         else
+        elseif(!empty($_SESSION[PREVIOUS_WEEK])){
+            $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select week from course_exercise order by week desc limit 1 offset 1 ) and id_course = '.$id_course;
+        }else 
             $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select max(week) from course_exercise) and id_course = '.$id_course;
-            
+       
             $result = $this->consulta($sql);
             $ids  = array();
 
         if ($this->numResultats($result) > 0) { 
-
             $ids_exercise = array_values($this->obteComArray($result));             
             foreach($ids_exercise as $value){
                 $ids[] = $value['id_exercise'];
@@ -2453,6 +2454,21 @@ class GestorBD {
             return false;
          }
 
+         /**
+          * Gets the user_portfolio_profile data
+          * @type = the type of form , first form or second, third .etc 
+          */
+         function getUserPortfolioProfile($type,$user_id){
+
+            $result = $this->consulta("select * from user_portfolio_profile where user_id =".$this->escapeString($user_id)." and type =".$this->escapeString($type)." ");
+            if ($this->numResultats($result) > 0){ 
+               $data =   $this->obteComArray($result);
+               $data[0]['data'] = unserialize($data[0]['data']);
+               return $data[0];
+            }
+            return false;
+
+         }
 
 
 }//end of class

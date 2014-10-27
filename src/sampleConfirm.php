@@ -792,6 +792,8 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 		var widthWindowVideochat = $( document ).width()*0.98;
 		var heightWindowVideochat = $( document ).height()*0.98;
 		$(document).ready(function(){
+
+
 			var myButtons = [
 			   // facebook button
 			   {
@@ -827,6 +829,9 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			
 			intervalVideochat = setInterval(function() {checkVideochat(getInitXML, windowVideochat)},2500);
 			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
+
+			//tmp patch
+			$("#window_0").css({top:'1px'});
 		});
 
 		function hideVideochat(winVideochat, changeButtons) {
