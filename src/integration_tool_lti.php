@@ -134,8 +134,11 @@ try {
 	    $user_obj->id = $user_id;
 	    $waiting_room = $tandemBLTI->getDataInfo($context, 'custom_waiting_room')==1;
 	    $portfolio 		= $tandemBLTI->getDataInfo($context, 'custom_portfolio')==1;
+	    $ranking 	 = $tandemBLTI->getDataInfo($context, 'custom_ranking')==1;
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
 	    $week 		  = $tandemBLTI->getDataInfo($context, 'custom_week');
+	    $previous_week 	 = $tandemBLTI->getDataInfo($context, 'custom_previous_week');
+	    
             
 	    //Check if course exists
 	    $course_name = $context->getCourseName();
@@ -175,6 +178,7 @@ try {
             $_SESSION[USE_WAITING_ROOM] = $waiting_room;
             $_SESSION[OPEN_TOOL_ID] = $open_tool_id && $open_tool_id>0?$open_tool_id:false;
             $_SESSION[WEEK] = !empty($week) ? $week : false;
+            $_SESSION[PREVIOUS_WEEK] = !empty($previous_week) ? $previous_week : false;
 		    		
 		    if (!$tandem) {
 		    	if (posa_osid_context_session($gestorBD, $course_id, $context)) {
@@ -182,13 +186,16 @@ try {
 		    	
 		    		//Anem a seleccionar la room
                                 $_SESSION[CURRENT_USER] = $user_obj;
-		    		$_SESSION[COURSE_ID] = $course_id;
+		    					$_SESSION[COURSE_ID] = $course_id;
                                 $redirectTo = 'selectUserAndRoom';
                                 if ($waiting_room==1) {
                                     $redirectTo = 'autoAssignTandemRoom';
                                 } 
                                 if ($portfolio){
                                     $redirectTo = 'portfolio';
+                                } 
+                                if ($ranking){
+                                    $redirectTo = 'ranking';
                                 } 
 		    		header ('Location: '.$redirectTo.'.php');
 		    	} 
