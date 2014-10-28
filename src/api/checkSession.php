@@ -17,11 +17,9 @@ if ($id>0) {
 }
 if ($tandem) {	  	
   	if($gestorBD->checkTandemSession($id)){
-
   		if (isset($_SESSION[ID_FEEDBACK]) && $_SESSION[ID_FEEDBACK]>0) {
   			$_SESSION[ID_EXTERNAL] = $gestorBD->getFeedbackExternalIdTool($id);
-  		}
-  		
+  		}  		
   		$return->result = "ok";
   	}	
 }

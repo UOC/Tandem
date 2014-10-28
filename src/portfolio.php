@@ -51,7 +51,6 @@ if(isset($_POST['extra-info-form'])){
 		$firstProfileForm['data'] = $save;
 	}
 }
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -80,7 +79,7 @@ if(isset($_POST['extra-info-form'])){
 			  $("#registry-modal-form").modal("show");
 		<?php } ?>
 		//slider
-		$('.slider').slider({min: '0',max : '5'});
+		$('.slider').slider({min: '0',max : '100'});
 
 		$("#viewProfileForm").click(function(){
 			$("#registry-modal-form").modal("show");
@@ -99,7 +98,7 @@ if(isset($_POST['extra-info-form'])){
 			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';"><?php echo $LanguageInstance->get('Go to the ranking') ?></button>
 			<button class="btn btn-success" type='button' id='viewProfileForm'><?php echo $LanguageInstance->get('View and modify your profile form') ?></button>
 			<span class='text-right'><?php 
-					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id);			
+					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang']);			
 					$positionInRankingTxt =  $LanguageInstance->get('Hello %1, your position in the ranking is ');
 					$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
 					echo $positionInRankingTxt."<b>".$getUserRankingPosition."</b>";			
@@ -118,8 +117,8 @@ if(isset($_POST['extra-info-form'])){
 	  	</div>
   	</div>
 <?php 
-if($user_obj->instructor == 1){ 
- $usersList = $gestorBD->getAllUsers();
+if($user_obj->instructor == 1 ){ 
+ $usersList = $gestorBD->getAllUsers($course_id);
 ?>
 	<div class='row'>		
 		<div class='col-md-12'>
@@ -207,13 +206,13 @@ if($user_obj->instructor == 1){
 	   		<label for="input2" >
 	   			<?php echo $LanguageInstance->get('Fluency');?>
 	   		</label>
-	   		<input type='text' name='fluency' class='slider'  data-slider-value='<?php echo isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '' ?>' />
+	   		<input type='text' name='fluency' class='slider'  data-slider-value='<?php echo isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '' ?>' /> %
   		</div>	
   		<div class="form-group">
 	   		<label for="input2">
 	   			<?php echo $LanguageInstance->get('Accuracy');?>
 	   		</label>
-	   		<input type='text' name='accuracy' class='slider' value="" data-slider-value='<?php echo isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '' ?>' data-slider-min="0" data-slider-max="5" data-slider-step="1"  data-slider-orientation="horizontal"  />
+	   		<input type='text' name='accuracy' class='slider' value="" data-slider-value='<?php echo isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '' ?>' data-slider-min="0" data-slider-max="5" data-slider-step="1"  data-slider-orientation="horizontal"  /> %
   		</div> 
   	<h4><?php echo $LanguageInstance->get('During the course I also want to improve');?></h4>
 	  	<div class="form-group">

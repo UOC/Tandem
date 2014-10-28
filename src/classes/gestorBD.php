@@ -1822,24 +1822,24 @@ class GestorBD {
             $ids_exercise = array_values($this->obteComArray($result));             
             foreach($ids_exercise as $value){
                 $ids[] = $value['id_exercise'];
-            }           
-            $sql = "SELECT distinct(id_exercise) from tandem where id_exercise in('".implode(",",$ids)."')
-                    and id_course = ".$this->escapeString($id_course)." and (id_user_guest != '".$user_id."' and id_user_host != '".$user_id."')";               
+            }        
+
+            $sql = "SELECT distinct(id_exercise) from tandem where 
+                    id_course = ".$this->escapeString($id_course)." and (id_user_guest = '".$user_id."') or (id_user_host = '".$user_id."') ";               
              $result = $this->consulta($sql);
               if ($this->numResultats($result) > 0) {
-                 $r =  $this->obteComArray($result);  
-                    $ids = array();                
+                    $r =  $this->obteComArray($result);    
                     foreach($r as $value){
-                      $ids[] = $value['id_exercise'];
-                     }
+                        if(($key = array_search($value['id_exercise'],$ids)) !== false){                            
+                            unset($ids[$key]);
+                         }
+                    }
               }
-             
         }
-
-        if (count($ids)==0) {
-            
+        
+        if (count($ids)==0) {            
             //there is nothing for that week, lets just grab them all :o
-             $sql = 'SELECT id_exercise,created from course_exercise  WHERE  id_course = '.$id_course.' order by created desc limit 10' ;
+             $sql = 'SELECT id_exercise,created from course_exercise  WHERE  id_course = '.$id_course.' order by RAND() limit 10' ;
              $result = $this->consulta($sql);
              $ids = array();
 
@@ -1897,7 +1897,7 @@ class GestorBD {
              and wr.id_course ='".$id_course."' 
              and wr.id_exercise= '".$id_ex."'
              and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 30 seconds before
-             
+            
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
                 return $this->obteComArray($result);
@@ -1906,12 +1906,14 @@ class GestorBD {
 
         //if not lets check if there is someoe already created a tandem for us and is waiting.
          foreach($exs as $id_ex){   
-            $sql = "select id from tandem where id_exercise ='".$id_ex."' and id_course='".$id_course."' 
-                    and id_user_guest ='".$user_id."'";
-            $this->consulta($sql);
+            $sql = "select id as tandem_id from tandem where id_exercise ='".$id_ex."' and id_course='".$id_course."' 
+                    and id_user_guest ='".$user_id."' 
+                    and created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";
+
+           $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
-               $val = $this->obteComArray($result);
-               return array("tandem_id" => $val[0]['id']);
+               return  $this->obteComArray($result);
+               
              }  
 
          }
@@ -2395,9 +2397,9 @@ class GestorBD {
          * This function gets the position in the ranking of someone
          * TODO : improve this code :P
          */
-         function  getUserRankingPosition($user_id){
+         function  getUserRankingPosition($user_id,$language){
 
-                 $result = $this->consulta("select id_user from user_ranking  order by total_time desc");
+                 $result = $this->consulta("select id_user from user_ranking where language= ".$this->escapeString($language)." order by total_time desc");
                  if ($this->numResultats($result) > 0){ 
                     $data =  $this->obteComArray($result);                    
                     foreach($data as $key => $val){
@@ -2411,8 +2413,11 @@ class GestorBD {
          /**
           * Returns an array with all users
           */
-         function getAllUsers(){
-                $result = $this->consulta("select id,fullname from user  order by fullname");
+         function getAllUsers($course_id){
+                $result = $this->consulta("select id,fullname from user as U
+                                           left join user_course as UC on UC.id_user = U.id
+                                           where UC.id_course = ".$this->escapeString($course_id)." 
+                                           order by U.fullname");
                 $data = array();
                 if ($this->numResultats($result) > 0){ 
                     $data =  $this->obteComArray($result); 

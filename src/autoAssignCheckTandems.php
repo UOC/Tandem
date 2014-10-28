@@ -30,6 +30,7 @@ if ($debug) {
 }
 //if we have a positive response , it means we have found someone to do a tandem with.
 if($response){
+	
 	if ($debug) {
 		error_log("has response");
 	}	
