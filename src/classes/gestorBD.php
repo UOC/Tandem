@@ -1846,7 +1846,6 @@ class GestorBD {
              if ($this->numResultats($result) > 0) { 
 
                    $ids_exercise = array_values($this->obteComArray($result));  
-                   error_log(serialize($ids_exercise));
                   foreach($ids_exercise as $value){
                      $ids[] = $value['id_exercise'];
                   }
@@ -2146,11 +2145,13 @@ class GestorBD {
       * Updtes the id_external_tool based on id_tandem
       * @param  [type] $id_tandem      [description]
       * @param  [type] $id_external_tool [description]
+      * @param  [type] $end_external_service [description]
       * @return [type]                   [description]
       */
-     function updateExternalToolFeedbackTandemByTandemId($id_tandem, $id_external_tool) {
+     function updateExternalToolFeedbackTandemByTandemId($id_tandem, $id_external_tool, $end_external_service) {
 
          return $this->consulta("update  feedback_tandem set id_external_tool=". $this->escapeString($id_external_tool) . 
+            ", end_external_service=". $this->escapeString($end_external_service) . 
             " where id_tandem =".$this->escapeString($id_tandem));
 
      }
@@ -2204,6 +2205,7 @@ class GestorBD {
             $feedback->id = $r[0]['id'];
             $feedback->id_tandem = $r[0]['id_tandem'];
             $feedback->id_external_tool = $r[0]['id_external_tool'];
+            $feedback->end_external_service = $r[0]['end_external_service'];
             $feedback->id_user = $r[0]['id_user'];
             $feedback->language = $r[0]['language'];
             $feedback->id_partner = $r[0]['id_partner'];
@@ -2415,7 +2417,7 @@ class GestorBD {
           */
          function getAllUsers($course_id){
                 $result = $this->consulta("select id,fullname from user as U
-                                           left join user_course as UC on UC.id_user = U.id
+                                           inner join user_course as UC on UC.id_user = U.id
                                            where UC.id_course = ".$this->escapeString($course_id)." 
                                            order by U.fullname");
                 $data = array();

@@ -2,6 +2,25 @@
 $is_final = true;
 include_once(dirname(__FILE__).'/classes/register_action_user.php');
 require_once dirname(__FILE__).'/classes/lang.php';
+require_once dirname(__FILE__).'/classes/utils.php';
+require_once dirname(__FILE__).'/classes/gestorBD.php';
+
+ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1
+ 	&& isset($_SESSION[ID_FEEDBACK]) && $_SESSION[ID_FEEDBACK]>0) { 
+ 	//get the feedback url and call if it needed using curl
+	
+	$gestorBD = new GestorBD();  
+	$feedbackDetails = $gestorBD->getFeedbackDetails($_SESSION[ID_FEEDBACK]);
+	if ($feedbackDetails) {
+		var_dump($feedbackDetails);
+		$end_external_service = $feedbackDetails->end_external_service;
+		if ($end_external_service && strlen($end_external_service)>0) {
+			doPostRequest($end_external_service);
+		}
+	}
+ 	
+ }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -47,7 +66,6 @@ require_once dirname(__FILE__).'/classes/lang.php';
 			data: {'room':'<?php echo $_GET["room"];?>'},
 			success: function(){
                     <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { 
-                    	  //if(!empty($_SESSION[BasicLTIConstants::LAUNCH_PRESENTATION_RETURN_URL])){ 
      						  echo "window.location.href = 'feedback.php' ";
      					  //}else
      					  //echo 'top.document.location.href="autoAssignTandemRoom.php";';

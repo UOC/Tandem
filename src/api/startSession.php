@@ -20,7 +20,8 @@ if ($id>0) {
 if ($tandem) {	
 	//Save the return id if it is set, if not get as id tandem
 	$id_external_tool = isset($_GET['return_id'])?$_GET['return_id']:$id;
-	$gestorBD->updateExternalToolFeedbackTandemByTandemId($id, $id_external_tool);
+	$end_external_service = isset($_GET['end_external_service'])?$_GET['end_external_service']:'';
+	$gestorBD->updateExternalToolFeedbackTandemByTandemId($id, $id_external_tool, $end_external_service);
 
 	$gestorBD->startTandemSession($id);
 	$return->result = 'ok';	

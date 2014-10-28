@@ -336,6 +336,7 @@ create table feedback_tandem
 id bigint auto_increment,
 id_tandem int (11),
 id_external_tool int (11),
+end_external_service varchar(255),
 id_user int (11),
 language varchar(10),
 id_partner int (11),

@@ -342,3 +342,52 @@ function curPageURL() {
  }
  return $pageURL;
 }
+
+/**
+ * Do a Post request
+ * @param  [type] $url    [description]
+ * @param  array  $params [description]
+ * @param  [type] $header [description]
+ * @return [type]         [description]
+ */
+function doPostRequest($url, $params = array(), $header = NULL) {
+
+    $response = '';
+    if (is_array($params)) {
+      $data = http_build_query($params);
+    } else {
+      $data = $params;
+    }
+
+    if (function_exists('curl_init')) {
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $url);
+      if (!empty($header)) {
+        $headers = explode("\n", $header);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+      }
+      curl_setopt($ch, CURLOPT_POST, TRUE);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      $response = curl_exec($ch);
+      curl_close($ch);
+    } else {
+      $opts = array('method' => 'POST',
+                    'content' => $data
+                   );
+      if (!empty($header)) {
+        $opts['header'] = $header;
+      }
+      $ctx = stream_context_create(array('http' => $opts));
+      $fp = @fopen($url, 'rb', false, $ctx);
+      if ($fp) {
+        $resp = @stream_get_contents($fp);
+        if ($resp !== FALSE) {
+          $response = $resp;
+        }
+      }
+    }
+
+    return $response;
+
+  }
