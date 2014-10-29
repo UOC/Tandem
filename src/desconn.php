@@ -38,7 +38,7 @@ $return = new stdclass();
 $return->result = 'error';
 
 if (isset($_REQUEST['close_session']) && $_REQUEST['close_session']==1
-	&& isset($_REQUEST[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1
+	&& isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1
 	&& isset($_SESSION[ID_FEEDBACK]) && $_SESSION[ID_FEEDBACK]>0) { 
 	//get the feedback url and call if it needed using curl
 	$gestorBD = new GestorBD();
