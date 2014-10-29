@@ -5,20 +5,6 @@ require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/utils.php';
 require_once dirname(__FILE__).'/classes/gestorBD.php';
 
- if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1
- 	&& isset($_SESSION[ID_FEEDBACK]) && $_SESSION[ID_FEEDBACK]>0) { 
- 	//get the feedback url and call if it needed using curl
-	
-	$gestorBD = new GestorBD();  
-	$feedbackDetails = $gestorBD->getFeedbackDetails($_SESSION[ID_FEEDBACK]);
-	if ($feedbackDetails) {
-		$end_external_service = $feedbackDetails->end_external_service;
-		if ($end_external_service && strlen($end_external_service)>0) {
-			doRequest($end_external_service, false);
-		}
-	}
- 	
- }
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -62,12 +48,10 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 		$.ajax({
 			type: 'GET',
 			url: "desconn.php",
-			data: {'room':'<?php echo $_GET["room"];?>'},
+			data: {'room':'<?php echo $_GET["room"];?>','close_session': 1},
 			success: function(){
                     <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { 
-     						  echo "window.location.href = 'feedback.php' ";
-     					  //}else
-     					  //echo 'top.document.location.href="autoAssignTandemRoom.php";';
+					 	echo "window.location.href = 'feedback.php' ";
                     ?>				
                     <?php  } else { ?>
                         top.document.location.href="selectUserAndRoom.php";
