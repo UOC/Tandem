@@ -109,10 +109,13 @@ if(isset($_POST['extra-info-form'])){
 	  	</div>
   			<div class='col-md-6 text-right'>
 				<br /><br /><?php 
-					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang']);			
-					$positionInRankingTxt =  $LanguageInstance->get('Hello %1, your position in the ranking is ');
+					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
+					$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
 					$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
-					echo $positionInRankingTxt."<b>".$getUserRankingPosition."</b>";			
+					if($getUserRankingPosition > 0)
+						$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
+					
+					echo $positionInRankingTxt;			
 				?>
 			</div>
   	</div>

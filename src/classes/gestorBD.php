@@ -2193,6 +2193,7 @@ class GestorBD {
       * @return [type]              [description]
       */
    function getFeedbackDetails($id_feedback) {
+        
         //1st. check if it is necessary
         $result = $this->consulta("select feedback_tandem.*, tandem.created as tandem_created, tandem.is_finished as tandem_is_finished,
             tandem.finalized as tandem_finalized,
@@ -2364,10 +2365,10 @@ class GestorBD {
                 if ($this->numResultats($result) > 0){ 
                     $data =  $this->obteComArray($result);
                     //now we have the tandem 
-                    $result =  $this->consulta("select * from user_ranking where id_user = ".$this->escapeString($user_id)." ");
+                    $result =  $this->consulta("select * from user_ranking where id_user = ".$this->escapeString($user_id)."  and id_course = ".$this->escapeString($course_id)." and language =".$this->escapeString($language)."");
                     if ($this->numResultats($result) > 0){ 
                         //we already this user in the ranking table, lets update the time.
-                        $this->consulta("update user_ranking set total_time = total_time + ".$data[0]['total_time']." where id_user = ".$this->escapeString($user_id)." ");
+                        $this->consulta("update user_ranking set total_time = total_time + ".$data[0]['total_time']." where id_user = ".$this->escapeString($user_id)." and id_course = ".$this->escapeString($course_id)." and language =".$this->escapeString($language)."");
                     }else
                         $this->consulta("insert into user_ranking (id_user,id_course,language,total_time) 
                                          values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",".$this->escapeString($language).",'".$data[0]['total_time']."')");
@@ -2405,9 +2406,9 @@ class GestorBD {
          * This function gets the position in the ranking of someone
          * TODO : improve this code :P
          */
-         function  getUserRankingPosition($user_id,$language){
+         function  getUserRankingPosition($user_id,$language,$course_id){
 
-                 $result = $this->consulta("select id_user from user_ranking where language= ".$this->escapeString($language)." order by total_time desc");
+                 $result = $this->consulta("select id_user from user_ranking where id_course = ".$this->escapeString($course_id)." and language= ".$this->escapeString($language)." order by total_time desc");
                  if ($this->numResultats($result) > 0){ 
                     $data =  $this->obteComArray($result);                    
                     foreach($data as $key => $val){
@@ -2415,7 +2416,7 @@ class GestorBD {
                             return $key+1;
                     }
                  }
-                 return false;
+                 return 0;
          }
 
          /**

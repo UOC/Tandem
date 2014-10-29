@@ -12,7 +12,6 @@ require_once dirname(__FILE__) . '/classes/gestorBD.php';
 require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
-
 $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 $use_waiting_room = isset($_SESSION[USE_WAITING_ROOM]) ? $_SESSION[USE_WAITING_ROOM] : false;
 
@@ -42,7 +41,7 @@ if (!$user_obj || !$course_id) {
 	if (!$feedbackDetails) {
 		die($LanguageInstance->get('Can not find feedback'));
 	}
-
+	
 	if ($user_obj->id!=$feedbackDetails->id_user && $user_obj->id!=$feedbackDetails->id_partner &&
 		!$user_obj->instructor && !$user_obj->admin) { //check if is the user of feedback if not can't not set feedback
 		die($LanguageInstance->get('no estas autoritzat'));
@@ -107,7 +106,7 @@ if (!$user_obj || !$course_id) {
 		<link rel="stylesheet" type="text/css" media="all" href="css/tandem-waiting-room.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/defaultInit.css" />
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" media="all" href="css/slider.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="css/slider2.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/star-rating.min.css" />
 		<style>
 		#footer-container{margin-top:-222px;position:inherit;}
@@ -125,11 +124,6 @@ if (!$user_obj || !$course_id) {
       	echo $message;
       }?>
       <p>
-      <?php 
-      
-      if(empty($feedbackDetails->rating_partner_feedback_form)){  ?>
-	    <button id="checkFeedbacks" type="button" onclick="window.location.reload();" class="btn btn-success"><?php echo $LanguageInstance->get('Check if feedback are submitted') ?></button>
-	   <?php } ?>
 	   	<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100&<?php echo $feedbackDetails->id_external_tool>0? (ID_EXTERNAL.'='. $feedbackDetails->id_external_tool):''?>&<?php echo $feedbackDetails->id_tandem>0? (CURRENT_TANDEM.'='. $feedbackDetails->id_tandem):''?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
 	   </p>
       <!-- Nav tabs -->
@@ -215,9 +209,15 @@ if (!$user_obj || !$course_id) {
 						 </form>
 						</div>	
 				 <?php					
-				}else
+				}else {
 				echo "<p>". $LanguageInstance->get('partner_feedback_not_available')."</p>";
-			?>			
+				if(isset($feedbackDetails->id))
+					$feedBackIdTab = "?id_feedback=".$feedbackDetails->id."&tab=other";
+				else
+					$feedBackIdTab = "";
+				?>
+			    <button id="checkFeedbacks" type="button" onclick="window.location = 'feedback.php<?php echo $feedBackIdTab;?>'" class="btn btn-success"><?php echo $LanguageInstance->get('Check if feedback are submitted') ?></button>
+				<?php } ?>			
 		</div>
 		<div id="main-container_old" class='tab-pane active'>
 		<div class='row'>
@@ -229,17 +229,17 @@ if (!$user_obj || !$course_id) {
 						<form data-toggle="validator" role="form" method="POST">
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?> *</label>
-						  	<input data-slider-id='ex1Slider' class="sliderTandem" name="fluency" id="fluency" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->fluency?>"/>%
+						  	<input data-slider-id='ex1Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="fluency" id="fluency" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->fluency?>"/>%
 						  	<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
 						  </div>
 						  <div class="form-group">
 						    <label for="accuracy" class="control-label"><?php echo $LanguageInstance->get('Accuracy') ?> *</label>
-						  	<input data-slider-id='ex2Slider' class="sliderTandem" name="accuracy" id="accuracy" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->accuracy?>"/>%
+						  	<input data-slider-id='ex2Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="accuracy" id="accuracy" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->accuracy?>"/>%
 						  	<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
 						  </div>
 						  <div class="form-group">
 						    <label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?> *</label>
-						  	<select id="grade" name="grade" required>
+						  	<select id="grade" name="grade" required <?php echo (!$can_edit) ? "disabled" : "" ?>>
 						  		<option value=""><?php echo $LanguageInstance->get('Select one')?></option>
 						  		<option value="A" <?php echo $feedback_form->grade=='A'?'selected':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
 						  		<option value="B" <?php echo $feedback_form->grade=='B'?'selected':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
@@ -251,25 +251,25 @@ if (!$user_obj || !$course_id) {
 						  <div class="form-group">
 						    <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="pronunciation" name='pronunciation' placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" ><?php echo $feedback_form->pronunciation?></textarea>
+						      <textarea <?php echo (!$can_edit) ? "readonly" : "" ?> rows="3" cols="200" class="form-control" id="pronunciation" name='pronunciation' placeholder="<?php echo $LanguageInstance->get('Indicate the level of pronunciation')?>" ><?php echo $feedback_form->pronunciation?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="vocabulary" class="control-label"><?php echo $LanguageInstance->get('Vocabulary')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="vocabulary"  name='vocabulary' placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" ><?php echo $feedback_form->vocabulary?></textarea>
+						      <textarea <?php echo (!$can_edit) ? "readonly" : "" ?> rows="3" cols="200" class="form-control" id="vocabulary"  name='vocabulary' placeholder="<?php echo $LanguageInstance->get('Indicate the level of vocabulary')?>" ><?php echo $feedback_form->vocabulary?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="grammar" class="control-label"><?php echo $LanguageInstance->get('Grammar')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="grammar"  name="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" ><?php echo $feedback_form->grammar?></textarea>
+						      <textarea <?php echo (!$can_edit) ? "readonly" : "" ?> rows="3" cols="200" class="form-control" id="grammar"  name="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" ><?php echo $feedback_form->grammar?></textarea>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedback_form->other_observations?></textarea>
+						      <textarea <?php echo (!$can_edit) ? "readonly" : "" ?> rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedback_form->other_observations?></textarea>
 						    </div>
 						  </div>
 						  <?php if ($can_edit) {?>
@@ -300,7 +300,7 @@ if (!$user_obj || !$course_id) {
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="js/validator.min.js"></script>
-<script src="js/bootstrap-slider.js"></script>
+<script src="js/bootstrap-slider2.js"></script>
 <script src="js/star-rating.min.js"></script>
 <script>
 $('.sliderTandem').slider({
@@ -321,6 +321,12 @@ $(document).ready(function(){
 			echo "$('#partner_rate').rating('update', ".$feedbackDetails->rating_partner_feedback_form->partner_rate.");";
 			echo "$('#partner_rate').rating('refresh', {disabled: true});";
 		}
+	 ?>
+
+	 //if there is an anchor , then lets activate that tab if it exists
+	 <?php if(isset($_REQUEST['tab'])) { 	
+	 		echo '$(".nav-tabs a[href=#'.$_REQUEST['tab'].']").tab("show");';
+	 	   }
 	 ?>
 } );		
 </script>   
