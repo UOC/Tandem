@@ -796,19 +796,30 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			   {
 			   id: "btn_minimize_videochat",           // required, it must be unique in this array data
 			   title: "<?php echo $LanguageInstance->get('Hide Videochat')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
-			   //clazz: "minimizeImg",           // optional, don't set border, padding, margin or any style which will change element position or size
+			   //clazz: "",           // optional, don't set border, padding, margin or any style which will change element position or size
 			   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
-			   image: "img/<?php echo $user_language=='es_ES'?'ver':'view'?>_tandem.gif",    // required, the url of button icon(16x16 pixels)
+			   image: "js/window/img/close.png",    // required, the url of button icon(16x16 pixels)
+			   callback:                     // required, the callback function while click it
+			      function(btn, wnd) {
+			         hideVideochat(wnd, true);
+			      }
+			   },
+			   {
+			   id: "btn_minimize_videochat",           // required, it must be unique in this array data
+			   title: "<?php echo $LanguageInstance->get('Hide Videochat')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
+			   clazz: "window_icon_button_88_13",           // optional, don't set border, padding, margin or any style which will change element position or size
+			   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
+			   image: "js/window/img/<?php echo $user_language=='es_ES'?'ver':'view'?>_tandem.gif",    // required, the url of button icon(16x16 pixels)
 			   callback:                     // required, the callback function while click it
 			      function(btn, wnd) {
 			         hideVideochat(wnd, true);
 			      }
 			   }
-
 			];
 
+
 		var windowVideochat = $.window({
-			   title: "Videochat",
+			   title: "",
 			   url: "ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>",
 			   width: $( document ).width()*0.98,
 			   height: $( document ).height()*0.98,
@@ -827,6 +838,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			
 			intervalVideochat = setInterval(function() {checkVideochat(getInitXML, windowVideochat)},2500);
 			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
+			$(".window_function_bar").width("120px");
 
 			//tmp patch
 			$("#window_0").css({top:'1px'});
