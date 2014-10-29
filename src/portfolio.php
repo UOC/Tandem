@@ -204,15 +204,15 @@ if($user_obj->instructor == 1 ){
   	<h4><?php echo $LanguageInstance->get('During the course I want to improve my');?></h4>
   	  	<div class="form-group">
 	   		<label for="input2" >
-	   			<?php echo $LanguageInstance->get('Fluency');?>
+	   			<?php echo $LanguageInstance->get('Fluency');?>&nbsp;&nbsp;
 	   		</label>
-	   		<input type='text' name='fluency' class='slider'  data-slider-value='<?php echo isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '' ?>' /> %
+	   		<input type='text' name='fluency' class='slider'  data-slider-id="ex1Slider" data-slider-value='<?php echo isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '' ?>' /> %
   		</div>	
   		<div class="form-group">
 	   		<label for="input2">
-	   			<?php echo $LanguageInstance->get('Accuracy');?>
+	   			<?php echo $LanguageInstance->get('Accuracy');?>&nbsp;&nbsp;
 	   		</label>
-	   		<input type='text' name='accuracy' class='slider' value="" data-slider-value='<?php echo isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '' ?>' data-slider-min="0" data-slider-max="5" data-slider-step="1"  data-slider-orientation="horizontal"  /> %
+	   		<input type='text' name='accuracy' class='slider' data-slider-id="ex2Slider" value="" data-slider-value='<?php echo isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '' ?>' data-slider-min="0" data-slider-max="5" data-slider-step="1"  data-slider-orientation="horizontal"  /> %
   		</div> 
   	<h4><?php echo $LanguageInstance->get('During the course I also want to improve');?></h4>
 	  	<div class="form-group">
