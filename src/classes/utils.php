@@ -346,11 +346,12 @@ function curPageURL() {
 /**
  * Do a Post request
  * @param  [type] $url    [description]
+ * @param  [type] $is_post    [description]
  * @param  array  $params [description]
  * @param  [type] $header [description]
  * @return [type]         [description]
  */
-function doPostRequest($url, $params = array(), $header = NULL) {
+function doRequest($url, $is_post, $params = array(), $header = NULL) {
 
     $response = '';
     if (is_array($params)) {
@@ -366,13 +367,16 @@ function doPostRequest($url, $params = array(), $header = NULL) {
         $headers = explode("\n", $header);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
       }
-      curl_setopt($ch, CURLOPT_POST, TRUE);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+      curl_setopt($ch, CURLOPT_POST, $is_post);
+      if ($is_post) {
+      	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      }
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       $response = curl_exec($ch);
       curl_close($ch);
     } else {
-      $opts = array('method' => 'POST',
+      $opts = array('method' => $is_post?'POST':'GET',
                     'content' => $data
                    );
       if (!empty($header)) {

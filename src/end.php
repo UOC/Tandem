@@ -12,10 +12,9 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 	$gestorBD = new GestorBD();  
 	$feedbackDetails = $gestorBD->getFeedbackDetails($_SESSION[ID_FEEDBACK]);
 	if ($feedbackDetails) {
-		var_dump($feedbackDetails);
 		$end_external_service = $feedbackDetails->end_external_service;
 		if ($end_external_service && strlen($end_external_service)>0) {
-			doPostRequest($end_external_service);
+			doRequest($end_external_service, false);
 		}
 	}
  	
@@ -25,7 +24,7 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Tandem Pantalla Inici_ParaExportar</title>
+<title>Tandem</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!-- Save for Web Styles (Tandem Pantalla Inici_ParaExportar.psd) -->
 <style type="text/css">
