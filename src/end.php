@@ -76,10 +76,9 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 	<a  href="#" onclick="desconn();"><?php echo $LanguageInstance->get('peer_review_form');?></a>
     <?php  } else { ?>
 	<a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
-	<?php  } ?>
-    
+	<?php  } ?>    
 </div>
-
+<br /><br />
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
