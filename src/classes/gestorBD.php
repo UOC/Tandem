@@ -2075,12 +2075,18 @@ class GestorBD {
     }
      
      /**
-      * Numer of people waiting for the same language.
+      * Number of people waiting for the same language.
       */
 
      function sameLanguagePeopleWaiting($lang,$id_course){
-        $result = $this->consulta("select count(id) as total from waiting_room where id_course =".$this->escapeString($id_course)." 
-                         and language=".$this->escapeString($lang)."");
+        /*$result = $this->consulta("select count(id) as total from waiting_room where id_course =".$this->escapeString($id_course)." 
+                         and language=".$this->escapeString($lang)."");*/
+
+        $result = $this->consulta("select count( distinct id_user ) as total from waiting_room_user as WRU 
+                                   inner join waiting_room as WR on WR.id = WRU.id_waiting_room 
+                                   where WR.id_course =".$this->escapeString($id_course)." 
+                                   and WR.language=".$this->escapeString($lang)."");
+
         if ($this->numResultats($result) > 0){ 
             $r = $this->obteComArray($result);
             return $r[0]['total'];

@@ -107,7 +107,7 @@ if(isset($_POST['extra-info-form'])){
 	  	<div class='col-md-6'>
 	  		<h1 class='title'><?php echo $LanguageInstance->get('My portfolio feedback');?></h1>
 	  	</div>
-  			<div class='col-md-6 text-center'>
+  			<div class='col-md-6 text-right'>
 				<br /><br /><?php 
 					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang']);			
 					$positionInRankingTxt =  $LanguageInstance->get('Hello %1, your position in the ranking is ');
