@@ -792,21 +792,19 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 		var widthWindowVideochat = $( document ).width()*0.98;
 		var heightWindowVideochat = $( document ).height()*0.98;
 		$(document).ready(function(){
-
-
 			var myButtons = [
-			   // facebook button
 			   {
 			   id: "btn_minimize_videochat",           // required, it must be unique in this array data
 			   title: "<?php echo $LanguageInstance->get('Hide Videochat')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
-			   clazz: "minimizeImg",           // optional, don't set border, padding, margin or any style which will change element position or size
+			   //clazz: "minimizeImg",           // optional, don't set border, padding, margin or any style which will change element position or size
 			   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
-			   //image: "img/facebook.gif",    // required, the url of button icon(16x16 pixels)
+			   image: "img/<?php echo $user_language=='es_ES'?'ver':'view'?>_tandem.gif",    // required, the url of button icon(16x16 pixels)
 			   callback:                     // required, the callback function while click it
 			      function(btn, wnd) {
 			         hideVideochat(wnd, true);
 			      }
 			   }
+
 			];
 
 		var windowVideochat = $.window({
