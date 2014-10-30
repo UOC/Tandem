@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-10-30 12:51+0100\n"
+"PO-Revision-Date: 2014-10-30 13:22+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -419,13 +419,13 @@ msgid "check_if_feedbacks_are_submitted"
 msgstr "Verificar si la otra persona ha enviado el feedback"
 
 msgid "peer_review_form"
-msgstr "Valora la evaluación de tu compa&ntilde;ero"
+msgstr "Valora la evaluación de tu compañero"
 
 msgid "Review your partner's contribution"
-msgstr "Valora la intervención de tu compa&ntilde;ero"
+msgstr "Valora la intervención de tu compañero"
 
 msgid "partner_feedback_not_available"
-msgstr "La valoraraci&oacute;n de tu compa&ntilde;ero no está aún disponible"
+msgstr "La valoraraci&oacute;n de tu compañero no está aún disponible"
 
 msgid "fill_required_fields"
 msgstr "Rellena todos los campos obligatorios"
@@ -507,3 +507,6 @@ msgstr "Formulario para puntuar la valoración de tu compañero"
 
 msgid "Back to list"
 msgstr "Regresar a la lista"
+
+msgid "The videochat recording will be stop automatically"
+msgstr "La grabación de videochat se parará automáticamente"

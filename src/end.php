@@ -73,6 +73,7 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 <p></p>
 <div <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>class='btn_review'<?php } ?>>
 	<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+	<p><?php echo $LanguageInstance->get('The videochat recording will be stop automatically');?></p>
 	<a  href="#" onclick="desconn();"><?php echo $LanguageInstance->get('peer_review_form');?></a>
     <?php  } else { ?>
 	<a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>

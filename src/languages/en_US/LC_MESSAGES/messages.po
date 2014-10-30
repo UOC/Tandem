@@ -504,3 +504,6 @@ msgstr "Rating Partner’s Feedback Form"
 
 msgid "Back to list"
 msgstr "Back to list"
+
+msgid "The videochat recording will be stop automatically"
+msgstr "The videochat recording will be stop automatically"

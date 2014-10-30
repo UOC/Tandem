@@ -17,21 +17,27 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 
 <script type="text/javascript">
 	startTandemConnectedTandem = function(){
-		parent.$.fn.colorbox.close();
+		parent.$.fn.startTandemVCEvent();
+		//parent.$.fn.colorbox.close();
 	}
+	setTimeout("startTandemConnectedTandem", 30);
 </script>
 <!-- End Save for Web Styles -->
 </head>
-<body id="home_" style="background-color:#FFFFFF;">
-<div>
+<body id="home">
+<!--div>
 	<img id="home" src="images/final1.png" width="310" height="85" alt="" />
-</div>
-<div class="text">
-	<p><?php echo $LanguageInstance->get('You are in a videochat with your partner');?></p>
-</div>
+</div-->
+<p></p>
+	<div class="text">
+		<p><?php echo $LanguageInstance->get('You are in a videochat with your partner')?>.</p>
+		<p><?php echo $LanguageInstance->get('Videochat recording is started')?></p>
+		<p><?php echo $LanguageInstance->get('You will redirect to tandem activity in 30 seconds');?>.</p>
+		<p><?php echo $LanguageInstance->get('During the session you will be able to change from videochat to tandem');?>.</p>
+	</div>
 <p></p>
 <div class='btn_review'>
-	<a  href="#" onclick="startTandemConnectedTandem();"><?php echo $LanguageInstance->get('Start tandem now!');?></a>
+	<button onclick="startTandemConnectedTandem();" class="btn btn-success"><?php echo $LanguageInstance->get('Start tandem now!');?></button>
 </div>
 <br /><br />
 <!-- Placed at the end of the document so the pages load faster -->

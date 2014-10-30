@@ -791,6 +791,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 	?>
 		//$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
 		var windowVideochat = false;
+		var windowStartTandem = false;
 		var intervalVideochat = false;
 		var widthWindowVideochat = $( document ).width()*0.98;
 		var heightWindowVideochat = $( document ).height()*0.98;
@@ -836,8 +837,9 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			   showRoundCorner: true,
    			   custBtns: myButtons
 			});
+
 			
-			
+
 			intervalVideochat = setInterval(function() {checkVideochat(windowVideochat)},2500);
 			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
 			$(".window_function_bar").width("120px");
@@ -907,20 +909,59 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 						if (intervalVideochat){
 							clearInterval(intervalVideochat);	
 						}
-						$.colorbox({iframe: true,width:380,height:280, href: 'connectedPartnerStartTandem.php'});
+						var myButtons = [
+						   {
+						   id: "btn_close_start_tandem",           // required, it must be unique in this array data
+						   title: "<?php echo $LanguageInstance->get('Hide Videochat')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
+						   //clazz: "",           // optional, don't set border, padding, margin or any style which will change element position or size
+						   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
+						   image: "js/window/img/close.png",    // required, the url of button icon(16x16 pixels)
+						   callback:                     // required, the callback function while click it
+						      function(btn, wnd) {
+						         startTandemVC();
+						      }
+						   }
+						];
+						/*$.colorbox({iframe: true,width:380,height:280, href: 'connectedPartnerStartTandem.php'});
 						$(document).bind('cbox_closed', function(){
 						  startTandemVC();
-						}); 
+						});*/
+						windowStartTandem = $.window({
+							   title: "",
+							   url: "connectedPartnerStartTandem.php",
+							   width: 400,
+							   //y: $( document ).height()*0.1,
+							   height: 400,
+							   maxWidth: 500,
+							   maxHeight: 400,
+							   closable: false,
+							   draggable: false,
+							   resizable: true,
+							   maximizable: false,
+							   minimizable: false,
+							   showFooter: true,
+							   modal: true,
+							   showRoundCorner: true,
+   			   				   custBtns: myButtons
+				   			   
+							});
+ 
 					}
 				}
 			});
 		}
 		function startTandemVC() {
 			$(document).unbind('cbox_closed');
-			$.colorbox.close();
+			//$.colorbox.close();
+			windowStartTandem.close();
 			hideVideochat(windowVideochat, false);
 			getInitXML();
 		}
+		jQuery.fn.extend({
+			startTandemVCEvent: function () {
+				startTandemVC();
+			}
+		});
 
 <?php
 } 
