@@ -516,8 +516,8 @@ input.tandem-btnout:focus{
 	cursor: default;
 }
 
-input.tandem-btn{width:105px;}
-input.tandem-btnout{width:105px;}
+input.tandem-btn{min-width:105px;}
+input.tandem-btnout{min-width:105px;}
 
 a.tandem-btn:hover,
 input[type=button]:hover,
@@ -1945,4 +1945,10 @@ overflow-x: hidden;
 .window_icon_button_88_13 {
 	width: 88px !important;
 	height: 13px !important;
+}
+
+#alertShowVideoXat{
+	position:absolute;
+	top: 35px;
+	left: 90px;
 }

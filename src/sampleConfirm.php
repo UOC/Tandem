@@ -844,6 +844,10 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 
 			//tmp patch
 			$("#window_0").css({top:'1px'});
+			$('#show_videochat').hover(function() {
+			    $('#alertShowVideoXat').toggle();
+		    });
+
 		});
 
 		function hideVideochat(winVideochat, changeButtons) {
@@ -851,6 +855,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			if (changeButtons) {
 				$('#hide_videochat').hide();
 				$('#show_videochat').show();
+				$('#alertShowVideoXat').show();
 			}
 		}
 
@@ -859,7 +864,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 		}
 
 		function createVideochatButtons(winVideochat, widthWinVideochat, heightWinVideochat) {
-			$('#videochatButtons').html('<input type="button" id="show_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/>'+
+			$('#videochatButtons').html('<input type="button" id="show_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/><div id="alertShowVideoXat"><img src="img/videoXat.png"> </div>'+
 				'<input type="button" id="hide_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Hide Videochat')?>"/>');
 			$('#hide_videochat').hide();
 			$('#hide_videochat').click({winVideochat: winVideochat}, function(event) {
@@ -869,6 +874,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 				showVideochat(event.data.winVideochat, event.data.widthWinVideochat, event.data.heightWinVideochat);
 				$('#show_videochat').hide();
 				$('#hide_videochat').show();
+				$('#alertShowVideoXat').hide();
 			});
 		}
 
