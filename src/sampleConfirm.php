@@ -782,6 +782,9 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			die ($LanguageInstance->get('There are a problem storing data, try it again'));		
 		}
 		$_SESSION[ID_FEEDBACK] = $id_feedback;
+		//Put check sesssion to false
+		$gestorBDSample->updateTandemSessionNotAvailable($tandem['id']);
+		//die("updated!!!");
 	}
 	
 
@@ -794,7 +797,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 		$(document).ready(function(){
 			var myButtons = [
 			   {
-			   id: "btn_minimize_videochat",           // required, it must be unique in this array data
+			   id: "btn_minimize_videochat_close",           // required, it must be unique in this array data
 			   title: "<?php echo $LanguageInstance->get('Hide Videochat')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
 			   //clazz: "",           // optional, don't set border, padding, margin or any style which will change element position or size
 			   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
@@ -817,8 +820,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			   }
 			];
 
-
-		var windowVideochat = $.window({
+			windowVideochat = $.window({
 			   title: "",
 			   url: "ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>",
 			   width: $( document ).width()*0.98,
@@ -836,7 +838,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			});
 			
 			
-			intervalVideochat = setInterval(function() {checkVideochat(getInitXML, windowVideochat)},2500);
+			intervalVideochat = setInterval(function() {checkVideochat(windowVideochat)},2500);
 			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
 			$(".window_function_bar").width("120px");
 
@@ -886,7 +888,7 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 	            });*/
 	        
 
-		function checkVideochat(callback, winV){
+		function checkVideochat( winV){
 			$.ajax({
 				type: 'POST',
 				url: "api/checkSession.php",
@@ -899,13 +901,19 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 						if (intervalVideochat){
 							clearInterval(intervalVideochat);	
 						}
-						//$.colorbox.close();
-						callback();	
-						hideVideochat(winV, false);
-
+						$.colorbox({iframe: true,width:380,height:280, href: 'connectedPartnerStartTandem.php'});
+						$(document).bind('cbox_closed', function(){
+						  startTandemVC();
+						}); 
 					}
 				}
 			});
+		}
+		function startTandemVC() {
+			$(document).unbind('cbox_closed');
+			$.colorbox.close();
+			hideVideochat(windowVideochat, false);
+			getInitXML();
 		}
 
 <?php
@@ -981,23 +989,30 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 					<div class="user">
 						<div class="details">
 							<span class="name" id="name_person_a"></span>
+							<?php if (!isset($_SESSION[USE_WAITING_ROOM]) || $_SESSION[USE_WAITING_ROOM]!=1) {?>
 							<a href="#info_user_1" id="lnk_user_1" class="infotip" data-rel="<?php echo $LanguageInstance->get('hide_profile')?>"><span><?php echo $LanguageInstance->get('show_profile')?></span></a>
+							<?php } ?>
 						</div>
 						<div id="image_person_a" class="photo" alt="user 1 photo"></div>
-
 						<div class="user_info" id="info_user_1">
+						<?php if (!isset($_SESSION[USE_WAITING_ROOM]) || $_SESSION[USE_WAITING_ROOM]!=1) {?>
 							<span class="social" title="skype" id="chat_person_a">SkypeUser <span class="icon skype"></span></span>
+						<?php } ?>
 						</div>
 						<a href="#" id="lnk_quit" onclick="desconn();"><?php echo $LanguageInstance->get('quit')?></a>
 					</div>
 					<div class="user">
 						<div class="details">
 							<span class="name" id="name_person_b"></span>
+							<?php if (!isset($_SESSION[USE_WAITING_ROOM]) || $_SESSION[USE_WAITING_ROOM]!=1) {?>
 							<a href="#info_user_2" id="lnk_user_2" class="infotip" data-rel="<?php echo $LanguageInstance->get('hide_profile')?>"><span><?php echo $LanguageInstance->get('show_profile')?></span></a>
+							<?php } ?>
 						</div>
 						<div id="image_person_b" class="photo" alt="user 2 photo"></div>
 						<div class="user_info" id="info_user_2">
+						<?php if (!isset($_SESSION[USE_WAITING_ROOM]) || $_SESSION[USE_WAITING_ROOM]!=1) {?>
 							<span class="social" title="skype" id="chat_person_b">SkypeUser <span class="icon skype"></span></span>
+						<?php } ?>
 						</div>
 					</div>
 				</div>

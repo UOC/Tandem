@@ -2346,13 +2346,15 @@ class GestorBD {
         }
 
         function getUserName($user_id){
-             $sql = " select fullname from user where id = ".$user_id;
-             $result = $this->consulta($sql);
-             if ($this->numResultats($result) > 0){ 
-                 $names =  $this->obteComArray($result);
-                 return $names[0]['fullname'];
-             }            
-             return false;
+            if ($user_id>0) {
+                 $sql = " select fullname from user where id = ".$this->escapeString($user_id);
+                 $result = $this->consulta($sql);
+                 if ($this->numResultats($result) > 0){ 
+                     $names =  $this->obteComArray($result);
+                     return $names[0]['fullname'];
+                 }            
+             }
+             return '';
         }
 
         /**
@@ -2443,16 +2445,34 @@ class GestorBD {
             $result = $this->consulta("select * from session where id_tandem =".$this->escapeString($tandem_id)." ");
             $data = array();
             if ($this->numResultats($result) > 0){ 
-                $this->consulta("update session set status = 1 where id_tandem = ".$this->escapeString($tandem_id)." ");
-            }else
-                $this->consulta("insert into session(id_tandem,status,created) values(".$this->escapeString($tandem_id).",1,NOW()) ");
+               return $this->updateTandemSession($tandem_id, 1);
+            }else {
+               return $this->consulta("insert into session(id_tandem,status,created) values(".$this->escapeString($tandem_id).",1,NOW()) ");
+            }
          }
          /**
           *  Set as available video session  a tandem (set a 2)
           */
-
          function updateTandemSessionAvailable($tandem_id){
-            return $this->consulta("update session set status = 2 where id_tandem = ".$this->escapeString($tandem_id)." ");
+            return $this->updateTandemSession($tandem_id, 2);
+         }
+
+         /**
+          *  Set as available video session  a tandem (set a 2)
+          */
+         function updateTandemSessionNotAvailable($tandem_id){
+            return $this->updateTandemSession($tandem_id, 0);
+         }
+
+
+         /**
+          * Updates the tandem session
+          * @param  [type] $tandem_id [description]
+          * @param  [type] $status    [description]
+          * @return [type]            [description]
+          */
+         private function updateTandemSession($tandem_id, $status){
+            return $this->consulta("update session set status = ".$this->escapeString($status)." where id_tandem = ".$this->escapeString($tandem_id));
          }
 
          /**
