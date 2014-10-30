@@ -38,7 +38,7 @@ if($response){
 	if(isset($response['tandem_id'])){
 		$tandem_id = $response['tandem_id'];
 	}else
-	$tandem_id = $gestordb->createTandemFromWaiting($response,$user_id,$id_resource_lti);
+	$tandem_id = $gestordb->createTandemFromWaiting($response,$user_id,$id_resource_lti, $_SERVER['HTTP_USER_AGENT']);
 
 	$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
 	echo json_encode(array("tandem_id" => $tandem_id));

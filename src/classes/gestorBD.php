@@ -2025,7 +2025,7 @@ class GestorBD {
     }
 
     //When we find someone to make a tandem, we create the tandem room here and return the id
-    public function createTandemFromWaiting($response,$user_id,$id_resource_lti){
+    public function createTandemFromWaiting($response,$user_id,$id_resource_lti, $user_agent=""){
 
 
     $tandem_id = $this->checkForOpenTandemRooms($user_id,$response['id_exercise'],$response['id_course'],$response['guest_user_id']);
@@ -2034,7 +2034,7 @@ class GestorBD {
        return  $result[0]['id'];
     }else{ 
         //the tandem is not yet created, lets created it and we will be he host.
-        $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", "");               
+        $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", $user_agent);               
          return $tandem_id;        
     }
     }
