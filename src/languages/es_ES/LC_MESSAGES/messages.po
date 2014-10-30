@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-10-19 11:27+0100\n"
+"PO-Revision-Date: 2014-10-30 12:51+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -425,7 +425,7 @@ msgid "Review your partner's contribution"
 msgstr "Valora la intervención de tu compa&ntilde;ero"
 
 msgid "partner_feedback_not_available"
-msgstr "La valoraraci&oacute;n de tu compa&ntilde;ero no esta aun disponible"
+msgstr "La valoraraci&oacute;n de tu compa&ntilde;ero no está aún disponible"
 
 msgid "fill_required_fields"
 msgstr "Rellena todos los campos obligatorios"
@@ -503,7 +503,7 @@ msgid "Indicate other observations"
 msgstr "Indica otras observaciones"
 
 msgid "Rating Partner’s Feedback Form"
-msgstr "Formulario para puntúar la valoración de tu compañero"
+msgstr "Formulario para puntuar la valoración de tu compañero"
 
 msgid "Back to list"
 msgstr "Regresar a la lista"
