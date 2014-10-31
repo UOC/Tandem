@@ -106,7 +106,7 @@ if (!$user_obj || !$course_id) {
 	       ?>
             StartTandemTimer = function(){
                 $("#timeline").show("fast");
-                var minutos = 30;
+                var minutos = 10;
                 var segundos = 0;
                 timerOn(minutos,segundos);
                 timeline.start();
