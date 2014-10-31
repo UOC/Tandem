@@ -2504,6 +2504,19 @@ class GestorBD {
 
          }
 
+         /**
+          * Checks if the external tool video session is available
+          */
+         function checkExternalToolVideoSession($feedback_id){
+
+            $result = $this->consulta("select * from feedback_tandem where id_tandem = id_external_tool and end_external_service IS NOT NULL and id =  ".$this->escapeString($feedback_id)." ");
+            if ($this->numResultats($result) > 0){ 
+               return $this->obteComArray($result);
+            }
+            return false;
+            
+         }
+
 
 }//end of class
 

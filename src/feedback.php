@@ -123,9 +123,12 @@ if (!$user_obj || !$course_id) {
       <?php if ($message){
       	echo $message;
       }?>
-      <p>
-	   	<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100&<?php echo $feedbackDetails->id_external_tool>0? (ID_EXTERNAL.'='. $feedbackDetails->id_external_tool):''?>&<?php echo $feedbackDetails->id_tandem>0? (CURRENT_TANDEM.'='. $feedbackDetails->id_tandem):''?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
-	   </p>
+      <?php  if(!$gestorBD->checkExternalToolVideoSession($id_feedback)){ ?>
+     	 <p>
+			<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100&<?php echo $feedbackDetails->id_external_tool>0? (ID_EXTERNAL.'='. $feedbackDetails->id_external_tool):''?>&<?php echo $feedbackDetails->id_tandem>0? (CURRENT_TANDEM.'='. $feedbackDetails->id_tandem):''?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
+	  	 </p>
+  	 <?php } ?>
+
       <!-- Nav tabs -->
      <div class='row'>
 	     <div class='col-md-12'>
