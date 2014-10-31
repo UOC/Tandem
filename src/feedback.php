@@ -128,7 +128,7 @@ if (!$user_obj || !$course_id) {
      	 if(!empty($feedbackDetails->external_video_url)){ 
       ?>
      	 <p>
-			<button id="viewVideo" onclick="window.open('<?php echo $feedbackDetails->external_video_url;?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
+			<button id="viewVideo" onclick="setJwPlayerVideoUrl('<?php echo $feedbackDetails->external_video_url;?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
 	  	 </p>
   	 	<?php }else{ ?>
   	 	<p>
@@ -326,6 +326,7 @@ $('.sliderTandem').slider({
 	}
 });
 $(document).ready(function(){
+
 	$(".sliderdisabled").slider("disable");	
 	<?php  
 	//We need to translate the star rating plugin.
@@ -345,8 +346,42 @@ $(document).ready(function(){
 	 		echo '$(".nav-tabs a[href=#'.$_REQUEST['tab'].']").tab("show");';
 	 	   }
 	 ?>
+
+	 setJwPlayerVideoUrl = function(url){
+	 	if(url){
+	 		console.log(url);
+		    jwplayer("myElement").setup({
+		        file: url,
+		        image: "http://example.com/uploads/myPoster.jpg",
+		        width: 640,
+		        height: 360,
+		        type: "mp4",
+		    });	
+
+		    $("#jwVideoModal").modal('show');	
+	 	}
+	 }
 } );		
-</script>   
+</script> 
+
+<div class="modal fade" id="jwVideoModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">      
+        <script src="http://jwpsrv.com/library/MjW8iGEHEeSfCBLddj37mA.js"></script>  
+        <div id="myElement">Loading the player...</div>				
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 </body>
 </html>
 <?php  } ?>
