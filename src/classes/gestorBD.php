@@ -2161,6 +2161,18 @@ class GestorBD {
             " where id_tandem =".$this->escapeString($id_tandem));
 
      }
+     /**
+      * Updtes the external_video_url based on id_tandem
+      * @param  [type] $id_tandem      [description]
+      * @param  [type] $external_video_url [description]
+      * @return [type]                   [description]
+      */
+     function updateDownloadVideoUrlFeedbackTandemByTandemId($id_tandem, $external_video_url) {
+
+         return $this->consulta("update  feedback_tandem set external_video_url=". $this->escapeString($external_video_url) . 
+            " where id_tandem =".$this->escapeString($id_tandem));
+
+     }
 
      /**
       * Creates and can update!

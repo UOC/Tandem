@@ -71,6 +71,7 @@ var intTimerNow;
 var limitTimer = 500;
 var limitTimerConn = 1000;
 var node = <?php echo $node;?>;
+var numOfChecksSameNode = 0; //only applies when the cad is bigger than current node
 var ExerFolder = '<?php echo $ExerFolder?>';
 
 
@@ -745,13 +746,31 @@ accion = function(id,number){
 							<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
 								ExerFolder = nextSample;
 								node = node+1;
+								numOfChecksSameNode = 0;
 								clearInterval(intervalUpdateLogin);
 								getInitXML();
 								//location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
 							<?php } else {?>
 							location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
 							<?php } ?>
+						} 
+						<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+						if (node<cad.length-1) {
+							if(isFirstUserEnd==null || isSecondUserEnd==null){ 
+							//If in 5 tryes then 
+								numOfChecksSameNode++;
+								if (numOfChecksSameNode>5) {
+									if (isFirstUserEnd==null) {
+										isFirstUserEnd = "a";
+									}
+									else{
+										isSecondUserEnd = "b";
+									} 
+
+								}
+							}
 						}
+						<?php } ?>
 					}
 				})
 			}
