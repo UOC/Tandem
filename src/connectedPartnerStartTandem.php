@@ -14,6 +14,10 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link media="screen" rel="stylesheet" href="css/default.css" />
 <link rel="stylesheet" type="text/css" href="css/tandem.css" media="all" />
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 
 <script type="text/javascript">
 	startTandemConnectedTandem = function(){
@@ -28,6 +32,9 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 <!--div>
 	<img id="home" src="images/final1.png" width="310" height="85" alt="" />
 </div-->
+<div class='container'>
+<div class='row'>
+<div class='col-md-12'>
 <p></p>
 	<div class="text">
 		<p><?php echo $LanguageInstance->get('You are in a videochat with your partner')?>.</p>
@@ -39,7 +46,7 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 <div class='btn_review'>
 	<button onclick="startTandemConnectedTandem();" class="btn btn-success"><?php echo $LanguageInstance->get('Start tandem now!');?></button>
 </div>
-<br /><br />
+</div></div></div>
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>

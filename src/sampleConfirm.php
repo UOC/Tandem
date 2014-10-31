@@ -821,9 +821,16 @@ if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
 			   }
 			];
 
+			<?php
+
+			 $urlForVideoChat = "ltiConsumer.php?id=".$_SESSION[OPEN_TOOL_ID];
+			 if (file_exists(dirname(__FILE__).'/external_integration.php')) {
+			 	include_once(dirname(__FILE__).'/external_integration.php');
+			 }
+			?>
 			windowVideochat = $.window({
 			   title: "",
-			   url: "ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>",
+			   url: "<?php echo $urlForVideoChat?>",
 			   width: $( document ).width()*0.98,
 			   height: $( document ).height()*0.98,
 			   maxWidth: $( document ).width(),
