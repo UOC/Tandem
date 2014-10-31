@@ -4,22 +4,24 @@ class IntegrationTandemBLTI {
 	
 	const MAX_USER_TANDEM = 2;
 	
-	function getDataExercise($exercise, $die_if_not_found=true, $relative_path='') {
-		//Now we try to get data course
-		$path = '';
-		//20120830 abertranb register the course folder
-		//MODIFIED - 20120927 - abertran to avoid error  A session had already been started - ignoring session_start()
-		if(!isset($_SESSION)) {
-			session_start();
+	function getDataExercise($exercise, $die_if_not_found=true, $relative_path='', $path='') {
+		if ($path=='') {
+			//Now we try to get data course
+			//$path = '';
+			//20120830 abertranb register the course folder
+			//MODIFIED - 20120927 - abertran to avoid error  A session had already been started - ignoring session_start()
+			if(!isset($_SESSION)) {
+				session_start();
+			}
+			// ORIGINAL
+			// session_start();
+			// END
+			if (isset($_SESSION[TANDEM_COURSE_FOLDER])) {
+				$path = $_SESSION[TANDEM_COURSE_FOLDER];
+			}
+			//FIIIII
+			//
 		}
-		// ORIGINAL
-		// session_start();
-		// END
-		if (isset($_SESSION[TANDEM_COURSE_FOLDER])) {
-			$path = $_SESSION[TANDEM_COURSE_FOLDER];
-		}
-		//FIIIII
-		
 		
 		$file = dirname(__FILE__)."/../".$path.$relative_path."/data$exercise.xml";
 		if (!file_exists($file)) {
@@ -150,10 +152,12 @@ class IntegrationTandemBLTI {
 	 * @param String $room
 	 */
 	function endSessionExternalToolXMLUser($user_id,$room,$username=''){  
-		$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+		if (file_exists(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
+			$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 
-		$externalToolClosed = $this->addDataXML($xml, 'externalToolClosed',$username);		
-	  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+			$externalToolClosed = $this->addDataXML($xml, 'externalToolClosed',$username);		
+		  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+		  }
 	}
 	/**
 	 * 
