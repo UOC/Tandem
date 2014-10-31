@@ -2225,6 +2225,7 @@ class GestorBD {
             $feedback->id_tandem = $r[0]['id_tandem'];
             $feedback->id_external_tool = $r[0]['id_external_tool'];
             $feedback->end_external_service = $r[0]['end_external_service'];
+            $feedback->external_video_url = $r[0]['external_video_url'];
             $feedback->id_user = $r[0]['id_user'];
             $feedback->language = $r[0]['language'];
             $feedback->id_partner = $r[0]['id_partner'];
@@ -2514,6 +2515,20 @@ class GestorBD {
             }
             return false;
 
+         }
+
+         /**
+          * Checks if the external tool video session is available
+          */
+         function checkExternalToolVideoSession($feedback_id){
+
+            $result = $this->consulta("select * from feedback_tandem where id_tandem = id_external_tool and external_video_url IS NOT NULL and id =  ".$this->escapeString($feedback_id)." ");
+            if ($this->numResultats($result) > 0){ 
+
+               return $this->obteComArray($result);
+            }
+            return false;
+            
          }
 
 

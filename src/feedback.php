@@ -122,10 +122,27 @@ if (!$user_obj || !$course_id) {
       </div>
       <?php if ($message){
       	echo $message;
-      }?>
-      <p>
-	   	<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100&<?php echo $feedbackDetails->id_external_tool>0? (ID_EXTERNAL.'='. $feedbackDetails->id_external_tool):''?>&<?php echo $feedbackDetails->id_tandem>0? (CURRENT_TANDEM.'='. $feedbackDetails->id_tandem):''?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
-	   </p>
+      } 
+
+ if($feedbackDetails->id_tandem == $feedbackDetails->id_external_tool ) {
+     	 if(!empty($feedbackDetails->external_video_url)){ 
+      ?>
+     	 <p>
+			<button id="viewVideo" onclick="window.open('<?php echo $feedbackDetails->external_video_url;?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
+	  	 </p>
+  	 	<?php }else{ ?>
+  	 	<p>
+  	 		<button class="btn btn-warning" disabled="disabled"><?php echo $LanguageInstance->get('Video is processing') ?></button>
+  	 	</p>
+  	 	<?php } ?>
+  	 
+  	 <?php }else{ ?>
+  	 	 <p>
+			<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100&<?php echo $feedbackDetails->id_external_tool>0? (ID_EXTERNAL.'='. $feedbackDetails->id_external_tool):''?>&<?php echo $feedbackDetails->id_tandem>0? (CURRENT_TANDEM.'='. $feedbackDetails->id_tandem):''?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
+	  	 </p>
+  	 <?php } ?>     	 
+
+
       <!-- Nav tabs -->
      <div class='row'>
 	     <div class='col-md-12'>

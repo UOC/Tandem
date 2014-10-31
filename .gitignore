@@ -5,3 +5,7 @@ src/xml/
 src/tandem_2.0/
 src/config.inc.php
 src/course/
+src/vitaminIntegration.php
+src/classes/utilsVitam.php
+src/external_integration.php
+src/vitamIntegration.php
