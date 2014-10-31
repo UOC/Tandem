@@ -19,7 +19,7 @@ if (!$user_obj) {
 <!DOCTYPE html>
 <html>
 <head>
-
+<meta charset="utf-8">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>

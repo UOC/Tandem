@@ -44,13 +44,14 @@ if(isset($_POST['extra-info-form'])){
 	//first lets make sure they dont already have filled this formulary
 	if(!$firstProfileForm){
 		$gestorBD->consulta("insert into user_portfolio_profile(user_id,data,type,created) values ('".$user_obj->id."','".$data."','first',NOW())");
-		$firstProfileForm = true;
+		$firstProfileForm['data'] = $data;
 	}
 	//if we have this value then we are updating
 	if(!empty($_POST['portfolio_form_id'])){
 		$gestorBD->consulta("update user_portfolio_profile set data ='".$data."' where id= ".$gestorBD->escapeString($_POST['portfolio_form_id'])." ");
-		$firstProfileForm['data'] = $save;
+		$firstProfileForm['data'] = $data;
 	}
+	
 }
 ?>
 <!DOCTYPE html>
@@ -134,7 +135,7 @@ if(isset($_POST['extra-info-form'])){
 	   					case 'B': $skillGrade = $LanguageInstance->get('Very Good');break;
 	   					case 'C': $skillGrade = $LanguageInstance->get('Good');break;
 	   					case 'D': $skillGrade = $LanguageInstance->get('Pass');break;
-	   					case 'F': $skillGrade = $LanguageInstance->get('Fail');break;
+	   					
 	   					default : "none";
 	   				}
 	   				echo ": <strong>".$skillGrade."</strong>";
@@ -254,7 +255,6 @@ if($user_obj->instructor == 1 ){
 						  		<option value="B" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='B')?'selected':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
 						  		<option value="C" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='C')?'selected':''?>><?php echo $LanguageInstance->get('Good')?></option>
 						  		<option value="D" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='D')?'selected':''?>><?php echo $LanguageInstance->get('Pass')?></option>
-						  		<option value="F" <?php echo (isset($firstProfileForm['data']->skills_grade) && $firstProfileForm['data']->skills_grade=='F')?'selected':''?>><?php echo $LanguageInstance->get('Fail')?></option>  		
       		</select>    	
   	</div>
   	<h4><?php echo $LanguageInstance->get('During the course I want to improve my');?></h4>
