@@ -691,8 +691,10 @@ accion = function(id,number){
 					},
 					success: function(xml){
 						var cad = $(xml).find('actions');
-						var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
-						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');
+						/*var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
+						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');*/
+						var isFirstUserEnd = cad[node-1].getAttribute('firstUserEnd');
+						var isSecondUserEnd = cad[node-1].getAttribute('secondUserEnd');
 						if(isFirstUserEnd!=null && isSecondUserEnd==null && isFirstUserEnd!='<?php echo $user;?>'){
 							notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFirstUserEnd+"<?php echo $LanguageInstance->get("txtEndTask");?>");
 							clearInterval(intervalIfNextQuestionAnswered);
@@ -739,8 +741,10 @@ accion = function(id,number){
 					success: function(xml){
 
 						var cad = $(xml).find('actions');
-						var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
-						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');
+						/*var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
+						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');*/
+						var isFirstUserEnd = cad[node-1].getAttribute('firstUserEnd');
+						var isSecondUserEnd = cad[node-1].getAttribute('secondUserEnd');
 						if(isFirstUserEnd!=null && isSecondUserEnd!=null){ 
 							clearInterval(intervalIfNextQuestion);
 							<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
