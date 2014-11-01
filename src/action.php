@@ -1,5 +1,6 @@
 <?php
 function findAttribute($object, $attribute) { 
+	$return = false;
 	foreach($object->attributes() as $a => $b) { 
 		if ($a == $attribute) $return = $b; 
 		if($return) return $return;
@@ -25,11 +26,15 @@ function editXMLConfirm($room,$user,$number,$nextSample){
 		$action->addAttribute('firstUser',$user);
 	}else{
 		//MODIFIED - 20120927 - abertran to avoid error  Use of undefined constant firstUser - assumed 'firstUser' in
-		if($xml->actions[$nextSample]->action[$number]!="" && findAttribute($xml->actions[$nextSample]->action[$number],'firstUser')){
+		if($xml->actions[$nextSample]->action[$number]!="" && $found_user=findAttribute($xml->actions[$nextSample]->action[$number],'firstUser')){
 			//encuentra y existe confirmacion primer usuario
-			$xml->actions[$nextSample]->action[$number]->addAttribute('secondUser',$user);
+			if ($found_user!=$user) {
+				$xml->actions[$nextSample]->action[$number]->addAttribute('secondUser',$user);
+			}
 			//encuentra y no existe confirmacion primer usuario
-		}else $xml->actions[$nextSample]->action[$number]->addAttribute('firstUser',$user);
+		}else {
+			$xml->actions[$nextSample]->action[$number]->addAttribute('firstUser',$user);
+		}
 	}
   	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 }
@@ -54,10 +59,14 @@ function preTimer($room,$user,$nextSample){
 
 function editShowNextQuestion($room,$user,$nextSample){
 	$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
-	if(findAttribute($xml->actions[$nextSample],'firstUserEnd'))
+	if($found_user=findAttribute($xml->actions[$nextSample],'firstUserEnd')) {
+		if ($found_user!=$user) {
 			$xml->actions[$nextSample]->addAttribute('secondUserEnd',$user);
-	else 
-			$xml->actions[$nextSample]->addAttribute('firstUserEnd',$user);
+		}
+	}
+	else {
+		$xml->actions[$nextSample]->addAttribute('firstUserEnd',$user);
+	}
 	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");	
 }
 
