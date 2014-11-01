@@ -1,6 +1,4 @@
 <?php 
-$is_final = true;
-include_once(dirname(__FILE__).'/classes/register_action_user.php');
 require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/utils.php';
 require_once dirname(__FILE__).'/classes/gestorBD.php';
