@@ -1,9 +1,13 @@
 <?php
 function findAttribute($object, $attribute) { 
 	$return = false;
-	foreach($object->attributes() as $a => $b) { 
-		if ($a == $attribute) $return = $b; 
-		if($return) return $return;
+	if ($object) {
+		foreach($object->attributes() as $a => $b) { 
+			if ($a == $attribute) $return = $b; 
+			if($return) return $return;
+		}
+	} else {
+		error_log("findAttribute: is not an object ".serialize($object));
 	}
 }
 
