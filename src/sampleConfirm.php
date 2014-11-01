@@ -754,7 +754,7 @@ accion = function(id,number){
 							location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
 							<?php } ?>
 						} 
-						<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+						<?php /*if (false && isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
 						if (node<cad.length-1) {
 							if(isFirstUserEnd==null || isSecondUserEnd==null){ 
 							//If in 5 tryes then 
@@ -770,7 +770,7 @@ accion = function(id,number){
 								}
 							}
 						}
-						<?php } ?>
+						<?php }*/ ?>
 					}
 				})
 			}
@@ -1023,7 +1023,7 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 		</noscript>
 
 		<div id="head-container">
-			<?php if (isset($_GET['not_init']) || $_GET['not_init']==1) {?>
+			<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
 			<div id="videochatButtons"></div>
 			<?php } ?>
 			<!-- header -->
