@@ -203,7 +203,7 @@ function delete_xml_file($room) {
 		//Netegem la sessio
 		//session_unset();
 		//END
-		$r = unlink($room.".xml");
+		$r = unlink(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 	}
 	return $r;
 		
