@@ -34,12 +34,14 @@ if ($tandem) {
 	} else {
 		$tandemBLTI->editXMLUser($user_obj,$room);
 	}
-	$user_agent = $_SERVER['HTTP_USER_AGENT'];
-	if (!$gestorBD->update_user_guest_tandem($tandem['id'], $user_agent)) {
-		die(show_error('Error updating tandem logged guest user'));
-	}
-	if (!$gestorBD->update_user_guest_tandem_others($tandem)) {
-		die(show_error('Error updating tandem logged guest user'));
+	if ($user_obj->id!=$tandem['id_user_host']) {
+		$user_agent = $_SERVER['HTTP_USER_AGENT'];
+		if (!$gestorBD->update_user_guest_tandem($tandem['id'], $user_agent)) {
+			die(show_error('Error updating tandem logged guest user'));
+		}
+		if (!$gestorBD->update_user_guest_tandem_others($tandem)) {
+			die(show_error('Error updating tandem logged guest user'));
+		}
 	}
 	$extra_params = isset($_GET['not_init'])?'&not_init='.$_GET['not_init']:'';
 	if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 && isset($_GET['return_id'])) {
