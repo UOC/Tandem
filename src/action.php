@@ -104,7 +104,7 @@ function thruTimer($nextSample,$numBtn){
 
 $is_final = false;
 include_once(dirname(__FILE__).'/classes/register_action_user.php');
-$nextSample = $_GET["nextSample"]-1;
+$nextSample = isset($_GET["nextSample"])?$_GET["nextSample"]-1:0;
 $numBtn = isset($_GET["numBtn"])?$_GET["numBtn"]:0;
 
 if($_GET["user"]!="" && $_GET["room"]!=""){
@@ -119,6 +119,12 @@ if($_GET["user"]!="" && $_GET["room"]!=""){
 			case 'SetNextQuestion': editShowNextQuestion($_GET["room"],$_GET["user"],$nextSample);break;
 			
 			case 'map': editXMLMap($_GET["room"],$_GET["user"],$_GET["number"],$nextSample);break;
+			case 'register_action_user_next_task': 
+				//nothing to do because  is in previous lines
+				//$is_final = false;
+				//include_once(dirname(__FILE__).'/classes/register_action_user.php');
+
+			break;
 			default: break;
 		}
 	}

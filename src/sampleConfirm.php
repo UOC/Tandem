@@ -724,6 +724,16 @@ accion = function(id,number){
 				});
 			}
 
+			registerActionNextTask = function(){
+				$.ajax({
+					type: 'GET',
+					url: "action.php",
+					data: {'room':'<?php echo $room;?>','user':'<?php echo $user;?>','node':node,'tipo':'register_action_user_next_task'},
+					dataType: "xml",
+					success: function(){
+					}
+				});
+			}
 			checkIfPass2NextQuestionToJump = function(){
 				$.ajax({
 					type: 'GET',
@@ -752,8 +762,10 @@ accion = function(id,number){
 								node = node+1;
 								numOfChecksSameNode = 0;
 								clearInterval(intervalUpdateLogin);
+								registerActionNextTask();
 								getInitXML();
-								//location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
+								//Register action
+								
 							<?php } else {?>
 							location.href=classOf+'.php?room=<?php echo $room;?>&user=<?php echo $user;?>&nextSample='+nextSample+'&node=<?php echo $node+2;?>&data=<?php echo $data;?>';
 							<?php } ?>
@@ -784,6 +796,30 @@ accion = function(id,number){
 showFinishedAlert = function(){
 	endOfTandem=1;
 	$.colorbox({href:"end.php?room=<?php echo $room;?>",escKey:true,overlayClose:false,onLoad:function(){$('#cboxClose').hide();}});
+	try {
+		
+		if (intervalIfNextQuestionAnswered) {
+			clearInterval(intervalIfNextQuestionAnswered);
+		}
+		if (intervalUpdateLogin) {
+			clearInterval(intervalUpdateLogin);
+		}
+		if (intervalTimerAction) {
+			clearInterval(intervalTimerAction);
+		}
+		if (intervalIfNextQuestion) {
+			clearInterval(intervalIfNextQuestion);
+		}
+		if (intervalIfNextQuestionAnswered) {
+			clearInterval(intervalIfNextQuestionAnswered);
+		}
+		if (intervalUpdateAction) {
+			clearInterval(intervalUpdateAction);
+		}
+	} catch (e) {
+
+	}
+
 }
 //shows central image
 showImage = function(id){
