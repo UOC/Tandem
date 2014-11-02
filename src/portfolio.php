@@ -4,6 +4,17 @@ require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';
 require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
 
+function getSkillsLevel($skills_grade, $LanguageInstance) {
+	$skillGrade = '';
+	switch($skills_grade){ 
+		case 'A': $skillGrade = $LanguageInstance->get('Excellent');break;
+		case 'B': $skillGrade = $LanguageInstance->get('Very Good');break;
+		case 'C': $skillGrade = $LanguageInstance->get('Good');break;
+		case 'D': $skillGrade = $LanguageInstance->get('Pass');break;
+		case 'F': $skillGrade = $LanguageInstance->get('Fail');break;
+	}
+	return $skillGrade;
+}
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
 $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
@@ -30,7 +41,6 @@ if (!$user_obj) {
 
 //lets check if the user has filled the first profile form.
 $firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);
-
 //lets save the registration form
 if(isset($_POST['extra-info-form'])){
     $inputs  = array("skills_grade","fluency","accuracy","improve_pronunciation","improve_vocabulary","improve_grammar","s2_pronunciation_txt","s2_vowels_txt","s2_consonants_txt","s2_stress_txt","s2_intonation_txt","s2_vocabulary_txt","s2_vocab_txt","s2_false_friends_txt","s2_grammar_txt","s2_verb_agreement_txt","s2_noun_agreement_txt","s2_sentence_txt","s2_connectors_txt","s2_aspects_txt");
@@ -51,6 +61,8 @@ if(isset($_POST['extra-info-form'])){
 		$gestorBD->consulta("update user_portfolio_profile set data ='".$data."' where id= ".$gestorBD->escapeString($_POST['portfolio_form_id'])." ");
 		$firstProfileForm['data'] = $data;
 	}
+	//Get the previous stored data
+	$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);
 	
 }
 ?>
@@ -130,15 +142,7 @@ if(isset($_POST['extra-info-form'])){
 	   			<div class="list-group-item">
 	   				<?php 
 	   				echo $LanguageInstance->get('Grade your speaking skills');
-	   				switch($firstProfileForm['data']->skills_grade){ 
-	   					case 'A': $skillGrade = $LanguageInstance->get('Excellent');break;
-	   					case 'B': $skillGrade = $LanguageInstance->get('Very Good');break;
-	   					case 'C': $skillGrade = $LanguageInstance->get('Good');break;
-	   					case 'D': $skillGrade = $LanguageInstance->get('Pass');break;
-	   					
-	   					default : "none";
-	   				}
-	   				echo ": <strong>".$skillGrade."</strong>";
+	   				echo ": <strong>".getSkillsLevel($firstProfileForm['data']->skills_grade, $LanguageInstance)."</strong>";
 	   				?>
 	   			</div> 
 	   			<div class="list-group-item">
@@ -157,17 +161,19 @@ if(isset($_POST['extra-info-form'])){
   			<ul class="list_group">
 	   			<li class="list-group-item">	   			 
 	   			<?php echo $LanguageInstance->get('My pronunciation');
-	   				echo ": <strong>".$firstProfileForm['data']->improve_pronunciation."</strong>";
+	   				echo ": <strong>".isset($firstProfileForm['data']->improve_pronunciation)?$firstProfileForm['data']->improve_pronunciation:''."</strong>";
 	   			?>
 	   			</li> 
 	   			<li class="list-group-item">
 	   			<?php echo $LanguageInstance->get('My vocabulary');
-	   				echo ": <strong>".$firstProfileForm['data']->improve_vocabulary."</strong>";
+	   				echo ": <strong>".!empty($firstProfileForm['data']->improve_vocabulary)?
+	   				$firstProfileForm['data']->improve_vocabulary:''."</strong>";
 	   			?>
 	   			</li> 
 	   			<li class="list-group-item">
 	   			<?php echo $LanguageInstance->get('My grammar');
-	   				echo ": <strong>".$firstProfileForm['data']->improve_grammar."</strong>";
+	   				echo ": <strong>".!empty($firstProfileForm['data']->improve_grammar)?
+	   				$firstProfileForm['data']->improve_grammar:''."</strong>";
 	   			?>
 	   			</li> 
   			</ul>
@@ -221,11 +227,11 @@ if($user_obj->instructor == 1 ){
 	  	if(empty($f['feedback_form'])){
 	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="top" data-toggle="tooltip" ';
 	  	}
-	  	echo "<tr $tr><td class='text-center'>".$f['overall_grade']."</td>
+	  	echo "<tr $tr><td class='text-center'>".getSkillsLevel($f['overall_grade'], $LanguageInstance)."</td>
 	  			  <td>".$f['created']."</td>
 	  			  <td>".$f['total_time']."</td>
 	  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
-	  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >View</button></td>
+	  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>
 	  		  </tr>";	
 	  	}
 	  }

@@ -60,7 +60,7 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 	<div class="text">
 		<p><?php echo $LanguageInstance->get('You are in a videochat with your partner')?>.</p>
 		<p><?php echo $LanguageInstance->get('Videochat recording is started')?></p>
-		<p><?php echo $LanguageInstance->get('You will redirect to tandem activity in');?> <span id="startNowTandem"></span><?php echo $LanguageInstance->get('seconds');?>.</p>
+		<p><?php echo $LanguageInstance->get('You will redirect to tandem activity in');?> <span id="startNowTandem"></span> <?php echo $LanguageInstance->get('seconds');?>.</p>
 		<p><?php echo $LanguageInstance->get('During the session you will be able to show tandem or videochat. Look at the buttons on the top');?>.</p>
 	</div>
 <p></p>
