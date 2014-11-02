@@ -18,11 +18,34 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 
 
 <script type="text/javascript">
+	var intTimerNow;
 	startTandemConnectedTandem = function(){
+		if (intTimerNow) {
+			clearInterval(intTimerNow);
+		}
 		parent.$.fn.startTandemVCEvent();
 		//parent.$.fn.colorbox.close();
 	}
-	setTimeout("startTandemConnectedTandem", 30);
+
+	//setTimeout("startTandemConnectedTandem", 30);
+	var isNowOn=0;
+	function setTime(itNow){
+		isNowOn=1;
+		intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
+	}
+	function getTimeNow(itNow){
+		var tNow;
+		itNow--;
+		if(itNow<10) tNow ="0"+itNow;
+		else tNow = itNow;
+			$("#startNowTandem").html(tNow);
+			if(itNow<=1){ 
+				startTandemConnectedTandem();
+			}
+			else setTime(itNow);
+	}
+	setTime(30);
+
 </script>
 <!-- End Save for Web Styles -->
 </head>
@@ -37,8 +60,8 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 	<div class="text">
 		<p><?php echo $LanguageInstance->get('You are in a videochat with your partner')?>.</p>
 		<p><?php echo $LanguageInstance->get('Videochat recording is started')?></p>
-		<p><?php echo $LanguageInstance->get('You will redirect to tandem activity in 30 seconds');?>.</p>
-		<p><?php echo $LanguageInstance->get('During the session you will be able to change from videochat to tandem');?>.</p>
+		<p><?php echo $LanguageInstance->get('You will redirect to tandem activity in');?> <span id="startNowTandem"></span><?php echo $LanguageInstance->get('seconds');?>.</p>
+		<p><?php echo $LanguageInstance->get('During the session you will be able to show tandem or videochat. Look at the buttons on the top');?>.</p>
 	</div>
 <p></p>
 <div class='btn_review'>
