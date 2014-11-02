@@ -43,7 +43,7 @@ if (!$user_obj || !$course_id) {
 	if(!empty($areThereTandems)){
 		//ok so we are here cause we have someone waiting for one of our exercices.
 		$tId = $gestorBD->createTandemFromWaiting($areThereTandems[0],$user_obj->id,$id_resource_lti);
-		header("location: accessTandem.php?id=".$tId."&not_init=1");
+		header("location: accessTandem.php?id=".$tId);
 		die();
 	}*/
 	
@@ -95,7 +95,7 @@ if (!$user_obj || !$course_id) {
 	        		dataType: "JSON",
 	        		success: function(json){	        			
 	        			if(json  &&  typeof json.tandem_id !== "undefined"){
-	        			window.location.replace("accessTandem.php?id="+json.tandem_id+"&not_init=1");                             
+	        			window.location.replace("accessTandem.php?id="+json.tandem_id);
 						clearInterval(interval);
 	        			}
 	        		}
@@ -201,7 +201,9 @@ if (!$user_obj || !$course_id) {
 	                <img id="home" src="images/final1.png"alt="" />
 	        </div>
 	        <div class="text">
-	                <p><?php echo $LanguageInstance->get('Time expired');?></p>
+	                <p><?php echo $LanguageInstance->get('Time expired');?>
+	                <span><i><?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>
+	                </p>
 	        </div>
 	        <div class="">
 	          <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" alt="" /></a>

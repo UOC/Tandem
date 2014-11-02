@@ -55,7 +55,7 @@ else $Otheruser='a';
 	<script type="text/javascript" src="js/jquery.infotip.min.js"></script>
 	<script type="text/javascript" src="js/jquery.timeline-clock.min.js"></script>
 	<?php include_once dirname(__FILE__).'/js/google_analytics.php';?>
-	<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
+	<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 	<link type="text/css" href="js/window/css/jquery.window.css" rel="stylesheet" />
 	<script src="js/jquery-ui-1.9.2.custom.min.js"></script>
 	<?php }?>
@@ -790,25 +790,22 @@ showImage = function(id){
 	$('#image').show('slow');
 }
 
-<?php if (!isset($_GET['not_init']) || $_GET['not_init']!=1) {?>
+<?php if (!isset($_SESSION[USE_WAITING_ROOM]) || $_SESSION[USE_WAITING_ROOM]==0) {?>
 	getInitXML();
 <?php } else { 
 //Store in database
-if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {
-		//Lets go to insert the current tandem data
-		$user_language = $_SESSION[LANG];
-		$user_obj = $_SESSION[CURRENT_USER];
-		$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
-		$id_partner = $tandem['id_user_guest']==$user_obj->id?$tandem['id_user_host']:$tandem['id_user_guest'];
-		$id_feedback = $gestorBDSample->createFeedbackTandem($tandem['id'], 0, $user_obj->id, $user_language, $id_partner, $other_language);
-		if (!$id_feedback) {
-			die ($LanguageInstance->get('There are a problem storing data, try it again'));		
-		}
-		$_SESSION[ID_FEEDBACK] = $id_feedback;
-		//Put check sesssion to false
-		$gestorBDSample->updateTandemSessionNotAvailable($tandem['id']);
-		//die("updated!!!");
+	//Lets go to insert the current tandem data
+	$user_language = $_SESSION[LANG];
+	$user_obj = $_SESSION[CURRENT_USER];
+	$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
+	$id_partner = $tandem['id_user_guest']==$user_obj->id?$tandem['id_user_host']:$tandem['id_user_guest'];
+	$id_feedback = $gestorBDSample->createFeedbackTandem($tandem['id'], 0, $user_obj->id, $user_language, $id_partner, $other_language);
+	if (!$id_feedback) {
+		die ($LanguageInstance->get('There are a problem storing data, try it again'));		
 	}
+	$_SESSION[ID_FEEDBACK] = $id_feedback;
+	//Put check sesssion to false
+	$gestorBDSample->updateTandemSessionNotAvailable($tandem['id']);
 	
 
 	?>
@@ -1027,7 +1024,7 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 		</noscript>
 
 		<div id="head-container">
-			<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
+			<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 			<div id="videochatButtons"></div>
 			<?php } ?>
 			<!-- header -->
@@ -1148,7 +1145,7 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 	<!-- /modals -->
 	<!-- /footer -->
 	<script type="text/javascript" src="js/tandem.js"></script>
-	<?php if (isset($_GET['not_init']) && $_GET['not_init']==1) {?>
+	<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 	<!--link media="screen" rel="stylesheet" href="css/jquery_modal.css" /-->
 	<script type="text/javascript" src="js/window/jquery.window.min.js"></script>
 	<?php }?>

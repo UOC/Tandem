@@ -43,7 +43,6 @@ if ($tandem) {
 			die(show_error('Error updating tandem logged guest user'));
 		}
 	}
-	$extra_params = isset($_GET['not_init'])?'&not_init='.$_GET['not_init']:'';
 	if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 && isset($_GET['return_id'])) {
 		//Lets go to insert the current tandem data
 		$user_language = $_SESSION[LANG];
@@ -58,7 +57,7 @@ if ($tandem) {
 	}
 	
 
-	header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise.$extra_params);
+	header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise);
 } else {
 	echo $LanguageInstance->get('no estas autoritzat');
 }

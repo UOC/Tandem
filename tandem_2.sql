@@ -307,6 +307,7 @@ CREATE TABLE `waiting_room_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_waiting_room` bigint(20) NOT NULL,
   `id_user` bigint(11) NOT NULL,
+  `user_agent` varchar(255) null,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -324,6 +325,7 @@ CREATE TABLE `waiting_room_user_history` (
   `id_user` bigint(11) NOT NULL,
   `status` enum('waiting','assigned','lapsed','give_up') COLLATE utf8_bin NOT NULL,
   `id_tandem` int(11) DEFAULT NULL COMMENT 'only when user has partner and start tandem',
+  `user_agent` varchar(255) null,
   `created` datetime NOT NULL,
   `created_history` datetime NOT NULL,
   PRIMARY KEY (`id`)
