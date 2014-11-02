@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-10-30 13:22+0100\n"
+"PO-Revision-Date: 2014-11-02 11:59+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -410,10 +410,10 @@ msgid "Time expired"
 msgstr "El tiempo se ha acabado"
 
 msgid "waiting_for_tandem_assignment"
-msgstr "Tiempo de espera para asignar"
+msgstr "Esperando a que una pareja para hacer tándem"
 
 msgid "number_of_people_waiting_for_tandem"
-msgstr "N&uacute;mero de personas esperando"
+msgstr "N&uacute;mero de personas esperando de tú mismo idioma"
 
 msgid "check_if_feedbacks_are_submitted"
 msgstr "Verificar si la otra persona ha enviado el feedback"
@@ -458,7 +458,7 @@ msgid "Good"
 msgstr "Bien"
 
 msgid "Pass"
-msgstr "Justo"
+msgstr "Sufiente"
 
 msgid "Fail"
 msgstr "Suspenso"
@@ -477,6 +477,9 @@ msgstr "Puntúa la valoración de tu compañero"
 
 msgid "Comments"
 msgstr "Comentarios"
+
+msgid "Indicate comments"
+msgstr "Indica comentarios"
 
 msgid "Pronunciation"
 msgstr "Pronunciación"
@@ -510,3 +513,109 @@ msgstr "Regresar a la lista"
 
 msgid "The videochat recording will be stop automatically"
 msgstr "La grabación de videochat se parará automáticamente"
+
+msgid "You are in a videochat with your partner"
+msgstr "Estás en un videochat con tu pareja"
+
+msgid "Videochat recording is started"
+msgstr "La sesión de vídeo se está grabando"
+
+msgid "You will redirect to tandem activity in"
+msgstr "Serás redirigido a la actividad en"
+
+msgid "seconds"
+msgstr "segundos"
+
+msgid ""
+"During the session you will be able to show tandem or videochat. Look at the "
+"buttons on the top"
+msgstr ""
+"Durante la sesión podrás mostrar el tándem o videochat. Fíjate en los "
+"botones de la parte superior"
+
+msgid "Start tandem now!"
+msgstr "Empezar tándem ya!"
+
+msgid "If you do not find partner in 10 minutes we recommend you access later"
+msgstr ""
+"Si no encuentras pareja en 10 minutos te recomendamos que te conectes más "
+"tarde"
+
+msgid "Check other participants' availability in the classroom calendar"
+msgstr ""
+"Mira la disponibilidad de otros participantes en el calendario del curso"
+
+msgid "Tandem Statistics"
+msgstr "Estadístias Tandem"
+
+msgid "Data saved successfully"
+msgstr "Los datos se han guardado correctamente"
+
+msgid "The information is stored you can only review it"
+msgstr "La información sólo se puede consultar"
+
+msgid "Video is processing"
+msgstr "El vídeo se está procesando"
+
+msgid "Send"
+msgstr "Envía"
+
+msgid "Video player"
+msgstr "Reproductor de vídeo"
+
+msgid "Loading the player"
+msgstr "Cargando el reproductor"
+
+msgid "Close"
+msgstr "Cerrar"
+
+msgid "Go to the ranking"
+msgstr "Ir al ranking"
+
+msgid "View your profile"
+msgstr "Ver tu perfil"
+
+msgid "My portfolio feedback"
+msgstr "Mi portafolio"
+
+msgid ", your position in the ranking is "
+msgstr ", tú posición en el ranquin es "
+
+msgid "Grade your speaking skills"
+msgstr "Evalúa tu expresión oral"
+
+msgid "My pronunciation"
+msgstr "My pronunciación"
+
+msgid "My vocabulary"
+msgstr "My vocabulario"
+
+msgid "My grammar"
+msgstr "My gramática"
+
+msgid "Select a user to view their portfolio"
+msgstr "Selecciona un usuario para ver su portafolio"
+
+msgid "Created"
+msgstr "Creado"
+
+msgid "Total Duration"
+msgstr "Duración Toal"
+
+msgid "Duration per task"
+msgstr "Duración por tarea"
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Insert your feedback"
+msgstr "Indica tu valoración"
+
+msgid "Personal profile"
+msgstr "Perfil personal"
+
+msgid "During the course I want to improve my"
+msgstr "Durante el curso quiero mejorar mi"
+
+msgid "Save changes"
+msgstr "Guardar los cambios"

@@ -100,7 +100,7 @@ if(isset($_POST['extra-info-form'])){
 		<div class='col-md-6'>
 			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';"><?php echo $LanguageInstance->get('Go to the ranking') ?></button>
 			<?php if(empty($firstProfileForm)){ ?>
-				<button class="btn btn-success" type='button' id='viewProfileForm'><?php echo $LanguageInstance->get('View and modify your profile form') ?></button>
+				<button class="btn btn-success" type='button' id='viewProfileForm'><?php echo $LanguageInstance->get('View your profile') ?></button>
 			<?php } ?>
 		</div>
 		<div class='col-md-6 text-right'>
@@ -242,7 +242,7 @@ if($user_obj->instructor == 1 ){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?php echo $LanguageInstance->get('Personal portfolio profile');?></h4>
+        <h4 class="modal-title" id="myModalLabel"><?php echo $LanguageInstance->get('Personal profile');?></h4>
       </div>
       <div class="modal-body">
      <!-- EXTRA INFO FORM  -->

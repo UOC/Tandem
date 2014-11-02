@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-10-19 11:13+0100\n"
+"PO-Revision-Date: 2014-11-02 11:59+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -407,10 +407,10 @@ msgid "Time expired"
 msgstr "Time expired"
 
 msgid "waiting_for_tandem_assignment"
-msgstr "Waiting tandem time for assignment"
+msgstr "Waiting for a partner to do tandem"
 
 msgid "number_of_people_waiting_for_tandem"
-msgstr "Number of people waiting for a tandem"
+msgstr "Number of people waiting for a tandem of same language"
 
 msgid "check_if_feedbacks_are_submitted"
 msgstr "Check if other feedback is already sent"
@@ -475,6 +475,9 @@ msgstr "Rate your partners feedback"
 msgid "Comments"
 msgstr "Comments"
 
+msgid "Indicate comments"
+msgstr "Indicate comments"
+
 msgid "Pronunciation"
 msgstr "Pronunciation"
 
@@ -507,3 +510,106 @@ msgstr "Back to list"
 
 msgid "The videochat recording will be stop automatically"
 msgstr "The videochat recording will be stop automatically"
+
+msgid "You are in a videochat with your partner"
+msgstr "You are in a videochat with your partner"
+
+msgid "Videochat recording is started"
+msgstr "Videochat recording is started"
+
+msgid "You will redirect to tandem activity in"
+msgstr "You will redirect to tandem activity in"
+
+msgid "seconds"
+msgstr "seconds"
+
+msgid ""
+"During the session you will be able to show tandem or videochat. Look at the "
+"buttons on the top"
+msgstr ""
+"During the session you will be able to show tandem or videochat. Look at the "
+"buttons on the top"
+
+msgid "Start tandem now!"
+msgstr "Start tandem now!"
+
+msgid "If you do not find partner in 10 minutes we recommend you access later"
+msgstr "If you do not find partner in 10 minutes we recommend you access later"
+
+msgid "Check other participants' availability in the classroom calendar"
+msgstr "Check other participants' availability in the classroom calendar"
+
+msgid "Tandem Statistics"
+msgstr "Tandem Statistics"
+
+msgid "Data saved successfully"
+msgstr "Data saved successfully"
+
+msgid "The information is stored you can only review it"
+msgstr "The information is stored you can only review it"
+
+msgid "Video is processing"
+msgstr "Video is processing"
+
+msgid "Send"
+msgstr "Send"
+
+msgid "Video player"
+msgstr "Video player"
+
+msgid "Loading the player"
+msgstr "Loading the player"
+
+msgid "Close"
+msgstr "Close"
+
+msgid "Go to the ranking"
+msgstr "Go to the ranking"
+
+msgid "View your profile"
+msgstr "View your profile"
+
+msgid "My portfolio feedback"
+msgstr "My portfolio"
+
+msgid ", your position in the ranking is "
+msgstr ", your position in the ranking is "
+
+msgid "Grade your speaking skills"
+msgstr "Grade your speaking skills"
+
+msgid "My pronunciation"
+msgstr "My pronunciation"
+
+msgid "My vocabulary"
+msgstr "My vocabulary"
+
+msgid "My grammar"
+msgstr "My grammar"
+
+msgid "Select a user to view their portfolio"
+msgstr "Select a user to view their portfolio"
+
+msgid "Created"
+msgstr "Created"
+
+msgid "Total Duration"
+msgstr "Total Duration"
+
+msgid "Duration per task"
+msgstr "Duration per task"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Insert your feedback"
+msgstr "Insert your feedback"
+
+msgid "Personal profile"
+msgstr "Personal profile"
+
+msgid "During the course I want to improve my"
+msgstr "During the course I want to improve my"
+
+msgid "Save changes"
+msgstr "Save changes"

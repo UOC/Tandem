@@ -169,15 +169,15 @@ if (!$user_obj || !$course_id) {
 					<!-- TANDEM MODAL -->
 					<div class='waitingForTandem'>
 						<img class='loaderImg' src="css/images/loading_2.gif" />
-						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?></span>
-						<span><?php echo $LanguageInstance->get("number_of_people_waiting_for_tandem")." ".$numPeopleWaitingForTandem;?> </span>
+						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>. <?php echo $LanguageInstance->get("number_of_people_waiting_for_tandem")." ".$numPeopleWaitingForTandem;?> </span>
+						<span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>
 					</div>
 					<div class='manageSection'>
  					<?php  					
  					if ($user_obj->instructor==1 || $user_obj->admin==1) { ?>                            
                                 <div class="clear">
-                                <a href='manage_exercises_tandem.php'>Manager Exercises</a>
-                                <a href='statistics_tandem.php'>Statistics Tandem</a>
+                                <a href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
+                                <a href='statistics_tandem.php'><?php echo $LanguageInstance->get("Tandem Statistics");?></a>
                             </div>                                
                      <?php } ?>                            
 					</div>
@@ -196,18 +196,17 @@ if (!$user_obj || !$course_id) {
 		<!-- /main-container -->
 	</div>
     <div id="modal-end-task" class="modal">
-        <script>
-                 
-        </script>
-        <div>
-                <img id="home" src="images/final1.png" width="310" height="85" alt="" />
-        </div>
-        <div class="text">
-                <p><?php echo $LanguageInstance->get('Time expired');?></p>
-        </div>
-        <div class="">
-          <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" width="310" height="205" alt="" /></a>
-        </div>
+    	<div align="center">
+	        <div>
+	                <img id="home" src="images/final1.png"alt="" />
+	        </div>
+	        <div class="text">
+	                <p><?php echo $LanguageInstance->get('Time expired');?></p>
+	        </div>
+	        <div class="">
+	          <a href="#" onclick="desconn();"><img id="home" src="images/final2.png" alt="" /></a>
+	        </div>
+	    </div>    
     </div>
 	<!-- /wrapper -->
 	<!-- footer -->

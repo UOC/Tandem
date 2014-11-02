@@ -215,7 +215,7 @@ if (!$user_obj || !$course_id) {
 						  <div class="form-group">
 						    <label for="partner_comment" class="control-label"><?php echo $LanguageInstance->get('Comments')?>:</label>
 						    <div class="input-group">
-						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Comments')?>"  <?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo "readonly";} ?> ><?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo $feedbackDetails->rating_partner_feedback_form->partner_comment;}?></textarea>
+						      <textarea rows="3" cols="200" class="form-control" id="partner_comment"  name="partner_comment" placeholder="<?php echo $LanguageInstance->get('Indicate comments')?>"  <?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo "readonly";} ?> ><?php if(!empty($feedbackDetails->rating_partner_feedback_form->partner_comment)){ echo $feedbackDetails->rating_partner_feedback_form->partner_comment;}?></textarea>
 						    </div>
 						  </div>
 						   <input type='hidden' name='rating_partner' value='1' />
@@ -352,7 +352,7 @@ $(document).ready(function(){
 	 		console.log(url);
 		    jwplayer("myElement").setup({
 		        file: url,
-		        image: "http://example.com/uploads/myPoster.jpg",
+		        //image: "http://example.com/uploads/myPoster.jpg",
 		        width: 640,
 		        height: 360,
 		        type: "mp4",
@@ -368,16 +368,15 @@ $(document).ready(function(){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Modal title</h4>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"><?php echo $LanguageInstance->get('Close')?></span></button>
+        <h4 class="modal-title"><?php echo $LanguageInstance->get('Video player')?></h4>
       </div>
       <div class="modal-body">      
         <script src="http://jwpsrv.com/library/MjW8iGEHEeSfCBLddj37mA.js"></script>  
-        <div id="myElement">Loading the player...</div>				
+        <div id="myElement"><?php echo $LanguageInstance->get('Loading the player')?>...</div>				
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $LanguageInstance->get('Close')?></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
