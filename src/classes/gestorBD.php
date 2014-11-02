@@ -1338,7 +1338,7 @@ class GestorBD {
      */
     
    
-    public function insertUserIntoWaitingRoom($id_waiting_room, $language, $idCourse, $idExercise, $idUser) {
+    public function insertUserIntoWaitingRoom($id_waiting_room, $language, $idCourse, $idExercise, $idUser, $user_agent) {
         $result = false;
         
         //TODO check if is 
@@ -1346,7 +1346,7 @@ class GestorBD {
         $resultSQL = $this->consulta($sql);
         if ($this->numResultats($resultSQL)<=0){ 
             //Insert into waiting_room_user
-            $sql = 'INSERT INTO waiting_room_user (id_waiting_room, id_user,created) VALUES (' . $id_waiting_room . ',' . $idUser . ',now())';
+            $sql = 'INSERT INTO waiting_room_user (id_waiting_room, id_user, user_agent, created) VALUES (' . $id_waiting_room . ',' . $idUser . ',' . $this->escapeString($user_agent) . ',now())';
             $resultSQL = $this->consulta($sql);
             if ($resultSQL) {
                 $result = $this->addOrRemoveUserToWaitingRoom($id_waiting_room, +1);
@@ -1459,9 +1459,10 @@ class GestorBD {
         if ($this->numResultats($result) > 0){
             $object = $this->obteObjecteComArray($result);
             $id_user_wating_room = $object['id'];
+            $user_agent = $object['user_agent_guest'];
             $created = $object['created'];
             //2.Insert in history table
-            $sqlInsert = 'INSERT INTO `waiting_room_user_history` (`id`, `id_waiting_room`, `id_user`, `status`, `id_tandem` , `created`, `created_history`) VALUES (NULL, ' . $this->escapeString($id_waiting_room) . ', ' . $this->escapeString($id_user) . ', '. $this->escapeString($status) .', ' . $this->escapeString($tandemID) . ', ' . $this->escapeString($created) . ', NOW())';
+            $sqlInsert = 'INSERT INTO `waiting_room_user_history` (`id`, `id_waiting_room`, `id_user`, `status`, `id_tandem` , `user_agent`, `created`, `created_history`) VALUES (NULL, ' . $this->escapeString($id_waiting_room) . ', ' . $this->escapeString($id_user) . ', '. $this->escapeString($status) .', ' . $this->escapeString($tandemID) . ', ' . $this->escapeString($user_agent) . ',' . $this->escapeString($created) . ', NOW())';
             if ($this->consulta($sqlInsert)){
                 //3. Delete from waiting_room_user
                 $sqlDelete = 'DELETE FROM `waiting_room_user` WHERE `id` = ' . $this->escapeString($id_user_wating_room);
@@ -1594,9 +1595,12 @@ class GestorBD {
      * @param type $courseID
      * @param type $exerciseID
      */
-    public function offer_exercise($language, $courseID, $exerciseID,$idUser)
+    public function offer_exercise($language, $courseID, $exerciseID,$idUser, $user_agent='')
     {
         $ok = false;
+        if ($user_agent=='') {
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        }
 
         //return 'Dins offer exercise: '.$language.'-'.$courseID.'-'.$exerciseID;
         //TODO delete it
@@ -1628,7 +1632,7 @@ class GestorBD {
             
         }
         if ($ok) {
-            $this->insertUserIntoWaitingRoom($waiting_room_id, $language, $courseID, $exerciseID, $idUser);
+            $this->insertUserIntoWaitingRoom($waiting_room_id, $language, $courseID, $exerciseID, $idUser, $user_agent);
         }
         return $ok;
     }
@@ -1890,7 +1894,7 @@ class GestorBD {
 
          //lets see if there anyone waiting that we can do a tandem with
          foreach($exs as $id_ex){            
-            $sql = "select wr.*,wru.id_user as guest_user_id from waiting_room as wr
+            $sql = "select wr.*,wru.id_user as guest_user_id, wru.user_agent as user_agent from waiting_room as wr
                     inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
              where wr.language='".$otherlanguage."' 
              and wr.id_course ='".$id_course."' 
@@ -1954,9 +1958,12 @@ class GestorBD {
      * @param type $courseID
      * @param type $exerciseID
      */
-    public function offer_exercise_autoassign($language, $courseID, $exerciseID,$idUser)
+    public function offer_exercise_autoassign($language, $courseID, $exerciseID,$idUser, $user_agent='')
     {
         $ok = false;
+        if ($user_agent=='') {
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        }
 
         $sqlDelete = 'delete from waiting_room where number_user_waiting = 0 and id_course = '.$courseID.' and id_exercise = ' . $exerciseID;
         $resultDelete = $this->consulta($sqlDelete);
@@ -1984,7 +1991,7 @@ class GestorBD {
             
         }
         if ($ok) {
-            $this->insertUserIntoWaitingRoom($waiting_room_id, $language, $courseID, $exerciseID, $idUser);
+            $this->insertUserIntoWaitingRoom($waiting_room_id, $language, $courseID, $exerciseID, $idUser, $user_agent);
         }
         return $ok;
     }
@@ -2001,8 +2008,8 @@ class GestorBD {
 
             foreach($resultSelect as $key){
                 //insert into waiting_room_user_history
-                $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,created,created_history) 
-                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."','".$key['created']."',NOW()) ");               
+                $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,user_agent, created,created_history) 
+                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."','".$this->escapeString($key['user_agent'])."','".$key['created']."',NOW()) ");               
                 if(mysql_affected_rows($this->conn) > 0){
                     
                     //once we have copied it to the history , we delete it.
@@ -2035,6 +2042,7 @@ class GestorBD {
     }else{ 
         //the tandem is not yet created, lets created it and we will be he host.
         $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", $user_agent);               
+        $this->update_user_guest_tandem($tandem_id, $response['user_agent']);
          return $tandem_id;        
     }
     }
@@ -2296,8 +2304,8 @@ class GestorBD {
                $j=0;$i=0;
 
                foreach ($task_tandemsSubTime as $question) {   
-                    $j++;
-                    $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
+                    //$j++;
+                    /*$secondsSt = isset($question['total_time']) ? $question['total_time']:0;
                     $minutesSt = $this->minutes($secondsSt);
                     $total_timeSt = $this->time_format($secondsSt);
                     if(!isset($subTimer[$i])) $subTimer[$i]="00:00:00";
@@ -2305,8 +2313,18 @@ class GestorBD {
                         $subT=explode(":",$total_timeSt);
                         $subT[0]>0 ? $subTimer[$i]=$subT[0].":".$subT[1].":".$subT[2] : $subTimer[$i]=$subT[1].":".$subT[2];
                     }
-                    if($j%2==0) $i++;
-                 }
+                    if($j%2==0) $i++;*/
+                    $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
+                    $obj = $this->secondsToTime($secondsSt);
+                    $time = '';
+                    if ($obj['h']>0) {
+                        $time .= ($obj['h']<10?'0':'').$obj['h'].':';
+                    }
+                    $time .= ($obj['m']<10?'0':'').$obj['m'].':';
+                    $time .= ($obj['s']<10?'0':'').$obj['s'];
+                    $subTimer[$i] = $time;
+                    $i++;
+                }
              $ft['total_time'] = $subTimerP;
              $ft['total_time_tasks'] = $subTimer;
 
@@ -2324,6 +2342,28 @@ class GestorBD {
         return $return;
     }
 
+    }
+
+    private function secondsToTime($seconds)
+    {
+        // extract hours
+        $hours = floor($seconds / (60 * 60));
+     
+        // extract minutes
+        $divisor_for_minutes = $seconds % (60 * 60);
+        $minutes = floor($divisor_for_minutes / 60);
+     
+        // extract the remaining seconds
+        $divisor_for_seconds = $divisor_for_minutes % 60;
+        $seconds = ceil($divisor_for_seconds);
+     
+        // return the final array
+        $obj = array(
+            "h" => (int) $hours,
+            "m" => (int) $minutes,
+            "s" => (int) $seconds,
+        );
+        return $obj;
     }
 
 
