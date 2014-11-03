@@ -47,7 +47,7 @@ if(isset($_POST['extra-info-form'])){
 	$save = new stdclass();
 	foreach($inputs as $in){
 		if(!empty($_POST[$in])){
-			$save->$in = $_POST[$in];
+			$save->$in = addslashes($_POST[$in]);
 		}
 	}
 	$data = serialize($save);
@@ -165,19 +165,20 @@ if(isset($_POST['extra-info-form'])){
   			<ul class="list_group">
 	   			<li class="list-group-item">	   			 
 	   			<?php echo $LanguageInstance->get('My pronunciation');
-	   				echo ": <strong>".isset($firstProfileForm['data']->improve_pronunciation)?$firstProfileForm['data']->improve_pronunciation:''."</strong>";
+	   			 $myPronunciation = isset($firstProfileForm['data']->improve_pronunciation) ? $firstProfileForm['data']->improve_pronunciation :'';
+	   				echo ": <strong>".$myPronunciation."</strong>";
 	   			?>
 	   			</li> 
 	   			<li class="list-group-item">
 	   			<?php echo $LanguageInstance->get('My vocabulary');
-	   				echo ": <strong>".!empty($firstProfileForm['data']->improve_vocabulary)?
-	   				$firstProfileForm['data']->improve_vocabulary:''."</strong>";
+	   			 $myVocabulary = !empty($firstProfileForm['data']->improve_vocabulary) ? $firstProfileForm['data']->improve_vocabulary : '';
+	   				echo ": <strong>". $myVocabulary."</strong>";
 	   			?>
 	   			</li> 
 	   			<li class="list-group-item">
 	   			<?php echo $LanguageInstance->get('My grammar');
-	   				echo ": <strong>".!empty($firstProfileForm['data']->improve_grammar)?
-	   				$firstProfileForm['data']->improve_grammar:''."</strong>";
+	   			$myGrammar = !empty($firstProfileForm['data']->improve_grammar)?$firstProfileForm['data']->improve_grammar:'';
+	   				echo ": <strong>".$myGrammar."</strong>";
 	   			?>
 	   			</li> 
   			</ul>

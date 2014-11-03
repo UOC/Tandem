@@ -2005,13 +2005,11 @@ class GestorBD {
         $resultSelect  = $this->consulta("select * from waiting_room_user where id_user =".$user_id);
         if ($this->numResultats($resultSelect) > 0){            
             $resultSelect = $this->obteComArray($resultSelect);
-
             foreach($resultSelect as $key){
                 //insert into waiting_room_user_history
                 $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,user_agent, created,created_history) 
-                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."','".$this->escapeString($key['user_agent'])."','".$key['created']."',NOW()) ");               
-                if(mysql_affected_rows($this->conn) > 0){
-                    
+                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."',".$this->escapeString($key['user_agent']).",'".$key['created']."',NOW()) ");               
+                if(mysql_affected_rows($this->conn) > 0){                    
                     //once we have copied it to the history , we delete it.
                     $e =$this->consulta("delete from waiting_room_user where id =".$key['id']);
                      if(mysql_affected_rows($this->conn) > 0){
@@ -2569,6 +2567,24 @@ class GestorBD {
             }
             return false;
             
+         }
+
+           /**
+          * Checks for waiting rooms that are older than the MAX_WAITING_TIME and we delete them.
+          */
+         function tandemMaxWaitingTime(){
+
+            $sql= "select * from waiting_room_user 
+            where created <= DATE_SUB(NOW(),INTERVAL ".MAX_WAITING_TIME." MINUTE)"; //chekc if has 30 seconds if not can be a reload        
+            $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){ 
+                $result = $this->obteComArray($result);
+                foreach($result as $key => $value){
+                    $this->deleteFromWaitingRoom($value['id_user'],'-1');
+                }
+             }
+             return false;
+
          }
 
 

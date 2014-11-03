@@ -587,13 +587,13 @@ msgid "Grade your speaking skills"
 msgstr "Evalúa tu expresión oral"
 
 msgid "My pronunciation"
-msgstr "My pronunciación"
+msgstr "Mi pronunciación"
 
 msgid "My vocabulary"
-msgstr "My vocabulario"
+msgstr "Mi vocabulario"
 
 msgid "My grammar"
-msgstr "My gramática"
+msgstr "Mi gramática"
 
 msgid "Select a user to view their portfolio"
 msgstr "Selecciona un usuario para ver su portafolio"
