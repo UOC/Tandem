@@ -130,8 +130,10 @@ if(isset($_POST['extra-info-form'])){
 					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
 					$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
 					$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
-					if($getUserRankingPosition > 0)
-						$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
+					if (defined('SHOW_RANKING') && SHOW_RANKING==1) {
+						if($getUserRankingPosition > 0)
+							$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
+					}
 					
 					echo $positionInRankingTxt;			
 				?>
