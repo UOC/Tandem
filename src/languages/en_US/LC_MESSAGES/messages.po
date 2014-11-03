@@ -617,3 +617,9 @@ msgstr "Save changes"
 
 msgid "View"
 msgstr "View"
+
+msgid "max_num_of_tandem_rooms_reached"
+msgstr "The maximum number of allowed active tandem rooms is currently in used, please try again later or refresh the page"
+
+msgid "refresh_page"
+msgstr "Refresh the page"

@@ -2188,6 +2188,7 @@ class GestorBD {
       */
      function createFeedbackTandemDetail($id_feedback, $feedback_form) {
             //insert
+
         $sql = 'INSERT INTO feedback_tandem_form (id_feedback_tandem, feedback_form) 
                     VALUES (' . $this->escapeString($id_feedback) . ',' . $this->escapeString($feedback_form) . ')';
         return $this->consulta($sql);
@@ -2583,8 +2584,25 @@ class GestorBD {
                     $this->deleteFromWaitingRoom($value['id_user'],'-1');
                 }
              }
-             return false;
+         }
 
+
+         /**
+          * Returns the current active amount of tandems
+          */
+         function currentActiveTandems($id_course){
+
+            $sql= "Select count(id) as total from tandem 
+                   where is_finished = 0 and finalized IS NULL and 
+                   id_course =".$this->escapeString($id_course)." and
+                created >= DATE_SUB(NOW(),INTERVAL 1 HOUR)";    
+
+            $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){                 
+                $result = $this->obteComArray($result);
+                return $result[0]['total'];
+            }
+            return 0;
          }
 
 

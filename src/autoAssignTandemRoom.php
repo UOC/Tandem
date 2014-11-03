@@ -31,11 +31,15 @@ if (!$user_obj || !$course_id) {
 	$user_language = $_SESSION[LANG];//!empty($_REQUEST['locale']) ? $_REQUEST['locale'] : "es_ES";
 	$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
 	$gestorBD = new GestorBD();    
-	$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
-	$gestorBD->tandemMaxWaitingTime();//we delete all waiting room that are older than the defined MAX_WAITING_TIME
-	$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
-	$numPeopleWaitingForTandem = $gestorBD->sameLanguagePeopleWaiting($user_language,$course_id);
-	$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
+	$currentActiveTandems = $gestorBD->currentActiveTandems($course_id);
+
+	if($currentActiveTandems <= MAX_TANDEM_USERS){
+		$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
+		$gestorBD->tandemMaxWaitingTime();//we delete all waiting room that are older than the defined MAX_WAITING_TIME
+		$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
+		$numPeopleWaitingForTandem = $gestorBD->sameLanguagePeopleWaiting($user_language,$course_id);
+		$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
+	}
 //abertranb not need it mange all using the autoAssingCheckTandem.php
 	/*
     //Ok we have the exercises the user has not done this week. Lets find someone waiting to do that exercise if not we offer it.
@@ -60,7 +64,7 @@ if (!$user_obj || !$course_id) {
 		<link rel="stylesheet" type="text/css" media="all" href="css/defaultInit.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 		<!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
-		<link rel="stylesheet" type="text/css" media="all" href="css/colorbox.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="css/colorbox.css" />		
 		<!-- END -->
 		<!-- Timer End -->
 		<script src="js/jquery-1.7.2.min.js"></script>
@@ -80,8 +84,13 @@ if (!$user_obj || !$course_id) {
 		<script type="text/javascript" src="js/jquery.timeline-clock.min.js"></script>
 		<script src="js/jquery.ui.progressbar.js"></script> 
 		<script>
-
 		$(document).ready(function(){
+			<?php			
+			//if the max number of allowed tanden rooms is reached, then we send a modal. 
+			if($currentActiveTandems >= MAX_TANDEM_USERS){ ?>
+				$.modal($('#maxTandems')); 	      
+			<?php }else{ ?>
+
 	        interval = setInterval(function(){
 	        	$.ajax({
 	        		type: 'POST',
@@ -139,9 +148,13 @@ if (!$user_obj || !$course_id) {
 	         	}else
 	         	echo "self.close();"; 
 	         	?>
-			} 	      
+			}
+			<?php } ?>
 		});
     </script>   	
+    <style>
+	.refreshPage{padding:5px;color:#FFF;}
+    </style>
 </head>
 <body>
 	<!-- accessibility -->
@@ -154,9 +167,10 @@ if (!$user_obj || !$course_id) {
 		<!-- main-container -->
 		<div id="main-container">
 			<!-- main -->
-			<div id="main">
+			<div id="main" <?php echo ($currentActiveTandems >= MAX_TANDEM_USERS) ? "style='display:none'" : ''  ?> >
 				<!-- content -->
 				<div id="content">
+
 					<span class="welcome"><?php echo $LanguageInstance->get('welcome') ?> <?php echo $user_obj->fullname; ?>!</span>                             
 					<!-- *********************************** -->   
 					<!-- ****WAITING-TANDEM-ROOM-dynamic**** -->
@@ -172,6 +186,12 @@ if (!$user_obj || !$course_id) {
 						<img class='loaderImg' src="css/images/loading_2.gif" />
 						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>. <?php echo $numPeopleWaitingForTandem.' '.$LanguageInstance->get("number_of_people_waiting_for_tandem")?> </span>
 						<span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>
+					</div>
+
+					<!-- Max number of active tandems reached -->
+					<div id='maxTandems' class='modal'>
+						<span class='text'><?php echo $LanguageInstance->get("max_num_of_tandem_rooms_reached")?></span>
+						<p><button class="btn btn-success refreshPage" type='button' onclick='window.location.reload()' ><?php echo $LanguageInstance->get("refresh_page");?></button></p>
 					</div>
 					<div class='manageSection'>
  					<?php  					

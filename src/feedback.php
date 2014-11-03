@@ -78,7 +78,7 @@ if (!$user_obj || !$course_id) {
 					isset($_POST['grade']) && strlen($_POST['grade'])>0 /*&&
 					isset($_POST['pronunciation']) && strlen($_POST['pronunciation'])>0 &&
 					isset($_POST['vocabulary']) && strlen($_POST['vocabulary'])>0 &&
-					isset($_POST['grammar']) && strlen($_POST['grammar'])>0*/){					
+					isset($_POST['grammar']) && strlen($_POST['grammar'])>0*/){		
 					if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form))) {
 						$message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
 						$can_edit = false;
@@ -111,6 +111,10 @@ if (!$user_obj || !$course_id) {
 		<style>
 		#footer-container{margin-top:-222px;position:inherit;}
 		#wrapper{padding:0px 58px}
+		#jwVideoModal .modal-dialog
+		{
+		    width: 680px; /* your width */
+		}
 		</style>
 </head>
 <body>

@@ -624,3 +624,9 @@ msgstr "Guardar los cambios"
 
 msgid "View"
 msgstr "Ver"
+
+msgid "max_num_of_tandem_rooms_reached"
+msgstr "El máximo de tandems activos está en uso, espera unos minutos y refresca la página."
+
+msgid "refresh_page"
+msgstr "Refrescar la página"

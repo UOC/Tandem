@@ -22,13 +22,14 @@ $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 //si no existeix objecte usuari o no existeix curs redireccionem cap a l'index....preguntar Antoni cap a on redirigir...
 
-if (!$user_obj) {
+	
+$gestorBD = new GestorBD();
+
+if (empty($user_obj) || !isset($user_obj->id)) {
 //Tornem a l'index
 	header('Location: index.php');
 } else {
-	require_once(dirname(__FILE__) . '/classes/constants.php');	
-	$gestorBD = new GestorBD();
-	
+		
 	if(!empty($_POST['selectUser']) && $user_obj->instructor == 1){
 			$selectedUser = (int)$_POST['selectUser'];
 	}
@@ -47,18 +48,18 @@ if(isset($_POST['extra-info-form'])){
 	$save = new stdclass();
 	foreach($inputs as $in){
 		if(!empty($_POST[$in])){
-			$save->$in = addslashes($_POST[$in]);
+			$save->$in = strip_tags($_POST[$in]);
 		}
 	}
 	$data = serialize($save);
 	//first lets make sure they dont already have filled this formulary
 	if(!$firstProfileForm){
-		$gestorBD->consulta("insert into user_portfolio_profile(user_id,data,type,created) values ('".$user_obj->id."','".$data."','first',NOW())");
+		$gestorBD->consulta("insert into user_portfolio_profile(user_id,data,type,created) values ('".$user_obj->id."','".mysql_real_escape_string($data)."','first',NOW())");
 		$firstProfileForm['data'] = $data;
 	}
 	//if we have this value then we are updating
 	if(!empty($_POST['portfolio_form_id'])){
-		$gestorBD->consulta("update user_portfolio_profile set data ='".$data."' where id= ".$gestorBD->escapeString($_POST['portfolio_form_id'])." ");
+		$gestorBD->consulta("update user_portfolio_profile set data ='".mysql_real_escape_string($data)."' where id= ".$gestorBD->escapeString($_POST['portfolio_form_id'])." ");
 		$firstProfileForm['data'] = $data;
 	}
 	//Get the previous stored data
@@ -113,9 +114,9 @@ if(isset($_POST['extra-info-form'])){
 			<?php if (defined('SHOW_RANKING') && SHOW_RANKING==1) {?>
 			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';"><?php echo $LanguageInstance->get('Go to the ranking') ?></button>
 			<?php } ?>
-			<?php if(empty($firstProfileForm)){ ?>
+			<?php //if(empty($firstProfileForm)){ ?>
 				<button class="btn btn-success" type='button' id='viewProfileForm'><?php echo $LanguageInstance->get('View your profile') ?></button>
-			<?php } ?>
+			<?php //} ?>
 		</div>
 		<div class='col-md-6 text-right'>
 				<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
@@ -151,12 +152,14 @@ if(isset($_POST['extra-info-form'])){
 	   			</div> 
 	   			<div class="list-group-item">
 	   				<?php echo $LanguageInstance->get('Fluency');
-	   					 echo ": <strong>".$firstProfileForm['data']->fluency."%</strong>";
+	   				$profileFluency = isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '0'; 
+	   					 echo ": <strong>".$profileFluency."%</strong>";
 	   				?>
 	   			</div> 
 	   			<div class="list-group-item">
 	   				<?php echo $LanguageInstance->get('Accuracy');
-	   					 echo ": <strong>".$firstProfileForm['data']->accuracy."%</strong>";
+	   				$accuracyProfile = isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '0';
+	   					 echo ": <strong>".$accuracyProfile."%</strong>";
 	   				?>
 	   			</div> 
   			</div>
