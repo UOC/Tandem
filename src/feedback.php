@@ -6,6 +6,7 @@
  */
 
 
+require_once dirname(__FILE__) . '/classes/utils.php';
 require_once dirname(__FILE__) . '/classes/lang.php';
 require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';
@@ -130,9 +131,21 @@ if (!$user_obj || !$course_id) {
 
  if($feedbackDetails->id_tandem == $feedbackDetails->id_external_tool ) {
      	 if(!empty($feedbackDetails->external_video_url)){ 
+     	 	$url_video = $feedbackDetails->external_video_url;
+     	 	if (defined('AWS_URL')  && defined('AWS_S3_BUCKET') && defined('AWS_S3_FOLDER') && defined('AWS_S3_USER') && defined('AWS_S3_SECRET')) {
+     	 		$file_nameArray = explode('/', $url_video);
+				$file_name = $file_nameArray[count($file_nameArray)-1];
+				$file_name = str_replace('/','_',$file_name);
+				$file_name = str_replace(':','_',$file_name);
+				$file_name = str_replace('=','_',$file_name);
+     	 		$awsurl = AWS_URL.AWS_S3_BUCKET.'/'.AWS_S3_FOLDER.'/'.$file_name;
+     	 		if (is_url_exist($awsurl)) {
+     	 			$url_video = $awsurl;
+     	 		}
+     	 	}
       ?>
      	 <p>
-			<button id="viewVideo" onclick="setJwPlayerVideoUrl('<?php echo $feedbackDetails->external_video_url;?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
+			<button id="viewVideo" onclick="setJwPlayerVideoUrl('<?php echo $url_video;?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
 	  	 </p>
   	 	<?php }else{ ?>
   	 	<p>
@@ -355,7 +368,7 @@ $(document).ready(function(){
 	 	if(url){
 	 		console.log(url);
 		    jwplayer("myElement").setup({
-		        file: url,
+		    	file: url,
 		        //image: "http://example.com/uploads/myPoster.jpg",
 		        width: 640,
 		        height: 360,
