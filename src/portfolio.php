@@ -110,7 +110,9 @@ if(isset($_POST['extra-info-form'])){
 
 	<div class='row'>
 		<div class='col-md-6'>
+			<?php if (defined('SHOW_RANKING') && SHOW_RANKING==1) {?>
 			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';"><?php echo $LanguageInstance->get('Go to the ranking') ?></button>
+			<?php } ?>
 			<?php if(empty($firstProfileForm)){ ?>
 				<button class="btn btn-success" type='button' id='viewProfileForm'><?php echo $LanguageInstance->get('View your profile') ?></button>
 			<?php } ?>
