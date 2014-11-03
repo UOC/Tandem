@@ -89,7 +89,7 @@ if(isset($_POST['extra-info-form'])){
 			$("#selectUserForm").submit();
 		});
 
-		<?php if(!$firstProfileForm){ ?>
+		<?php if(!$firstProfileForm && $user_obj->instructor != 1){ ?>
 			  $("#registry-modal-form").modal("show");
 		<?php } ?>
 		//slider
