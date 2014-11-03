@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-02 12:35+0100\n"
+"PO-Revision-Date: 2014-11-03 08:52+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -410,7 +410,8 @@ msgid "waiting_for_tandem_assignment"
 msgstr "Waiting for a partner to do tandem"
 
 msgid "number_of_people_waiting_for_tandem"
-msgstr "Number of people waiting for a tandem of same language"
+msgstr ""
+"people who want to practise the same language as you waiting for a tandem"
 
 msgid "check_if_feedbacks_are_submitted"
 msgstr "Check if other feedback is already sent"

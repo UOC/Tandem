@@ -169,7 +169,7 @@ if (!$user_obj || !$course_id) {
 					<!-- TANDEM MODAL -->
 					<div class='waitingForTandem'>
 						<img class='loaderImg' src="css/images/loading_2.gif" />
-						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>. <?php echo $LanguageInstance->get("number_of_people_waiting_for_tandem")." ".$numPeopleWaitingForTandem;?> </span>
+						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>. <?php echo $numPeopleWaitingForTandem.' '.$LanguageInstance->get("number_of_people_waiting_for_tandem")?> </span>
 						<span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>
 					</div>
 					<div class='manageSection'>
