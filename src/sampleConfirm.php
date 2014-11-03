@@ -929,7 +929,7 @@ showImage = function(id){
 		}
 
 		function createVideochatButtons(winVideochat, widthWinVideochat, heightWinVideochat) {
-			$('#videochatButtons').html('<input type="button" id="show_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/><div id="alertShowVideoXat"><img src="img/videoXat.png"> </div>'+
+			$('#videochatButtons').html('<input type="button" id="show_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/><div id="alertShowVideoXat"><img src="img/videoXat.gif"> </div>'+
 				'<input type="button" id="hide_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Hide Videochat')?>"/>');
 			$('#hide_videochat').hide();
 			$('#hide_videochat').click({winVideochat: winVideochat}, function(event) {
