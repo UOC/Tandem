@@ -35,9 +35,9 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	}
 	//the instructor wants to view some userfeedback
 	if(!empty($selectedUser)){
-		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser);		
+		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id);		
 	}else  	
-		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id);	
+		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id,$course_id);	
 }
 
 //lets check if the user has filled the first profile form.

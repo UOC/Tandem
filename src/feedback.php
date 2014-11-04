@@ -95,8 +95,7 @@ if (!$user_obj || !$course_id) {
 			$can_edit = false;
 		}
 	}	
-	$partnerFeedback = $gestorBD->checkPartnerFeedback($feedbackDetails->id_tandem,$id_feedback);
-	
+	$partnerFeedback = $gestorBD->checkPartnerFeedback($feedbackDetails->id_tandem,$id_feedback);	
 	?>                    
 	<!DOCTYPE html>
 	<html>
@@ -153,11 +152,18 @@ if (!$user_obj || !$course_id) {
   	 	</p>
   	 	<?php } ?>
   	 
-  	 <?php }else{ ?>
+  	 <?php }else{ 
+  	 	 if($feedbackDetails->id_external_tool > 0){
+  	 ?>
   	 	 <p>
 			<button id="viewVideo" onclick="window.open('ltiConsumer.php?id=100&<?php echo $feedbackDetails->id_external_tool>0? (ID_EXTERNAL.'='. $feedbackDetails->id_external_tool):''?>&<?php echo $feedbackDetails->id_tandem>0? (CURRENT_TANDEM.'='. $feedbackDetails->id_tandem):''?>')" type="button" class="btn btn-success"><?php echo $LanguageInstance->get('View video session') ?></button>
 	  	 </p>
-  	 <?php } ?>     	 
+  	 <?php 
+  		}else
+  		echo '<p ><button class="btn btn-warning" disabled="disabled">'.$LanguageInstance->get("The video could not be recorded").'</button></p>';
+  		}
+
+  	  ?>     	 
 
 
       <!-- Nav tabs -->

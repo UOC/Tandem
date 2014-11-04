@@ -2279,11 +2279,12 @@ class GestorBD {
      *  Get all the user submitted feedbacks 
      */
 
-    function getAllUserFeedbacks($user_id){
+    function getAllUserFeedbacks($user_id,$id_course){
 
-        $result = $this->consulta("select * from feedback_tandem as FT 
-           left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id           
-           where FT.id_user = ".$this->escapeString($user_id));
+        $result = $this->consulta("select FT.id,FT.id_tandem,FT.id_external_tool,FT.end_external_service,FT.external_video_url,FT.id_user,FT.language,FT.id_partner,FT.partner_language,FT.created,FTF.feedback_form from feedback_tandem as FT 
+           left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id  
+           inner join tandem as T on T.id = FT.id_tandem         
+           where FT.id_user = ".$this->escapeString($user_id)." and T.id_course = ".$this->escapeString($id_course)." ");
 
         if ($this->numResultats($result) > 0){            
            $feedback_tandem =  $this->obteComArray($result);
