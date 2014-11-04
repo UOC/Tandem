@@ -636,3 +636,12 @@ msgstr "Tienes que estar conectado con tu compañero usando el videochat"
 
 msgid "Playing and recording videochat"
 msgstr "Vidoechat reproduciendo y grabando"
+
+msgid "Return tandem"
+msgstr "Regresar al tandem"
+
+msgid "Show Tandem"
+msgstr "Mostrar tandem"
+
+msgid "The video could not be recorded"
+msgstr "La sesión de vídeo no se pudo guardar"

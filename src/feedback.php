@@ -181,7 +181,7 @@ if (!$user_obj || !$course_id) {
 			<?php
 				if(!empty($partnerFeedback)){
 					$feedBackFormPartner = unserialize($partnerFeedback);					
-				 ?>
+			?>
 						  <div class="form-group">
 						    <label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
 						  	<?php echo $feedBackFormPartner->fluency?> %
@@ -372,7 +372,6 @@ $(document).ready(function(){
 
 	 setJwPlayerVideoUrl = function(url){
 	 	if(url){
-	 		console.log(url);
 		    jwplayer("myElement").setup({
 		    	file: url,
 		        //image: "http://example.com/uploads/myPoster.jpg",
@@ -384,7 +383,12 @@ $(document).ready(function(){
 		    $("#jwVideoModal").modal('show');	
 	 	}
 	 }
-} );		
+
+	 //close the jwvideo when the modal is closed
+	$('#jwVideoModal').on('hidden.bs.modal', function (){ 
+		jwplayer().stop()
+	});
+});		
 </script> 
 
 <div class="modal fade" id="jwVideoModal">

@@ -629,3 +629,12 @@ msgstr "You should to be connected with your partner using videochat"
 
 msgid "Playing and recording videochat"
 msgstr "Vidochat is playing and recording"
+
+msgid "Return tandem"
+msgstr "Return to tandem"
+
+msgid "Show Tandem"
+msgstr "Show Tandem"
+
+msgid "The video could not be recorded"
+msgstr "The video could not be recorded"
