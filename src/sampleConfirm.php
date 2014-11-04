@@ -848,10 +848,14 @@ showImage = function(id){
 		//$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
 		var windowVideochat = false;
 		var windowStartTandem = false;
+		var windowMessage = false;
 		var intervalVideochat = false;
-		var widthWindowVideochat = $( document ).width()*0.98;
-		var heightWindowVideochat = $( document ).height()*0.98;
+		var widthWindowVideochat = $( window ).width()*0.98;
+		var heightWindowVideochat = $( window ).height()*0.98;
 		$(document).ready(function(){
+			$('#btnMessageShowVideochat').click(function(event) {
+				showVideochatAction();
+			});
 			var myButtons = [
 			   {
 			   id: "btn_minimize_videochat_close",           // required, it must be unique in this array data
@@ -887,13 +891,14 @@ showImage = function(id){
 			windowVideochat = $.window({
 			   title: "",
 			   url: "<?php echo $urlForVideoChat?>",
-			   width: $( document ).width()*0.98,
-			   height: $( document ).height()*0.98,
+			   width: widthWindowVideochat,
+			   height: heightWindowVideochat,
 			   maxWidth: $( document ).width(),
 			   maxHeight: $( document ).height(),
 			   closable: false,
-			   draggable: false,
-			   resizable: false,
+			   draggable: true,
+			   resizable: true,
+			   animationSpeed: 200,
 			   maximizable: false,
 			   minimizable: false,
 			   showFooter: false,
@@ -909,27 +914,80 @@ showImage = function(id){
 
 			//tmp patch
 			$("#window_0").css({top:'1px'});
-			$('#show_videochat').hover(function() {
+			/*$('#show_videochat').hover(function() {
 			    $('#alertShowVideoXat').toggle();
-		    });
-
+		    });*/
 		});
 
+		function messageWindow(urlShow, is_videochat) {
+			if (windowMessage) {
+				windowMessage.close();
+			}
+			var myButtons = [
+			   {
+			   id: "btn_close_start_tandem",           // required, it must be unique in this array data
+			   title: "<?php echo $LanguageInstance->get('Close')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
+			   //clazz: "",           // optional, don't set border, padding, margin or any style which will change element position or size
+			   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
+			   image: "js/window/img/close.png",    // required, the url of button icon(16x16 pixels)
+			   callback:                     // required, the callback function while click it
+			      function(btn, wnd) {
+			         if (is_videochat) {
+			         	showVideochat(windowVideochat, widthWindowVideochat, heightWindowVideochat);
+			         }else {
+			         	hideVideochat(windowVideochat, true);
+			         }
+			      }
+			   }
+			];
+
+			windowMessage = $.window({
+							   title: "",
+							   url: urlShow,
+							   width: is_videochat?210:180,
+							   y: $( window ).height()-235,
+							   x: $( window ).width()-(is_videochat?220:190),
+							   height: 230,
+							   maxWidth: 500,
+							   maxHeight: 400,
+							   closable: false,
+							   draggable: true,
+							   resizable: true,
+							   maximizable: false,
+							   minimizable: false,
+							   showFooter: false,
+							   modal: true,
+							   showRoundCorner: true,
+   							   modalOpacity: 0.5,
+   							   custBtns: myButtons
+							});
+
+		}
+
 		function hideVideochat(winVideochat, changeButtons) {
+			/*var styleObj = {};
+					styleObj.width = 1;
+					styleObj.height = 1;
+				winVideochat.animate(styleObj, 200, 'swing', function() {
+					adjustHeaderTextPanelWidth();
+				});*/
 			winVideochat.resize(1,1);
+			messageWindow('showVideochat.php?is_videochat=1', true);
+			
 			if (changeButtons) {
 				$('#hide_videochat').hide();
 				$('#show_videochat').show();
-				$('#alertShowVideoXat').show();
+				//$('#alertShowVideoXat').show();
 			}
 		}
 
 		function showVideochat(winVideochat, widthWinVideochat, heightWinVideochat) {
+			messageWindow('showVideochat.php?is_videochat=0', false);
 			winVideochat.resize(widthWindowVideochat, heightWindowVideochat);
 		}
 
 		function createVideochatButtons(winVideochat, widthWinVideochat, heightWinVideochat) {
-			$('#videochatButtons').html('<input type="button" id="show_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/><div id="alertShowVideoXat"><img src="img/videoXat.gif"> </div>'+
+			$('#videochatButtons').html('<input type="button" id="show_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/><!--div id="alertShowVideoXat" style="cursor: pointer"><img src="img/videoXat.gif"> </div-->'+
 				'<input type="button" id="hide_videochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Hide Videochat')?>"/>');
 			$('#hide_videochat').hide();
 			$('#hide_videochat').click({winVideochat: winVideochat}, function(event) {
@@ -941,6 +999,16 @@ showImage = function(id){
 				$('#hide_videochat').show();
 				$('#alertShowVideoXat').hide();
 			});
+			$('#alertShowVideoXat').click({winVideochat: winVideochat, widthWinVideochat: widthWinVideochat, heightWinVideochat: heightWinVideochat}, function(event) {
+				showVideochat(event.data.winVideochat, event.data.widthWinVideochat, event.data.heightWinVideochat);
+				$('#show_videochat').hide();
+				$('#hide_videochat').show();
+				$('#alertShowVideoXat').hide();
+			});
+		}
+
+		function showVideochatAction() {
+			showVideochat(windowVideochat, widthWindowVideochat, heightWindowVideochat);
 		}
 
 		
@@ -1022,10 +1090,22 @@ showImage = function(id){
 		}
 		jQuery.fn.extend({
 			startTandemVCEvent: function () {
+				$('#showMessageInit').hide();
 				startTandemVC();
 			}
 		});
 
+		jQuery.fn.extend({
+			hideVideochatEvent: function () {
+				hideVideochat(windowVideochat, true);
+			}
+		});
+		jQuery.fn.extend({
+			showVideochatEvent: function () {
+				
+				showVideochat(windowVideochat, widthWindowVideochat, heightWindowVideochat);
+			}
+		});
 <?php
 } 
 ?>
@@ -1149,6 +1229,11 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 
 
 				<div id="content">
+					<?php 
+				if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+						<div  id="showMessageInit" class="message">
+							<?php echo $LanguageInstance->get('You should to be connected with your partner using videochat')?>. <input type="button" id="btnMessageShowVideochat" class="tandem-btn" value="<?php echo $LanguageInstance->get('Show Videochat')?>"/></div>
+					<?php  } ?>
 					<iframe name='ifrmHTML' id="ifrmHTML" class="iframe" src="" frameborder="0" border="0"></iframe>
 				</div>
 			</div>
