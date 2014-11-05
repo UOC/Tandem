@@ -2268,8 +2268,7 @@ class GestorBD {
                                     WHERE FT.id_tandem =".$this->escapeString($tandem_id)." and FTF.feedback_form != ''");
 
         if ($this->numResultats($result) == 2){ 
-             $res = $this->obteComArray($result);
-        
+             $res = $this->obteComArray($result);        
              return  ($res[0]['id'] == $feedback_id) ? $res[1]['feedback_form'] :  $res[0]['feedback_form'];
         }else
              return false;
@@ -2302,7 +2301,7 @@ class GestorBD {
                $task_tandemsSubTime = $this->getUserTandemTasksDurations($user_id,$ft['id_tandem']);
                $subTimer= array();
                $j=0;$i=0;
-
+               if(!empty($task_tandemsSubTime)){
                foreach ($task_tandemsSubTime as $question) {   
                     //$j++;
                     /*$secondsSt = isset($question['total_time']) ? $question['total_time']:0;
@@ -2325,6 +2324,7 @@ class GestorBD {
                     $subTimer[$i] = $time;
                     $i++;
                 }
+            }
              $ft['total_time'] = $subTimerP;
              $ft['total_time_tasks'] = $subTimer;
 
@@ -2606,6 +2606,17 @@ class GestorBD {
             return 0;
          }
 
+         function getSkillsLevel($skills_grade, $LanguageInstance) {
+            $skillGrade = '';
+            switch($skills_grade){ 
+                case 'A': $skillGrade = $LanguageInstance->get('Excellent');break;
+                case 'B': $skillGrade = $LanguageInstance->get('Very Good');break;
+                case 'C': $skillGrade = $LanguageInstance->get('Good');break;
+                case 'D': $skillGrade = $LanguageInstance->get('Pass');break;
+                case 'F': $skillGrade = $LanguageInstance->get('Fail');break;
+            }
+            return $skillGrade;
+        }
 
 }//end of class
 

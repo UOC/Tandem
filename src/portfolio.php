@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/classes/lang.php';
 require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';
 require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
+include(dirname(__FILE__) . '/classes/pdf.php');
 
 function getSkillsLevel($skills_grade, $LanguageInstance) {
 	$skillGrade = '';
@@ -17,7 +18,7 @@ function getSkillsLevel($skills_grade, $LanguageInstance) {
 }
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
-$course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
+$course_id = 255;//isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 //$portfolio = isset($_SESSION[PORTFOLIO]) ? $_SESSION[PORTFOLIO] : false;
 require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 //si no existeix objecte usuari o no existeix curs redireccionem cap a l'index....preguntar Antoni cap a on redirigir...
@@ -66,6 +67,7 @@ if(isset($_POST['extra-info-form'])){
 	$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);
 	
 }
+//generatePdf($user_obj->id,$course_id);
 ?>
 <!DOCTYPE html>
 <html>
