@@ -1112,7 +1112,7 @@ showImage = function(id){
 //prevents from closing
 window.onbeforeunload = function() {
 <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>	
-	return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. To send feedback to your tandem partner click on Review form (in tandem window)');?>";
+	if(salir==0) return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. To send feedback to your tandem partner click on Review form (in tandem window)');?>";
 <?php  } else {?>	
 	if(salir==0) return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. You will disconnect from your tandem partner');?>";
 <?php } ?>	
