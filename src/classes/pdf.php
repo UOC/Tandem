@@ -9,7 +9,7 @@ function generatePDF($user_id,$course_id){
 global $LanguageInstance;
 $gestorBD = new GestorBD();
 $feedBacks = $gestorBD->getAllUserFeedbacks($user_id,$course_id);	
-
+$username = $gestorBD->getUserName($user_id);
 /*$feedBacks[0]['feedback_form'] = @unserialize($feedBacks[0]['feedback_form']);
 echo "<pre>";
 print_r($feedBacks);
@@ -84,45 +84,47 @@ $html .= "<div><span>List of all your tandems</span></div>";
 
 if(!empty($feedBacks)){
 	foreach($feedBacks as $key => $value){
-		$value['feedback_form'] = @unserialize($value['feedback_form']);
-		 $title = str_replace("%1",$value['created'],$LanguageInstance->get("Tandem session created %1 with a total duration of %2"));
-		 $title = str_replace("%2",$value['total_time'],$title);
-		$html .= "<div ><b>".$title."</b>";
-		$html .= "<p style='font-size: 10pt;'>".$LanguageInstance->get('Review your partner\'s contribution') ."</p>";
-		$html .="<p><ul>
-						<li >".$LanguageInstance->get('Fluency').": <b>".$value['feedback_form']->fluency."%</b></li>
-						<li >".$LanguageInstance->get('Accuracy').": <b>".$value['feedback_form']->accuracy."%</b></li>
-						<li >".$LanguageInstance->get('Overall Grade').": <b>".$gestorBD->getSkillsLevel($value['feedback_form']->grade,$LanguageInstance)."</b></li>				
-						<li >".$LanguageInstance->get('Pronunciation').": <b>".$value['feedback_form']->pronunciation."</b></li>
-						<li >".$LanguageInstance->get('Vocabulary').": <b>".$value['feedback_form']->vocabulary."</b></li>
-						<li >".$LanguageInstance->get('Grammar').": <b>".$value['feedback_form']->grammar."</b></li>
-						<li >".$LanguageInstance->get('Other Observations').": <b>".$value['feedback_form']->other_observations."</b></li>
-					</ul>
-		</p>";
-		$partnerFeedback = $gestorBD->checkPartnerFeedback($value['id_tandem'],$value['id']);
-		$html .= "<p class='tit'>".$LanguageInstance->get('View received Feedback')."</p>";
-		if(!empty($partnerFeedback)){
-			$partnerFeedback = @unserialize($partnerFeedback);			
-			if(is_object($partnerFeedback)){				
-				$html .="<p> <ul>
-								<li >".$LanguageInstance->get('Fluency').": <b>".$partnerFeedback->fluency."%</b></li>
-								<li >".$LanguageInstance->get('Accuracy').": <b>".$partnerFeedback->accuracy."%</b></li>
-								<li >".$LanguageInstance->get('Overall Grade').": <b>".$gestorBD->getSkillsLevel($partnerFeedback->grade,$LanguageInstance)."</b></li>				
-								<li >".$LanguageInstance->get('Pronunciation').": <b>".$partnerFeedback->pronunciation."</b></li>
-								<li >".$LanguageInstance->get('Vocabulary').": <b>".$partnerFeedback->vocabulary."</b></li>
-								<li >".$LanguageInstance->get('Grammar').": <b>".$partnerFeedback->grammar."</b></li>
-								<li >".$LanguageInstance->get('Other Observations').": <b>".$partnerFeedback->other_observations."</b></li>
-					</ul>
-				</p>";
-		}else
-		 $html .= "<ul><li>".$LanguageInstance->get('partner_feedback_not_available')."</li></ul>";
-		}else
-		$html .= "<ul><li>".$LanguageInstance->get('partner_feedback_not_available')."</li></ul>";
-		
-		$html .= "</div>";
+		if(!empty($value['feedback_form'])){
+			$value['feedback_form'] = @unserialize($value['feedback_form']);
+			 $title = str_replace("%1",$value['created'],$LanguageInstance->get("Tandem session created %1 with a total duration of %2"));
+			 $title = str_replace("%2",$value['total_time'],$title);
+			$html .= "<div ><b>".$title."</b>";
+			$html .= "<p style='font-size: 10pt;'>".$LanguageInstance->get('Review your partner\'s contribution') ."</p>";
+			$html .="<p><ul>
+							<li >".$LanguageInstance->get('Fluency').": <b>".$value['feedback_form']->fluency."%</b></li>
+							<li >".$LanguageInstance->get('Accuracy').": <b>".$value['feedback_form']->accuracy."%</b></li>
+							<li >".$LanguageInstance->get('Overall Grade').": <b>".$gestorBD->getSkillsLevel($value['feedback_form']->grade,$LanguageInstance)."</b></li>				
+							<li >".$LanguageInstance->get('Pronunciation').": <b>".$value['feedback_form']->pronunciation."</b></li>
+							<li >".$LanguageInstance->get('Vocabulary').": <b>".$value['feedback_form']->vocabulary."</b></li>
+							<li >".$LanguageInstance->get('Grammar').": <b>".$value['feedback_form']->grammar."</b></li>
+							<li >".$LanguageInstance->get('Other Observations').": <b>".$value['feedback_form']->other_observations."</b></li>
+						</ul>
+			</p>";
+			$partnerFeedback = $gestorBD->checkPartnerFeedback($value['id_tandem'],$value['id']);
+			$html .= "<p class='tit'>".$LanguageInstance->get('View received Feedback')."</p>";
+			if(!empty($partnerFeedback)){
+				$partnerFeedback = @unserialize($partnerFeedback);			
+				if(is_object($partnerFeedback)){				
+					$html .="<p> <ul>
+									<li >".$LanguageInstance->get('Fluency').": <b>".$partnerFeedback->fluency."%</b></li>
+									<li >".$LanguageInstance->get('Accuracy').": <b>".$partnerFeedback->accuracy."%</b></li>
+									<li >".$LanguageInstance->get('Overall Grade').": <b>".$gestorBD->getSkillsLevel($partnerFeedback->grade,$LanguageInstance)."</b></li>				
+									<li >".$LanguageInstance->get('Pronunciation').": <b>".$partnerFeedback->pronunciation."</b></li>
+									<li >".$LanguageInstance->get('Vocabulary').": <b>".$partnerFeedback->vocabulary."</b></li>
+									<li >".$LanguageInstance->get('Grammar').": <b>".$partnerFeedback->grammar."</b></li>
+									<li >".$LanguageInstance->get('Other Observations').": <b>".$partnerFeedback->other_observations."</b></li>
+						</ul>
+					</p>";
+			}else
+			 $html .= "<ul><li>".$LanguageInstance->get('partner_feedback_not_available')."</li></ul>";
+			}else
+			$html .= "<ul><li>".$LanguageInstance->get('partner_feedback_not_available')."</li></ul>";
+			
+			$html .= "</div>";
+		}
 }
 }else
-$html .="No tandems available";
+$html .= $LanguageInstance->get('No tandems available');
 
 
 $html .= "</body>";
@@ -136,7 +138,7 @@ $pdf->writeHTML($html,true,false,true,false,'');
 
 // Close and output PDF document
 // This method has several options, check the source code documentation for more information.
-$pdf->Output('example_001.pdf', 'I');
+$pdf->Output($username.'_tandems.pdf', 'D');
 
 
 }

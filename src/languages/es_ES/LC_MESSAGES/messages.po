@@ -663,3 +663,6 @@ msgid ""
 "Do you want to leave Tandem?. You will disconnect from your tandem partner"
 msgstr ""
 "Do you want to leave this page?. Te vas a desconectar de tú compañero tándem"
+
+msgid "No tandems available"
+msgstr "No hay tandems disponibles"

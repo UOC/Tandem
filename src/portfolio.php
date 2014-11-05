@@ -18,24 +18,28 @@ function getSkillsLevel($skills_grade, $LanguageInstance) {
 }
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
-$course_id = 255;//isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
+$course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 //$portfolio = isset($_SESSION[PORTFOLIO]) ? $_SESSION[PORTFOLIO] : false;
 require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 //si no existeix objecte usuari o no existeix curs redireccionem cap a l'index....preguntar Antoni cap a on redirigir...
-
 	
 $gestorBD = new GestorBD();
-
 if (empty($user_obj) || !isset($user_obj->id)) {
 //Tornem a l'index
 	header('Location: index.php');
+	die();
 } else {
-		
+	
+	//lets see if we have a cookie for the selected user
+	if(!empty($_COOKIE['selecteduser']) && $user_obj->instructor == 1){
+		$selectedUser = $_COOKIE['selecteduser'];
+	}	
 	if(!empty($_POST['selectUser']) && $user_obj->instructor == 1){
 			$selectedUser = (int)$_POST['selectUser'];
+			setcookie("selecteduser",$selectedUser);
 	}
 	//the instructor wants to view some userfeedback
-	if(!empty($selectedUser)){
+	if(!empty($selectedUser) && $user_obj->instructor == 1){
 		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id);		
 	}else  	
 		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id,$course_id);	
@@ -43,6 +47,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 
 //lets check if the user has filled the first profile form.
 $firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);
+
 //lets save the registration form
 if(isset($_POST['extra-info-form'])){
     $inputs  = array("skills_grade","fluency","accuracy","improve_pronunciation","improve_vocabulary","improve_grammar","s2_pronunciation_txt","s2_vowels_txt","s2_consonants_txt","s2_stress_txt","s2_intonation_txt","s2_vocabulary_txt","s2_vocab_txt","s2_false_friends_txt","s2_grammar_txt","s2_verb_agreement_txt","s2_noun_agreement_txt","s2_sentence_txt","s2_connectors_txt","s2_aspects_txt");
@@ -64,10 +69,13 @@ if(isset($_POST['extra-info-form'])){
 		$firstProfileForm['data'] = $data;
 	}
 	//Get the previous stored data
-	$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);
-	
+	$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);	
 }
-//generatePdf($user_obj->id,$course_id);
+
+if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){ 
+	if(!empty($selectedUser)) $userForPdf = $selectedUser; else $userForPdf = $user_obj->id;
+	generatePdf($userForPdf,$course_id);
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -110,7 +118,6 @@ if(isset($_POST['extra-info-form'])){
 </head>
 <body>
 <div class="container">
-
 	<div class='row'>
 		<div class='col-md-6'>
 			<?php if (defined('SHOW_RANKING') && SHOW_RANKING==1) {?>
@@ -194,7 +201,7 @@ if($user_obj->instructor == 1 ){
  $usersList = $gestorBD->getAllUsers($course_id);
 ?>
 	<div class='row'>		
-		<div class='col-md-12'>
+		<div class='col-md-6'>
 			<p>
 				<form action='' method="POST" id='selectUserForm' class="form-inline" role='form'>
 				<div class="form-group">
@@ -212,6 +219,12 @@ if($user_obj->instructor == 1 ){
 				</div>
 				</form>
 			</p>
+		</div>
+		<div class='col-md-6 text-right' >
+			<form action='' method='POST' role='form' id='pdfForm'>
+			<input type='hidden'  name='get_pdf' value='1' />
+			<input type='submit' value='<?php echo $LanguageInstance->get('Download a PDF file with all Tandems');?>' class='btn btn-success' />
+			</form> 
 		</div>
 	</div>
 <?php } ?>

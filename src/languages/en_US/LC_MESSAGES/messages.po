@@ -638,3 +638,6 @@ msgstr "Show Tandem"
 
 msgid "The video could not be recorded"
 msgstr "The video could not be recorded"
+
+msgid "No tandems available"
+msgstr "No tandems available"
