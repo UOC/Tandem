@@ -2618,6 +2618,23 @@ class GestorBD {
             return $skillGrade;
         }
 
+        
+
+        /**
+         * Returns all the users waiting on the waiting_room for spanish and english
+         */
+        function getUsersWaitingByLanguage($course_id,$language='es_ES'){
+            $sql= "select count(id) as total from waiting_room where language=".$this->escapeString($language)." and id_course = ".$this->escapeString($course_id)."";    
+            $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){                 
+                $result = $this->obteComArray($result);
+                return  $result[0]['total'];
+            }else
+            return 0;
+
+
+        }
+
         /**
          * Set created to now in start tandem of portfolio
          * @param [type] $id_tandem [description]
