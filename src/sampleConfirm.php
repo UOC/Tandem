@@ -549,7 +549,9 @@ hideText = function(){
 			//20121004
 			enableSolution = function() {
 				//alert("Enabling solution!!!");
+<?php if (!isset($_SESSION[USE_WAITING_ROOM]) || $_SESSION[USE_WAITING_ROOM]!=1) {?>
 				salir=1;
+<?php } ?>				
 				clearInterval(intervalUpdateAction);
 				if(intervalTimerAction!=null) clearInterval(intervalTimerAction);
 				$('#next_task').attr('onclick',"showSolutionAndShowNextTask();return false;");	
@@ -926,10 +928,8 @@ showImage = function(id){
 			var myButtons = [
 			   {
 			   id: "btn_close_start_tandem",           // required, it must be unique in this array data
-			   title: "<?php echo $LanguageInstance->get('Close')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
-			   //clazz: "",           // optional, don't set border, padding, margin or any style which will change element position or size
-			   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
-			   image: "js/window/img/close.png",    // required, the url of button icon(16x16 pixels)
+			   title: "<?php echo $LanguageInstance->get('Maximize')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
+			   image: "js/window/img/maximize.png",    // required, the url of button icon(16x16 pixels)
 			   callback:                     // required, the callback function while click it
 			      function(btn, wnd) {
 			         if (is_videochat) {
@@ -1111,7 +1111,11 @@ showImage = function(id){
 ?>
 //prevents from closing
 window.onbeforeunload = function() {
-	if(salir==0) return "Do you want to leave this page?. Please logout before exit tandem.";
+<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>	
+	return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. To send feedback to your tandem partner click on Review form (in tandem window)');?>";
+<?php  } else {?>	
+	if(salir==0) return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. You will disconnect from your tandem partner');?>";
+<?php } ?>	
 }
 getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 
@@ -1189,7 +1193,7 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 							<span class="social" title="skype" id="chat_person_a">SkypeUser <span class="icon skype"></span></span>
 						<?php } ?>
 						</div>
-						<a href="#" id="lnk_quit" onclick="desconn();"><?php echo $LanguageInstance->get('quit')?></a>
+						<a href="#" id="lnk_quit" <?php echo (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1)?'style="right:-90px"':''?> onclick="desconn();"><?php echo $LanguageInstance->get((isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1)?'Review form':'quit')?></a>
 					</div>
 					<div class="user">
 						<div class="details">
