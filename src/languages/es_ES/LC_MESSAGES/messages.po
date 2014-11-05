@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-04 13:52+0100\n"
+"PO-Revision-Date: 2014-11-05 13:16+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -645,3 +645,21 @@ msgstr "Mostrar tandem"
 
 msgid "The video could not be recorded"
 msgstr "La sesión de vídeo no se pudo guardar"
+
+msgid "Maximixe"
+msgstr "Maximizar"
+
+msgid "Review form"
+msgstr "Ficha revisión"
+
+msgid ""
+"Do you want to leave Tandem?. To send feedback to your tandem partner click "
+"on Review form (in tandem window)"
+msgstr ""
+"¿Quieres salir del Tandem?. Para enviar feedback a tu compañero tandem haz "
+"click en Ficha revisión (en la ventana tandem)"
+
+msgid ""
+"Do you want to leave Tandem?. You will disconnect from your tandem partner"
+msgstr ""
+"Do you want to leave this page?. Te vas a desconectar de tú compañero tándem"
