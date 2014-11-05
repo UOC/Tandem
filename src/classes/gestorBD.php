@@ -2618,6 +2618,23 @@ class GestorBD {
             return $skillGrade;
         }
 
+        /**
+         * Set created to now in start tandem of portfolio
+         * @param [type] $id_tandem [description]
+         */
+        function setCreatedTandemToNow($id_tandem) {
+
+            $sql = 'update tandem set created = now() where  id = ' . $id_tandem ;
+            $result = $this->consulta($sql);
+            $sql = 'update user_tandem set created = now() where  id_tandem = ' . $id_tandem ;
+            $result = $this->consulta($sql);
+            $sql = 'update user_tandem_task set created = now() where  id_tandem = ' . $id_tandem ;
+            $result = $this->consulta($sql);
+            $sql = 'update user_tandem_task_question set created = now() where  id_tandem = ' . $id_tandem ;
+            $result = $this->consulta($sql);
+            return true;
+        }
+
 }//end of class
 
 ?>

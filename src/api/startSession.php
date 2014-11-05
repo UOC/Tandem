@@ -22,6 +22,8 @@ if ($tandem) {
 	$id_external_tool = isset($_GET['return_id'])?$_GET['return_id']:$id;
 	$end_external_service = isset($_GET['end_external_service'])?$_GET['end_external_service']:'';
 	$gestorBD->updateExternalToolFeedbackTandemByTandemId($id, $id_external_tool, $end_external_service);
+	//start Tandem
+	$gestorBD->setCreatedTandemToNow($id);
 
 	$gestorBD->startTandemSession($id);
 	$return->result = 'ok';	
