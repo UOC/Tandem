@@ -31,9 +31,12 @@ if (!$user_obj || !$course_id) {
 	$user_language = $_SESSION[LANG];//!empty($_REQUEST['locale']) ? $_REQUEST['locale'] : "es_ES";
 	$other_language = ($user_language == "es_ES") ? "en_US" : "es_ES";
 	$gestorBD = new GestorBD();    
+
 	$currentActiveTandems = $gestorBD->currentActiveTandems($course_id);
 
 	if($currentActiveTandems <= MAX_TANDEM_USERS){
+		//Delete previous tandem
+		$gestorBD->deleteFromWaitingRoom($user_obj->id,-1);//we delete all waiting room that are older than the defined MAX_WAITING_TIME
 		$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
 		$gestorBD->tandemMaxWaitingTime();//we delete all waiting room that are older than the defined MAX_WAITING_TIME
 		$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
