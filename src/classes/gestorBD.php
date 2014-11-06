@@ -2618,13 +2618,20 @@ class GestorBD {
             return $skillGrade;
         }
 
-        
+
 
         /**
          * Returns all the users waiting on the waiting_room for spanish and english
          */
         function getUsersWaitingByLanguage($course_id,$language='es_ES'){
-            $sql= "select count(id) as total from waiting_room where language=".$this->escapeString($language)." and id_course = ".$this->escapeString($course_id)."";    
+            //$sql= "select count(id) as total from waiting_room where language=".$this->escapeString($language)." and id_course = ".$this->escapeString($course_id)."";    
+            $sql= "select 
+            count(distinct wru.id_user) as total
+            from waiting_room wr
+            inner join waiting_room_user as wru on wru.id_waiting_room=wr.id and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) ".  //check the wr has been created 30 seconds before";    
+            "where wr.language=".$this->escapeString($language)." and wr.id_course = ".$this->escapeString($course_id);
+            
+
             $result = $this->consulta($sql);
              if ($this->numResultats($result) > 0){                 
                 $result = $this->obteComArray($result);
