@@ -1962,3 +1962,17 @@ overflow-x: hidden;
 	text-decoration:none;
 
 }
+
+.waitingForButton{
+width: 300px;
+padding: 8px;
+color: #FFFFFF;
+border-radius:3px;
+float:left;
+margin-right:7px;
+margin-bottom:15px;
+}
+
+.waitingForButton span{display:inline;font-weight:bold;font-size:15px;}
+.english{background-color: #7E9F0B;}
+.spanish{background-color: #4F2F78;}

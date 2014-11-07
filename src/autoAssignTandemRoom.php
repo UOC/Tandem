@@ -42,6 +42,9 @@ if (!$user_obj || !$course_id) {
 		$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
 		$numPeopleWaitingForTandem = $gestorBD->sameLanguagePeopleWaiting($user_language,$course_id);
 		$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
+
+		$getUsersWaitingEs = $gestorBD->getUsersWaitingByLanguage($course_id,"es_ES");
+		$getUsersWaitingEn = $gestorBD->getUsersWaitingByLanguage($course_id,"en_US");
 	}
 //abertranb not need it mange all using the autoAssingCheckTandem.php
 	/*
@@ -54,8 +57,6 @@ if (!$user_obj || !$course_id) {
 		header("location: accessTandem.php?id=".$tId);
 		die();
 	}*/
-	
-
 	?>                    
 	<!DOCTYPE html>
 	<html>
@@ -153,6 +154,25 @@ if (!$user_obj || !$course_id) {
 	         	?>
 			}
 			<?php } ?>
+
+
+			//Updates the number of people waiting for english and spanish tandems
+			var intervalWaiting = setInterval(function(){
+	        	$.ajax({
+	        		type: 'POST',
+	        		url: "getCurrentUserCount.php",
+	        		data : {
+	        		},
+	        		dataType: "JSON",
+	        		success: function(json){	        			
+	        			if(json  &&  typeof json.users_en !== "undefined" &&  typeof json.users_es !== "undefined"){
+	        				$('#UsersWaitingEn').html(json.users_en);
+	        				$('#UsersWaitingEs').html(json.users_es);
+	        			}
+	        		}
+	        	});
+	        },2500);
+
 		});
     </script>   	
     <style>
@@ -186,11 +206,17 @@ if (!$user_obj || !$course_id) {
 					<!-- WAITING MODAL -->
 					<!-- TANDEM MODAL -->
 					<div class='waitingForTandem'>
-						<img class='loaderImg' src="css/images/loading_2.gif" />
+						<div class='waitingForButton english '>
+							<?php echo $LanguageInstance->get('Users waiting to practice English'); ?>:
+							<span id='UsersWaitingEn'><?php echo $getUsersWaitingEn;?></span>
+						</div>
+						<div class='waitingForButton spanish '>
+							<?php echo $LanguageInstance->get('Usuarios esperando para practicar Español');?>:
+							<span id='UsersWaitingEs'><?php echo $getUsersWaitingEs;?></span>
+						</div>
 						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>. <?php echo $numPeopleWaitingForTandem.' '.$LanguageInstance->get("number_of_people_waiting_for_tandem")?> </span>
 						<span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>
 					</div>
-
 					<!-- Max number of active tandems reached -->
 					<div id='maxTandems' class='modal'>
 						<span class='text'><?php echo $LanguageInstance->get("max_num_of_tandem_rooms_reached")?></span>

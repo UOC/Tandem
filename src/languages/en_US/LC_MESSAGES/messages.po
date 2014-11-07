@@ -411,7 +411,7 @@ msgstr "Waiting for a partner to do tandem"
 
 msgid "number_of_people_waiting_for_tandem"
 msgstr ""
-"people who want to practise the same language as you waiting for a tandem"
+"people who want to practice the same language as you waiting for a tandem"
 
 msgid "check_if_feedbacks_are_submitted"
 msgstr "Check if other feedback is already sent"
@@ -641,3 +641,9 @@ msgstr "The video could not be recorded"
 
 msgid "No tandems available"
 msgstr "No tandems available"
+
+msgid "Users waiting to practice Spanish"
+msgstr "Users waiting to practice Spanish"
+
+msgid "Users waiting to practice English"
+msgstr "Users waiting to practice English"

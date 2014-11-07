@@ -666,3 +666,9 @@ msgstr ""
 
 msgid "No tandems available"
 msgstr "No hay tandems disponibles"
+
+msgid "Users waiting to practice Spanish"
+msgstr "Usuarios esperando para practicar Español"
+
+msgid "Users waiting to practice English"
+msgstr "Usuarios esperando para practicar Ingles"

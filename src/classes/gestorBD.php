@@ -2659,6 +2659,14 @@ class GestorBD {
             return true;
         }
 
+        /**
+         * Return the number of tandems done by a specific date 
+         */
+
+        function numberOfTandemsByDate($date){
+             $sql = "select count(*) from tandem where ";
+        }
+
 }//end of class
 
 ?>
