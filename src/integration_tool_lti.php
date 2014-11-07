@@ -133,6 +133,7 @@ try {
 	    $user_id 	  = $user['id'];
 	    $user_obj->id = $user_id;
 	    $waiting_room = $tandemBLTI->getDataInfo($context, 'custom_waiting_room')==1;
+	    $waiting_room_select_room = $tandemBLTI->getDataInfo($context, 'custom_select_room')==1;
 	    $portfolio 		= $tandemBLTI->getDataInfo($context, 'custom_portfolio')==1;
 	    $ranking 	 = $tandemBLTI->getDataInfo($context, 'custom_ranking')==1;
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
@@ -189,15 +190,21 @@ try {
 		    					$_SESSION[COURSE_ID] = $course_id;
                                 $redirectTo = 'selectUserAndRoom';
                                 if ($waiting_room==1) {
-                                    $redirectTo = 'autoAssignTandemRoom';
-                                } 
+                                	if ($waiting_room_select_room) {
+	                                    $redirectTo = 'autoAssignTandemRoom';
+	                                }
+                                    if ($user_obj->admin == 1 || $user_obj->instructor == 1 ) {
+										$redirectTo = 'tandemInfo';
+									}
+								}
+                                
                                 if ($portfolio){
                                     $redirectTo = 'portfolio';
                                 } 
                                 if ($ranking==1){
                                     $redirectTo = 'ranking';
                                 } 
-		    		header ('Location: '.$redirectTo.'.php');
+		    		header ('Location: '.$redirectTo.'.php'.($waiting_room_select_room?'?select_room=1':''));
 		    	} 
 		    	//sino ja mostrara error
 		    } else {
