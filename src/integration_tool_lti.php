@@ -177,6 +177,7 @@ try {
 		    //disabled to select current tandem // $tandem = $gestorBD->is_invited_to_join($user_id, $id_resource, $course_id);
 		    $_SESSION[ID_RESOURCE] = $id_resource;
             $_SESSION[USE_WAITING_ROOM] = $waiting_room;
+            $_SESSION[FORCE_SELECT_ROOM] = $waiting_room_select_room;
             $_SESSION[OPEN_TOOL_ID] = $open_tool_id && $open_tool_id>0?$open_tool_id:false;
             $_SESSION[WEEK] = !empty($week) ? $week : false;
             $_SESSION[PREVIOUS_WEEK] = !empty($previous_week) ? $previous_week : false;
@@ -190,12 +191,12 @@ try {
 		    					$_SESSION[COURSE_ID] = $course_id;
                                 $redirectTo = 'selectUserAndRoom';
                                 if ($waiting_room==1) {
-                                	if ($waiting_room_select_room) {
+                                	if (!$waiting_room_select_room) {
 	                                    $redirectTo = 'autoAssignTandemRoom';
+	                                    if ($user_obj->admin == 1 || $user_obj->instructor == 1 ) {
+											$redirectTo = 'tandemInfo';
+										}
 	                                }
-                                    if ($user_obj->admin == 1 || $user_obj->instructor == 1 ) {
-										$redirectTo = 'tandemInfo';
-									}
 								}
                                 
                                 if ($portfolio){

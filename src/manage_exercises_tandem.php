@@ -135,6 +135,8 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 	$max_post = (int)(ini_get('post_max_size'));
 	$memory_limit = (int)(ini_get('memory_limit'));
 	$upload_mb = min($max_upload, $max_post, $memory_limit);
+	$force_select_room = isset($_SESSION[FORCE_SELECT_ROOM]) && $_SESSION[FORCE_SELECT_ROOM];
+                    
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -152,11 +154,11 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 <script src="js/jquery.ui.datepicker.js"></script>
 <script src="js/jquery.colorbox-min.js"></script>
 <script src="js/common.js"></script>
-<?php include_once dirname(__FILE__).'/js/google_analytics.php' ?>
+<?php include_once dirname(__FILE__).'/js/google_analytics.php'; ?>
 <script>
 $(document).ready(function(){
 // victor - Lets change the go back link depending on if the custom parameter USE_WAITING_ROOM exists.
-$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 ? 'autoAssignTandemRoom.php' : 'selectUserAndRoom.php' ?>");
+$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 && !$force_select_room ? 'tandemInfo.php' : 'selectUserAndRoom.php' ?>");
 });
 </script>
 </head>

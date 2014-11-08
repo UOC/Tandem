@@ -64,7 +64,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 			return '<span class="lbl-error">'.$LanguageInstance->get('error').'</span>';
 		}
 	}
-	
+	$force_select_room = isset($_SESSION[FORCE_SELECT_ROOM]) && $_SESSION[FORCE_SELECT_ROOM];
 	?>
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
@@ -87,7 +87,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 		<script>
 			$(document).ready(function(){
 // victor - Lets change the go back link depending on if the custom parameter USE_WAITING_ROOM exists.
-$("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 ? 'autoAssignTandemRoom.php' : 'selectUserAndRoom.php' ?>");
+$("#GoBack").attr("href","<?php echo !$force_select_room && isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1 ? 'tandemInfo.php' : 'selectUserAndRoom.php' ?>");
 });
 </script>
 <script type="text/javascript">
@@ -460,11 +460,11 @@ $(document).ready(function(){
 														</thead>
 														<tbody>
 															<tr>
-																<td><?php echo $subTimer[0];?></td>
-																<td><?php echo $subTimer[1];?></td>
-																<td><?php echo $subTimer[2];?></td>
-																<td><?php echo $subTimer[3];?></td>
-																<td><?php echo $subTimer[4];?></td>
+																<td><?php echo count($subTimer)>0?$subTimer[0]:'';?></td>
+																<td><?php echo count($subTimer)>1?$subTimer[1]:'';?></td>
+																<td><?php echo count($subTimer)>2?$subTimer[2]:'';?></td>
+																<td><?php echo count($subTimer)>3?$subTimer[3]:'';?></td>
+																<td><?php echo count($subTimer)>4?$subTimer[4]:'';?></td>
 															</tr>
 														</tbody>
 													</table>
