@@ -15,3 +15,8 @@ border-color: #7E9F0B !important;
 #pdfForm{
 	margin-top:20px;
 }
+.bullets {
+	text-align: justify;
+	padding-bottom: 2px;
+	/*border:1px solid red;*/
+}
