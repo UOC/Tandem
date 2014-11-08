@@ -63,9 +63,8 @@ if (!$user_obj || !$course_id) {
 	<head>
 		<title>Tandem</title>
 		<meta charset="UTF-8" />
-		<link rel="stylesheet" type="text/css" media="all" href="css/autoAssignTandem.css" />
-		<link rel="stylesheet" type="text/css" media="all" href="css/tandem-waiting-room.css" />
-		<link rel="stylesheet" type="text/css" media="all" href="css/defaultInit.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="css/autoAssignTandem.css?id=21" />
+		<link rel="stylesheet" type="text/css" media="all" href="css/tandem-waiting-room.css?id=21" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 		<!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
 		<link rel="stylesheet" type="text/css" media="all" href="css/colorbox.css" />		
@@ -214,8 +213,19 @@ if (!$user_obj || !$course_id) {
 							<?php echo $LanguageInstance->get('Usuarios esperando para practicar Español');?>:
 							<span id='UsersWaitingEs'><?php echo $getUsersWaitingEs;?></span>
 						</div>
-						<span class='text'><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>. <?php echo $numPeopleWaitingForTandem.' '.$LanguageInstance->get("number_of_people_waiting_for_tandem")?> </span>
-						<span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>
+
+						<p class="clear"><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>.</p>
+						<!--span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>-->
+						<h3><?php echo $LanguageInstance->get("6 STEPS for a successful Tandem experience")?>:</h3>
+						
+						<ol class="bullets">
+							<li class="bullets"><?php echo $LanguageInstance->get("Go online at every hour and half-hour")?>.</li>
+							<li class="bullets"><?php echo $LanguageInstance->getTagDouble("ALWAYS take your microphone and headphones (even if you have a laptop) and check that they work well in %s'Try your audio and video settings'%s on the top of the main page of the MOOC", '<a href="http://videoconference.speakapps.org/videochat/testEnvironment.htm" target="blank">', '</a>')?>.</li>
+							<li class="bullets"><?php echo $LanguageInstance->get("Enter Tandem (The tandem icon is a green 't'). Then wait until a tandem partner connects with you")?>.</li>
+							<li class="bullets"><?php echo $LanguageInstance->get("As soon as a Tandem partner connects with you, Videochat will be automatically activated and will start RECORDING.  Don’t be shy and don’t exit!  A window with the tandem tasks will be also automatically activated and you and your partner will be able to switch from the Videochat window to the Tandem window very easily")?>.</li>
+							<li class="bullets"><?php echo $LanguageInstance->get("Do the tandem with your partner and REMEMBER that when the instructions are in Spanish you and your partner speak Spanish. When the instructions are in English, you speak English")?>.</li>
+							<li class="bullets"><?php echo $LanguageInstance->get("IMMEDIATELY after the tandem activity, please evaluate your partner by clicking on 'peer review', where you fill in the portfolio")?>.</li>
+						</ol>	
 					</div>
 					<!-- Max number of active tandems reached -->
 					<div id='maxTandems' class='modal'>
