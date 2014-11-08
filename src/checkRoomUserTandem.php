@@ -12,6 +12,7 @@ $classOf = $_REQUEST['classOf'];
 $data = $_REQUEST['data'];
 
 $use_waiting_room = $_SESSION[USE_WAITING_ROOM];
+$force_select_room = isset($_SESSION[FORCE_SELECT_ROOM]) && $_SESSION[FORCE_SELECT_ROOM];
 
 
 $id_resource_lti = $_SESSION[ID_RESOURCE];
@@ -189,18 +190,15 @@ if (getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlast
 					openLinkWaiting(); });
 	
 				function openLink(){
-                                        <?php if ($use_waiting_room) {
-                                            ?>
-                                           top.showWaitingMessage("<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>&userb=<?php echo $id_user_guest;?>", "<?php echo $_SESSION[CURRENT_TANDEM] ?>");
-				
-                                        <?php } else {
-                                            ?>
-                                            //we can have an error .... see later.        
-                                           top.document.location.href="<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>";
-			
-				
-                                        <?php } 
-                                            ?>
+                        <?php if ($use_waiting_room && !$force_select_room) {
+                            ?>
+                           top.showWaitingMessage("<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>&userb=<?php echo $id_user_guest;?>", "<?php echo $_SESSION[CURRENT_TANDEM] ?>");
+                        <?php } else {
+                            ?>
+                            //we can have an error .... see later.        
+                           top.document.location.href="<?php echo $classOf;?>.php?room=<?php echo $exercise;?>&user=<?php echo $user_obj->type_user?>&nextSample=<?php echo $nextSample;?>&node=<?php echo $node;?>&data=<?php echo $data;?>";
+                        <?php } 
+                            ?>
 					}
 	
 				function openLinkWaiting(){
