@@ -50,7 +50,8 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 			url: "desconn.php",
 			data: {'room':'<?php echo $_GET["room"];?>','close_session': 1},
 			success: function(){
-                    <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { 
+                    <?php 
+                    if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { 
 					 	echo "window.location.href = 'feedback.php' ";
                     ?>				
                     <?php  } else { ?>
