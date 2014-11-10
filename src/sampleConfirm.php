@@ -950,7 +950,7 @@ showImage = function(id){
 							   height: 230,
 							   maxWidth: 500,
 							   maxHeight: 400,
-							   closable: false,
+							   closable: true,
 							   draggable: true,
 							   resizable: true,
 							   maximizable: false,
@@ -1046,7 +1046,7 @@ showImage = function(id){
 						   title: "<?php echo $LanguageInstance->get('Hide Videochat')?>",   // optional, it will popup a tooltip by browser while mouse cursor over it
 						   //clazz: "",           // optional, don't set border, padding, margin or any style which will change element position or size
 						   //style: "",                    // optional, don't set border, padding, margin or any style which will change element position or size
-						   image: "js/window/img/close.png",    // required, the url of button icon(16x16 pixels)
+						   image: "js/window/img/maximize.png",    // required, the url of button icon(16x16 pixels)
 						   callback:                     // required, the callback function while click it
 						      function(btn, wnd) {
 						         startTandemVC();
@@ -1065,7 +1065,7 @@ showImage = function(id){
 							   height: 400,
 							   maxWidth: 500,
 							   maxHeight: 400,
-							   closable: false,
+							   closable: true,
 							   draggable: false,
 							   resizable: true,
 							   maximizable: false,
