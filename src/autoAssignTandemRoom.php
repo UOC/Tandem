@@ -40,7 +40,7 @@ if (!$user_obj || !$course_id) {
 		$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
 		$gestorBD->tandemMaxWaitingTime();//we delete all waiting room that are older than the defined MAX_WAITING_TIME
 		$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
-		$numPeopleWaitingForTandem = $gestorBD->sameLanguagePeopleWaiting($user_language,$course_id);
+		$numPeopleWaitingForTandem = $gestorBD->getUsersWaitingByLanguage($course_id,$user_language);
 		$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
 
 		$getUsersWaitingEs = $gestorBD->getUsersWaitingByLanguage($course_id,"es_ES");

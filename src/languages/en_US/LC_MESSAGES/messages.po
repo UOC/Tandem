@@ -698,3 +698,6 @@ msgstr ""
 
 msgid "6 STEPS for a successful Tandem experience"
 msgstr "6 STEPS for a successful Tandem experience"
+
+msgid "your_partners_name"
+msgstr "Your partner's name"

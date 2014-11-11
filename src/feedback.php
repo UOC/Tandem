@@ -21,6 +21,7 @@ require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 if (!$user_obj || !$course_id) {
 //Tornem a l'index
 	header('Location: index.php');
+	die();
 } else {
 	require_once(dirname(__FILE__) . '/classes/constants.php');
 	$id_feedback = isset($_GET['id_feedback']) && $_GET['id_feedback']>0?$_GET['id_feedback']:$_SESSION[ID_FEEDBACK];
@@ -96,6 +97,7 @@ if (!$user_obj || !$course_id) {
 		}
 	}	
 	$partnerFeedback = $gestorBD->checkPartnerFeedback($feedbackDetails->id_tandem,$id_feedback);	
+	$partnerName = $gestorBD->getPartnerName($id_feedback);
 	?>                    
 	<!DOCTYPE html>
 	<html>
@@ -123,6 +125,7 @@ if (!$user_obj || !$course_id) {
       <div class="page-header">
       <button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
         <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
+        <p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?></p>
       </div>
       <?php if ($message){
       	echo $message;

@@ -2081,27 +2081,6 @@ class GestorBD {
     }
      
      /**
-      * Number of people waiting for the same language.
-      */
-
-     function sameLanguagePeopleWaiting($lang,$id_course){
-        /*$result = $this->consulta("select count(id) as total from waiting_room where id_course =".$this->escapeString($id_course)." 
-                         and language=".$this->escapeString($lang)."");*/
-
-        $result = $this->consulta("select count( distinct id_user ) as total from waiting_room_user as WRU 
-                                   inner join waiting_room as WR on WR.id = WRU.id_waiting_room 
-                                   where WR.id_course =".$this->escapeString($id_course)." 
-                                   and WR.language=".$this->escapeString($lang)."");
-
-        if ($this->numResultats($result) > 0){ 
-            $r = $this->obteComArray($result);
-            return $r[0]['total'];
-        }
-        
-        return 0;
-     }
-
-     /**
       * Creates a new externale tandem
       * @param  [type] $id_tandem        [description]
       * @param  [type] $id_external_tool [description]
@@ -2619,7 +2598,6 @@ class GestorBD {
         }
 
 
-
         /**
          * Returns all the users waiting on the waiting_room for spanish and english
          */
@@ -2631,14 +2609,12 @@ class GestorBD {
             inner join waiting_room_user as wru on wru.id_waiting_room=wr.id and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) ".  //check the wr has been created 30 seconds before";    
             "where wr.language=".$this->escapeString($language)." and wr.id_course = ".$this->escapeString($course_id);
             
-
             $result = $this->consulta($sql);
              if ($this->numResultats($result) > 0){                 
                 $result = $this->obteComArray($result);
                 return  $result[0]['total'];
             }else
             return 0;
-
 
         }
 
@@ -2662,10 +2638,264 @@ class GestorBD {
         /**
          * Return the number of tandems done by a specific date 
          */
+        function getNumtandemsByDate($date,$course_id){
+            
+             $sql = "select count(*) as total from tandem where is_finished = 1  and date(created) =  ".$this->escapeString($date)." and id_course = ".$this->escapeString($course_id)." ";
+             $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){                 
+                $result = $this->obteComArray($result);
+                return  $result[0]['total'];
+            }
 
-        function numberOfTandemsByDate($date){
-             $sql = "select count(*) from tandem where ";
+            return 0;
         }
+
+        /**
+         * Return the number of failed tandems, the ones that in total time have 5 seconds or less
+         * TODO :Improve maybe do it in just 1 whole query
+         */
+         function  getNumOfSuccessFailedTandems($course_id){
+
+            $sql = "select id from  tandem 
+                    where 
+                    id_course = ".$this->escapeString($course_id)." ";
+            $result = $this->consulta($sql);
+            $failed = 0;
+            $success  = 0;
+            if ($this->numResultats($result) > 0){ 
+                    $result = $this->obteComArray($result);                    
+                    foreach($result as $key => $value){                
+                        $result2 = $this->consulta("select sum(total_time) as total from user_tandem where id_tandem =  ".$this->escapeString($value['id'])." ");
+                        if ($this->numResultats($result2) > 0){ 
+                             $result2 = $this->obteComArray($result2);
+                             if($result2[0]['total'] <= 5)
+                                $failed++;
+                            else $success++;
+                        }
+                    }
+            }
+            return array("success" => $success,"failed" => $failed);
+         }
+
+         /**
+          * returns an array with all dates and number of tandems by that date
+          */
+         function getCountAllTandemsByDate($course_id){
+               
+                $sql = "SELECT DATE( created ) as created , COUNT( id ) AS total
+                        FROM tandem
+                        WHERE is_finished = 1
+                        AND finalized IS NOT NULL 
+                        AND id_course = ".$this->escapeString($course_id)."
+                        GROUP BY DATE( created ) 
+                        ORDER BY created asc";
+
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                        return $this->obteComArray($result);        
+                }
+                return array();
+         }  
+         /**
+          * returns an array with all dates and number of tandems by that date
+          */
+
+         function getCountAllUnFinishedTandemsByDate($course_id){
+               
+                $sql = "SELECT DATE( created ) as created , COUNT( id ) AS total
+                        FROM tandem
+                        WHERE is_finished = 0
+                        AND finalized IS NULL 
+                        AND id_course = ".$this->escapeString($course_id)."
+                        GROUP BY DATE( created ) 
+                        ORDER BY created asc";
+
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                        return $this->obteComArray($result);        
+                }
+                return array();
+         }
+
+
+         /**
+          * Returns how many people have finished a tandem but not submitted their feedback
+          */
+          public function getFeedbackStats($course_id){
+
+            $r = array();
+
+            //All feedback_tandem_forms sent
+            $sql ="SELECT COUNT( * ) AS total
+                    FROM feedback_tandem AS FT
+                    INNER JOIN tandem AS T ON T.id = FT.id_tandem
+                    INNER JOIN feedback_tandem_form FTF ON FTF.id_feedback_tandem = FT.id
+                    WHERE T.is_finished = 1
+                    AND T.finalized IS NOT NULL 
+                    AND T.id_course = ".$this->escapeString($course_id)." ";
+
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $t = $this->obteComArray($result);        
+                    $r['feedback_tandem_forms_sent'] = $t[0]['total'];
+            }
+
+            //all feedback_tandem
+            $sql ="SELECT COUNT( * ) AS total
+                    FROM feedback_tandem AS FT
+                    INNER JOIN tandem AS T ON T.id = FT.id_tandem
+                    WHERE T.is_finished = 1
+                    AND T.finalized IS NOT NULL 
+                    AND T.id_course = ".$this->escapeString($course_id)." ";
+
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $t = $this->obteComArray($result);        
+                    $r['feedback_tandem'] = $t[0]['total'];
+            }
+
+                 //all feedback_tandem_form es_ES sent
+            $sql ="SELECT COUNT( * ) AS total
+                    FROM feedback_tandem AS FT
+                    INNER JOIN tandem AS T ON T.id = FT.id_tandem
+                    INNER JOIN feedback_tandem_form FTF ON FTF.id_feedback_tandem = FT.id
+                    WHERE T.is_finished = 1
+                    AND T.finalized IS NOT NULL 
+                    AND T.id_course = ".$this->escapeString($course_id)." 
+                    AND FT.language ='es_ES' ";
+
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $t = $this->obteComArray($result);        
+                    $r['feedback_tandem_form_es'] = $t[0]['total'];
+            }
+
+            //all feedback_tandem_form es_ES NOT sent
+            $sql ="SELECT COUNT( * ) AS total
+                    FROM feedback_tandem AS FT
+                    INNER JOIN tandem AS T ON T.id = FT.id_tandem                    
+                    WHERE FT.id not in( select id_feedback_tandem from feedback_tandem_form )
+                    AND T.is_finished = 1
+                    AND T.finalized IS NOT NULL 
+                    AND T.id_course = ".$this->escapeString($course_id)." 
+                    AND FT.language ='es_ES' ";
+
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $t = $this->obteComArray($result);        
+                    $r['feedback_tandem_form_es_not_sent'] = $t[0]['total'];
+            }   
+
+
+
+            //all feedback_tandem_form en_US sent
+            $sql ="SELECT COUNT( * ) AS total
+                    FROM feedback_tandem AS FT
+                    INNER JOIN tandem AS T ON T.id = FT.id_tandem
+                    INNER JOIN feedback_tandem_form FTF ON FTF.id_feedback_tandem = FT.id
+                    WHERE T.is_finished = 1
+                    AND T.finalized IS NOT NULL 
+                    AND T.id_course = ".$this->escapeString($course_id)." 
+                    AND FT.language ='en_US' ";
+
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $t = $this->obteComArray($result);        
+                    $r['feedback_tandem_form_en'] = $t[0]['total'];
+            }   
+
+            //all feedback_tandem_form en_US NOT sent
+            $sql ="SELECT COUNT( * ) AS total
+                    FROM feedback_tandem AS FT
+                    INNER JOIN tandem AS T ON T.id = FT.id_tandem
+                    WHERE FT.id not in( select id_feedback_tandem from feedback_tandem_form )
+                    AND T.is_finished = 1
+                    AND T.finalized IS NOT NULL 
+                    AND T.id_course = ".$this->escapeString($course_id)." 
+                    AND FT.language ='en_US' ";
+
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $t = $this->obteComArray($result);        
+                    $r['feedback_tandem_form_en_not_sent'] = $t[0]['total'];
+            }
+
+            return $r;
+          }
+
+          /**
+           * Gets all tandems that have failed and succeded depending if they are webrtc or videochat
+           */
+
+          function tandemStatsByVideoType($course_id){
+
+            $r = array("tandem_ok" => array("webrtc" => 0,"videochat" => 0),
+                       "tandem_ko" => array("webrtc" => 0,"videochat" => 0));
+
+            $sql = "SELECT T.id from tandem as T                    
+                    INNER JOIN feedback_tandem as FT on FT.id_tandem = T.id
+                    WHERE 
+                    FT.id_tandem = FT.id_external_tool 
+                    AND FT.external_video_url IS NOT NULL
+                    AND T.id_course = ".$this->escapeString($course_id)." 
+                    ";
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $result = $this->obteComArray($result);
+                    foreach($result as $key => $value){                
+                        $result2 = $this->consulta("select sum(total_time) as total from user_tandem where id_tandem =  ".$this->escapeString($value['id'])." ");
+                        if ($this->numResultats($result2) > 0){ 
+                             $result2 = $this->obteComArray($result2);
+                             if($result2[0]['total'] <= 5)
+                                $r['tandem_ko']['webrtc']++;
+                            else 
+                                $r['tandem_ok']['webrtc']++;;
+                        }
+                    }   
+            }     
+
+
+
+            $sql = "SELECT T.id from tandem as T                    
+                    INNER JOIN feedback_tandem as FT on FT.id_tandem = T.id
+                    WHERE  FT.id_tandem != FT.id_external_tool 
+                    AND FT.end_external_service IS NOT NULL                                
+                    AND T.id_course = ".$this->escapeString($course_id)." 
+                    ";
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $result = $this->obteComArray($result);
+                    foreach($result as $key => $value){                
+                        $result2 = $this->consulta("select sum(total_time) as total from user_tandem where id_tandem =  ".$this->escapeString($value['id'])." ");
+                        if ($this->numResultats($result2) > 0){ 
+                             $result2 = $this->obteComArray($result2);
+                             if($result2[0]['total'] <= 5)
+                                $r['tandem_ko']['videochat']++;
+                            else 
+                                $r['tandem_ok']['videochat']++;;
+                        }
+                    }   
+            }
+                return $r;
+          }
+
+          /**
+           * Get the partners name of a feedback
+           */
+            function getPartnerName($feedback_id){
+
+                $sql = "select id_partner from feedback_tandem where id = ".$this->escapeString($feedback_id)." ";
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                    $result = $this->obteComArray($result);
+                    return $this->getUserName($result['0']['id_partner']);
+                }
+
+                return '';
+            }
+
+
+
 
 }//end of class
 
