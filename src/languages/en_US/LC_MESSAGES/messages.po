@@ -701,3 +701,6 @@ msgstr "6 STEPS for a successful Tandem experience"
 
 msgid "your_partners_name"
 msgstr "Your partner's name"
+
+msgid "Close this Popup to start"
+msgstr "Close this Popup to start"

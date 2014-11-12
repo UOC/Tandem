@@ -910,26 +910,20 @@ showImage = function(id){
 			});
 			
 windowNotificationTandem = $.window({
-							   title: "",
-							   url: "notificationStartTandem.php",
-							   width: 400,
-							   //y: $( document ).height()*0.1,
-							   height: 400,
-							   maxWidth: 500,
-							   maxHeight: 400,
-							   closable: true,
-							   draggable: false,
-							   resizable: true,
-							   maximizable: false,
-							   minimizable: false,
-							   showFooter: true,
-							   modal: true,
-							   showRoundCorner: true
-				   			   
-							});
-
-			//Lets make a sound to alert students
-			document.getElementById('alertSound').play();
+			   title: "",
+			   url: "notificationStartTandem.php",
+			   width: 210,
+			   height: 130,
+			   maxWidth: 400,
+			   maxHeight: 400,							  
+			   draggable: false,
+			   closable: true,							   
+			   maximizable: false,
+			   minimizable: false,
+			   showFooter: true,
+			   modal: true,
+			   showRoundCorner: true				   			   
+			});
 
 			intervalVideochat = setInterval(function() {checkVideochat(windowVideochat)},2500);
 			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
@@ -1122,11 +1116,16 @@ windowNotificationTandem = $.window({
 			}
 		});
 		jQuery.fn.extend({
-			showVideochatEvent: function () {
-				
+			showVideochatEvent: function () {				
 				showVideochat(windowVideochat, widthWindowVideochat, heightWindowVideochat);
 			}
-		});
+		});		
+		
+		jQuery.fn.extend({
+			hideSoundNotification: function () {				
+				windowNotificationTandem.close();			
+			}
+		});		
 <?php
 } 
 ?>
@@ -1293,7 +1292,6 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 	<!--link media="screen" rel="stylesheet" href="css/jquery_modal.css" /-->
 	<script type="text/javascript" src="js/window/jquery.window.min.js"></script>
 	<?php }?>
-	<audio id="alertSound" src="alertSound.wav" preload="auto"></audio>
 </body>
 
 </html>

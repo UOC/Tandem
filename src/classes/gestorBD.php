@@ -2743,6 +2743,7 @@ class GestorBD {
 
          /**
           * Returns how many people have finished a tandem but not submitted their feedback
+          * TODO : Improve queries.
           */
           public function getFeedbackStats($course_id){
 
@@ -2918,7 +2919,35 @@ class GestorBD {
             }
 
 
+            /**
+             * Retuns the number of people that were waiting for a tandem but never managet to find a partner
+             * on each language
+             */
 
+            function peopleWaitedWithoutTandem($course_id){
+
+                $r = array("es" => 0,"en" => 0);
+
+                $sql = "SELECT COUNT( * ) as total , WRH.language AS lang
+                        FROM waiting_room_user_history AS WRUH
+                        INNER JOIN waiting_room_history AS WRH ON WRUH.id_waiting_room = WRH.id_waiting_room
+                        AND WRH.id_course = ".$this->escapeString($course_id)."
+                        and id_tandem = -1
+                        GROUP BY WRH.language";
+
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                    $result = $this->obteComArray($result);
+                    foreach($result as $key => $value){
+                        if($value['lang']=='es_ES') 
+                            $r['es'] = $value['total'];                        
+                        if($value['lang']=='en_US') 
+                            $r['en'] = $value['total'];
+                    }
+                }
+
+                return $r;
+            }
 
 }//end of class
 

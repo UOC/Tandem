@@ -19,7 +19,7 @@ include(dirname(__FILE__) . '/classes/pdf.php');
 require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
-$course_id = 255;//isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
+$course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 	
 $gestorBD = new GestorBD();
 if (empty($user_obj) || $user_obj->instructor != 1  ) {
@@ -36,6 +36,7 @@ $getCountAllTandemsByDate = $gestorBD->getCountAllTandemsByDate($course_id);
 $getCountAllUnFinishedTandemsByDate = $gestorBD->getCountAllUnFinishedTandemsByDate($course_id);
 $getFeedbackStats = $gestorBD->getFeedbackStats($course_id);
 $tandemStatsByVideoType = $gestorBD->tandemStatsByVideoType($course_id);
+$peopleWaitedWithoutTandem  = $gestorBD->peopleWaitedWithoutTandem($course_id);
 ?>
 <!DOCTYPE html>
 <html>
@@ -501,6 +502,70 @@ $(function () {
     });
 });
 
+//feedback forms not sent correctly by language
+$(function () {
+    $('#chart7').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'People that waited for a tandem but never got a partner in total'
+        },
+        subtitle: {
+            text: 'Tandem'
+        },
+        xAxis: {
+            categories: ['Es', 'En'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Not sent',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' feedback forms'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -20,
+            y: 190,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'People waited for tanden by language',
+            data: [
+            { color:'#4E2E77', y : <?php echo $peopleWaitedWithoutTandem['es'] ?>},
+            { color:'#788B44', y : <?php echo $peopleWaitedWithoutTandem['en'] ?>}
+            ]
+        }]
+    });
+});
+
+
+
 });	
 </script>
 </head>
@@ -597,6 +662,7 @@ $(function () {
 	  		<div id='chart4' style='width:350px;display:inline'></div>
 	  		<div id='chart5' style='width:350px;float:left;display:inline'></div>
 	  		<div id='chart6' style='width:350px;float:left;display:inline'></div>
+	  		<div id='chart7' style='width:350px;float:left;display:inline'></div>
 	  	</div>
   	</div>
   	<p></p>

@@ -728,3 +728,6 @@ msgstr "6 PASOS para hacer un Tandem con éxito"
 
 msgid "your_partners_name"
 msgstr "Nombre de tu compañero"
+
+msgid "Close this Popup to start"
+msgstr "Cierra esta ventana para comenzar"
