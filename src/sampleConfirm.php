@@ -850,6 +850,7 @@ showImage = function(id){
 		//$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
 		var windowVideochat = false;
 		var windowStartTandem = false;
+		var windowNotificationTandem = false;
 		var windowMessage = false;
 		var intervalVideochat = false;
 		var widthWindowVideochat = $( window ).width()*0.98;
@@ -907,8 +908,28 @@ showImage = function(id){
 			   showRoundCorner: true,
    			   custBtns: myButtons
 			});
-
 			
+windowNotificationTandem = $.window({
+							   title: "",
+							   url: "notificationStartTandem.php",
+							   width: 400,
+							   //y: $( document ).height()*0.1,
+							   height: 400,
+							   maxWidth: 500,
+							   maxHeight: 400,
+							   closable: true,
+							   draggable: false,
+							   resizable: true,
+							   maximizable: false,
+							   minimizable: false,
+							   showFooter: true,
+							   modal: true,
+							   showRoundCorner: true
+				   			   
+							});
+
+			//Lets make a sound to alert students
+			document.getElementById('alertSound').play();
 
 			intervalVideochat = setInterval(function() {checkVideochat(windowVideochat)},2500);
 			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
@@ -1230,8 +1251,6 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 					<div class="clock" id="clock"><span class="mm">00</span>:<span class="ss">00</span></div>
 					<div class="linewrap"><div class="line"></div></div>
 				</div>
-
-
 				<div id="content">
 					<?php 
 				if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
@@ -1274,7 +1293,7 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 	<!--link media="screen" rel="stylesheet" href="css/jquery_modal.css" /-->
 	<script type="text/javascript" src="js/window/jquery.window.min.js"></script>
 	<?php }?>
-	
+	<audio id="alertSound" src="alertSound.wav" preload="auto"></audio>
 </body>
 
 </html>
