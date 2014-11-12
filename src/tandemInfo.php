@@ -234,7 +234,7 @@ $(function () {
                     text: 'Successful vs Failed tandems in Total'
                 },
                 subtitle: {
-                    text: 'View the amounts of successful executed tandems vs the ones that failed( counting total_time less than 5s and the one\'s that were not finished )'
+                    text: 'View the amounts of successful executed tandems vs the ones that failed( counting total_time less than <?php echo TIME_TO_FAILED_TANDEM?>s and the one\'s that were not finished )'
                 },
                 xAxis: {
                     type: 'category'
