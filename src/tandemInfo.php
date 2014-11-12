@@ -19,7 +19,7 @@ include(dirname(__FILE__) . '/classes/pdf.php');
 require_once dirname(__FILE__) . '/classes/IntegrationTandemBLTI.php';
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
-$course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
+$course_id = 255;//isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 	
 $gestorBD = new GestorBD();
 if (empty($user_obj) || $user_obj->instructor != 1  ) {
@@ -133,7 +133,7 @@ $(function () {
              ]
         },
         {
-        	name : 'Number of unfinished Tandems by date',
+        	name : 'Number of unfinished Tandems by date ',
             data: [
             	<?php 
             	if(!empty($getCountAllUnFinishedTandemsByDate)){ 
@@ -231,10 +231,10 @@ $(function () {
           			  enabled: false
         		},
                 title: {
-                    text: 'Sucessfull vs Failed tandems'
+                    text: 'Successful vs Failed tandems in Total'
                 },
                 subtitle: {
-                    text: 'View the amounts of successfull executed tandems vs the ones that failed( counting total_time less than 5s and the one\'s that were not finished )'
+                    text: 'View the amounts of successful executed tandems vs the ones that failed( counting total_time less than 5s and the one\'s that were not finished )'
                 },
                 xAxis: {
                     type: 'category'
@@ -278,6 +278,12 @@ $(function () {
 
 //feedback forms by language
 $(function () {
+	   Highcharts.getOptions().plotOptions.pie.colors = (function () {
+        var colors = ["#4E2E77","#788B44"];
+            
+            
+        return colors;
+    }());
     $('#chart3').highcharts({
         chart: {
             plotBackgroundColor: null,
@@ -285,7 +291,7 @@ $(function () {
             plotShadow: false
         },
         title: {
-            text: 'Feedback forms submissions by Language'
+            text: 'Feedback forms submissions by Language in Total'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -307,12 +313,13 @@ $(function () {
             type: 'pie',
             name: 'Feedback form by language',
             data: [
-                ['es_ES',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_es'] / $getFeedbackStats['feedback_tandem_forms_sent']) * 100 )?>],
-                ['en_US',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_en'] / $getFeedbackStats['feedback_tandem_forms_sent']) * 100 )?>]                                             
+                ['ES',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_es'] / $getFeedbackStats['feedback_tandem_forms_sent']) * 100 )?>],
+                ['EN',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_en'] / $getFeedbackStats['feedback_tandem_forms_sent']) * 100 )?>]                                             
             ]
         }]
     });
 });
+
 //feedback forms not sent correctly by language
 $(function () {
     $('#chart4').highcharts({
@@ -320,7 +327,7 @@ $(function () {
             type: 'bar'
         },
         title: {
-            text: 'Form submission not sent by language'
+            text: 'Form submission not sent by language in Total'
         },
         subtitle: {
             text: 'Tandem'
@@ -366,13 +373,14 @@ $(function () {
             enabled: false
         },
         series: [{
-
             name: 'Form submission not sent by language',
-            data: [<?php echo $getFeedbackStats['feedback_tandem_form_es_not_sent'] ?>,<?php echo $getFeedbackStats['feedback_tandem_form_en_not_sent'] ?>]
+            data: [
+            { color:'#4E2E77', y : <?php echo $getFeedbackStats['feedback_tandem_form_es_not_sent'] ?>},
+            { color:'#788B44', y : <?php echo $getFeedbackStats['feedback_tandem_form_en_not_sent'] ?>}
+            ]
         }]
     });
 });
-
 
 
 //ok tandems by webrtc and videochat
@@ -382,7 +390,7 @@ $(function () {
             type: 'bar'
         },
         title: {
-            text: 'Successfull tandems by WEBRTC and VIDEOCHAT'
+            text: 'Successful tandems by WEBRTC and VIDEOCHAT in Total'
         },
         subtitle: {
           text: 'Not counting the one\'s that were not finished'
@@ -441,7 +449,7 @@ $(function () {
             type: 'bar'
         },
         title: {
-            text: 'Failed tandems by WEBRTC and VIDEOCHAT'
+            text: 'Failed tandems by WEBRTC and VIDEOCHAT in Total'
         },
         subtitle: {
             text: 'Not counting the one\'s that were not finished'
@@ -502,6 +510,16 @@ $(function () {
 		<div class='col-md-12 text-right'>
 				<p><a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a></p>
 		</div>		
+	</div>
+		<div class='row'>
+		<div class='col-md-12'>
+		<p>
+			 <a class='btn btn-success' href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
+             <a href='statistics_tandem.php' class='btn btn-success' ><?php echo $LanguageInstance->get("Tandem Statistics");?></a> 
+             <a href='tandemInfo.php?force=1&lang=en_US<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Go to tandem to practise English");?></a> 
+             <a href='tandemInfo.php?force=1&lang=es_ES<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Ir al tandem para practicar Español");?></a> 
+		</p>
+		</div>
 	</div>
 	<div class='row'>
 	<div class='col-md-12'>	<h3><?php echo $LanguageInstance->get('Statistics'); ?></h3></div>
@@ -582,22 +600,12 @@ $(function () {
 	  	</div>
   	</div>
   	<p></p>
-	<div class='row'>
-		<div class='col-md-12'>
-		<p>
-			 <a class='btn btn-success' href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
-             <a href='statistics_tandem.php' class='btn btn-success' ><?php echo $LanguageInstance->get("Tandem Statistics");?></a> 
-             <a href='tandemInfo.php?force=1&lang=en_US<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Go to tandem to practise English");?></a> 
-             <a href='tandemInfo.php?force=1&lang=es_ES<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Ir al tandem para practicar Español");?></a> 
-		</p>
-		</div>
-	</div>
 </div>
 
 <pre id="tsv" style="display:none">
 Microsoft Internet Explorer 8.0	26.61%
 
-Sucess 	<?php echo $getNumOfSuccessFailedTandems['success'];?>%
+Success 	<?php echo $getNumOfSuccessFailedTandems['success'];?>%
 
 Failed 	<?php echo $getNumOfSuccessFailedTandems['failed'];?>%</pre>
 

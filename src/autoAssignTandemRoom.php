@@ -108,6 +108,7 @@ if (!$user_obj || !$course_id) {
 	        		dataType: "JSON",
 	        		success: function(json){	        			
 	        			if(json  &&  typeof json.tandem_id !== "undefined"){
+
 	        			window.location.replace("accessTandem.php?id="+json.tandem_id);
 						clearInterval(interval);
 	        			}
@@ -284,6 +285,8 @@ if (!$user_obj || !$course_id) {
 	</div>
 	<!-- /footer -->
 	<?php include_once dirname(__FILE__) . '/js/google_analytics.php' ?>
+
+<audio id="foundTandemPartner" src="sweep.wav" preload="auto"></audio>
 </body>
 </html>
 <?php } ?>
