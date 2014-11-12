@@ -246,8 +246,8 @@ if($user_obj->instructor == 1 ){
 				<div class="form-group">
 					<select name='showFeedback' id="showFeedback" class='form-control'>
 					<option value='0'><?php echo $LanguageInstance->get('All Feedbacks')?></option>
-					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Finished')?></option>
-					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Pending')?></option>
+					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Complete')?></option>
+					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Incomplete')?></option>
 					</select>
 					<span class="help-block"><?php echo $LanguageInstance->get('Show feedback status');?></span>
 				</div>				
@@ -278,8 +278,8 @@ if($user_obj->instructor == 1 ){
 				<div class="form-group">
 					<select name='showFeedback' id="showFeedback" class='form-control'>
 					<option value='0'><?php echo $LanguageInstance->get('All Feedbacks')?></option>
-					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Finished')?></option>
-					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Pending')?></option>
+					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Complete')?></option>
+					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Incomplete')?></option>
 					</select>
 					<span class="help-block"><?php echo $LanguageInstance->get('Show feedback status');?></span>
 				</div>
