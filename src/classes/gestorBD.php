@@ -2257,13 +2257,28 @@ class GestorBD {
      *  Get all the user submitted feedbacks 
      */
 
-    function getAllUserFeedbacks($user_id,$id_course, $finishedTandem=-1){
+    function getAllUserFeedbacks($user_id,$id_course, $showFeedback=-1, $finishedTandem=-1){
+
+       $join_type = 'left';
+       $condition_feedback_form = '';
+        switch ($showFeedback) {
+            case 1: //Finished
+                $join_type = 'inner';
+                
+                break;
+            case 2: //Pending
+                $condition_feedback_form = ' AND FTF.feedback_form IS null';
+                break;
+            //default: 
+            //nothing continue    
+
+       }
 
         $result = $this->consulta("select FT.id,FT.id_tandem,FT.id_external_tool,FT.end_external_service,FT.external_video_url,FT.id_user,FT.language,FT.id_partner,FT.partner_language,FT.created,FTF.feedback_form, U.fullname from feedback_tandem as FT 
-           left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id  
+           ".$join_type." join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id  
            inner join tandem as T on T.id = FT.id_tandem      
            inner join user as U on U.id = FT.id_user   
-           where T.id_course = ".$this->escapeString($id_course).($user_id>0?" AND FT.id_user = ".$this->escapeString($user_id)."":"")." ");
+           where T.id_course = ".$this->escapeString($id_course).$condition_feedback_form.($user_id>0?" AND FT.id_user = ".$this->escapeString($user_id)."":"")." ");
 
         if ($this->numResultats($result) > 0){            
            $feedback_tandem =  $this->obteComArray($result);

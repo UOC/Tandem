@@ -35,6 +35,11 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	if ($user_obj->instructor ==1 && !empty($_POST['finishedTandem'])){
 		$finishedTandem = $_POST['finishedTandem'];
 	}	
+
+	$showFeedback = -1;
+	if (!empty($_POST['showFeedback'])){
+		$showFeedback = $_POST['showFeedback'];
+	}	
 	//lets see if we have a cookie for the selected user
 	if(!empty($_COOKIE['selecteduser']) && $user_obj->instructor == 1){
 		$selectedUser = $_COOKIE['selecteduser'];
@@ -45,9 +50,9 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	}
 	//the instructor wants to view some userfeedback
 	if(!empty($selectedUser) && $user_obj->instructor == 1){
-		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id, $finishedTandem);		
+		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id, $showFeedback, $finishedTandem);		
 	}else  	{
-		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id,$course_id, $finishedTandem);	
+		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id,$course_id, $showFeedback, $finishedTandem);	
 	}
 }
 
@@ -110,8 +115,14 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
 		$("#finishedTandem").change(function(){
 			$("#selectUserForm").submit();
 		});
+		$("#showFeedback").change(function(){
+			$("#selectUserForm").submit();
+		});
+		<?php } else { ?>
+		$("#showFeedback").change(function(){
+			$("#showTandemsFeedbackform").submit();
+		});
 		<?php } ?>
-
 		<?php if(!$firstProfileForm && $user_obj->instructor != 1){ ?>
 			  $("#registry-modal-form").modal("show");
 		<?php } ?>
@@ -233,6 +244,15 @@ if($user_obj->instructor == 1 ){
 				</div>
 				&nbsp;
 				<div class="form-group">
+					<select name='showFeedback' id="showFeedback" class='form-control'>
+					<option value='0'><?php echo $LanguageInstance->get('All Feedbacks')?></option>
+					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Finished')?></option>
+					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Pending')?></option>
+					</select>
+					<span class="help-block"><?php echo $LanguageInstance->get('Show feedback status');?></span>
+				</div>				
+				&nbsp;
+				<div class="form-group">
 					<select name='finishedTandem' id="finishedTandem" class='form-control'>
 					<option value='-1' <?php echo (isset($finishedTandem) && $finishedTandem ==-1?'selected':'')?>><?php echo $LanguageInstance->get('All')?></option>
 					<option value='1' <?php echo (isset($finishedTandem) && $finishedTandem ==1?'selected':'')?>><?php echo $LanguageInstance->get('Finished')?></option>
@@ -248,6 +268,23 @@ if($user_obj->instructor == 1 ){
 			<input type='hidden'  name='get_pdf' value='1' />
 			<input type='submit' value='<?php echo $LanguageInstance->get('Download a PDF file with all Tandems');?>' class='btn btn-success' />
 			</form> 
+		</div>
+	</div>
+<?php } else {?>
+<div class='row'>		
+		<div class='col-md-6'>
+			<p>
+				<form action='' method="POST" id='showTandemsFeedbackform' class="form-inline" role='form'>
+				<div class="form-group">
+					<select name='showFeedback' id="showFeedback" class='form-control'>
+					<option value='0'><?php echo $LanguageInstance->get('All Feedbacks')?></option>
+					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Finished')?></option>
+					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Pending')?></option>
+					</select>
+					<span class="help-block"><?php echo $LanguageInstance->get('Show feedback status');?></span>
+				</div>
+				</form>
+			</p>
 		</div>
 	</div>
 <?php } ?>
