@@ -2668,7 +2668,7 @@ class GestorBD {
                         $result2 = $this->consulta("select sum(total_time) as total from user_tandem where id_tandem =  ".$this->escapeString($value['id'])." ");
                         if ($this->numResultats($result2) > 0){ 
                              $result2 = $this->obteComArray($result2);
-                             if($result2[0]['total'] <= 5)
+                             if($result2[0]['total'] <= TIME_TO_FAILED_TANDEM)
                                 $failed++;
                             else $success++;
                         }

@@ -54,6 +54,7 @@ define ('LIS_RESULT_SOURCEID', 'lis_result_sourceid');
 define ('ID_USER_GUEST', 'id_user_guest');
 define ('ID_FEEDBACK', 'id_feedback');
 define ('ID_EXTERNAL', 'id_external');
+define ('TIME_TO_FAILED_TANDEM', 60);
 
 class BasicLTIConstants {
    /**
