@@ -125,6 +125,9 @@ if (!$user_obj || !$course_id) {
       <div class="page-header">
       <button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
         <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
+  	<?php if ($user_obj->instructor == 1 ){ ?>
+        <p><?php echo $LanguageInstance->get('Name') ?>: <?php echo $gestorBD->getUserName($feedbackDetails->id_user);?></p>
+    <?php } ?>
         <p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?></p>
       </div>
       <?php if ($message){

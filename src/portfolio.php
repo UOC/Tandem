@@ -30,6 +30,11 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	die();
 } else {
 	
+
+	$finishedTandem = -1;
+	if ($user_obj->instructor ==1 && !empty($_POST['finishedTandem'])){
+		$finishedTandem = $_POST['finishedTandem'];
+	}	
 	//lets see if we have a cookie for the selected user
 	if(!empty($_COOKIE['selecteduser']) && $user_obj->instructor == 1){
 		$selectedUser = $_COOKIE['selecteduser'];
@@ -40,9 +45,10 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	}
 	//the instructor wants to view some userfeedback
 	if(!empty($selectedUser) && $user_obj->instructor == 1){
-		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id);		
-	}else  	
-		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id,$course_id);	
+		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id, $finishedTandem);		
+	}else  	{
+		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id,$course_id, $finishedTandem);	
+	}
 }
 
 //lets check if the user has filled the first profile form.
@@ -72,6 +78,7 @@ if(isset($_POST['extra-info-form'])){
 	$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);	
 }
 
+
 if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){ 
 	if(!empty($selectedUser)) $userForPdf = $selectedUser; else $userForPdf = $user_obj->id;
 	generatePdf($userForPdf,$course_id);
@@ -96,9 +103,14 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
 		})
 		$('.alert').tooltip();
 
+		<?php if($user_obj->instructor == 1){ ?>
 		$("#selectUser").change(function(){
 			$("#selectUserForm").submit();
 		});
+		$("#finishedTandem").change(function(){
+			$("#selectUserForm").submit();
+		});
+		<?php } ?>
 
 		<?php if(!$firstProfileForm && $user_obj->instructor != 1){ ?>
 			  $("#registry-modal-form").modal("show");
@@ -206,7 +218,9 @@ if($user_obj->instructor == 1 ){
 				<form action='' method="POST" id='selectUserForm' class="form-inline" role='form'>
 				<div class="form-group">
 					<select name='selectUser' id="selectUser" class='form-control'>
-					<option value='0'>Select user</option>
+					<option value='0'><?php echo $LanguageInstance->get('Select user')?></option>
+
+					<option value='-1' <?php echo (isset($selectedUser) && $selectedUser ==-1?'selected':'')?>><?php echo $LanguageInstance->get('All users')?></option>
 					<?php
 						foreach($usersList as  $u){
 							$selected = '';
@@ -216,6 +230,15 @@ if($user_obj->instructor == 1 ){
 					?>
 					</select>
 					<span class="help-block"><?php echo $LanguageInstance->get('Select a user to view their portfolio');?></span>
+				</div>
+				&nbsp;
+				<div class="form-group">
+					<select name='finishedTandem' id="finishedTandem" class='form-control'>
+					<option value='-1' <?php echo (isset($finishedTandem) && $finishedTandem ==-1?'selected':'')?>><?php echo $LanguageInstance->get('All')?></option>
+					<option value='1' <?php echo (isset($finishedTandem) && $finishedTandem ==1?'selected':'')?>><?php echo $LanguageInstance->get('Finished')?></option>
+					<option value='2' <?php echo (isset($finishedTandem) && $finishedTandem ==2?'selected':'')?>><?php echo $LanguageInstance->get('Unfinished')?></option>
+					</select>
+					<span class="help-block"><?php echo $LanguageInstance->get('Select tandem finished');?></span>
 				</div>
 				</form>
 			</p>
@@ -232,6 +255,9 @@ if($user_obj->instructor == 1 ){
   <div class="col-md-12">
   	<table class="table">
   	<tr>
+  	<?php if ($user_obj->instructor == 1 ){ ?>
+	<th><?php echo $LanguageInstance->get('Name');?></th>
+  	<?php } ?>
   	<th><?php echo $LanguageInstance->get('Overall rating');?></th>
   	<th><?php echo $LanguageInstance->get('Created');?></th>
   	<th><?php echo $LanguageInstance->get('Total Duration');?></th>
@@ -250,12 +276,16 @@ if($user_obj->instructor == 1 ){
 	  	if(empty($f['feedback_form'])){
 	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="top" data-toggle="tooltip" ';
 	  	}
-	  	echo "<tr $tr><td class='text-center'>".getSkillsLevel($f['overall_grade'], $LanguageInstance)."</td>
-	  			  <td>".$f['created']."</td>
-	  			  <td>".$f['total_time']."</td>
-	  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
-	  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>
-	  		  </tr>";	
+	  	echo "<tr $tr>";
+  		if ($user_obj->instructor == 1 ){ 
+			echo "<td>".$f['fullname']."</th>";
+  		} 
+	  	echo "<td class='text-center'>".getSkillsLevel($f['overall_grade'], $LanguageInstance)."</td>
+	  		  <td>".$f['created']."</td>
+  			  <td>".$f['total_time']."</td>
+  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
+  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>
+  		  </tr>";	
 	  	}
 	  }
   	?>
