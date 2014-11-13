@@ -704,3 +704,6 @@ msgstr "Your partner's name"
 
 msgid "Close this Popup to start"
 msgstr "Close this Popup to start"
+
+msgid "thirty_second_notification_message"
+msgstr "We have sent an email to your partner because he/she has not connected in 30 seconds, Waiting for them to connect"

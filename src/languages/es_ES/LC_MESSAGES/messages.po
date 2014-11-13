@@ -731,3 +731,6 @@ msgstr "Nombre de tu compañero"
 
 msgid "Close this Popup to start"
 msgstr "Cierra esta ventana para comenzar"
+
+msgid "thirty_second_notification_message"
+msgstr "Se ha enviado un email a tu compañero porque no ha podido acceder al tandem en 30 segundos, esperando a que acceda..."

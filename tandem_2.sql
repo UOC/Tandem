@@ -363,3 +363,18 @@ CREATE TABLE `session` (
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id_tandem`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+create table session_user(tandem_id int(10),
+   user_id int(10),
+   sent_email bit default 0,
+   url_sent text,
+   created datetime,
+   last_updated datetime,
+   token varchar(255),
+   primary key(tandem_id,user_id) )
+CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+/*Agregamos un index a waiting_room_user_history */
+ALTER TABLE waiting_room_user_history
+ADD INDEX id_waiting_room (id_waiting_room);
