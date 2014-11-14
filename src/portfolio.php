@@ -296,6 +296,7 @@ if($user_obj->instructor == 1 ){
 	<th><?php echo $LanguageInstance->get('Name');?></th>
   	<?php } ?>
   	<th><?php echo $LanguageInstance->get('Overall rating');?></th>
+  	<th><?php echo $LanguageInstance->get('exercise');?></th>
   	<th><?php echo $LanguageInstance->get('Created');?></th>
   	<th><?php echo $LanguageInstance->get('Total Duration');?></th>
   	<th><?php echo $LanguageInstance->get('Duration per task');?></th>
@@ -318,6 +319,7 @@ if($user_obj->instructor == 1 ){
 			echo "<td>".$f['fullname']."</th>";
   		} 
 	  	echo "<td class='text-center'>".getSkillsLevel($f['overall_grade'], $LanguageInstance)."</td>
+	  		  <td>".$f['exercise']."</td>
 	  		  <td>".$f['created']."</td>
   			  <td>".$f['total_time']."</td>
   			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
