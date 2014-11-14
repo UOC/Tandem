@@ -29,7 +29,7 @@ if ($tandem) {
   	}elseif($timePassed > MAX_TANDEM_WAITING){
   		
   		//time has reach the limit, lets send a notification to the partner to come do the tandem
-  		if($gestorBD->TandemTimeOutNotificationEmail($id,$user_obj->id))
+  		if($gestorBD->TandemTimeOutNotificationEmail($id,$user_obj->id,$LanguageInstance))
   		$return->emailsent = 1;
 
     }	

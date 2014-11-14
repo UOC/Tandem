@@ -883,9 +883,7 @@ showImage = function(id){
 			      }
 			   }
 			];
-
 			<?php
-
 			 $urlForVideoChat = "ltiConsumer.php?id=".$_SESSION[OPEN_TOOL_ID];
 			 if (file_exists(dirname(__FILE__).'/external_integration.php')) {
 			 	include_once(dirname(__FILE__).'/external_integration.php');
@@ -1046,7 +1044,7 @@ windowNotificationTandem = $.window({
 	    var connection_success = false; 
 	    <?php 
 	    if($_GET['user']=="a") $userR = "user=b"; else $userR = "user=a";
-	    $request_uri = str_replace($_GET['user'],$userR,$_SERVER['REQUEST_URI']);
+	    $request_uri = str_replace("user=".$_GET['user'],$userR,$_SERVER['REQUEST_URI']);
 	    ?>
 		function checkVideochat( winV){
 			$.ajax({

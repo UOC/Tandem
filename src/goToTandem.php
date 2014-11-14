@@ -86,6 +86,9 @@ try {
     $_SESSION[OPEN_TOOL_ID] = $open_tool_id;
     $_SESSION[WEEK] = false;
     $_SESSION[PREVIOUS_WEEK] = false;
+    $_SESSION[CURRENT_TANDEM]= $tandem_id;
+    $_SESSION[CURRENT_USER] = $user;
+    $_SESSION[COURSE_ID] = $course_id;
 	
 	$redirectTo = $session_data['url_sent'];
 	header ('Location: '.$redirectTo);
