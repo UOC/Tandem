@@ -3007,6 +3007,7 @@ class GestorBD {
                 }else{
                     //if we get here it means that the partner has not reached the session_user table , so we start to count from our own
                     $result = $this->consulta("select * from session_user where user_id = ".$this->escapeString($user_id)." and tandem_id =  ".$this->escapeString($tandem_id)."  ");                
+                    $result = $this->obteComArray($result); 
                     $timeFirst  = strtotime($result[0]['created']);
                     $timeSecond = strtotime(date("Y-m-d H:i:s"));
                     $differenceInSeconds = $timeSecond - $timeFirst;
@@ -3022,7 +3023,7 @@ class GestorBD {
              * Send a notification email to a user that his partner is waiting for him to do the tandem.
              */
 
-            function TandemTimeOutNotificationEmail($tandem_id,$user_id,$LanguageInstance){
+            function TandemTimeOutNotificationEmail($tandem_id,$user_id,$LanguageInstance,$force_select_room,$open_tool_id,$sent_url,$userab){
                
                 //ok first we need to get the partner user_id 
                  $sql =" SELECT * FROM tandem where id = ".$this->escapeString($tandem_id)."  ";                 
@@ -3033,15 +3034,19 @@ class GestorBD {
                         $partner_user_id = $result[0]['id_user_guest'];
                     else
                         $partner_user_id = $result[0]['id_user_host'];
-                   
-
-
-
 
                     $partner_data = $this->getUserData($partner_user_id);
                     $partner_session_data = $this->getSessionUserData($partner_user_id,$tandem_id);
+                    $user_session_data = $this->getSessionUserData($user_id,$tandem_id);
+
+                    if(empty($partner_session_data)){
+                        //ok if the partener doestn have a session data, then we create one for him.
+                         if($userab=="a") $userR = "user=b"; else $userR = "user=a";
+                        $sent_url = str_replace("user=".$userab,$userR,$sent_url);
+                        $partner_session_data = $this->createSessionUser($tandem_id,$partner_user_id,$force_select_room,$open_tool_id,$sent_url);
+                    }
                     
-                    if( !empty($partner_data) && !empty($partner_session_data) && $partner_session_data['sent_email'] == 0 ){
+                    if( !empty($partner_data) && !empty($user_session_data) && $user_session_data['sent_email'] == 0 && !empty($partner_session_data) ){
                         
                         $destination_url = 'http://tandem.speakapps.org/goToTandem.php?tandem_id='.$tandem_id.'&user_id='.$partner_user_id.'&token='.$partner_session_data['token'].'';
                         
@@ -3063,22 +3068,21 @@ class GestorBD {
                         $mail->WordWrap = 50;                                 // Set word wrap to 50 character
                         $mail->isHTML(true);                                  // Set email format to HTML
 
-                        $mail->Subject = $LanguageInstance->get('Your partner is waiting for you');
-                        $body = str_replace("%1",$destination_url,$LanguageInstance->get('Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href="%1">Go to Tandem</a>'));
-                        $mail->Body    = $body;
-                                         
+                        $mail->Subject = $LanguageInstance->get('partner_is_waiting_email_subject');
+                        $body = str_replace("%1",$destination_url,$LanguageInstance->get('partner_is_waiting_email_body'));
+                        $body = "<br /><br /><img src='http://tandem.speakapps.org/css/images/logo_Tandem.png' />";
+
+                        $mail->Body = $body;                        
                         if(!$mail->send()) {
                             return false;                                                   
-                        } else {                             
-                            $this->consulta("update session_user set sent_email = 1 where tandem_id = ".$this->escapeString($tandem_id)."  and user_id = ".$this->escapeString($partner_user_id)." ");
+                        } else {
+                            $this->consulta("update session_user set sent_email = 1 where tandem_id = ".$this->escapeString($tandem_id)."  and user_id = ".$this->escapeString($user_id)." ");
                             return true;
                         }
-                    }
-                    
+                    }                    
                 }
 
-            return false;                
-
+            return false;
             }
 
          /**
@@ -3123,6 +3127,36 @@ class GestorBD {
                     $array = $array[0];
                 }
                 return $array;
+        }
+
+        function createSessionUser($tandem_id,$user_id,$force_select_room,$open_tool_id,$sent_url){
+
+                $r = array();
+              $sql =" SELECT * from session_user where tandem_id = ".$this->escapeString($tandem_id)." 
+                        AND user_id = ".$this->escapeString($user_id)." ";
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) == 0){ 
+                    $token = md5(uniqid(rand(), true));
+                    $now = date("Y-m-d H:i:s");
+                    $this->consulta("insert into session_user(tandem_id,user_id,created,last_updated,select_room,open_tool_id,token,url_sent) 
+                                     values( ".$this->escapeString($tandem_id).",".$this->escapeString($user_id).",".$this->escapeString($now).",".$this->escapeString($now).",".$this->escapeString($force_select_room).",".$this->escapeString($open_tool_id).",".$this->escapeString($token).",".$this->escapeString($sent_url)." ) ");
+                                       
+                   $r['tandem_id'] = $tandem_id;
+                   $r['user_id'] = $user_id;
+                   $r['created'] = $now;
+                   $r['last_updated'] = $now;
+                   $r['select_room'] = $force_select_room;
+                   $r['open_tool_id'] = $open_tool_id;
+                   $r['token'] = $token;
+                   $r['url_sent'] = $sent_url;
+
+                }else{
+                   $result = $this->obteComArray($result);
+                   $r = $result[0];
+                 }
+
+                 return $r;
+
         }
 
 }//end of class
