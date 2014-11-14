@@ -34,7 +34,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 			}
 		}
 	
-		$continue = strtolower($name[1]) == 'zip' ? true : false;
+		$continue = strtolower($name[(count($name)-1)]) == 'zip' ? true : false;
 		if(!$continue) {
 			$message = $LanguageInstance->get('error_no_zip_format');
 		} else {
