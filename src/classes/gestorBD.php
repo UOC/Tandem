@@ -2911,7 +2911,7 @@ class GestorBD {
                              if($result2[0]['total'] <= 5)
                                 $r['tandem_ko']['videochat']++;
                             else 
-                                $r['tandem_ok']['videochat']++;;
+                                $r['tandem_ok']['videochat']++;
                         }
                     }   
             }
@@ -2938,12 +2938,11 @@ class GestorBD {
              * Retuns the number of people that were waiting for a tandem but never managet to find a partner
              * on each language
              */
-
             function peopleWaitedWithoutTandem($course_id){
 
                 $r = array("es" => 0,"en" => 0);
 
-                $sql = "SELECT COUNT( * ) as total , WRH.language AS lang
+                $sql = "SELECT  COUNT( distinct WRUH.created ) as total , WRH.language AS lang
                         FROM waiting_room_user_history AS WRUH
                         INNER JOIN waiting_room_history AS WRH ON WRUH.id_waiting_room = WRH.id_waiting_room
                         AND WRH.id_course = ".$this->escapeString($course_id)."
@@ -2960,9 +2959,150 @@ class GestorBD {
                             $r['en'] = $value['total'];
                     }
                 }
-
                 return $r;
             }
+
+            /**
+             *Updates the table session_user with every call to checksession.php 
+             * returns the time that has passed since we are updating the table
+             */
+            function updateSessionUser($tandem_id,$user_id,$force_select_room,$open_tool_id,$sent_url){
+
+                //in seconds
+                $timePassed = 0;
+
+                $sql =" SELECT * from session_user where tandem_id = ".$this->escapeString($tandem_id)." 
+                        AND user_id = ".$this->escapeString($user_id)."
+                ";
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+
+                    $this->consulta("update session_user set last_updated = NOW()  where tandem_id = ".$this->escapeString($tandem_id)." 
+                        AND user_id = ".$this->escapeString($user_id)." ");
+                
+                    $result = $this->obteComArray($result);                    
+                    $timeFirst  = strtotime($result[0]['created']);
+                    $timeSecond = strtotime(date("Y-m-d H:i:s"));
+                    $differenceInSeconds = $timeSecond - $timeFirst;
+                    $timePassed = $differenceInSeconds;
+                }else{
+                    $token = md5(uniqid(rand(), true));
+                    $this->consulta("insert into session_user(tandem_id,user_id,created,last_updated,select_room,open_tool_id,token,url_sent) 
+                                     values( ".$this->escapeString($tandem_id).",".$this->escapeString($user_id).",NOW(),NOW(),".$this->escapeString($force_select_room).",".$this->escapeString($open_tool_id).",".$this->escapeString($token).",".$this->escapeString($sent_url)." ) ");
+                    $timePassed = 1;
+                }
+                return $timePassed;
+
+            }
+
+
+            /**
+             * Send a notification email to a user that his partner is waiting for him to do the tandem.
+             */
+
+            function TandemTimeOutNotificationEmail($tandem_id,$user_id){
+               
+                //ok first we need to get the partner user_id 
+                 $sql =" SELECT * FROM tandem where id = ".$this->escapeString($tandem_id)."  ";                 
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                    $result = $this->obteComArray($result); 
+                    if($result[0]['id_user_host'] == $user_id)
+                        $partner_user_id = $result[0]['id_user_guest'];
+                    else
+                        $partner_user_id = $result[0]['id_user_host'];
+                   
+                    $partner_data = $this->getUserData($partner_user_id);
+                    $partner_session_data = $this->getSessionUserData($partner_user_id,$tandem_id);
+                    
+                    if( !empty($partner_data) && !empty($partner_session_data) && $partner_session_data['sent_email'] == 0 ){
+                        
+                        $destination_url = 'http://tandem.speakapps.org/goToTandem.php?tandem_id='.$tandem_id.'&user_id='.$partner_user_id.'&token='.$partner_session_data['token'].'';
+                        
+ 
+                        include("phpmailer/PHPMailerAutoload.php");
+
+                        $mail = new PHPMailer;
+                        //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+                        $mail->isSMTP();                                      // Set mailer to use SMTP
+                        $mail->Host = MANDRILL_SMTP_HOST;  // Specify main and backup SMTP servers
+                        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                        $mail->Username = MANDRILL_SMTP_USER;                 // SMTP username
+                        $mail->Password = MANDRILL_SMTP_KEY;                           // SMTP password
+                        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                        $mail->Port = 587;                                    // TCP port to connect to
+
+                        $mail->From = 'tandemmooc@uoc.edu';
+                        $mail->FromName = 'TandemMOOC';
+                        $mail->addAddress($partner_data['email'], $partner_data['fullname']);     // Add a recipient
+                        $mail->addReplyTo('tandemmooc@uoc.edu', 'TandemMOOC');
+
+                        $mail->WordWrap = 50;                                 // Set word wrap to 50 character
+                        $mail->isHTML(true);                                  // Set email format to HTML
+
+                        $mail->Subject = 'Your partner is waiting for you';
+                        $mail->Body    = 'Your partner waiting for you to do a tandem, please click on the following Link to access the tanem.<br />
+                                         <a href="'.$destination_url.'">Go to Tandem</a>';
+
+
+                        if(!$mail->send()) {
+                             error_log($mail->ErrorInfo);
+                            return false;                                                   
+                        } else {                             
+                            $this->consulta("update session_user set sent_email = 1 where tandem_id = ".$this->escapeString($tandem_id)."  and user_id = ".$this->escapeString($partner_user_id)." ");
+                            return true;
+                        }
+                    }
+                    
+                }
+
+            return false;                
+
+            }
+
+         /**
+          * Returns all the info for a user from the session_user table
+          */
+         function getSessionUserData($user_id,$tandem_id){
+                 $sql = " select * from session_user where user_id = ".$this->escapeString($user_id)." and tandem_id = ".$this->escapeString($tandem_id)." ";
+                 $result = $this->consulta($sql);
+                 if ($this->numResultats($result) > 0){
+                         $result =  $this->obteComArray($result);
+                         return $result[0];
+                 }
+                 return array();
+         }  
+         /**
+           * Returns all the info for a user_id
+           */ 
+        function getUserData($user_id){
+            if ($user_id>0) {
+                 $sql = " select * from user where id = ".$this->escapeString($user_id);
+                 $result = $this->consulta($sql);
+                 if ($this->numResultats($result) > 0){ 
+                     $result =  $this->obteComArray($result);
+                     return $result[0];
+                 }            
+             }
+             return array();
+        }
+
+
+        function getSessionData($tandem_id, $user_id, $token) {
+                $sql = "SELECT  * 
+                        FROM session_user 
+                        WHERE tandem_id = ".$this->escapeString($tandem_id)."
+                        AND user_id = ".$this->escapeString($user_id)."
+                        AND token = ".$this->escapeString($token);
+
+                $array = array();
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                    $array = $this->obteComArray($result);
+                    $array = $array[0];
+                }
+                return $array;
+        }
 
 }//end of class
 

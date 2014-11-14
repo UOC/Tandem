@@ -934,6 +934,9 @@ windowNotificationTandem = $.window({
 			/*$('#show_videochat').hover(function() {
 			    $('#alertShowVideoXat').toggle();
 		    });*/
+
+
+
 		});
 
 		function messageWindow(urlShow, is_videochat) {
@@ -1040,14 +1043,18 @@ windowNotificationTandem = $.window({
 	                    jQuery.modal.close();
 	                }
 	            });*/
-	        
-
+	    var connection_success = false; 
+	    <?php 
+	    if($_GET['user']=="a") $userR = "user=b"; else $userR = "user=a";
+	    $request_uri = str_replace($_GET['user'],$userR,$_SERVER['REQUEST_URI']);
+	    ?>
 		function checkVideochat( winV){
 			$.ajax({
 				type: 'POST',
 				url: "api/checkSession.php",
 				data : {
 					   id : '<?php echo $_SESSION[CURRENT_TANDEM];?>',
+					   sent_url : '<?php echo base64_encode("http://".$_SERVER["SERVER_NAME"].$request_uri);?>'
 				},
 				dataType: "JSON",
 				success: function(json){	
@@ -1091,12 +1098,37 @@ windowNotificationTandem = $.window({
    			   				   custBtns: myButtons
 				   			   
 							});
- 
 					}
+
+					if(json  &&   json.emailsent !== "undefined" && json.emailsent == 1){
+					//if 30 seconds have passed since we are waiting for the partner, then we show this alert
+						sendEmailNotification = $.window({
+						   title: "",
+						   content: '<p style="padding:15px"><?php echo $LanguageInstance->get('thirty_second_notification_message');?></p>',
+						   width: 400,
+						   //y: $( document ).height()*0.1,
+						   height: 200,
+						   maxWidth: 500,
+						   maxHeight: 400,
+						   closable: true,
+						   draggable: false,
+						   resizable: true,
+						   maximizable: false,
+						   minimizable: false,
+						   showFooter: true,
+						   modal: true,
+						   showRoundCorner: true,
+			   				   custBtns: myButtons			   			   
+						});	
+					}
+
+
+
 				}
 			});
 		}
 		function startTandemVC() {
+			connection_success = true;
 			$(document).unbind('cbox_closed');
 			//$.colorbox.close();
 			windowStartTandem.close();
@@ -1126,6 +1158,8 @@ windowNotificationTandem = $.window({
 				windowNotificationTandem.close();			
 			}
 		});		
+
+			
 <?php
 } 
 ?>
