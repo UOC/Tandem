@@ -382,3 +382,25 @@ CREATE TABLE IF NOT EXISTS `session_user` (
 /*Agregamos un index a waiting_room_user_history */
 ALTER TABLE waiting_room_user_history
 ADD INDEX id_waiting_room (id_waiting_room);
+
+
+
+CREATE TABLE `user_portfolio_profile` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `data` longtext COLLATE utf8_bin,
+  `type` varchar(100) COLLATE utf8_bin DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+CREATE TABLE `user_ranking` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id_user` int(10) NOT NULL,
+  `id_course` int(10) NOT NULL,
+  `language` varchar(100) DEFAULT NULL,
+  `total_time` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
