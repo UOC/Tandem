@@ -365,15 +365,19 @@ CREATE TABLE `session` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-create table session_user(tandem_id int(10),
-   user_id int(10),
-   sent_email bit default 0,
-   url_sent text,
-   created datetime,
-   last_updated datetime,
-   token varchar(255),
-   primary key(tandem_id,user_id) )
-CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+DROP TABLE IF EXISTS `session_user`;
+CREATE TABLE IF NOT EXISTS `session_user` (
+  `tandem_id` int(10) NOT NULL DEFAULT '0',
+  `user_id` int(10) NOT NULL DEFAULT '0',
+  `sent_email` tinyint(1) DEFAULT '0',
+  `url_sent` text COLLATE utf8_unicode_ci,
+  `select_room` tinyint(1) DEFAULT NULL,
+  `open_tool_id` int(10) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `last_updated` datetime DEFAULT NULL,
+  `token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`tandem_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Agregamos un index a waiting_room_user_history */
 ALTER TABLE waiting_room_user_history
