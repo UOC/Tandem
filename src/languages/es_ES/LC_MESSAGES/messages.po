@@ -734,3 +734,9 @@ msgstr "Cierra esta ventana para comenzar"
 
 msgid "thirty_second_notification_message"
 msgstr "Se ha enviado un email a tu compañero porque no ha podido acceder al tandem en 30 segundos, esperando a que acceda..."
+
+msgid "partner_is_waiting_email_body"
+msgstr "Tienes un compañero esperándote en tandem. Haz clic en el siguiente link para acceder.<br ><br /><a href='%1'>Acceder al tandem</a>"
+
+msgid "partner_is_waiting_email_subject"
+msgstr "Tu compañero te espera en tandem"

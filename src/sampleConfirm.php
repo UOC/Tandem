@@ -1043,8 +1043,10 @@ windowNotificationTandem = $.window({
 	            });*/
 	    var connection_success = false; 
 	    <?php 
-	    if($_GET['user']=="a") $userR = "user=b"; else $userR = "user=a";
-	    $request_uri = str_replace("user=".$_GET['user'],$userR,$_SERVER['REQUEST_URI']);
+	    /*if($_GET['user']=="a") $userR = "user=b"; else $userR = "user=a";
+	    $request_uri = str_replace("user=".$_GET['user'],$userR,$_SERVER['REQUEST_URI']);*/
+	    $request_uri = $_SERVER['REQUEST_URI'];
+	    
 	    ?>
 		function checkVideochat( winV){
 			$.ajax({
@@ -1052,7 +1054,8 @@ windowNotificationTandem = $.window({
 				url: "api/checkSession.php",
 				data : {
 					   id : '<?php echo $_SESSION[CURRENT_TANDEM];?>',
-					   sent_url : '<?php echo base64_encode("http://".$_SERVER["SERVER_NAME"].$request_uri);?>'
+					   sent_url : '<?php echo base64_encode("http://".$_SERVER["SERVER_NAME"].$request_uri);?>',
+					   userab : '<?php echo $_GET["user"]; ?>'
 				},
 				dataType: "JSON",
 				success: function(json){	

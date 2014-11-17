@@ -707,3 +707,9 @@ msgstr "Close this Popup to start"
 
 msgid "thirty_second_notification_message"
 msgstr "We have sent an email to your partner because he/she has not connected in 30 seconds, Waiting for them to connect"
+
+msgid "partner_is_waiting_email_body"
+msgstr "Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%1'>Go to Tandem</a>"
+
+msgid "partner_is_waiting_email_subject"
+msgstr "Your partner is waiting for you to do a tandem"
