@@ -287,11 +287,13 @@ if($user_obj->instructor == 1 ){
 			</p>
 		</div>
 	</div>
-<?php } ?>
+<?php } 
+$number = 1;?>
 <div class='row'>
   <div class="col-md-12">
   	<table class="table">
   	<tr>
+  	<th></th>
   	<?php if ($user_obj->instructor == 1 ){ ?>
 	<th><?php echo $LanguageInstance->get('Name');?></th>
   	<?php } ?>
@@ -315,6 +317,7 @@ if($user_obj->instructor == 1 ){
 	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="top" data-toggle="tooltip" ';
 	  	}
 	  	echo "<tr $tr>";
+	  	echo "<td>".($number++)."</td>";
   		if ($user_obj->instructor == 1 ){ 
 			echo "<td>".$f['fullname']."</th>";
   		} 
