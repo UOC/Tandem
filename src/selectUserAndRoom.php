@@ -55,15 +55,16 @@ if (!$user_obj || !$course_id) {
 			//Reorder
 			$users_course = $gestorBD->obte_llistat_usuaris($course_id, $user_obj->id);
 		} else { //Mirem de carregar per OKI
-			$okibusPHP_components = $_SESSION[OKIBUSPHP_COMPONENTS];
-			$okibusPHP_okibusClient = $_SESSION[OKIBUSPHP_OKIBUSCLIENT];
-			putenv(OKIBUSPHP_COMPONENTS.'='.$okibusPHP_components);
-			putenv(OKIBUSPHP_OKIBUSCLIENT.'='.$okibusPHP_okibusClient);
-			//Pel require d'autehtnication ja carrega les propietats
-			require_once dirname(__FILE__).'/classes/gestorOKI.php';
-			$gestorOKI	= new GestorOKI();
-			$users_course = $gestorOKI->obte_llistat_usuaris($gestorBD, $course_id);
-			
+			if (isset($_SESSION[OKIBUSPHP_COMPONENTS]) && isset($_SESSION[OKIBUSPHP_OKIBUSCLIENT])) {
+				$okibusPHP_components = $_SESSION[OKIBUSPHP_COMPONENTS];
+				$okibusPHP_okibusClient = $_SESSION[OKIBUSPHP_OKIBUSCLIENT];
+				putenv(OKIBUSPHP_COMPONENTS.'='.$okibusPHP_components);
+				putenv(OKIBUSPHP_OKIBUSCLIENT.'='.$okibusPHP_okibusClient);
+				//Pel require d'autehtnication ja carrega les propietats
+				require_once dirname(__FILE__).'/classes/gestorOKI.php';
+				$gestorOKI	= new GestorOKI();
+				$users_course = $gestorOKI->obte_llistat_usuaris($gestorBD, $course_id);
+			}
 		}
 	}
 	$is_showTandem = isset($_POST['showTandem'])?$_POST['showTandem']!=null:false;
