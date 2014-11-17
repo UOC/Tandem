@@ -45,7 +45,9 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 			else setTime(itNow);
 	}
 	setTime(30);
-
+	$( window ).unload(function() {
+	  parent.$.fn.startTandemVCEvent();
+	});
 </script>
 <!-- End Save for Web Styles -->
 </head>
