@@ -32,6 +32,7 @@ CREATE TABLE `course_exercise` (
   `id_exercise` int(11) NOT NULL DEFAULT '0',
   `created` datetime DEFAULT NULL,
   `created_user_id` int(11) DEFAULT NULL,
+  `week` int(11) DEFAULT 0,
   PRIMARY KEY (`id_course`,`id_exercise`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
