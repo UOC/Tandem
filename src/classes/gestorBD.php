@@ -3039,6 +3039,8 @@ class GestorBD {
                         $partner_user_id = $result[0]['id_user_host'];
 
                     $partner_data = $this->getUserData($partner_user_id);
+                    //error_log("partner_user_id".$partner_user_id);
+                    //error_log(serialize($partner_data));
                     $partner_session_data = $this->getSessionUserData($partner_user_id,$tandem_id);
                     $user_session_data = $this->getSessionUserData($user_id,$tandem_id);
 
@@ -3055,6 +3057,7 @@ class GestorBD {
                         
                         include("phpmailer/PHPMailerAutoload.php");
                         $mail = new PHPMailer;
+                        $mail->CharSet = "UTF-8";
                         //$mail->SMTPDebug = 3;                               // Enable verbose debug output
                         $mail->isSMTP();                                      // Set mailer to use SMTP
                         $mail->Host = MANDRILL_SMTP_HOST;  // Specify main and backup SMTP servers
@@ -3073,7 +3076,7 @@ class GestorBD {
 
                         $mail->Subject = $LanguageInstance->get('partner_is_waiting_email_subject');
                         $body = str_replace("%1",$destination_url,$LanguageInstance->get('partner_is_waiting_email_body'));
-                        $body = "<br /><br /><img src='http://tandem.speakapps.org/css/images/logo_Tandem.png' />";
+                        $body .= "<br /><br /><img src='http://tandem.speakapps.org/css/images/logo_Tandem.png' />";
 
                         $mail->Body = $body;                        
                         if(!$mail->send()) {
