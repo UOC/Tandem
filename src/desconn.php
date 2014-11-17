@@ -7,7 +7,8 @@ session_start();
 
 //Recibimos las variables desde la url
 $room = PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$_GET["room"];
-if(is_file($room.".xml")) unlink($room.".xml");
+//Avoid file deletion
+//if(is_file($room.".xml")) unlink($room.".xml");
 
 
 $user_obj = $_SESSION['current_user'];

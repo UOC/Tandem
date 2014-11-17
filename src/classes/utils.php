@@ -199,11 +199,9 @@ function sanitise_string($str) {
 function delete_xml_file($room) {
 	$r = false;
 	if(is_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
-		//DELETE - 20121005 - abertranb - Deletes the unset session 
-		//Netegem la sessio
-		//session_unset();
-		//END
-		$r = unlink(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+		//Avoid DELETION the XML because there are some problems
+		//$r = unlink(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
+		
 	}
 	return $r;
 		
