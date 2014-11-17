@@ -13,10 +13,6 @@ CREATE TABLE `course` (
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
 
-INSERT INTO `course` (`id`, `courseKey`, `title`, `use_waiting_room`, `created`)
-VALUES
-	(2,'test:2','SAC101',00000000,'2014-07-16 14:39:24'),
-	(3,'test:3','TANDEM LTI',00000000,'2014-08-07 15:26:00');
 
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -176,6 +172,7 @@ CREATE TABLE `user` (
   `skype` varchar(70) DEFAULT NULL,
   `msn` varchar(70) DEFAULT NULL,
   `yahoo` varchar(70) DEFAULT NULL,
+  `last_user_agent` varchar(255) null,
   `blocked` bit(1) DEFAULT b'0',
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),

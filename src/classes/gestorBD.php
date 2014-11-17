@@ -101,11 +101,12 @@ class GestorBD {
      * @param String $yahoo
      * @param String $msn
      */
-    public function register_user($username, $name, $surname, $fullname, $email, $image, $icq = '', $skype = '', $yahoo = '', $msn = '') {
+    public function register_user($username, $name, $surname, $fullname, $email, $image, $icq = '', $skype = '', $yahoo = '', $msn = '', $user_agent='') {
         $result = false;
-        $sql = 'INSERT INTO user (username, firstname, surname, fullname, email, image, icq, skype, yahoo, msn, last_session,  blocked, created) 
+        $sql = 'INSERT INTO user (username, firstname, surname, fullname, email, image, icq, skype, yahoo, msn, last_user_agent, last_session,  blocked, created) 
                 												VALUES (' . $this->escapeString($username) . ',' . $this->escapeString($name) . ',' . $this->escapeString($surname) . ',' . $this->escapeString($fullname) . ',' . $this->escapeString($email) . ',' .
                 $this->escapeString($image) . ',' . $this->escapeString($icq) . ', ' . $this->escapeString($skype) . ', ' . $this->escapeString($yahoo) . ', ' . $this->escapeString($msn) . ',' .
+                $this->escapeString($user_agent) . ',' .
                 ' now(), 0, now())';
         $result = $this->consulta($sql);
         return $result;
@@ -127,9 +128,9 @@ class GestorBD {
      * @param boolean $update_profile
      * @return resource
      */
-    public function update_user($username, $name, $surname, $fullname, $email, $image = '', $icq = '', $skype = '', $yahoo = '', $msn = '', $update_profile = true) {
+    public function update_user($username, $name, $surname, $fullname, $email, $image = '', $icq = '', $skype = '', $yahoo = '', $msn = '', $user_agent,  $update_profile = true) {
         $result = false;
-        $sql = 'UPDATE user SET firstname = ' . $this->escapeString($name) . ', surname = ' . $this->escapeString($surname) . ', fullname = ' . $this->escapeString($fullname) . ', email = ' . $this->escapeString($email) . ', last_session=now(), image = ' . $this->escapeString($image) . ' ';
+        $sql = 'UPDATE user SET firstname = ' . $this->escapeString($name) . ', surname = ' . $this->escapeString($surname) . ', fullname = ' . $this->escapeString($fullname) . ', email = ' . $this->escapeString($email) . ', last_session=now(), image = ' . $this->escapeString($image) . ', last_user_agent = ' . $this->escapeString($user_agent) ;
 
         if ($update_profile)
             $sql .= ',icq = ' . $this->escapeString($icq) . ', skype = ' . $this->escapeString($skype) . ', yahoo = ' . $this->escapeString($yahoo) . ', msn = ' . $this->escapeString($msn);
@@ -870,8 +871,10 @@ class GestorBD {
     
     public function register_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest, $message, $user_agent) {
         $result = false;
-        $sql = 'INSERT INTO tandem (id_exercise, id_course, id_resource_lti, id_user_host, id_user_guest, message, is_guest_user_logged, is_finished, created, user_agent_host)
-        	        VALUES (' . $id_exercise . ' ,' . $id_course . ' ,' . $this->escapeString($id_resource_lti) . ',' . $id_user_host . ',' . $id_user_guest . ' ,' . $this->escapeString($message) . ', 0, 0, now(), ' . $this->escapeString($user_agent) . ')';
+        $other_user_data = $this->getUserData($id_user_guest);
+        $user_agent_guest = $other_user_data['last_user_agent'];
+        $sql = 'INSERT INTO tandem (id_exercise, id_course, id_resource_lti, id_user_host, id_user_guest, message, is_guest_user_logged, is_finished, created, user_agent_host, user_agent_guest)
+        	        VALUES (' . $id_exercise . ' ,' . $id_course . ' ,' . $this->escapeString($id_resource_lti) . ',' . $id_user_host . ',' . $id_user_guest . ' ,' . $this->escapeString($message) . ', 0, 0, now(), ' . $this->escapeString($user_agent) . ', ' . $this->escapeString($user_agent_guest) . ')';
         $result = $this->consulta($sql);
         if ($result) {
             $result = $this->get_last_inserted_id();

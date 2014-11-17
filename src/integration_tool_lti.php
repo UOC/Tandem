@@ -109,12 +109,13 @@ try {
 	$user_obj->image = $context->getUserImage();
 	$_SESSION[LANG] = lti_get_lang($context);
 	$_SESSION[LTI_CONTEXT] = serialize($context->getLTI_Context());
-	
+	$user_agent = $_SERVER['HTTP_USER_AGENT'];
+		    	
 	
 	$user = $gestorBD->get_user_by_username($user_obj->username);
 	if (!$user) {
 	
-		$user_id = $gestorBD->register_user($user_obj->username, $user_obj->name, $user_obj->surname, $user_obj->fullname, $user_obj->email, $user_obj->image, $user_obj->icq, $user_obj->skype, $user_obj->yahoo, $user_obj->msn);
+		$user_id = $gestorBD->register_user($user_obj->username, $user_obj->name, $user_obj->surname, $user_obj->fullname, $user_obj->email, $user_obj->image, $user_obj->icq, $user_obj->skype, $user_obj->yahoo, $user_obj->msn, $user_agent);
 		if ($user_id) {
 			$user = $gestorBD->get_user_by_username($user_obj->username);
 		} else {
@@ -122,7 +123,7 @@ try {
 			$user=false;
 		}
 	} else {
-		if (!$gestorBD->update_user($user_obj->username, $user_obj->name, $user_obj->surname, $user_obj->fullname, $user_obj->email, $user_obj->image, $user_obj->icq, $user_obj->skype, $user_obj->yahoo, $user_obj->msn))
+		if (!$gestorBD->update_user($user_obj->username, $user_obj->name, $user_obj->surname, $user_obj->fullname, $user_obj->email, $user_obj->image, $user_obj->icq, $user_obj->skype, $user_obj->yahoo, $user_obj->msn, $user_agent))
     	{
     		show_error("updated_user_error");
     		$user = false;
