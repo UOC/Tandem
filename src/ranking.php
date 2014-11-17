@@ -44,6 +44,16 @@ if (!$user_obj) {
   <div class="row">
   	<div class='col-md-6'>
   	<h1 class='title'><?php echo $LanguageInstance->get('Users ranking');?></h1>
+  					<br /><?php 
+					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
+					$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
+					$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
+					if($getUserRankingPosition > 0)
+						$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
+					
+					echo $positionInRankingTxt;			
+				?>
+
   	</div>
   	<div class='col-md-6'>
   	<p class='text-right'>
@@ -53,7 +63,7 @@ if (!$user_obj) {
   	</div>
   	<div class='row'>
 	  <div class="col-md-6">
-	  <h3 class='green-for-english'><?php echo $LanguageInstance->get('English ranking');?></h3>
+	  <h3 class='green-for-english'><?php echo $LanguageInstance->get('Ranking for learners of English');?></h3>
   		<table class="table table-striped">
   		<tr>
 		  	<th><?php echo $LanguageInstance->get('Pos');?></th>
@@ -81,7 +91,7 @@ if (!$user_obj) {
   </table>
   </div>
   <div class='col-md-6'>
-    <h3 class='purple-for-spanish'><?php echo $LanguageInstance->get('Spanish ranking');?></h3>
+    <h3 class='purple-for-spanish'><?php echo $LanguageInstance->get('Ranking for learners of Spanish');?></h3>
   	<table class="table table-striped">
   	<tr>
 	  	<th><?php echo $LanguageInstance->get('Num');?></th>
