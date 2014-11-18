@@ -3281,9 +3281,7 @@ class GestorBD {
                     }
             }
           }
-          echo "<pre>";
-          print_r($user_points);
-          echo "</pre>";
+        
 
           foreach($user_points as $key => $value){
             $sql = "select * from user_ranking where user_id ='.$key.' and course_id = '.$course_id.' ";
@@ -3298,8 +3296,101 @@ class GestorBD {
           }          
         }
 
+        /**
+         * Returns the id_external_tool from the feedback_tandem table
+         */
+        function checkExternalToolField($id_tandem){
+
+            $sql = "select id_external_tool from feedback_tandem where id_tandem = ".$this->escapeString($id_tandem)."";
+            $result = $this->consulta($sql);
+            if ($this->numResultats($result) > 0){ 
+                    $result =  $this->obteComArray($result);
+                    return $result[0]['id_external_tool'];
+            }
+            return 0;
+
+        }
 
 
+        function getUserFeedback($feedback_id){
+
+           $result = $this->consulta("select FT.id,FT.id_tandem,FT.id_external_tool,FT.end_external_service,FT.external_video_url,FT.id_user,FT.language,FT.id_partner,FT.partner_language,FT.created,FTF.feedback_form, E.name as exercise, U.fullname from feedback_tandem as FT 
+           left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id  
+           inner join tandem as T on T.id = FT.id_tandem      
+           inner join exercise E on E.id=T.id_exercise
+           inner join user as U on U.id = FT.id_user   
+           where  FT.id = ".$this->escapeString($feedback_id)." ");
+
+        if ($this->numResultats($result) > 0){            
+           $feedback_tandem =  $this->obteComArray($result);
+           $return = array();
+
+           foreach($feedback_tandem as $ft){
+
+               $tandemDurations = $this->getUserTandemDurations($ft['id_user'],$ft['id_tandem']);           
+               $seconds = isset($tandemDurations[0]['total_time']) ? $tandemDurations[0]['total_time']:0;
+               // switch ($finishedTandem) {
+               //      case 1: //Finished
+               //          if (intval($seconds)<TIME_TO_FAILED_TANDEM) {
+               //              continue 2;
+               //          }
+               //          break;
+               //      case 2: //UnFinished
+               //          if (intval($seconds)>TIME_TO_FAILED_TANDEM) {
+               //              continue 2;
+               //          }
+               //          break;
+               //      //default: 
+               //      //nothing continue    
+
+               // }
+               $minutes = $this->minutes($seconds);
+               $total_time = $this->time_format($seconds);
+               $subTP=explode(":",$total_time);
+               if($subTP[0]>0) {
+                $subTimerP=substr($subTP[0],1).":".$subTP[1].":".$subTP[2];
+               }
+               else {
+                $subTimerP=$subTP[1].":".$subTP[2];
+               }
+               $task_tandemsSubTime = $this->getUserTandemTasksDurations($ft['id_user'],$ft['id_tandem']);
+               $subTimer= array();
+               $j=0;$i=0;
+               if(!empty($task_tandemsSubTime)){
+                   foreach ($task_tandemsSubTime as $question) {   
+                        $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
+                        $obj = $this->secondsToTime($secondsSt);
+                        $time = '';
+                        if ($obj['h']>0) {
+                            $time .= ($obj['h']<10?'0':'').$obj['h'].':';
+                        }
+                        $time .= ($obj['m']<10?'0':'').$obj['m'].':';
+                        $time .= ($obj['s']<10?'0':'').$obj['s'];
+                        $subTimer[$i] = $time;
+                        $i++;
+                    }
+               }   
+                 $ft['total_time'] = $subTimerP;
+                 $ft['total_time_tasks'] = $subTimer;
+
+                 $overall_grade = $this->checkPartnerFeedback($ft['id_tandem'],$ft['id']);
+                 $overall_grade_tmp = "";
+                 if(!empty($overall_grade)){
+                     $overall_grade = unserialize($overall_grade);               
+                     $overall_grade_tmp = $overall_grade->grade;
+                 }
+
+                 $ft['overall_grade'] = $overall_grade_tmp;
+
+                 $return[] = $ft;
+            }
+            return $return[0];
+        }
+        else {
+            return array();
+        }
+
+        }
 
 }//end of class
 

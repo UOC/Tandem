@@ -37,7 +37,8 @@ if (!$user_obj || !$course_id) {
 		die($LanguageInstance->get('Can not find feedback'));
 	}
 
-
+	//we need these extra info to show like the list of portfolio
+	$extra_feedback_details = $gestorBD->getUserFeedback($id_feedback);
 
 	if(!empty($_POST['rating_partner'])){			
 		$rating_partner_feedback_form = new stdClass();		
@@ -133,13 +134,34 @@ if (!$user_obj || !$course_id) {
     <!-- Begin page content -->
     <div id="wrapper" class="container">
       <div class="page-header">
-      <button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
-        <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
-  	<?php if ($user_obj->instructor == 1 ){ ?>
-        <p><?php echo $LanguageInstance->get('Name') ?>: <?php echo $gestorBD->getUserName($feedbackDetails->id_user);?></p>
-    <?php } ?>
-        <p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?></p>
-      </div>
+      <div class='row'>
+     	<div class='col-md-6'>
+	      	<button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
+	        <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
+	  		<?php if ($user_obj->instructor == 1 ){ ?>
+	        <p><?php echo $LanguageInstance->get('Name') ?>: <?php echo $gestorBD->getUserName($feedbackDetails->id_user);?></p>
+	    	<?php } ?>
+	        <p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?></p>
+	    </div>
+	    <div class='col-md-6'>
+	    <p><br /><br />
+	     <div><?php echo $LanguageInstance->get('Overall rating'); ?>: <b><?php echo $extra_feedback_details['overall_grade']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Created'); ?>: <b><?php echo $extra_feedback_details['created']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Exercise'); ?>: <b><?php echo $extra_feedback_details['exercise']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Total Duration'); ?>: <b><?php echo $extra_feedback_details['total_time']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Duration per task'); ?>:
+	     <span style='font-size:11px;font-weight:bold'><?php 	     
+	     $tt = array();
+	  		foreach($extra_feedback_details['total_time_tasks'] as $key => $val){
+	  			$tt[] = "T".++$key." = ".$val;
+	  		} 
+	  	echo implode(", ",$tt);
+	     ?></span>	     
+	    </div>
+	    </p>
+	    </div>
+	    </div>
+    </div>
       <?php if ($message){
       	echo $message;
       } 
