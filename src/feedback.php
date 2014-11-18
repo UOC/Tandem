@@ -145,7 +145,6 @@ if (!$user_obj || !$course_id) {
 	    </div>
 	    <div class='col-md-6'>
 	    <p><br /><br />
-	     <div><?php echo $LanguageInstance->get('Overall rating'); ?>: <b><?php echo $extra_feedback_details['overall_grade']; ?></b></div>
 	     <div><?php echo $LanguageInstance->get('Created'); ?>: <b><?php echo $extra_feedback_details['created']; ?></b></div>
 	     <div><?php echo $LanguageInstance->get('Exercise'); ?>: <b><?php echo $extra_feedback_details['exercise']; ?></b></div>
 	     <div><?php echo $LanguageInstance->get('Total Duration'); ?>: <b><?php echo $extra_feedback_details['total_time']; ?></b></div>
