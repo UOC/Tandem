@@ -534,7 +534,7 @@ if (!$user_obj || !$course_id) {
 									</select>
 								<?php 
 								} else {
-									$msg = $gestorOKI->getLastError()==null?$LanguageInstance->get('no_users_in_course'):$gestorOKI->getLastError();
+									$msg = !$gestorOKI || $gestorOKI->getLastError()==null?$LanguageInstance->get('no_users_in_course'):$gestorOKI->getLastError();
 							?> 
 							<label for="not_users" title="<?php echo $msg?>"><?php echo $msg?></label>
 							<?php } ?>
