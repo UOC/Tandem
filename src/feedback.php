@@ -32,17 +32,26 @@ if (!$user_obj || !$course_id) {
 
 	$gestorBD = new GestorBD();  
 
+	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
+	if (!$feedbackDetails) {
+		die($LanguageInstance->get('Can not find feedback'));
+	}
+
+	//we need these extra info to show like the list of portfolio
+	$extra_feedback_details = $gestorBD->getUserFeedback($id_feedback);
+
 	if(!empty($_POST['rating_partner'])){			
 		$rating_partner_feedback_form = new stdClass();		
 		$rating_partner_feedback_form->partner_rate = isset($_POST['partner_rate'])?$_POST['partner_rate']:0;
 		$rating_partner_feedback_form->partner_comment = isset($_POST['partner_comment'])?$_POST['partner_comment']:'';
 		$gestorBD->updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form);
+
+		//lets update this user ranking points
+		$gestorBD->updateUserRankingPoints($user_obj->id,$course_id,$_SESSION['lang']);	
+		//now lets update the partner ranking points
+		$gestorBD->updateUserRankingPoints($feedbackDetails->id_partner,$course_id,$feedbackDetails->partner_language);	
 	}
 
-	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
-	if (!$feedbackDetails) {
-		die($LanguageInstance->get('Can not find feedback'));
-	}
 	
 	if ($user_obj->id!=$feedbackDetails->id_user && $user_obj->id!=$feedbackDetails->id_partner &&
 		!$user_obj->instructor && !$user_obj->admin) { //check if is the user of feedback if not can't not set feedback
@@ -85,8 +94,10 @@ if (!$user_obj || !$course_id) {
 						$message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
 						$can_edit = false;
 
-						//ok so they have created filled the feedback , so now we can save the ranking data for this tandem.
-						$gestorBD->insertRankingData($user_obj->id,$course_id,$_SESSION['lang'],$feedbackDetails->id_tandem);
+						//lets update this user ranking points
+						$gestorBD->updateUserRankingPoints($user_obj->id,$course_id,$_SESSION['lang']);	
+						//now lets update the partner ranking points
+						$gestorBD->updateUserRankingPoints($feedbackDetails->id_partner,$course_id,$feedbackDetails->partner_language);					
 					}
 				} else {
 					$message = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('fill_required_fields').'</div>';
@@ -123,13 +134,34 @@ if (!$user_obj || !$course_id) {
     <!-- Begin page content -->
     <div id="wrapper" class="container">
       <div class="page-header">
-      <button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
-        <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
-  	<?php if ($user_obj->instructor == 1 ){ ?>
-        <p><?php echo $LanguageInstance->get('Name') ?>: <?php echo $gestorBD->getUserName($feedbackDetails->id_user);?></p>
-    <?php } ?>
-        <p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?></p>
-      </div>
+      <div class='row'>
+     	<div class='col-md-6'>
+	      	<button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
+	        <h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
+	  		<?php if ($user_obj->instructor == 1 ){ ?>
+	        <p><?php echo $LanguageInstance->get('Name') ?>: <?php echo $gestorBD->getUserName($feedbackDetails->id_user);?></p>
+	    	<?php } ?>
+	        <p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?></p>
+	    </div>
+	    <div class='col-md-6'>
+	    <p><br /><br />
+	     <div><?php echo $LanguageInstance->get('Overall rating'); ?>: <b><?php echo $extra_feedback_details['overall_grade']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Created'); ?>: <b><?php echo $extra_feedback_details['created']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Exercise'); ?>: <b><?php echo $extra_feedback_details['exercise']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Total Duration'); ?>: <b><?php echo $extra_feedback_details['total_time']; ?></b></div>
+	     <div><?php echo $LanguageInstance->get('Duration per task'); ?>:
+	     <span style='font-size:11px;font-weight:bold'><?php 	     
+	     $tt = array();
+	  		foreach($extra_feedback_details['total_time_tasks'] as $key => $val){
+	  			$tt[] = "T".++$key." = ".$val;
+	  		} 
+	  	echo implode(", ",$tt);
+	     ?></span>	     
+	    </div>
+	    </p>
+	    </div>
+	    </div>
+    </div>
       <?php if ($message){
       	echo $message;
       } 
