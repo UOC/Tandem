@@ -8,6 +8,7 @@ require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
 $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
+
 if (!$user_obj) {
 //Tornem a l'index
 	header('Location: index.php');
@@ -45,13 +46,13 @@ if (!$user_obj) {
   	<div class='col-md-6'>
   	<h1 class='title'><?php echo $LanguageInstance->get('Users ranking');?></h1>
   					<br /><?php 
-					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
-					$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
-					$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
-					if($getUserRankingPosition > 0)
-						$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
+					// $getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
+					// $positionInRankingTxt =  $LanguageInstance->get('Hello %1');
+					// $positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
+					// if($getUserRankingPosition > 0)
+					// 	$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
 					
-					echo $positionInRankingTxt;			
+					// echo $positionInRankingTxt;			
 				?>
 
   	</div>
@@ -68,7 +69,7 @@ if (!$user_obj) {
   		<tr>
 		  	<th><?php echo $LanguageInstance->get('Pos');?></th>
 		  	<th><?php echo $LanguageInstance->get('User');?></th>
-		  	<th><?php echo $LanguageInstance->get('Total time');?></th>
+		  	<th><?php echo $LanguageInstance->get('Points');?></th>
   		</tr>
  	<?php
 	  if(!empty($usersRanking['en'])){
@@ -81,8 +82,7 @@ if (!$user_obj) {
 	  		echo "<td>".$f['user']."</td>";
 	  	else
 	  		echo "<td>...</td>";
-
-	  	echo "<td>".$f['total_time']."</td>
+	  	echo "<td>".$f['points']."</td>
 	  		  </tr>";	
 	  	$cont++;
 	  	}
@@ -96,7 +96,7 @@ if (!$user_obj) {
   	<tr>
 	  	<th><?php echo $LanguageInstance->get('Num');?></th>
 	  	<th><?php echo $LanguageInstance->get('User');?></th>
-	  	<th><?php echo $LanguageInstance->get('Total time');?></th>
+	  	<th><?php echo $LanguageInstance->get('Points');?></th>
   	</tr>
  	<?php
 	  if(!empty($usersRanking['es'])){
@@ -109,7 +109,7 @@ if (!$user_obj) {
 	  		echo "<td>".$f['user']."</td>";
 	  	else
 	  		echo "<td>...</td>";
-	  	echo "<td>".$f['total_time']."</td>
+	  	echo "<td>".$f['points']."</td>
 	  		  </tr>";	
 	  	$cont++;
 	  	}

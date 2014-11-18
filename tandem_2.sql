@@ -1,3 +1,5 @@
+
+
 DROP TABLE IF EXISTS `course`;
 
 CREATE TABLE `course` (
@@ -402,3 +404,12 @@ CREATE TABLE `user_ranking` (
   `total_time` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+drop table if exists user_ranking;
+create table user_ranking ( user_id int(10) not null,
+              points int(10) default 0,
+              course_id int(10) not null,
+              lang varchar(50),
+              primary key (user_id,course_id)) 
+              ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

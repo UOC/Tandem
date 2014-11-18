@@ -32,17 +32,25 @@ if (!$user_obj || !$course_id) {
 
 	$gestorBD = new GestorBD();  
 
+	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
+	if (!$feedbackDetails) {
+		die($LanguageInstance->get('Can not find feedback'));
+	}
+
+
+
 	if(!empty($_POST['rating_partner'])){			
 		$rating_partner_feedback_form = new stdClass();		
 		$rating_partner_feedback_form->partner_rate = isset($_POST['partner_rate'])?$_POST['partner_rate']:0;
 		$rating_partner_feedback_form->partner_comment = isset($_POST['partner_comment'])?$_POST['partner_comment']:'';
 		$gestorBD->updateRatingPartnerFeedbackTandemDetail($id_feedback, $rating_partner_feedback_form);
+
+		//lets update this user ranking points
+		$gestorBD->updateUserRankingPoints($user_obj->id,$course_id,$_SESSION['lang']);	
+		//now lets update the partner ranking points
+		$gestorBD->updateUserRankingPoints($feedbackDetails->id_partner,$course_id,$feedbackDetails->partner_language);	
 	}
 
-	$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
-	if (!$feedbackDetails) {
-		die($LanguageInstance->get('Can not find feedback'));
-	}
 	
 	if ($user_obj->id!=$feedbackDetails->id_user && $user_obj->id!=$feedbackDetails->id_partner &&
 		!$user_obj->instructor && !$user_obj->admin) { //check if is the user of feedback if not can't not set feedback
@@ -85,8 +93,10 @@ if (!$user_obj || !$course_id) {
 						$message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
 						$can_edit = false;
 
-						//ok so they have created filled the feedback , so now we can save the ranking data for this tandem.
-						$gestorBD->insertRankingData($user_obj->id,$course_id,$_SESSION['lang'],$feedbackDetails->id_tandem);
+						//lets update this user ranking points
+						$gestorBD->updateUserRankingPoints($user_obj->id,$course_id,$_SESSION['lang']);	
+						//now lets update the partner ranking points
+						$gestorBD->updateUserRankingPoints($feedbackDetails->id_partner,$course_id,$feedbackDetails->partner_language);					
 					}
 				} else {
 					$message = '<div class="alert alert-danger" role="alert">'.$LanguageInstance->get('fill_required_fields').'</div>';
