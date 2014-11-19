@@ -264,10 +264,22 @@ if($user_obj->instructor == 1 ){
 			</p>
 		</div>
 		<div class='col-md-6 text-right' >
-			<form action='' method='POST' role='form' id='pdfForm'>
-			<input type='hidden'  name='get_pdf' value='1' />
-			<input type='submit' value='<?php echo $LanguageInstance->get('Download a PDF file with all Tandems');?>' class='btn btn-success' />
-			</form> 
+			<div class="row">
+				<div class='col-md-8  text-right' >
+					<form action='' method='POST' role='form' id='pdfForm'>
+						<input type='hidden'  name='get_pdf' value='1' />
+						<input type='submit' value='<?php echo $LanguageInstance->get('Download a PDF file with all Tandems');?>' class='btn btn-success' />
+					</form> 
+				</div>
+				<div class='col-md-4' >	
+					<form action='portfolio_excel.php' method='POST' role='form' id='excelForm'>
+						<input type='hidden'  name='showFeedback' value='<?php echo $showFeedback?>' />
+						<input type='hidden'  name='finishedTandem' value='<?php echo $finishedTandem?>' />
+						<input type='hidden'  name='selectUser' value='<?php echo $selectedUser?>' />
+						<input type='submit' value='<?php echo $LanguageInstance->get('Export to excel');?>' class='btn btn-success' />
+					</form> 
+				</div>	
+			</div>	
 		</div>
 	</div>
 <?php } else {?>
