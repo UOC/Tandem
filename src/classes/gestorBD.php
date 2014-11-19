@@ -2348,13 +2348,31 @@ class GestorBD {
 
                  $overall_grade = $this->checkPartnerFeedback($ft['id_tandem'],$ft['id']);
                  $overall_grade_tmp = "";
+                 $fluency_tmp = '';
+                 $accuracy_tmp = '';
+                 $pronunciation_tmp = '';
+                 $vocabulary_tmp = '';
+                 $grammar_tmp = '';
+                 $other_observations_tmp = '';
+
                  if(!empty($overall_grade)){
                      $overall_grade = unserialize($overall_grade);               
                      $overall_grade_tmp = $overall_grade->grade;
+                     $fluency_tmp = $overall_grade->fluency;
+                     $accuracy_tmp = $overall_grade->accuracy;
+                     $pronunciation_tmp = $overall_grade->pronunciation;
+                     $vocabulary_tmp = $overall_grade->vocabulary;
+                     $grammar_tmp = $overall_grade->grammar;
+                     $other_observations_tmp = $overall_grade->other_observations;
                  }
-
                  $ft['overall_grade'] = $overall_grade_tmp;
-
+                 $ft['fluency'] = $fluency_tmp;
+                 $ft['accuracy'] = $accuracy_tmp;
+                 $ft['pronunciation'] = $pronunciation_tmp;
+                 $ft['vocabulary'] = $vocabulary_tmp;
+                 $ft['grammar'] = $grammar_tmp;
+                 $ft['other_observations'] = $other_observations_tmp;
+                 
                  $return[] = $ft;
             }
             return $return;
@@ -3392,6 +3410,35 @@ class GestorBD {
 
         }
 
+
+     /**
+      * Get feedback Rating details
+      * @param  [type] $id_feedback [description]
+      * @param  [type] $id_partner  [description]
+      * @param  [type] $id_tandem   [description]
+      * @return [type]              [description]
+      */
+     function getPartnerFeedbackRatingDetails($id_feedback, $id_partner, $id_tandem) {
+
+        $result = $this->consulta('select 
+            feedback_tandem_form.rating_partner_feedback_form 
+            from feedback_tandem
+            inner join feedback_tandem_form on feedback_tandem_form.id_feedback_tandem=feedback_tandem.id
+            where feedback_tandem.id !='.$this->escapeString($id_feedback).' and feedback_tandem.id_tandem ='.$this->escapeString($id_tandem)
+            .' and feedback_tandem.id_user ='.$this->escapeString($id_partner));
+        $feedback = false;
+        if ($this->numResultats($result) > 0){ 
+            $r = $this->obteComArray($result);
+            $feedback = new stdClass();
+            $rating_partner_feedback_form = $r[0]['rating_partner_feedback_form'];
+            if ($rating_partner_feedback_form && strlen($rating_partner_feedback_form)>0) {
+                $feedback->rating_partner_feedback_form = unserialize($rating_partner_feedback_form);
+            } else {
+                $feedback->rating_partner_feedback_form = false;
+            }
+        }    
+        return $feedback;
+     }
 }//end of class
 
 ?>
