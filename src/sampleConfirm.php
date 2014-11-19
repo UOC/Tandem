@@ -5,6 +5,8 @@ $data = $_GET["data"];
 $user = $_GET["user"];
 $is_final = false;
 
+
+
 include_once(dirname(__FILE__).'/classes/register_action_user.php');
 include_once(dirname(__FILE__).'/classes/gestorBD.php');
 require_once dirname(__FILE__).'/classes/lang.php';
@@ -62,7 +64,7 @@ else $Otheruser='a';
 	<script type="text/javascript" src="js/jquery.simplemodal.1.4.2.min.js"></script>
 
 	
-	<script>
+	<script type="text/javascript">
 var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
 var isie8PlusF = (function(){var undef,v = 3,div = document.createElement('div'),all = div.getElementsByTagName('i');while(div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',all[0]);return v > 4 ? v : undef;}());if(isie8PlusF>=8) isie8Plus=true;else isie8Plus=false;
 if(isIE11 || isie8Plus) isIEOk=true; else isIEOk=false;
@@ -144,6 +146,7 @@ $("a[rel='example1']").click(function(event){
 			var intervalIfNextQuestion;
 			var intervalIfNextQuestionAnswered;
 			var intervalUpdateAction;
+			var intervalUpdateLogin;
 //xml request for iexploiter/others 		
 if (window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
 else xmlReq = new XMLHttpRequest();
@@ -215,6 +218,9 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 						endHTML = cad[node].getAttribute("endHTML");
 						textE=cad[node].getElementsByTagName("textE")[0].childNodes[0].data;
 						getXML("<?php echo $user;?>","<?php echo $room;?>");
+						if(intervalUpdateLogin){
+							clearInterval(intervalUpdateLogin);
+						}
 						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
 	//thread is so quick...
 	writeButtons();
@@ -230,6 +236,9 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 		$("#lnk-start-task").removeAttr("href");
 		$("#lnk-start-task").removeAttr("onclick");
 		accionPreTimer();
+		if(intervalTimerAction){
+			clearInterval(intervalTimerAction);
+		}
 		intervalTimerAction = setInterval(timerChecker,1000);
 	}
 	timerChecker = function(){
@@ -280,36 +289,39 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 //timer
 
 
-processInitXml = function(){
-	if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
-		var cad=xmlReq.responseXML.getElementsByTagName('nextType');
-		numNodes=cad.length-1;
-		if(node+1<=numNodes){
-			classOf=cad[node+1].getAttribute("classOf");
-			nextSample=cad[node+1].getAttribute("currSample");
-		}
-		numExerc=node;
-		numUsers=cad[node].getAttribute("numUsers");
-		numBtn=cad[node].getAttribute("numBtns");
-		textE=cad[node].getElementsByTagName("textE")[0].childNodes[0].data;
-		getXML("<?php echo $user;?>","<?php echo $room;?>");
-		intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
-//thread is so quick...
-writeButtons();
-setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},150);
-hideButtons();
-}
-}
+// processInitXml = function(){
+// 	if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
+// 		var cad=xmlReq.responseXML.getElementsByTagName('nextType');
+// 		numNodes=cad.length-1;
+// 		if(node+1<=numNodes){
+// 			classOf=cad[node+1].getAttribute("classOf");
+// 			nextSample=cad[node+1].getAttribute("currSample");
+// 		}
+// 		numExerc=node;
+// 		numUsers=cad[node].getAttribute("numUsers");
+// 		numBtn=cad[node].getAttribute("numBtns");
+// 		textE=cad[node].getElementsByTagName("textE")[0].childNodes[0].data;
+// 		getXML("<?php echo $user;?>","<?php echo $room;?>");
+// 		intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
+// //thread is so quick...
+// writeButtons();
+// setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},150);
+// hideButtons();
+// }
+// }
+
 //Initializes & creates users node in room's xml			
 getXML = function(user,room){
 	var url="createUser.php";
 	var params="user="+user+"&room="+room;
 	xmlReq.onreadystatechange = processXml;
+	xmlReq.open("GET", url+"?"+params, true);
 	if(!isIEOk){
 		xmlReq.timeout = 100000;
 		xmlReq.overrideMimeType("text/xml");
 	}
-	xmlReq.open("GET", url+"?"+params, true);
+
+
 	xmlReq.send(null);
 }
 //nothing to do
@@ -318,12 +330,12 @@ processXml = function(){}
 getXMLDone = function(user,room){
 	var url="check.php?room=<?php echo $room; ?>&t=2";
 	xmlReq.onreadystatechange = processXmlOverDone;
+	xmlReq.open("GET", url, true);
 	if(!isIEOk){
 		xmlReq.timeout = 100000;
 		xmlReq.overrideMimeType("text/xml");
 	}
-	xmlReq.onerror = onError;
-	xmlReq.open("GET", url, true);
+	xmlReq.onerror = onError;	
 	xmlReq.send(null);
 	
 }
@@ -331,6 +343,9 @@ getXMLDone = function(user,room){
 onError = function(){
 	clearInterval(intervalUpdateLogin);
 	limitTimer+=500;
+	if (intervalUpdateLogin) {
+		clearInterval(intervalUpdateLogin);
+	}
 	intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
 	notifyTimerDown('<?php echo $LanguageInstance->get('SlowConn')?>');
 }
@@ -338,14 +353,14 @@ onError = function(){
 processXmlOverDone = function(){
 	if((xmlReq.readyState	==	4) && (xmlReq.status == 200)){
 		if(check4UsersConex()){
-//when both connected show alert, change user->side images and central image
-notifyTimerDown('<?php echo $LanguageInstance->get('txtOtherUserConn')?>');
-setTimeout(function(){$("#imgR").attr('src','images/before_connecting<?php echo $user;?>.jpg');},1000);
-setTimeout(function(){$("#imgR").attr('src','images/connecting.jpg');},1500);
-$('#buttonsCheck').show('fast');
-$('#LayerBtn0').show('slow');
-$('#image').fadeIn('slow');
-showImage('<?php echo $user;?>');
+			//when both connected show alert, change user->side images and central image
+			notifyTimerDown('<?php echo $LanguageInstance->get('txtOtherUserConn')?>');
+			setTimeout(function(){$("#imgR").attr('src','images/before_connecting<?php echo $user;?>.jpg');},1000);
+			setTimeout(function(){$("#imgR").attr('src','images/connecting.jpg');},1500);
+			$('#buttonsCheck').show('fast');
+			$('#LayerBtn0').show('slow');
+			$('#image').fadeIn('slow');
+			showImage('<?php echo $user;?>');
 }
 }
 }
@@ -364,25 +379,28 @@ check4UsersConex = function(){
 	numCadenas=cad.length;
 //are both users written into xml?
 if(numCadenas==numUsers){
-	getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
-//when both connected stop checking for connex, starts interval for checking answers, show intro page, ready for desconnex
-clearInterval(intervalUpdateLogin);
-intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
-					//if(numExerc==1) $.colorbox({href:"home.php?id=<?php echo $data;?>",escKey:true,overlayClose: false});
-					if(numExerc==1){
-						clearInterval(intTimerNow); 
-						$.colorbox.close();
-					}
-					posibleDesconn=1;
-					return true;
-				}else return false;
+			getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
+			//when both connected stop checking for connex, starts interval for checking answers, show intro page, ready for desconnex
+			clearInterval(intervalUpdateLogin);
+
+			if(intervalUpdateAction){
+				clearInterval(intervalUpdateAction);
 			}
-			check4BothChecked = function(){				
+			intervalUpdateAction = setInterval(check4BothChecked,<?php echo !empty($_REQUEST['elparam']) ? $_REQUEST['elparam'] : 1500 ?>);
+			//if(numExerc==1) $.colorbox({href:"home.php?id=<?php echo $data;?>",escKey:true,overlayClose: false});
+			if(numExerc==1){
+				clearInterval(intTimerNow); 
+				$.colorbox.close();
+			}
+			posibleDesconn=1;
+			return true;
+	}else 
+	return false;
+}
+			check4BothChecked = function(){	
 				$.ajax({
 					type: 'GET',
 					url: "check.php?room=<?php echo $room; ?>&t=3",
-					data: {
-					},
 					dataType: "xml",
 					statusCode: {
 						404: function() {							
@@ -393,7 +411,10 @@ intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 						408: function(){							
 							clearInterval(intervalUpdateAction);
 							limitTimerConn+=500;
-							intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
+							if (intervalUpdateAction) {
+								clearInterval(intervalUpdateAction);
+							}
+							intervalUpdateAction = setInterval(check4BothChecked,<?php echo !empty($_REQUEST['elparam']) ? $_REQUEST['elparam'] : 1500 ?>);
 							notifyTimerDown('<?php echo $LanguageInstance->get('SlowConn')?>');
 						}
 					},
@@ -438,6 +459,9 @@ intervalUpdateAction = setInterval(check4BothChecked,limitTimerConn);
 								}					
 						}
 					}*/
+},error: function (xhr, ajaxOptions, thrownError) {
+        console.log(xhr.status);
+        console.log(thrownError);
 }
 
 })
@@ -453,7 +477,7 @@ check4BothChecked_old = function(){
 		if(!isIEOk){
 			xmlReqUser.timeout = 100000;
 			xmlReqUser.overrideMimeType("text/xml");
-		}
+		}		
 		xmlReq.open("GET", url, false);
 		xmlReq.send(null);
 	}
@@ -672,7 +696,10 @@ accion = function(id,number){
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");
 					$('#next_task').attr('onclick',"showFinishedAlert();return false;");					
 				}
-				intervalIfNextQuestionAnswered = setInterval('checkIfPass2NextQuestion("<?php echo $user;?>","<?php echo $room;?>")',500);
+				if (intervalIfNextQuestionAnswered) {
+					clearInterval(intervalIfNextQuestionAnswered);
+				}
+				intervalIfNextQuestionAnswered = setInterval('checkIfPass2NextQuestion("<?php echo $user;?>","<?php echo $room;?>")',750);
 				
 			}
 
@@ -695,11 +722,13 @@ accion = function(id,number){
 						var cad = $(xml).find('actions');
 						/*var isFirstUserEnd = cad[cad.length-1].getAttribute('firstUserEnd');
 						var isSecondUserEnd = cad[cad.length-1].getAttribute('secondUserEnd');*/
-						var isFirstUserEnd = cad[node-1].getAttribute('firstUserEnd');
-						var isSecondUserEnd = cad[node-1].getAttribute('secondUserEnd');
-						if(isFirstUserEnd!=null && isSecondUserEnd==null && isFirstUserEnd!='<?php echo $user;?>'){
-							notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFirstUserEnd+"<?php echo $LanguageInstance->get("txtEndTask");?>");
-							clearInterval(intervalIfNextQuestionAnswered);
+						if (cad.length>=node) {
+							var isFirstUserEnd = cad[node-1].getAttribute('firstUserEnd');
+							var isSecondUserEnd = cad[node-1].getAttribute('secondUserEnd');
+							if(isFirstUserEnd!=null && isSecondUserEnd==null && isFirstUserEnd!='<?php echo $user;?>'){
+								notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFirstUserEnd+"<?php echo $LanguageInstance->get("txtEndTask");?>");
+								clearInterval(intervalIfNextQuestionAnswered);
+							}
 						}
 					}
 				})
@@ -720,6 +749,7 @@ accion = function(id,number){
 					},
 					success: function(){
 						notifyTimerDown("<?php echo $LanguageInstance->get("txtWaiting4UserEndTask");?>");
+						if(intervalIfNextQuestion){ clearInterval(intervalIfNextQuestion);}
 						intervalIfNextQuestion = setInterval('checkIfPass2NextQuestionToJump("<?php echo $user;?>","<?php echo $room;?>")',500);
 						$('#next_task').removeClass("active");
 					}
@@ -910,7 +940,7 @@ showImage = function(id){
 windowNotificationTandem = $.window({
 			   title: "",
 			   url: "notificationStartTandem.php",
-			   width: 210,
+			   width: 310,
 			   height: 130,
 			   maxWidth: 400,
 			   maxHeight: 400,							  
