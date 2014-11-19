@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-07 14:47+0100\n"
+"PO-Revision-Date: 2014-11-19 16:54+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -579,7 +579,7 @@ msgid "My portfolio feedback"
 msgstr "Mi portafolio"
 
 msgid ", your position in the ranking is "
-msgstr ", tú posición en el ranquin es "
+msgstr ", tú posición en el ranking es "
 
 msgid "Grade your speaking skills"
 msgstr "Evalúa tu expresión oral"
@@ -733,10 +733,23 @@ msgid "Close this Popup to start"
 msgstr "Cierra esta ventana para comenzar"
 
 msgid "thirty_second_notification_message"
-msgstr "Se ha enviado un email a tu compañero porque no ha podido acceder al tandem en 30 segundos, esperando a que acceda..."
+msgstr ""
+"Se ha enviado un email a tu compañero porque no ha podido acceder al tandem "
+"en 30 segundos, esperando a que acceda..."
 
 msgid "partner_is_waiting_email_body"
-msgstr "Tienes un compañero esperándote en tandem. Haz clic en el siguiente link para acceder.<br ><br /><a href='%1'>Acceder al tandem</a>"
+msgstr ""
+"Tienes un compañero esperándote en tandem. Haz clic en el siguiente link "
+"para acceder.<br ><br /><a href='%1'>Acceder al tandem</a>"
 
 msgid "partner_is_waiting_email_subject"
 msgstr "Tu compañero te espera en tandem"
+
+msgid "Ranking for learners of English"
+msgstr "Ranking para estudiantes de inglés"
+
+msgid "Ranking for learners of Spanish"
+msgstr "Ranking para estudiantes de español"
+
+msgid "Export to excel"
+msgstr "Exportar a excel"

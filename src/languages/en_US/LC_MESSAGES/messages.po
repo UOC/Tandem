@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-07 14:46+0100\n"
+"PO-Revision-Date: 2014-11-19 16:53+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -706,10 +706,20 @@ msgid "Close this Popup to start"
 msgstr "Close this Popup to start"
 
 msgid "thirty_second_notification_message"
-msgstr "We have sent an email to your partner because he/she has not connected in 30 seconds, Waiting for them to connect"
+msgstr ""
+"We have sent an email to your partner because he/she has not connected in 30 "
+"seconds, waiting to connect..."
 
 msgid "partner_is_waiting_email_body"
-msgstr "Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%1'>Go to Tandem</a>"
+msgstr ""
+"Your partner is waiting for you to do a tandem, please click on the "
+"following Link to access the tandem.<br ><br /><a href='%1'>Go to Tandem</a>"
 
 msgid "partner_is_waiting_email_subject"
 msgstr "Your partner is waiting for you to do a tandem"
+
+msgid "Export to excel"
+msgstr "Export to excel"
+
+msgid "Portfolio"
+msgstr "Portfolio"
