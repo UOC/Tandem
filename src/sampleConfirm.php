@@ -460,8 +460,8 @@ if(numCadenas==numUsers){
 						}
 					}*/
 },error: function (xhr, ajaxOptions, thrownError) {
-        console.log(xhr.status);
-        console.log(thrownError);
+        // console.log(xhr.status);
+        // console.log(thrownError);
 }
 
 })

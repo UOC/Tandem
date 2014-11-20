@@ -1154,7 +1154,53 @@ class GestorBD {
 
             $result = $this->consulta($sql);
         }
+
+        if($is_finished){
+            //if we are finished, then lets fill our partner task time aswell to make sure
+            $result2 = $this->consulta("select id_user_host,id_user_guest from tandem where id = '".$id_tandem."' ");
+            if ($this->numResultats($result2) > 0){ 
+                $r = $this->obteComArray($result2);
+                if($r[0]['id_user_host'] == $id_user) 
+                    $id_user_partner = $r[0]['id_user_guest'];
+                else
+                    $id_user_partner = $r[0]['id_user_host'];
+
+                $this->register_task_user_partner_tandem($id_tandem,$id_user_partner,$task_number);
+            }            
+        }
+
         return $result;
+
+    }
+
+    function register_task_user_partner_tandem($id_tandem, $id_user, $task_number,$is_finished=1,$points=0){
+
+
+        $sql = 'SELECT Cast(is_finished As unsigned integer) as is_finished from user_tandem_task where id_tandem = ' . $id_tandem . ' AND id_user = ' . $id_user . ' AND task_number = ' . $task_number;
+        $result = $this->consulta($sql);
+        if ($result) {
+
+            $total_time = $this->get_temps_total_task_tandem($id_tandem, $id_user, $task_number);
+            $r = $this->obteComArray($result);
+
+            if ($this->numResultats($result) == 0) {
+                $sql = 'INSERT INTO user_tandem_task (id_tandem, id_user, task_number, total_time, points, is_finished, finalized, created) ' .
+                        ' VALUES ' .
+                        '(' . $id_tandem . ', ' . $id_user . ', ' . $task_number . ', ' . $total_time . ', ' . $points . ', ' . ($is_finished ? 1 : 0) . ', ' . ($is_finished ? 'now()' : 'null') . ', now())';
+            } else {
+                
+                if($r[0]['is_finished'] == 0){
+                    $sql = 'UPDATE user_tandem_task SET total_time = ' . $total_time . ', points=' . $points . ', is_finished = ' . ($is_finished ? 1 : 0) . ', finalized = ' . ($is_finished ? 'now()' : 'null') . ' ' .
+                        ' where id_tandem = ' . $id_tandem . ' AND id_user = ' . $id_user . ' AND task_number = ' . $task_number;
+                }
+            }
+
+            $result = $this->consulta($sql);
+        }
+        return $result;
+
+
+
     }
 
     /**
@@ -2505,8 +2551,7 @@ class GestorBD {
          * TODO : improve this code :P
          */
          function  getUserRankingPosition($user_id,$language,$course_id){
-
-                 $result = $this->consulta("select user_id from user_ranking where course_id = ".$this->escapeString($course_id)." and lang= ".$this->escapeString($language)." order by points desc");
+                 $result = $this->consulta("select user_id from user_ranking where course_id = ".$this->escapeString($course_id)." and lang = ".$this->escapeString($language)." order by points desc");
                  if ($this->numResultats($result) > 0){ 
                     $data =  $this->obteComArray($result);                    
                     foreach($data as $key => $val){
@@ -2713,23 +2758,30 @@ class GestorBD {
 
             return 0;
         }
-
+    
         /**
          * Return the number of failed tandems, the ones that in total time have 5 seconds or less
          * TODO :Improve maybe do it in just 1 whole query
          */
-         function  getNumOfSuccessFailedTandems($course_id){
+         function  getNumOfSuccessFailedTandems($course_id,$dateStart=false,$dateEnd=false){
 
-            $sql = "select id from  tandem 
-                    where 
-                    id_course = ".$this->escapeString($course_id)." ";
+            $datesql = '';
+            if($dateStart){
+             $datesql = "and date(created) >= '".$dateStart."' ";
+                if($dateEnd > $dateStart){                
+                     $datesql .= "and date(created) <= '".$dateEnd."' ";
+                }
+            }
+            $sql = "select id from tandem where id_course = ".$this->escapeString($course_id)." ".$datesql;
+        
             $result = $this->consulta($sql);
             $failed = 0;
             $success  = 0;
+
             if ($this->numResultats($result) > 0){ 
                     $result = $this->obteComArray($result);                    
                     foreach($result as $key => $value){                
-                        $result2 = $this->consulta("select sum(total_time) as total from user_tandem where id_tandem =  ".$this->escapeString($value['id'])." ");
+                        $result2 = $this->consulta("select avg(total_time) as total from user_tandem where id_tandem =  ".$this->escapeString($value['id'])." ");
                         if ($this->numResultats($result2) > 0){ 
                              $result2 = $this->obteComArray($result2);
                              if($result2[0]['total'] <= TIME_TO_FAILED_TANDEM)

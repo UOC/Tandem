@@ -753,3 +753,6 @@ msgstr "Ranking para estudiantes de español"
 
 msgid "Export to excel"
 msgstr "Exportar a excel"
+
+msgid "Position"
+msgstr "Posición"

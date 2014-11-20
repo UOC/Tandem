@@ -26,12 +26,14 @@ if (empty($user_obj) || $user_obj->instructor != 1  ) {
 	header('Location: index.php');
 	die();
 } 
-
+$tandemFailedSuccessByDateStart = !empty($_REQUEST['tandemFailedSuccessByDateStart']) ? $_REQUEST['tandemFailedSuccessByDateStart'] : date("Y-m-d");
+$tandemFailedSuccessByDateEnd = !empty($_REQUEST['tandemFailedSuccessByDateEnd']) ? $_REQUEST['tandemFailedSuccessByDateEnd'] : date("Y-m-d");
 $currentActiveTandems = $gestorBD->currentActiveTandems($course_id);
 $getUsersWaitingEs = $gestorBD->getUsersWaitingByLanguage($course_id,"es_ES");
 $getUsersWaitingEn = $gestorBD->getUsersWaitingByLanguage($course_id,"en_US");
 $tandemByDate = $gestorBD->getNumtandemsByDate(date("Y-m-d"),$course_id);
-$getNumOfSuccessFailedTandems = $gestorBD->getNumOfSuccessFailedTandems($course_id);
+$getNumOfSuccessFailedTandems = $gestorBD->getNumOfSuccessFailedTandems($course_id,$tandemFailedSuccessByDateStart,$tandemFailedSuccessByDateEnd);
+
 $getCountAllTandemsByDate = $gestorBD->getCountAllTandemsByDate($course_id);
 $getCountAllUnFinishedTandemsByDate = $gestorBD->getCountAllUnFinishedTandemsByDate($course_id);
 $getFeedbackStats = $gestorBD->getFeedbackStats($course_id);
@@ -53,7 +55,6 @@ $peopleWaitedWithoutTandem  = $gestorBD->peopleWaitedWithoutTandem($course_id);
 <script src="js/highcharts/js/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/data.js"></script>
 <script src="http://code.highcharts.com/modules/drilldown.js"></script>
-
 <style>
 	.container{ margin-top:20px;}
 </style>
@@ -76,22 +77,27 @@ $peopleWaitedWithoutTandem  = $gestorBD->peopleWaitedWithoutTandem($course_id);
 	        	});
 	        },2500);
 
-    		(function( $ ) {
-        		$("#tandemByDate").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1, 
-        					onSelect : function(date){
-        						$.ajax({
-						        		type: 'POST',
-						        		url: "getNumTandemsByDate.php",
-						        		dataType: "JSON",
-						        		data :{date : date},
-						        		success: function(json){	        			
-						        			if(json  &&  typeof json.tandems !== "undefined"){
-						        				$('#nTandemsDate').html(json.tandems);						        				
-						        			}
-						        		}
-	        					});
-        					}
-        		});
+    	   (function( $ ) {
+                $("#tandemByDate").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1, 
+                            onSelect : function(date){
+                                $.ajax({
+                                        type: 'POST',
+                                        url: "getNumTandemsByDate.php",
+                                        dataType: "JSON",
+                                        data :{date : date},
+                                        success: function(json){                        
+                                            if(json  &&  typeof json.tandems !== "undefined"){
+                                                $('#nTandemsDate').html(json.tandems);                                              
+                                            }
+                                        }
+                                });
+                            }
+                });
+            })( jQuery );	
+
+            (function( $ ) {
+        		$("#tandemFailedSuccessByDateStart").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+                $("#tandemFailedSuccessByDateEnd").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
        		})( jQuery );
 
 //finished vs unfinished tandems
@@ -109,7 +115,7 @@ $(function () {
           	enabled: false
         },
         subtitle: {
-            text: 'Finished vs unfinished tandems'
+            text: 'Finished are all tandems that were finished by the user and Unfinished tandems are all the tandems that didn\'t got to be finished by the user '
         },
         chart: {
             renderTo: 'chart1',
@@ -232,10 +238,10 @@ $(function () {
           			  enabled: false
         		},
                 title: {
-                    text: 'Successful vs Failed tandems in Total'
+                    text: 'Successful vs Failed tandems by date range'
                 },
                 subtitle: {
-                    text: 'View the amount of successful executed tandems vs the ones that failed( counting total_time less than <?php echo TIME_TO_FAILED_TANDEM?>s and the ones that were not finished )'
+                    text: 'The success are all the tandems that the total_time is 60 seconds or more, and the Failed tandems are all the tandems counting the finished and unfinished and that the total_time is less than 60 seconds '
                 },
                 xAxis: {
                     type: 'category'
@@ -586,83 +592,108 @@ $(function () {
 		</p>
 		</div>
 	</div>
-	<div class='row'>
-	<div class='col-md-12'>	<h3><?php echo $LanguageInstance->get('Statistics'); ?></h3></div>
-	   	<div class="col-md-6">
-   			<div class="list_group">
-	   			<div class="list-group-item">
-	   			<?php
-	   			 	echo $LanguageInstance->get('Current active tandems');
-	   			 	echo ": <strong>".$currentActiveTandems."</strong>";
-	   			?>
-	   			</div> 
-	   			<div class="list-group-item">
-	   			<?php
-	   			 	echo $LanguageInstance->get('Users waiting to practice English');
-	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEn."</span></strong>";
-	   			?>
-	   			</div> 
-	   			<div class="list-group-item">
-	   			<?php
-	   			 	echo $LanguageInstance->get('Usuarios esperando para practicar Español');
-	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEs."</span></strong>";
-	   			?>	   				   				
-	   			</div> 
-	   			<div class="list-group-item">
-	   			<?php
-	   			 	echo $LanguageInstance->get('Total feedbacks');
-	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem']."</strong>";
-	   			?>	   				   				
-	   			</div> 
-	   			<div class="list-group-item">
-	   			<?php
-	   			 	echo $LanguageInstance->get('Total feedbacks submitted');
-	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_forms_sent']."</strong>";
-	   			?>	   				   				
-	   			</div> 
-	   			<div class="list-group-item">
-	   			<?php
-	   			 	echo $LanguageInstance->get('Total feedbacks submitted for ES');
-	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_form_es']."</strong>";
-	   			?>	   				   				
-	   			</div> 	   			
-	   			<div class="list-group-item">
-	   			<?php
-	   			 	echo $LanguageInstance->get('Total feedbacks submitted for EN');
-	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_form_en']."</strong>";
-	   			?>	   				   				
-	   			</div> 
-  			</div>
-  		</div>	   	
-  		<div class="col-md-6">
-   			<div class="list_group">
-	   			<div class="list-group-item">
-	   			<?php	   			 	
-	   			 	echo "<input type='text' style ='width: 65px;font-size: 11px;' id='tandemByDate' value='".date("d-m-Y")."'><br />";
-	   			 	echo $LanguageInstance->get('Number of people that have done a tandem on specific date');
-	   			 	echo ": <strong id='nTandemsDate'>".$tandemByDate."</strong>";
-	   			?>
-	   			</div> 	 	   			
-	   			<div class="list-group-item">
-	   			<?php	   			 	
-					echo $LanguageInstance->get('Number of failed tandems');
-	   			 	echo ": <strong id='nTandemsDate'>".$getNumOfSuccessFailedTandems['failed']."</strong>";
-	   			?>
-	   			</div> 	   		
-  			</div> 
-  		</div>
-  	</div>
+    <div class='well'>
+    	<div class='row'>
+    	<div class='col-md-12'>	<h3><?php echo $LanguageInstance->get('Statistics'); ?></h3></div>
+    	   	<div class="col-md-6">
+       			<div class="list_group">
+    	   			<div class="list-group-item">
+    	   			<?php
+    	   			 	echo $LanguageInstance->get('Current active tandems');
+    	   			 	echo ": <strong>".$currentActiveTandems."</strong>";
+    	   			?>
+    	   			</div> 
+    	   			<div class="list-group-item">
+    	   			<?php
+    	   			 	echo $LanguageInstance->get('Users waiting to practice English');
+    	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEn."</span></strong>";
+    	   			?>
+    	   			</div> 
+    	   			<div class="list-group-item">
+    	   			<?php
+    	   			 	echo $LanguageInstance->get('Usuarios esperando para practicar Español');
+    	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEs."</span></strong>";
+    	   			?>	   				   				
+    	   			</div> 
+    	   			<div class="list-group-item">
+    	   			<?php
+    	   			 	echo $LanguageInstance->get('Total feedbacks');
+    	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem']."</strong>";
+    	   			?>	   				   				
+    	   			</div> 
+    	   			<div class="list-group-item">
+    	   			<?php
+    	   			 	echo $LanguageInstance->get('Total feedbacks submitted');
+    	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_forms_sent']."</strong>";
+    	   			?>	   				   				
+    	   			</div> 
+    	   			<div class="list-group-item">
+    	   			<?php
+    	   			 	echo $LanguageInstance->get('Total feedbacks submitted for ES');
+    	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_form_es']."</strong>";
+    	   			?>	   				   				
+    	   			</div> 	   			
+    	   			<div class="list-group-item">
+    	   			<?php
+    	   			 	echo $LanguageInstance->get('Total feedbacks submitted for EN');
+    	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_form_en']."</strong>";
+    	   			?>	   				   				
+    	   			</div> 
+      			</div>
+      		</div>	   	
+      		<div class="col-md-6">
+       			<div class="list_group">
+    	   			<div class="list-group-item">
+    	   			<?php	   			 	
+    	   			 	echo "<form role='form'><div class='input-group'><div class='input-group-addon'>Select date</div><input class='form-control' type='text'  id='tandemByDate' value='".date("d-m-Y")."'></div></form><br />";
+    	   			 	echo $LanguageInstance->get('Number of people that have done a tandem on specific date');
+    	   			 	echo ": <strong id='nTandemsDate'>".$tandemByDate."</strong>";
+    	   			?>
+    	   			</div> 	 	   			
+    	   			<div class="list-group-item">
+    	   			<?php	   			 	
+    					echo $LanguageInstance->get('Number of failed tandems');
+    	   			 	echo ": <strong id='nTandemsDate'>".$getNumOfSuccessFailedTandems['failed']."</strong>";
+    	   			?>
+    	   			</div> 	   		
+      			</div> 
+      		</div>
+      	</div>
+    </div>
   	<div class='row'>
-	  	<div class='col-md-12'>	  	
-	  		<div id='chart1'></div>
+	  	<div class='col-md-12'>	
+	  		<div class='well'><div id='chart1'></div></div>
 	  		<br />
-	  		<div id='chart2'></div>	
+            <div class='well'>
+            <p>
+                <div class='selectDatesForTandems'>
+                    <form role='form' class="form-inline" method="post">
+                        <div class="form-group">                        
+                            <label  class="sr-only"> <?php echo $LanguageInstance->get('Start Date');?></label>
+                            <p class="form-control-static"> <?php echo $LanguageInstance->get('Start Date');?></p>                           
+                        </div>       
+                        <div class="form-group">
+                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateStart' id='tandemFailedSuccessByDateStart' value='<?php echo !empty($_REQUEST['tandemFailedSuccessByDateStart']) ? $_REQUEST['tandemFailedSuccessByDateStart'] : date("d-m-Y")?>'>                         
+                        </div>
+                       <div class="form-group">                        
+                            <label  class="sr-only"> <?php echo $LanguageInstance->get('Start End');?></label>
+                            <p class="form-control-static"> <?php echo $LanguageInstance->get('End Date');?></p>                           
+                        </div>       
+                        <div class="form-group">
+                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateEnd' id='tandemFailedSuccessByDateEnd' value='<?php echo !empty($_REQUEST['tandemFailedSuccessByDateEnd']) ? $_REQUEST['tandemFailedSuccessByDateEnd'] : date("d-m-Y")?>'>                         
+                        </div>
+                        <button type="submit" class="btn btn-default"><?php echo $LanguageInstance->get('View');?></button>
+                    </form>
+                </div>
+            </p>
+    	  		<div id='chart2' ></div>
+            </div>	
 	  		<br />
-	  		<div id='chart3' style='width:350px;float:left;display:inline'></div>
-	  		<div id='chart4' style='width:350px;display:inline'></div>
-	  		<div id='chart5' style='width:350px;float:left;display:inline'></div>
-	  		<div id='chart6' style='width:350px;float:left;display:inline'></div>
-	  		<div id='chart7' style='width:350px;float:left;display:inline'></div>
+	  		<div id='chart3' class='well' style='width:380px;float:left;display:inline'></div>
+	  		<div id='chart4' class='well' style='width:380px;float:left;display:inline'></div>
+	  		<div id='chart5' class='well' style='width:380px;float:left;display:inline'></div>
+	  		<div id='chart6' class='well' style='width:380px;float:left;display:inline'></div>
+	  		<div id='chart7' class='well' style='width:380px;float:left;display:inline'></div>
 	  	</div>
   	</div>
   	<p></p>

@@ -43,7 +43,7 @@ if ($user_register_obj && $course_register_id && $id_register_tandem && isset($u
 		}	
 	}
 	
-	//Registrem la pregunta ATENCIO comen�a am 0
+	//Registrem la pregunta ATENCIO comenza am 0
 	$number_task_question_old = isset($_SESSION[TANDEM_NUMBER_OF_NODE_FIELD])?intval($_SESSION[TANDEM_NUMBER_OF_NODE_FIELD],10):-1;
 	$number_task_question = isset($_GET[TANDEM_NUMBER_OF_NODE_FIELD])?intval($_GET[TANDEM_NUMBER_OF_NODE_FIELD],10):-1;
 	if ($number_task_question >= 0) {

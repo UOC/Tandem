@@ -723,3 +723,6 @@ msgstr "Export to excel"
 
 msgid "Portfolio"
 msgstr "Portfolio"
+
+msgid "Position"
+msgstr "Position"

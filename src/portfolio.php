@@ -40,6 +40,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	if (!empty($_POST['showFeedback'])){
 		$showFeedback = $_POST['showFeedback'];
 	}	
+	$selectedUser = 0;
 	//lets see if we have a cookie for the selected user
 	if(!empty($_COOKIE['selecteduser']) && $user_obj->instructor == 1){
 		$selectedUser = $_COOKIE['selecteduser'];
@@ -159,17 +160,20 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
 	  		<h1 class='title'><?php echo $LanguageInstance->get('My portfolio feedback');?></h1>
 	  	</div>
   			<div class='col-md-6 text-right'>
-				<br /><br /><?php 
-					$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
-					$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
-					$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
-					if (defined('SHOW_RANKING') && SHOW_RANKING==1) {
-						if($getUserRankingPosition > 0)
-							$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
-					}
-					
-					echo $positionInRankingTxt;			
-				?>
+  				<div class='welcomeMessage'>
+					<?php 
+						$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
+						$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
+						$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
+						if (defined('SHOW_RANKING') && SHOW_RANKING==1) {
+
+							if($getUserRankingPosition > 0)
+								$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
+						}
+						
+						echo $positionInRankingTxt;			
+					?>
+				</div>
 			</div>
   	</div>
   	<?php if(!empty($firstProfileForm)){ ?>

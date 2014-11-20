@@ -13,10 +13,20 @@ border-color: #7E9F0B !important;
 }
 
 #pdfForm,#excelForm{
-	margin-top:20px;
+	margin-top:6px;
 }
 .bullets {
 	text-align: justify;
 	padding-bottom: 2px;
 	/*border:1px solid red;*/
+}
+
+.welcomeMessage{
+	margin-top:20px;
+	color:rgb(97,45,123);
+	font-size:16px;
+}
+.welcomeMessage b{
+	font-size:18px;
+
 }
