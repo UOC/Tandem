@@ -673,14 +673,14 @@ $(function () {
                             <p class="form-control-static"> <?php echo $LanguageInstance->get('Start Date');?></p>                           
                         </div>       
                         <div class="form-group">
-                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateStart' id='tandemFailedSuccessByDateStart' value='<?php echo !empty($_REQUEST['tandemFailedSuccessByDateStart']) ? $_REQUEST['tandemFailedSuccessByDateStart'] : date("d-m-Y")?>'>                         
+                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateStart' id='tandemFailedSuccessByDateStart' value='<?php echo $tandemFailedSuccessByDateStart?>'>                         
                         </div>
                        <div class="form-group">                        
                             <label  class="sr-only"> <?php echo $LanguageInstance->get('Start End');?></label>
                             <p class="form-control-static"> <?php echo $LanguageInstance->get('End Date');?></p>                           
                         </div>       
                         <div class="form-group">
-                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateEnd' id='tandemFailedSuccessByDateEnd' value='<?php echo !empty($_REQUEST['tandemFailedSuccessByDateEnd']) ? $_REQUEST['tandemFailedSuccessByDateEnd'] : date("d-m-Y")?>'>                         
+                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateEnd' id='tandemFailedSuccessByDateEnd' value='<?php echo $tandemFailedSuccessByDateEnd?>'>                         
                         </div>
                         <button type="submit" class="btn btn-default"><?php echo $LanguageInstance->get('View');?></button>
                     </form>

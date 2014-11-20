@@ -31,6 +31,9 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 } else {
 	
 
+	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : '';
+	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : '';
+
 	$finishedTandem = -1;
 	if ($user_obj->instructor ==1 && !empty($_POST['finishedTandem'])){
 		$finishedTandem = $_POST['finishedTandem'];
@@ -51,7 +54,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	}
 	//the instructor wants to view some userfeedback
 	if(!empty($selectedUser) && $user_obj->instructor == 1){
-		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id, $showFeedback, $finishedTandem);		
+		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id, $showFeedback, $finishedTandem, $dateStart, $dateEnd);		
 	}else  	{
 		$feedbacks = $gestorBD->getAllUserFeedbacks($user_obj->id,$course_id, $showFeedback, $finishedTandem);	
 	}
@@ -95,10 +98,12 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
 <head>
 <meta charset="utf-8">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <link href="css/tandem-waiting-room.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" media="all" href="css/slider.css" />
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+ <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 <script src="js/bootstrap-slider2.js"></script>
 <script>
 	$(document).ready(function(){
@@ -132,7 +137,12 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
 
 		$("#viewProfileForm").click(function(){
 			$("#registry-modal-form").modal("show");
-		})
+		});
+        (function( $ ) {
+    		$("#dateStart").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+            $("#dateEnd").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+   		})( jQuery );
+
 
 	});
 </script>
@@ -229,8 +239,7 @@ if($user_obj->instructor == 1 ){
 ?>
 	<div class='row'>		
 		<div class='col-md-6'>
-			<p>
-				<form action='' method="POST" id='selectUserForm' class="form-inline" role='form'>
+			<form action='' method="POST" id='selectUserForm' class="form-inline" role='form'>
 				<div class="form-group">
 					<select name='selectUser' id="selectUser" class='form-control'>
 					<option value='0'><?php echo $LanguageInstance->get('Select user')?></option>
@@ -264,8 +273,24 @@ if($user_obj->instructor == 1 ){
 					</select>
 					<span class="help-block"><?php echo $LanguageInstance->get('Select tandem finished');?></span>
 				</div>
-				</form>
-			</p>
+                <div class='selectDatesForTandems'>
+                    <div class="form-group">                        
+                        <label  class="sr-only"> <?php echo $LanguageInstance->get('Start Date');?></label>
+                        <p class="form-control-static"> <?php echo $LanguageInstance->get('Start Date');?></p>                           
+                    </div>       
+                    <div class="form-group">
+                        <input type='text' class="form-control"  name='dateStart' id='dateStart' value='<?php echo $dateStart?>'>                         
+                    </div>
+                   <div class="form-group">                        
+                        <label  class="sr-only"> <?php echo $LanguageInstance->get('Start End');?></label>
+                        <p class="form-control-static"> <?php echo $LanguageInstance->get('End Date');?></p>                           
+                    </div>       
+                    <div class="form-group">
+                        <input type='text' class="form-control"  name='dateEnd' id='dateEnd' value='<?php echo $dateEnd?>'>                         
+                    </div>
+                        <button type="submit" class="btn btn-default"><?php echo $LanguageInstance->get('View');?></button>
+                </div>        
+			</form>
 		</div>
 		<div class='col-md-6 text-right' >
 			<div class="row">
@@ -280,6 +305,7 @@ if($user_obj->instructor == 1 ){
 						<input type='hidden'  name='showFeedback' value='<?php echo $showFeedback?>' />
 						<input type='hidden'  name='finishedTandem' value='<?php echo $finishedTandem?>' />
 						<input type='hidden'  name='selectUser' value='<?php echo $selectedUser?>' />
+						<input type='hidden'  name='dateStart' value='<?php echo $dateStart?>' />
 						<input type='submit' value='<?php echo $LanguageInstance->get('Export to excel');?>' class='btn btn-success' />
 					</form> 
 				</div>	

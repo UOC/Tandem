@@ -28,6 +28,11 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	header ('Location: index.php');
 	die();
 } else {
+
+	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : '';
+	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : '';
+
+
 	$finishedTandem = -1;
 	if (!empty($_POST['finishedTandem'])){
 		$finishedTandem = $_POST['finishedTandem'];
@@ -47,7 +52,7 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	$feedbacks = array();
 	//the instructor wants to view some userfeedback
 	if(!empty($selectedUser)){
-		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id, $showFeedback, $finishedTandem);		
+		$feedbacks = $gestorBD->getAllUserFeedbacks($selectedUser,$course_id, $showFeedback, $finishedTandem, $dateStart, $dateEnd);		
 	}
 
 	//$xls = new Excel_XML('UTF-8', false, $LanguageInstance->get('Users Assigned'));
