@@ -3236,7 +3236,8 @@ class GestorBD {
             }else
                     $sql = "insert into user_ranking (user_id,course_id,points,lang) values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",'".$points."',".$this->escapeString($lang).")";
                     $this->consulta($sql);                    
-                }
+            }
+            return "Updated Points = ".$points;
 
         }
 

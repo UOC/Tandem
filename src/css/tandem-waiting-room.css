@@ -12,7 +12,7 @@ background-color: #7E9F0B !important;
 border-color: #7E9F0B !important;
 }
 
-#pdfForm{
+#pdfForm,#excelForm{
 	margin-top:20px;
 }
 .bullets {
