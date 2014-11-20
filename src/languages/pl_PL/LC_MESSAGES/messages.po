@@ -1,0 +1,413 @@
+# Translation of Tandem (trunk) in English
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2014-11-20 20:49+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.5.5\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
+"Language-Team: \n"
+"Language: en_US\n"
+
+msgid "welcome"
+msgstr "Witaj"
+
+msgid "no estas autoritzat"
+msgstr "niezatiwerdzone"
+
+msgid "back"
+msgstr "powrót"
+
+msgid "txtOtherUserConn"
+msgstr "Nie jesteś połączony z Twoim partnerem."
+
+msgid "txtWaiting4User"
+msgstr "Oczekiwanie na połączenie"
+
+msgid "no_users_in_course"
+msgstr "W tym kursie nie ma uczestników"
+
+msgid "txtTheUser"
+msgstr "<b>Partner ("
+
+msgid "txtReplied"
+msgstr ") już odpowiedział. Oczekiwanie na potwierdzenie</b>"
+
+msgid "refresh"
+msgstr "Aktualizacja uczestników"
+
+msgid "user_in_tandem"
+msgstr "Twój partenr nie jest osiągalny, spróbuj później."
+
+msgid "show_tandem"
+msgstr "Pokaż Tandemy"
+
+msgid "txtDesconnected"
+msgstr "Rozłącz"
+
+msgid "select_user"
+msgstr "Wybierz użytkownika "
+
+msgid "select_users"
+msgstr "Wybierz użytkonika"
+
+msgid "tandems"
+msgstr "Tandemy"
+
+msgid "no_tandems"
+msgstr "Nie ma tandemów dla tego użytkonika"
+
+msgid "date"
+msgstr "Data"
+
+msgid "points"
+msgstr "Punkty"
+
+#, fuzzy
+msgid "user_host"
+msgstr "Użytkonik hosta"
+
+msgid "user"
+msgstr "Użytkonik"
+
+msgid "user_guest"
+msgstr "Gość"
+
+msgid "date_guest_user_logged"
+msgstr "Data zalogowania innego użytkownika"
+
+msgid "finalized"
+msgstr "Data zakończenia"
+
+#, fuzzy
+msgid "total_time"
+msgstr "Łączny czas"
+
+msgid "start"
+msgstr "Start!"
+
+msgid "accept"
+msgstr "Akceptuj"
+
+msgid "select_exercise"
+msgstr "Wybierz ćwiczenie"
+
+msgid "tandem_description_1"
+msgstr ""
+"Witaj %s wTandem Pilot. To narzędzie działa z  Google Chrome, Firefox 4 "
+"onwards, Safari 5."
+
+msgid "tandem_description_2"
+msgstr ""
+"Tandem NIE działa z  Internet Explorer. Pracujemy nad rozwiązaniem tego "
+"problemu."
+
+msgid "tandem_logo"
+msgstr "Logo Tandem"
+
+msgid "tandem"
+msgstr "Tandem"
+
+msgid "exercise"
+msgstr "Ćwiczenia"
+
+msgid "go"
+msgstr "Idź"
+
+msgid "waiting"
+msgstr "Oczekiwanie na użytkonika..."
+
+msgid "waitingUserX"
+msgstr "Oczekiwanie na"
+
+msgid "acceptance"
+msgstr ""
+"Jeśli twój partner nie zaakceptuje tandemu w ciągu 1 minuty, to zaproszenie "
+"wygaśnie."
+
+msgid "direct_access_to_content"
+msgstr "Bezpośredni dostęp do zawartości."
+
+msgid "pending_tandems"
+msgstr "Oczekujące zaproszenia"
+
+msgid "no_pending_tandems"
+msgstr "Nie masz oczekujących zaproszeń."
+
+msgid "reload_pending"
+msgstr "Odśwież oczekujące zaproszenia."
+
+msgid "tasks_tandems"
+msgstr "Zadania"
+
+msgid "questions_tasks_tandems"
+msgstr "Pytania"
+
+msgid "task"
+msgstr "Zadanie"
+
+msgid "question"
+msgstr "Pytanie"
+
+msgid "total_time_seconds"
+msgstr "Całkowity czas:&#13 %s minut&#13 %s sekund"
+
+msgid "start_date"
+msgstr "Data rozpoczęcia"
+
+msgid "finish_date"
+msgstr "Data zakończenia"
+
+msgid "finished"
+msgstr "Zakończone"
+
+msgid "caducado"
+msgstr "Wygasło"
+
+msgid "all"
+msgstr "Wszystkie"
+
+msgid "no"
+msgstr "Nie"
+
+msgid "yes"
+msgstr "Tak"
+
+msgid "no_results_found"
+msgstr "Nic nie znaleziono"
+
+#, fuzzy
+msgid "play_as_user_host"
+msgstr "Play as user host"
+
+#, fuzzy
+msgid "play_as_user_guest"
+msgstr "Play as user guest"
+
+#, fuzzy
+msgid "play"
+msgstr "Play"
+
+msgid "just_been_invited"
+msgstr "Zostałaś/zostałeś zaproszony do Tandemu przez:"
+
+#, fuzzy
+msgid "user_agent_host"
+msgstr "Host browser info"
+
+#, fuzzy
+msgid "user_agent_guest"
+msgstr "Guest browser info"
+
+msgid "mange_exercises_tandem"
+msgstr "Zarządzaj ćwiczeniami"
+
+msgid "choose_zip_file"
+msgstr "Wybierz plik ZIP do przesłania"
+
+msgid "zip_upload_ok"
+msgstr "Plik % został przesłany i rozpakowany."
+
+msgid "error_uploading_file"
+msgstr "Wystąpił problem z wysłaniem, prosze spróbować ponownie."
+
+msgid "error_no_zip_format"
+msgstr "Plik, który próbujesz przesłać nie jest plikiem ZIP, spróbuj ponownie."
+
+msgid "error_getting_information_of_exercise"
+msgstr "Ćwiczenia nie znaleziono w bazie danych"
+
+msgid "exercise_name"
+msgstr "Nazwa ćwiczenia"
+
+msgid "name_xml_file"
+msgstr "Nazwa XML"
+
+msgid "enabled"
+msgstr "Włączone"
+
+msgid "delete"
+msgstr "Usuń"
+
+msgid "show_profile"
+msgstr "pokaż profil"
+
+msgid "hide_profile"
+msgstr "ukryj profil"
+
+msgid "quit"
+msgstr "Porzuć"
+
+msgid "task_remaining_time"
+msgstr "Pozostały czas"
+
+msgid "overrides_xml_file"
+msgstr "Nadpisuje plik XML, jeśli ma taką samą nazwę"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"Plik%s już istnieje, czy na pewno chcesz go zastąpić? Jeśli tak, wybierz "
+"Zastąp."
+
+msgid "update"
+msgstr "Aktualizuj"
+
+msgid "upload"
+msgstr "Prześlij"
+
+msgid "error_choose_file"
+msgstr "Należy wybrać plik ZIP, aby go wsyłać"
+
+msgid "exercise_deleted_ok"
+msgstr "Usuwanie ćwiczenia powiodło się."
+
+msgid "error_delete_exercise"
+msgstr ""
+"Błąd usuwania wybranego ćwiczenia, sprawdź, czy plik istnieje i ma "
+"odpowiednie uprawnienia"
+
+msgid "main_xml_file_not_found"
+msgstr ""
+"Nie można przetworzyć pliku, ponieważ nie można znaleźć głównego pliku XML"
+
+msgid "no_exercises_found"
+msgstr "Ćwiczenia nie są dostępne, konieczna konfiguracja przez nauczyciela"
+
+msgid "Solution"
+msgstr "Rozwiązanie"
+
+msgid "See Solution"
+msgstr "Zobacz rozwiązanie"
+
+msgid "Next Task"
+msgstr "Następne zadanie"
+
+msgid "Click to finish"
+msgstr "Naciśnij, aby zakończyć."
+
+msgid "txtEndTask"
+msgstr ") zakończył to zadanie. Oczekiwanie na potwierdzenie.</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "Oczekiwanie, aż partner zakończy zadanie"
+
+msgid "state"
+msgstr "Stan"
+
+msgid "activity_log"
+msgstr "Dziennik aktywności"
+
+msgid "exercises_list"
+msgstr "Lista ćwiczeń"
+
+msgid "new_exercise"
+msgstr "Nowe ćwiczenie"
+
+msgid "edit_exercise"
+msgstr "Edytuj ćwiczenie"
+
+msgid "file_name"
+msgstr "Nazwa pliku"
+
+msgid "browse"
+msgstr "Przeglądaj"
+
+msgid "none_file_selected"
+msgstr "Nie wybrano pliku"
+
+msgid "search_criteria"
+msgstr "Kryteria wyszukiwania"
+
+msgid "date_range"
+msgstr "Zarkes dat"
+
+msgid "from"
+msgstr "Od"
+
+msgid "to"
+msgstr "do"
+
+msgid "status"
+msgstr "Status"
+
+msgid "duration"
+msgstr "Czas trwania"
+
+msgid "browser_info"
+msgstr "Inormacje o przeglądarkach"
+
+#, fuzzy
+msgid "total"
+msgstr "Total"
+
+msgid "complete"
+msgstr "Kompletne"
+
+msgid "incomplete"
+msgstr "Niekompletne"
+
+msgid "error"
+msgstr "Błąd"
+
+msgid "search"
+msgstr "Szukaj"
+
+msgid "invalid_tool"
+msgstr "Nieprawidłowe narzędzie"
+
+msgid "Activityhasbeencompleted"
+msgstr "Zadanie zostało zakończone!"
+
+msgid "ThankyouforusingTANDEM"
+msgstr "Dziękujemy za korzystanie z  TANDEMU"
+
+msgid "Connecting..."
+msgstr "Łączenie..."
+
+msgid "Task"
+msgstr "Zadanie"
+
+msgid "See"
+msgstr "Zobacz"
+
+msgid "SlowConn"
+msgstr "Wolne połączenie"
+
+msgid "waiting_remaining_time"
+msgstr "Czas na edycję zadania"
+
+msgid "Tandem"
+msgstr "Tandem"
+
+msgid "users_tandem"
+msgstr "Użytkonicy Tandemu"
+
+#, fuzzy
+msgid "Waiting"
+msgstr "Czekający"
+
+msgid "users_waiting"
+msgstr "Oczekujący użytkownicy"
+
+msgid "time_up"
+msgstr "Czas minął !!"
+
+msgid "close"
+msgstr "Zamknij !!"
+
+msgid "please_stand_by"
+msgstr "Proszę czekać !!"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "Oczekiwanie na połączenie z użytkownikiem!!"
+
+msgid "waiting_for_tandem_connexion"
+msgstr "Oczekiwanie na połączenie z Tandemem!!"
+
+msgid "room_taken"
+msgstr "Ten pokój jest już zajęty, proszę wybrać ponownie."
