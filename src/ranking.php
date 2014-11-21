@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/classes/lang.php';
 require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';
+require_once dirname(__FILE__) . '/classes/utils.php';
 require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
 
 
@@ -17,6 +18,8 @@ if (!$user_obj) {
 	$gestorBD = new GestorBD();  	
 	$usersRanking = $gestorBD->getUsersRanking($course_id);	
 }
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -73,6 +76,8 @@ if (!$user_obj) {
 		  	<th class='text-center'><?php echo $LanguageInstance->get('Position');?></th>
 		  	<th><?php echo $LanguageInstance->get('User');?></th>
 		  	<th><?php echo $LanguageInstance->get('Points');?></th>
+		  	<?php if ($user_obj->instructor== 1 || $user_obj->admin==1) {echo "<th>".$LanguageInstance->get('Total time')."</th>";}	  	 
+		  	?>
   		</tr>
  	<?php
 	  if(!empty($usersRanking['en'])){
@@ -84,10 +89,17 @@ if (!$user_obj) {
 			  	if($cont > 3 && $cont <= 10) $class = 'class="warning"';	
 			  	echo "<tr $class>";
 			  	echo "<td class='text-center'>".$cont."</td>";	  		  	
-			  	echo "<td>".$f['user']."</td>";
-			  	
-			  	echo "<td>".$f['points']."</td>
-			  		  </tr>";	
+			  	echo "<td>".$f['user']."</td>";			  	
+			  	echo "<td>".$f['points']."</td>";
+			  	if( ($user_obj->instructor == 1) ||($user_obj->admin == 1)) {$obj = secondsToTime($f['total_time']);$time = '';
+                        if ($obj['h']>0) {
+                            $time .= ($obj['h']<10?'0':'').$obj['h'].':';
+                        }
+                        $time .= ($obj['m']<10?'0':'').$obj['m'].':';
+                        $time .= ($obj['s']<10?'0':'').$obj['s'];
+		  	 	echo "<td>".$time."</td>";
+		  	 	}
+	  		  	echo "</tr>";	
 			  	$cont++;			
 	  	}
 	  }
@@ -101,6 +113,11 @@ if (!$user_obj) {
 	  	<th class='text-center'><?php echo $LanguageInstance->get('Position');?></th>
 	  	<th><?php echo $LanguageInstance->get('User');?></th>
 	  	<th><?php echo $LanguageInstance->get('Points');?></th>
+	  	<?php
+		  	 if( ($user_obj->instructor == 1) ||($user_obj->admin == 1) ){
+		  	 	echo "<th>".$LanguageInstance->get('Total time')."</th>";	
+		  	 }	  	 
+		?>
   	</tr>
  	<?php
 	  if(!empty($usersRanking['es'])){
@@ -112,10 +129,20 @@ if (!$user_obj) {
 		  	echo "<tr $class>";
 		  	echo "<td class='text-center'>".$cont."</td>";
 		  	//we only want to show the name of the top 3 , the rest just ....	  	
-		  	echo "<td>".$f['user']."</td>";
-		  	
-		  	echo "<td>".$f['points']."</td>
-		  		  </tr>";	
+		  	echo "<td>".$f['user']."</td>";		  	
+		  	echo "<td>".$f['points']."</td>";
+		  	if( ($user_obj->instructor == 1) || ($user_obj->admin == 1) ){
+		  		$obj = secondsToTime($f['total_time']);
+                        $time = '';
+                        if ($obj['h']>0) {
+                            $time .= ($obj['h']<10?'0':'').$obj['h'].':';
+                        }
+                        $time .= ($obj['m']<10?'0':'').$obj['m'].':';
+                        $time .= ($obj['s']<10?'0':'').$obj['s'];
+		  	 		echo "<td>".$time."</td>";
+		  	}
+		  	echo "</tr>";	
+
 		  	$cont++;
 	  	}
 	  }

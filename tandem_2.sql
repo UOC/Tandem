@@ -413,3 +413,7 @@ create table user_ranking ( user_id int(10) not null,
               primary key (user_id,course_id)) 
               ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/*Volvemos a poner lo del total_time al user ranking */
+alter table user_ranking add total_time decimal(10,2);
+
+

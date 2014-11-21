@@ -2,6 +2,7 @@
 
 // Include the SDK
 require_once 'constants.php';
+require_once 'utils.php';
 require_once(dirname(__FILE__) . '/../config.inc.php');
 
 class GestorBD {
@@ -2057,7 +2058,7 @@ class GestorBD {
             foreach($resultSelect as $key){
                 //insert into waiting_room_user_history
                 $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,user_agent, created,created_history) 
-                    values('".$key['id_waiting_room']."','".$key['id_user']."','','".$tandem_id."',".$this->escapeString($key['user_agent']).",'".$key['created']."',NOW()) ");               
+                    values('".$key['id_waiting_room']."','".$key['id_user']."','assigned','".$tandem_id."',".$this->escapeString($key['user_agent']).",'".$key['created']."',NOW()) ");               
                 if(mysql_affected_rows($this->conn) > 0){                    
                     //once we have copied it to the history , we delete it.
                     $e =$this->consulta("delete from waiting_room_user where id =".$key['id']);
@@ -2387,7 +2388,7 @@ class GestorBD {
                         }
                         if($j%2==0) $i++;*/
                         $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
-                        $obj = $this->secondsToTime($secondsSt);
+                        $obj = secondsToTime($secondsSt);
                         $time = '';
                         if ($obj['h']>0) {
                             $time .= ($obj['h']<10?'0':'').$obj['h'].':';
@@ -2436,28 +2437,6 @@ class GestorBD {
             return array();
         }
 
-    }
-
-    private function secondsToTime($seconds)
-    {
-        // extract hours
-        $hours = floor($seconds / (60 * 60));
-     
-        // extract minutes
-        $divisor_for_minutes = $seconds % (60 * 60);
-        $minutes = floor($divisor_for_minutes / 60);
-     
-        // extract the remaining seconds
-        $divisor_for_seconds = $divisor_for_minutes % 60;
-        $seconds = ceil($divisor_for_seconds);
-     
-        // return the final array
-        $obj = array(
-            "h" => (int) $hours,
-            "m" => (int) $minutes,
-            "s" => (int) $seconds,
-        );
-        return $obj;
     }
 
 
@@ -2538,7 +2517,8 @@ class GestorBD {
                     $data =  $this->obteComArray($result);                        
                     foreach($data as $key => $value){
                         $r['en'][$value['user_id']]['user'] = $this->getUserName($value['user_id']);
-                        $r['en'][$value['user_id']]['points'] = $value['points'];
+                        $r['en'][$value['user_id']]['points'] = $value['points']; 
+                        $r['en'][$value['user_id']]['total_time'] = $value['total_time']; 
                     }
                 } 
 
@@ -2550,6 +2530,7 @@ class GestorBD {
                     foreach($data as $key => $value){
                         $r['es'][$value['user_id']]['user'] = $this->getUserName($value['user_id']);
                         $r['es'][$value['user_id']]['points'] = $value['points'];
+                        $r['es'][$value['user_id']]['total_time'] = $value['total_time']; 
                     }
                 }
                 return $r;
@@ -3263,6 +3244,7 @@ class GestorBD {
 
                 $points = 0;
                 $result = $this->consulta($sql);
+                $total_time = 0;
                 if ($this->numResultats($result) > 0){ 
                     $result =  $this->obteComArray($result);
                     foreach($result as $key => $value){
@@ -3285,17 +3267,18 @@ class GestorBD {
                                 if(!empty($unserialize->partner_rate)){
                                     $points += $unserialize->partner_rate * 2;
                                 }
-                         }                                                
+                         } 
+                         $total_time += $value['total_time'];                                                  
                     }
 
             $sql = "select * from user_ranking where user_id = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0){ 
                     $result =  $this->obteComArray($result);
-                    $sql = "update user_ranking set points = '".$points."' where user_id  = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
+                    $sql = "update user_ranking set points = '".$points."',total_time ='".$total_time."' where user_id  = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
                     $this->consulta($sql);
             }else
-                    $sql = "insert into user_ranking (user_id,course_id,points,lang) values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",'".$points."',".$this->escapeString($lang).")";
+                    $sql = "insert into user_ranking (user_id,course_id,points,lang,total_time) values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",'".$points."',".$this->escapeString($lang).",".$this->escapeString($total_time).")";
                     $this->consulta($sql);                    
             }
             return "Updated Points = ".$points;
@@ -3326,13 +3309,15 @@ class GestorBD {
 
                     $points = 0;
                     $result = $this->consulta($sql);
+                    $total_time = 0;
                     if ($this->numResultats($result) > 0){ 
                         $result =  $this->obteComArray($result);
-                        foreach($result as $key => $value){
-                             //For each 60 seconds of the total time , we add 1 point :p
-                             if($value['total_time'] > 60){
+                        foreach($result as $key => $value){                            
+
+                            //For each 60 seconds of the total time , we add 1 point :p
+                            if($value['total_time'] > 60){
                                  $points += ceil($value['total_time'] / 60);
-                             }else
+                            }else
                              $points++;
                              //now if they have sent the feedback we give 10 points :D
                              if(!empty($value['feedback_form'])){
@@ -3348,30 +3333,35 @@ class GestorBD {
                                     if(!empty($unserialize->partner_rate)){
                                         $points += $unserialize->partner_rate * 2;
                                     }
-                             }                                                
+                             } 
+                             $total_time += $value['total_time'];                                               
                         }
                         if(isset($user_points[$value2['id']])){
                             $user_points[$value2['id']]['points'] += $points;
                             $user_points[$value2['id']]['lang'] = $value2['language'];
+                            //lets add the total_time
+                            $user_points[$value2['id']]['total_time'] += $total_time;
                         }
                         else{                        
                             $user_points[$value2['id']]['points'] = $points;
                             $user_points[$value2['id']]['lang'] = $value2['language'];
+                            //lets add the total_time
+                            $user_points[$value2['id']]['total_time'] = $total_time;
                         }
                     }
             }
           }
         
-
           foreach($user_points as $key => $value){
-            $sql = "select * from user_ranking where user_id ='.$key.' and course_id = '.$course_id.' ";
+            echo "<br />User: ".$key." has ".$value['points']." points and total_time of ".$value['total_time'];
+            $sql = "select * from user_ranking where user_id =".$key." and course_id = ".$course_id." ";
+            
             $result = $this->consulta($sql);
-            if ($this->numResultats($result) > 0){ 
-                    $result =  $this->obteComArray($result);
-                    $sql = "update user_ranking set points = '".$value['points']."' where user_id  ='".$key."' and course_id ='".$course_id."' ";
+            if ($this->numResultats($result) > 0){                     
+                    $sql = "update user_ranking set points = '".$value['points']."',total_time = '".$value['total_time']."' where user_id  ='".$key."' and course_id ='".$course_id."' ";
                     $this->consulta($sql);
             }else
-                    $sql = "insert into user_ranking (user_id,course_id,points,lang) values ('".$key."','".$course_id."','".$value['points']."','".$value['lang']."')";
+                    $sql = "insert into user_ranking (user_id,course_id,points,lang,total_time) values ('".$key."','".$course_id."','".$value['points']."','".$value['lang']."','".$value['total_time']."')";
                     $this->consulta($sql);
           }          
         }
@@ -3439,7 +3429,7 @@ class GestorBD {
                if(!empty($task_tandemsSubTime)){
                    foreach ($task_tandemsSubTime as $question) {   
                         $secondsSt = isset($question['total_time']) ? $question['total_time']:0;
-                        $obj = $this->secondsToTime($secondsSt);
+                        $obj = secondsToTime($secondsSt);
                         $time = '';
                         if ($obj['h']>0) {
                             $time .= ($obj['h']<10?'0':'').$obj['h'].':';
