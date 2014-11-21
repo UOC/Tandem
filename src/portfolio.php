@@ -31,8 +31,8 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 } else {
 	
 
-	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : '';
-	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : '';
+	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : date("Y-m-d");
+	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : date("Y-m-d");
 
 	$finishedTandem = -1;
 	if ($user_obj->instructor ==1 && !empty($_POST['finishedTandem'])){
