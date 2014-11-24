@@ -52,11 +52,11 @@ if (!$user_obj) {
   	</div>
 	</div>
   	<div class="row">
-	  	<div class='col-md-8'>
+	  	<div class='col-md-6'>
 	  		<h1 class='title'><?php echo $LanguageInstance->get('Users ranking');?></h1>
 	  	</div>
-	  	<div class='col-md-4'>
-	  		<div class='welcomeMessage'>
+	  	<div class='col-md-6'>
+	  		<div class='welcomeMessage text-right'>
 				<?php 
 				$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
 				$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
@@ -67,6 +67,11 @@ if (!$user_obj) {
 			?>
 			</div>
 	  	</div>
+  	</div>
+  	<div class='row'>
+  		<div class='col-md-12'>
+  			<div class="alert alert-info" role="alert"><?php echo $LanguageInstance->get('top_10_ranking_message')?></div>
+  		</div>  		
   	</div>
   	<div class='row'>
 	  <div class="col-md-6">

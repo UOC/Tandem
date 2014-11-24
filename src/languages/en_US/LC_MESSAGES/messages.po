@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-19 18:03+0100\n"
+"PO-Revision-Date: 2014-11-24 11:13+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -726,3 +726,9 @@ msgstr "Portfolio"
 
 msgid "Position"
 msgstr "Position"
+
+msgid "top_10_ranking_message"
+msgstr ""
+"If you are one of the top ten students in your list, you will get a special "
+"mention in your certificate. If you are one of the top three, you'll also "
+"get a special prize!"
