@@ -39,7 +39,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 		$finishedTandem = $_POST['finishedTandem'];
 	}	
 
-	$showFeedback = -1;
+	$showFeedback = 1;
 	if (!empty($_POST['showFeedback'])){
 		$showFeedback = $_POST['showFeedback'];
 	}	
@@ -186,6 +186,11 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
 				</div>
 			</div>
   	</div>
+  	<div class='row'>
+  		<div class='col-md-12'>
+  			<div class="alert alert-info" role="alert"><?php echo $LanguageInstance->get('portfolio_info')?></div>
+  		</div>  		
+  	</div>  	  	
   	<?php if(!empty($firstProfileForm)){ ?>
    	<div class="row well">  	
    		<div class="col-md-6">
@@ -233,7 +238,8 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
   			</ul>
   		</div>
   	</div>
-  	<?php } 
+  	<?php } ?>
+  	<?php
 if($user_obj->instructor == 1 ){ 
  $usersList = $gestorBD->getAllUsers($course_id);
 ?>
@@ -258,7 +264,7 @@ if($user_obj->instructor == 1 ){
 				&nbsp;
 				<div class="form-group">
 					<select name='showFeedback' id="showFeedback" class='form-control'>
-					<option value='0'><?php echo $LanguageInstance->get('All Feedbacks')?></option>
+					<option value='-1' <?php echo (isset($showFeedback) && $showFeedback ==-1?'selected':'')?>><?php echo $LanguageInstance->get('All Feedbacks')?></option>
 					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Complete')?></option>
 					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Incomplete')?></option>
 					</select>
@@ -319,7 +325,7 @@ if($user_obj->instructor == 1 ){
 				<form action='' method="POST" id='showTandemsFeedbackform' class="form-inline" role='form'>
 				<div class="form-group">
 					<select name='showFeedback' id="showFeedback" class='form-control'>
-					<option value='0'><?php echo $LanguageInstance->get('All Feedbacks')?></option>
+					<option value='-1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('All Feedbacks')?></option>
 					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Complete')?></option>
 					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Incomplete')?></option>
 					</select>
