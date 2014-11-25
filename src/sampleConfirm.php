@@ -317,7 +317,7 @@ getXML = function(user,room){
 	xmlReq.onreadystatechange = processXml;
 	xmlReq.open("GET", url+"?"+params, true);
 	if(!isIEOk){
-		xmlReq.timeout = 100000;
+		xmlReq.timeout = 10000;
 		xmlReq.overrideMimeType("text/xml");
 	}
 
@@ -332,7 +332,7 @@ getXMLDone = function(user,room){
 	xmlReq.onreadystatechange = processXmlOverDone;
 	xmlReq.open("GET", url, true);
 	if(!isIEOk){
-		xmlReq.timeout = 100000;
+		xmlReq.timeout = 10000;
 		xmlReq.overrideMimeType("text/xml");
 	}
 	xmlReq.onerror = onError;	
@@ -475,7 +475,7 @@ check4BothChecked_old = function(){
 	xmlReq.onreadystatechange = processXmlOverChecked;
 	if(userDesconn==0){
 		if(!isIEOk){
-			xmlReqUser.timeout = 100000;
+			xmlReqUser.timeout = 10000;
 			xmlReqUser.overrideMimeType("text/xml");
 		}		
 		xmlReq.open("GET", url, false);
