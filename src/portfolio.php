@@ -98,12 +98,12 @@ if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){
 <head>
 <meta charset="utf-8">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="js/jquery-ui-1.11.2.custom/jquery-ui.min.css">
 <link href="css/tandem-waiting-room.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" media="all" href="css/slider.css" />
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
- <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+ <script src="js/jquery-ui-1.11.2.custom/jquery-ui.min.js"></script>
 <script src="js/bootstrap-slider2.js"></script>
 <script>
 	$(document).ready(function(){
