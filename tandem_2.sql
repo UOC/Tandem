@@ -194,6 +194,7 @@ CREATE TABLE `user_course` (
   `is_instructor` bit(1) DEFAULT NULL,
   `lis_result_sourceid` varchar(255) NOT NULL,
   `inTandem` tinyint(1) NOT NULL DEFAULT '0',
+  `language` varchar(100) DEFAULT NULL,
   `lastAccessTandem` datetime NOT NULL,
   PRIMARY KEY (`id_user`,`id_course`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
