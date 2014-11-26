@@ -18,6 +18,7 @@ if (!$user_obj || !$course_id) {
 	header ('Location: index.php');
 } else {
 	require_once(dirname(__FILE__).'/classes/constants.php');
+	$use_waiting_room = isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1;
 	$path = '';
 	if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLDER].'/';
 	
@@ -527,11 +528,20 @@ if (!$user_obj || !$course_id) {
 									<br/><select name="user_selected" id="user_selected" tabindex="1"  onchange="enable_exercise(this.value);">
 										<option value="-1"><?php echo $LanguageInstance->get('select_users')?></option>
 										<?php foreach ($users_course as $user) {
-											if ($user['id']!=$user_obj->id) {?>
-											<option value="<?php echo $user['id']?>" <?php echo ($user_selected==$user['id']?'selected':'')?>><?php echo $user['surname'].', '.$user['firstname']?></option>
+											if ($user['id']!=$user_obj->id) {
+												$extra = '';
+												if ($use_waiting_room) {
+													if ($user['is_instructor'] == 1){
+														$extra = ' - '.$LanguageInstance->get('Is teacher');
+													} else {
+														$extra = ' - '.$LanguageInstance->get($user['language']=='en_US'?'Learner of English':'Learner of Spanish');
+													}
+												}
+												?>
+											<option value="<?php echo $user['id']?>" <?php echo ($user_selected==$user['id']?'selected':'')?>><?php echo $user['surname'].', '.$user['firstname'].$extra?></option>
 										<?php }
 											}?>
-									</select>
+									</select> 
 								<?php 
 								} else {
 									$msg = !$gestorOKI || $gestorOKI->getLastError()==null?$LanguageInstance->get('no_users_in_course'):$gestorOKI->getLastError();

@@ -282,13 +282,13 @@ class GestorBD {
      * @param string $lis_result_sourceid
      * @return unknown
      */
-    public function join_course($course_id, $user_id, $isInstructor, $lis_result_sourceid) {
+    public function join_course($course_id, $user_id, $isInstructor, $lis_result_sourceid, $language) {
         $result = false;
         if (!$this->obte_rol($course_id, $user_id)) {
-            $sql = 'INSERT INTO user_course (id_user, id_course, is_instructor, lis_result_sourceid, lastAccessTandem) 
-                												VALUES (' . $this->escapeString($user_id) . ',' . $this->escapeString($course_id) . ',' . ($isInstructor ? 1 : 0) . ', ' . $this->escapeString($lis_result_sourceid) . ', ' . $this->escapeString(date('Y-m-d H:i:s')) . ')';
+            $sql = 'INSERT INTO user_course (id_user, id_course, is_instructor, lis_result_sourceid, lastAccessTandem, language) 
+                												VALUES (' . $this->escapeString($user_id) . ',' . $this->escapeString($course_id) . ',' . ($isInstructor ? 1 : 0) . ', ' . $this->escapeString($lis_result_sourceid) . ', ' . $this->escapeString(date('Y-m-d H:i:s')) . ', ' . $this->escapeString($language) . ')';
         } else {
-            $sql = 'UPDATE user_course SET is_instructor =' . ($isInstructor ? 1 : 0) . ',lis_result_sourceid=' . $this->escapeString($lis_result_sourceid) . ' where id_user = ' . $user_id . ' AND id_course = ' . $course_id;
+            $sql = 'UPDATE user_course SET is_instructor =' . ($isInstructor ? 1 : 0) . ',lis_result_sourceid=' . $this->escapeString($lis_result_sourceid) . ', language = ' . $this->escapeString($language) . ', lastAccessTandem = ' . $this->escapeString(date('Y-m-d H:i:s')) . ' where id_user = ' . $user_id . ' AND id_course = ' . $course_id;
         }
         $result = $this->consulta($sql);
         return $result;
@@ -419,7 +419,11 @@ class GestorBD {
      */
     public function obte_llistat_usuaris($course_id, $current_user_id = -1) {
         $row = false;
-        $result = $this->consulta('SELECT * FROM user_course uc inner join `user` u on u.id = uc.id_user 
+        $result = $this->consulta('SELECT 
+            uc.id_user, uc.id_course, 
+            CAST(uc.is_instructor AS unsigned int) as is_instructor,
+            uc.lis_result_sourceid, uc.inTandem, uc.lastAccessTandem, uc.language,
+            u.* FROM user_course uc inner join `user` u on u.id = uc.id_user 
                 	WHERE uc.id_course = ' . $this->escapeString($course_id) . ' and uc.id_user != ' . $this->escapeString($current_user_id)
                 . ' order by u.surname');
         if ($this->numResultats($result) > 0) {

@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-24 17:42+0100\n"
+"PO-Revision-Date: 2014-11-26 19:19+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -737,3 +737,12 @@ msgid "portfolio_info"
 msgstr ""
 "Here you can see the feedback your partners have given to you at the end of "
 "the tandem"
+
+msgid "Is teacher"
+msgstr "Is teacher"
+
+msgid "Learner of English"
+msgstr "Learner of English"
+
+msgid "Learner of Spanish"
+msgstr "Learner of Spanish"

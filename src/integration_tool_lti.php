@@ -169,7 +169,7 @@ try {
 	    	//20120830 abertranb register the course folder
 	    	$_SESSION[TANDEM_COURSE_FOLDER] = 'course/'.$course_id;
 	    	//FIIIII
-	    	if (!$gestorBD->join_course($course_id, $user_id, $user_obj->instructor, $user_obj->lis_result_sourceid)) {
+	    	if (!$gestorBD->join_course($course_id, $user_id, $user_obj->instructor, $user_obj->lis_result_sourceid, $_SESSION[LANG])) {
 	    		show_error('lti:errorjoincourse');
 	    	}
 		    $id_resource = sanitise_string($context->getResourceKey()); //Així es unica //Si no es per curs $context->getCourseKey();
