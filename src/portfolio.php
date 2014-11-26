@@ -39,7 +39,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 		$finishedTandem = $_POST['finishedTandem'];
 	}	
 
-	$showFeedback = 1;
+	$showFeedback = -1;
 	if (!empty($_POST['showFeedback'])){
 		$showFeedback = $_POST['showFeedback'];
 	}	
