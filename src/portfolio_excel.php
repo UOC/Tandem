@@ -5,18 +5,6 @@ require_once dirname(__FILE__) . '/classes/gestorBD.php';
 require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
 require_once(dirname(__FILE__) . '/classes/phpexcel-1.8.0/PHPExcel.php');
 
-function getSkillsLevel($skills_grade, $LanguageInstance) {
-	$skillGrade = '';
-	switch($skills_grade){ 
-		case 'A': $skillGrade = $LanguageInstance->get('Excellent');break;
-		case 'B': $skillGrade = $LanguageInstance->get('Very Good');break;
-		case 'C': $skillGrade = $LanguageInstance->get('Good');break;
-		case 'D': $skillGrade = $LanguageInstance->get('Pass');break;
-		case 'F': $skillGrade = $LanguageInstance->get('Fail');break;
-	}
-	return $skillGrade;
-}
-
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
 $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
 //$portfolio = isset($_SESSION[PORTFOLIO]) ? $_SESSION[PORTFOLIO] : false;
