@@ -403,6 +403,10 @@ CREATE TABLE `user_ranking` (
   `id_course` int(10) NOT NULL,
   `language` varchar(100) DEFAULT NULL,
   `total_time` decimal(10,2) DEFAULT NULL,
+  `number_of_tandems` decimal(10,2) DEFAULT NULL,
+  `fluency` decimal(10,2) DEFAULT NULL,
+  `accuracy` decimal(10,2) DEFAULT NULL,
+  `overall_grade` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

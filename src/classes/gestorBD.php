@@ -1056,11 +1056,11 @@ class GestorBD {
      * Obte el temps total al tandem
      * @param int $id_tandem
      */
-    public function get_temps_total_tandem($id_tandem) {
+    public function get_temps_total_tandem($id_tandem, $id_user) {
 
         $total_time = 0;
 
-        $sql = 'SELECT TIMESTAMPDIFF(SECOND,created,now()) as total_time FROM tandem where id = ' . $id_tandem;
+        $sql = 'SELECT TIMESTAMPDIFF(SECOND,created,now()) as total_time FROM user_tandem where id_tandem = ' . $id_tandem. ' and id_user = '.$id_user;
         $result = $this->consulta($sql);
 
         if ($this->numResultats($result) > 0) {
@@ -1086,7 +1086,7 @@ class GestorBD {
         $result = $this->consulta($sql);
         if ($result) {
 
-            $total_time = $this->get_temps_total_tandem($id_tandem);
+            $total_time = $this->get_temps_total_tandem($id_tandem, $id_user);
 
             if ($this->numResultats($result) == 0) {
                 $sql = 'INSERT INTO user_tandem (id_tandem, id_user, total_time, points, is_finished, finalized, created) ' .
@@ -1103,6 +1103,21 @@ class GestorBD {
                 $this->finalitza_tandem($id_tandem);
             }
         }
+        return $result;
+    }
+
+    /**
+     * Updates created to no
+     * @param  [type] $id_tandem [description]
+     * @param  [type] $id_user   [description]
+     * @return [type]            [description]
+     */
+    public function update_user_access_tandem($id_tandem, $id_user) {
+
+        $sql = 'UPDATE user_tandem SET  created=now() ' .
+                    ' where id_tandem = ' . $id_tandem . ' AND id_user = ' . $id_user;
+        $result = $this->consulta($sql);
+
         return $result;
     }
 
@@ -2490,7 +2505,7 @@ class GestorBD {
         /**
          * Lets update or add the information to the user_ranking table when they filled the feedbacks.
          */
-        function insertRankingData($user_id,$course_id,$language,$id_tandem){
+        /*function insertRankingData($user_id,$course_id,$language,$id_tandem){
 
                 $sql = "select * from user_tandem where id_tandem = ".$this->escapeString($id_tandem)." and id_user = ".$this->escapeString($user_id)." ";
                 $result = $this->consulta($sql);
@@ -2505,7 +2520,7 @@ class GestorBD {
                         $this->consulta("insert into user_ranking (id_user,id_course,language,total_time) 
                                          values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",".$this->escapeString($language).",'".$data[0]['total_time']."')");
                 }
-        }
+        }*/
 
         /**
          * Gets all the users total time ranking for a specific course 
@@ -2523,6 +2538,10 @@ class GestorBD {
                         $r['en'][$value['user_id']]['user'] = $this->getUserName($value['user_id']);
                         $r['en'][$value['user_id']]['points'] = $value['points']; 
                         $r['en'][$value['user_id']]['total_time'] = $value['total_time']; 
+                        $r['en'][$value['user_id']]['number_of_tandems'] = $value['number_of_tandems']; 
+                        $r['en'][$value['user_id']]['fluency'] = $value['fluency']; 
+                        $r['en'][$value['user_id']]['accuracy'] = $value['accuracy']; 
+                        $r['en'][$value['user_id']]['overall_grade'] = $value['overall_grade']; 
                     }
                 } 
 
@@ -2535,6 +2554,10 @@ class GestorBD {
                         $r['es'][$value['user_id']]['user'] = $this->getUserName($value['user_id']);
                         $r['es'][$value['user_id']]['points'] = $value['points'];
                         $r['es'][$value['user_id']]['total_time'] = $value['total_time']; 
+                        $r['es'][$value['user_id']]['number_of_tandems'] = $value['number_of_tandems']; 
+                        $r['es'][$value['user_id']]['fluency'] = $value['fluency']; 
+                        $r['es'][$value['user_id']]['accuracy'] = $value['accuracy']; 
+                        $r['es'][$value['user_id']]['overall_grade'] = $value['overall_grade']; 
                     }
                 }
                 return $r;
@@ -3235,73 +3258,120 @@ class GestorBD {
         /**
          * Updates the user ranking stats with the formula on https://tresipunt.atlassian.net/browse/MOOCTANDEM-42
          */
-        function updateUserRankingPoints($user_id,$course_id,$lang){        
+        function updateUserRankingPoints($user_id,$course_id,$lang){  
+
+            $updated = -1;      
 
 
-                $sql = "select UT.id_user,FT.id_partner,UT.total_time,UT.id_tandem,FTF.feedback_form,FTF.rating_partner_feedback_form,sFTF.rating_partner_feedback_form as the_partner_rating_my_feedback from user_tandem as UT 
+                $sql = "select UT.id_user,FT.id_partner,UT.total_time,UT.id_tandem,FTF.feedback_form,FTF.rating_partner_feedback_form, 
+                         sFTF.feedback_form as user_feedback_form, 
+                         sFTF.rating_partner_feedback_form as the_partner_rating_my_feedback from user_tandem as UT 
                          left join feedback_tandem as FT on FT.id_tandem = UT.id_tandem and FT.id_user = UT.id_user
                          left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
                          left join feedback_tandem as sFT on sFT.id_user = FT.id_partner and sFT.id_tandem = UT.id_tandem
                          left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
                          inner join tandem as T on T.id = UT.id_tandem
-                        where ((coalesce(UT.finalized,0)=0 and total_time>60) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
+                        where ((coalesce(UT.finalized,0)=0 and total_time>60) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and 
+                        T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
 
                 $points = 0;
                 $result = $this->consulta($sql);
                 $total_time = 0;
+                $number_of_tandems = 0;
+                $user_fluency = 0;
+                $user_accuracy = 0;
+                $user_overall_grade = 0;
                 if ($this->numResultats($result) > 0){ 
                     $result =  $this->obteComArray($result);
                     foreach($result as $key => $value){
-                         //For each 60 seconds of the total time , we add 1 point :p
-                         if($value['total_time'] > 60){
-                             $points += ceil($value['total_time'] / 60);
-                         }else
-                         $points++;
                          //now if they have sent the feedback we give 10 points :D
                          if(!empty($value['feedback_form'])){
                             $points += 10;
-                         }                         
-                         //if we have rated the other person feedback then we give 5 points.
-                         if(!empty($value['rating_partner_feedback_form'])){
-                            $points += 5;
-                         }                         
-                         //Now we need to find out if our partner has rated our feedback-form and we get 2 point for each star                         
-                         if(!empty($value['the_partner_rating_my_feedback'])){
-                                $unserialize = unserialize($value['the_partner_rating_my_feedback']);
-                                if(!empty($unserialize->partner_rate)){
-                                    $points += $unserialize->partner_rate * 2;
-                                }
-                         } 
-                         $total_time += $value['total_time'];                                                  
+                                              
+                             //For each 60 seconds of the total time , we add 1 point :p
+                             if($value['total_time'] > 60){
+                                 $points += ceil($value['total_time'] / 60);
+                             }else
+                             $points++;
+                             //if we have rated the other person feedback then we give 5 points.
+                             if(!empty($value['rating_partner_feedback_form'])){
+                                $points += 5;
+                             }                         
+                             //Now we need to find out if our partner has rated our feedback-form and we get 2 point for each star                         
+                             if(!empty($value['the_partner_rating_my_feedback'])){
+                                    $unserialize = unserialize($value['the_partner_rating_my_feedback']);
+                                    if(!empty($unserialize->partner_rate)){
+                                        $points += $unserialize->partner_rate * 2;
+                                    }
+                             } 
+                         }
+                         $total_time += $value['total_time'];  
+                         //check if user has received evaluation from the partner
+                         if(!empty($value['user_feedback_form'])){
+                             $user_evaluation = unserialize($value['user_feedback_form']);
+                             if(!empty($user_evaluation->fluency)){
+                                 $user_fluency += $user_evaluation->fluency;
+                             }
+                             if(!empty($user_evaluation->accuracy)){
+                                 $user_accuracy += $user_evaluation->accuracy;
+                             }
+                             if(!empty($user_evaluation->grade)){
+                                 $user_overall_grade += getOverallAsNumber($user_evaluation->grade);
+                             }
+                         }
+
+                         $number_of_tandems ++;                                                
+                    } //End foreach
+                    if ($number_of_tandems>0) {
+                        $user_fluency = $user_fluency/$number_of_tandems;
+                        $user_accuracy = $user_accuracy/$number_of_tandems;
+                        $user_overall_grade = $user_overall_grade/$number_of_tandems;
                     }
 
-            $sql = "select * from user_ranking where user_id = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
-            $result = $this->consulta($sql);
-            if ($this->numResultats($result) > 0){ 
-                    $result =  $this->obteComArray($result);
-                    $sql = "update user_ranking set points = '".$points."',total_time ='".$total_time."' where user_id  = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
-                    $this->consulta($sql);
-            }else
-                    $sql = "insert into user_ranking (user_id,course_id,points,lang,total_time) values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",'".$points."',".$this->escapeString($lang).",".$this->escapeString($total_time).")";
-                    $this->consulta($sql);                    
+
+                $sql = "select * from user_ranking where user_id = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0){ 
+                        $result =  $this->obteComArray($result);
+                        $sql = "update user_ranking set points = ".$this->escapeString($points).",total_time =".$this->escapeString($total_time).",
+                        number_of_tandems = ".$this->escapeString($number_of_tandems)."  , fluency = ".$this->escapeString($user_fluency)."  ,
+                        accuracy = ".$this->escapeString($user_accuracy)."  , overall_grade = ".$this->escapeString($user_overall_grade)."  
+                        where user_id  = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
+                        $this->consulta($sql);
+                        $updated = 1;
+                }else {
+                        $sql = "insert into user_ranking (user_id,course_id,points,lang,
+                            total_time,number_of_tandems,fluency,
+                            accuracy, overall_grade) values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",".$points.",".$this->escapeString($lang).
+                            ",".$this->escapeString($total_time).",".$this->escapeString($number_of_tandems).",".$this->escapeString($user_fluency).
+                            ",".$this->escapeString($user_accuracy).",".$this->escapeString($user_overall_grade).
+                            ")";
+                        $this->consulta($sql);                    
+                        $updated = 0;
+                }
             }
-            return "Updated Points = ".$points;
+            return ($updated==1?'UPDATED':($updated==0?'INSERTED':'NO UPDATED'))." $user_id and lang $lang in course $course_id Points = ".$points;
 
         }
 
         function updateAllUsersRankingPoints($course_id){
 
-
-                $sql = "select distinct U.id,WRH.language from user  as U       
-                        inner join waiting_room_user_history as WRUH  on WRUH.id_user = U.id
-                        inner join waiting_room_history as WRH on WRH.id_waiting_room = WRUH.id_waiting_room
-                        inner join user_course as UC on UC.id_user = U.id 
-                        where UC.is_instructor = 0 ";
-                $result2 = $this->consulta($sql);
-                $user_points = array();
-                if ($this->numResultats($result2) > 0){ 
-                    $result2=  $this->obteComArray($result2);
-                    foreach($result2 as $key => $value2){
+            $arrayReturn = array();
+            $sql = "select distinct U.id,UC.language from user  as U       
+                    inner join user_course as UC on UC.id_user = U.id 
+                    where UC.is_instructor = 0  and UC.id_course = ".$this->escapeString($course_id);
+            $result2 = $this->consulta($sql);
+            $user_points = array();
+            if ($this->numResultats($result2) > 0){ 
+                $result2=  $this->obteComArray($result2);
+                foreach($result2 as $key => $value2){
+                    $user_id = $value2['id'];
+                    $language = $value2['language'];
+                    $arrayReturn[] = $this->updateUserRankingPoints($user_id,$course_id,$language);
+                }
+            }
+            return $arrayReturn;
+              /*      foreach($result2 as $key => $value2){
 
                     $sql = "select UT.id_user,FT.id_partner,UT.total_time,UT.id_tandem,FTF.feedback_form,FTF.rating_partner_feedback_form,sFTF.rating_partner_feedback_form as the_partner_rating_my_feedback from user_tandem as UT 
                              left join feedback_tandem as FT on FT.id_tandem = UT.id_tandem and FT.id_user = UT.id_user
@@ -3367,7 +3437,7 @@ class GestorBD {
             }else
                     $sql = "insert into user_ranking (user_id,course_id,points,lang,total_time) values ('".$key."','".$course_id."','".$value['points']."','".$value['lang']."','".$value['total_time']."')";
                     $this->consulta($sql);
-          }          
+          }  */        
         }
 
         /**

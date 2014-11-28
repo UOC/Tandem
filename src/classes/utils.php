@@ -433,4 +433,57 @@ function secondsToTime($seconds)
         );
         return $obj;
     }
+/**
+ * Get the Oversall As Nu,ber to add it to ranking
+ * @param  [type] $skills_grade [description]
+ * @return [type]               [description]
+ */
+function getOverallAsNumber($skills_grade) {
+	$value = 0;
+	switch($skills_grade){ 
+		case 'A': $value = 100;break;
+		case 'B': $value = 80;break;
+		case 'C': $value = 60;break;
+		case 'D': $value = 40;break;
+		case 'F': $value = 20;break;
+	}
+	return $value;
+}
 
+/**
+ * Gets the equivalence between number and Identifier
+ * @param  [type] $value [description]
+ * @return [type]        [description]
+ */
+function getOverallAsIdentifier($value) {
+	$skills_grade = 'C';
+	if ($value>80) {
+		$skills_grade = 'A';
+	} elseif ($value>60) {
+		$skills_grade = 'B';
+	} elseif ($value>40) {
+		$skills_grade = 'C';
+	} elseif ($value>20) {
+		$skills_grade = 'D';
+	} else  {
+		$skills_grade = 'F';
+	}
+	return $skills_grade;
+}
+/**
+ * Translate from A to grade
+ * @param  [type] $skills_grade     [description]
+ * @param  [type] $LanguageInstance [description]
+ * @return [type]                   [description]
+ */
+function getSkillsLevel($skills_grade, $LanguageInstance) {
+	$skillGrade = '';
+	switch($skills_grade){ 
+		case 'A': $skillGrade = $LanguageInstance->get('Excellent');break;
+		case 'B': $skillGrade = $LanguageInstance->get('Very Good');break;
+		case 'C': $skillGrade = $LanguageInstance->get('Good');break;
+		case 'D': $skillGrade = $LanguageInstance->get('Pass');break;
+		case 'F': $skillGrade = $LanguageInstance->get('Fail');break;
+	}
+	return $skillGrade;
+}

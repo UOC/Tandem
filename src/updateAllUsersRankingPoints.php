@@ -8,8 +8,8 @@ $gestorBD = new GestorBD();
 if(!empty($_REQUEST['course_id']))
 	$course_id = $_REQUEST['course_id'];
 else
- 	die("Falta el course_id");
+ 	die("Missing required parameters");
 
-echo $gestorBD->updateAllUsersRankingPoints($course_id);
+echo implode("<br>", $gestorBD->updateAllUsersRankingPoints($course_id));
 
 
