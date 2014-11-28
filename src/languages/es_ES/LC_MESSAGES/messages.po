@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-26 19:19+0100\n"
+"PO-Revision-Date: 2014-11-28 17:58+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -776,3 +776,17 @@ msgstr "Estudiante de español"
 
 msgid "Learner of English"
 msgstr "Estudiante de Inglés"
+
+msgid "List of all your tandems"
+msgstr "Listado de todos tus tandems"
+
+msgid ""
+"For each Tandem activity you complete, you will receive points based on the "
+"feedback you provide, and the feedback you receive"
+msgstr ""
+"Durante el curso recibirás puntos por cada actividad tándem que realices, "
+"así como por los comentarios que recibas y los comentarios que aportes a tus "
+"compañeros (elfeedback)"
+
+msgid "Show student view"
+msgstr "Mostrar la vista del estudiante"
