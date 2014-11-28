@@ -89,7 +89,9 @@ try {
     $_SESSION[CURRENT_TANDEM]= $tandem_id;
     $_SESSION[CURRENT_USER] = $user;
     $_SESSION[COURSE_ID] = $course_id;
+    $gestorBD->update_user_access_tandem($tandem_id, $user->id);
 	
+	//update user_course
 	$redirectTo = $session_data['url_sent'];
 	header ('Location: '.$redirectTo);
 
