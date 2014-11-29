@@ -3153,30 +3153,30 @@ class GestorBD {
                     
                     if( !empty($partner_data) && !empty($user_session_data) && $user_session_data['sent_email'] == 0 && !empty($partner_session_data) ){
                         
-                        $destination_url = 'http://tandem.speakapps.org/goToTandem.php?tandem_id='.$tandem_id.'&user_id='.$partner_user_id.'&token='.$partner_session_data['token'].'';
+                        $destination_url = FULL_URL_TO_SITE.'/goToTandem.php?tandem_id='.$tandem_id.'&user_id='.$partner_user_id.'&token='.$partner_session_data['token'].'';
                         
                         include("phpmailer/PHPMailerAutoload.php");
                         $mail = new PHPMailer;
                         $mail->CharSet = "UTF-8";
                         //$mail->SMTPDebug = 3;                               // Enable verbose debug output
                         $mail->isSMTP();                                      // Set mailer to use SMTP
-                        $mail->Host = MANDRILL_SMTP_HOST;  // Specify main and backup SMTP servers
+                        $mail->Host = SMTP_HOST;  // Specify main and backup SMTP servers
                         $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                        $mail->Username = MANDRILL_SMTP_USER;                 // SMTP username
-                        $mail->Password = MANDRILL_SMTP_KEY;                           // SMTP password
-                        $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                        $mail->Username = SMTP_USER;                 // SMTP username
+                        $mail->Password = SMTP_KEY;                           // SMTP password
+                        $mail->SMTPSecure = SMTP_SMTPSECURE;                            // Enable TLS encryption, `ssl` also accepted
                         $mail->Port = 587;                                    // TCP port to connect to
-                        $mail->From = 'tandemmooc@uoc.edu';
-                        $mail->FromName = 'TandemMOOC';
+                        $mail->From = MAIL_FROM;
+                        $mail->FromName = MAIL_FROM_NAME;
                         $mail->addAddress($partner_data['email'], $partner_data['fullname']);     // Add a recipient
-                        $mail->addReplyTo('tandemmooc@uoc.edu', 'TandemMOOC');
+                        $mail->addReplyTo(MAIL_FROM, MAIL_FROM_NAME);
 
                         $mail->WordWrap = 50;                                 // Set word wrap to 50 character
                         $mail->isHTML(true);                                  // Set email format to HTML
 
-                        $mail->Subject = $LanguageInstance->get('partner_is_waiting_email_subject');
-                        $body = str_replace("%1",$destination_url,$LanguageInstance->get('partner_is_waiting_email_body'));
-                        $body .= "<br /><br /><img src='http://tandem.speakapps.org/css/images/logo_Tandem.png' />";
+                        $mail->Subject = $LanguageInstance->get('Your partner is waiting for you to do a tandem');
+                        $body = $LanguageInstance->getTag("Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%1'>Go to Tandem</a>", $destination_url);
+                        $body .= "<br /><br /><img src='".FULL_URL_TO_SITE."/css/images/logo_Tandem.png' />";
 
                         $mail->Body = $body;                        
                         if(!$mail->send()) {

@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-11-28 17:58+0100\n"
+"PO-Revision-Date: 2014-11-29 12:09+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -737,12 +737,14 @@ msgstr ""
 "Se ha enviado un email a tu compañero porque no ha podido acceder al tandem "
 "en 60 segundos, esperando a que acceda..."
 
-msgid "partner_is_waiting_email_body"
+msgid ""
+"Your partner is waiting for you to do a tandem, please click on the "
+"following Link to access the tandem.<br ><br /><a href='%1'>Go to Tandem</a>"
 msgstr ""
 "Tienes un compañero esperándote en tandem. Haz clic en el siguiente link "
 "para acceder.<br ><br /><a href='%1'>Acceder al tandem</a>"
 
-msgid "partner_is_waiting_email_subject"
+msgid "Your partner is waiting for you to do a tandem"
 msgstr "Tu compañero te espera en tandem"
 
 msgid "Ranking for learners of English"
@@ -790,3 +792,12 @@ msgstr ""
 
 msgid "Show student view"
 msgstr "Mostrar la vista del estudiante"
+
+msgid "Generated on %s"
+msgstr "Generado en %s"
+
+msgid "SUMMARY"
+msgstr "RESUMEN"
+
+msgid "List of all %s tandems"
+msgstr "Lista de todos los tandems de %s"
