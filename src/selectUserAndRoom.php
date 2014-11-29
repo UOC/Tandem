@@ -273,6 +273,7 @@ if (!$user_obj || !$course_id) {
 
 		enable_exercise= function(value){
 			value=parseInt(value, 10);
+			<?php if (!$_SESSION[FORCE_EXERCISE] || $_SESSION[FORCED_EXERCISE_NUMBER]==0){ ?>
 			if (value!='' && value>0) {
 				$('#room').removeAttr('disabled');
 				$( "#room" ).combobox();
@@ -281,6 +282,7 @@ if (!$user_obj || !$course_id) {
 				$( "#room" ).destroy();
 				$('#room').attr('disabled', 'disabled');
 			}
+			<?php } ?>
 		}
 		enable_button= function(value){
 			if (value!='')
@@ -379,7 +381,9 @@ if (!$user_obj || !$course_id) {
 			alert(error);
 		}
 		$( "#user_selected" ).combobox();
+		<?php if (!$_SESSION[FORCE_EXERCISE] || $_SESSION[FORCED_EXERCISE_NUMBER]==0){ ?>
 		$( "#room" ).combobox();
+		<?php } ?>
 		enable_button();
 		<?php /*if (!$is_host) {?>
 		$.colorbox.close = function(){}; 
@@ -549,11 +553,16 @@ if (!$user_obj || !$course_id) {
 							<label for="not_users" title="<?php echo $msg?>"><?php echo $msg?></label>
 							<?php } ?>
 								</fieldset>
+								<?php 
+								$number = 2;
+								if ($_SESSION[FORCE_EXERCISE] && $_SESSION[FORCED_EXERCISE_NUMBER]>0){ ?>
+									<input type="hidden" name="room" id="room" value="<?php echo $_SESSION[FORCED_EXERCISE_NUMBER]?>" />
+								<?php } else { ?>
 								<fieldset>
 									<?php if ($array_exercises!==false &&
 									 is_array($array_exercises) &&
 									 count($array_exercises)>0) {?>
-										<label for="select_exercise" title="2. <?php echo $LanguageInstance->get('select_exercise')?>"><img class="point" src="css/images/p2.png" alt="2. <?php echo $LanguageInstance->get('select_exercise')?>" /></label>
+										<label for="select_exercise" title="<?php echo $number?>. <?php echo $LanguageInstance->get('select_exercise')?>"><img class="point" src="css/images/p<?php echo $number?>.png" alt="2. <?php echo $LanguageInstance->get('select_exercise')?>" /></label>
 										<br/><select id="room" name="room"  tabindex="2" onchange="enable_button(this.value);">
 												<option value="-1"><?php echo $LanguageInstance->get('select_exercise')?></option>
 											<?php foreach ($array_exercises as $exercise) {
@@ -566,8 +575,12 @@ if (!$user_obj || !$course_id) {
 										<input type="text" id="room" value="" size="10" onchange="putLink();"/>	
 									<?php }?>
 								</fieldset>
+								<?php 
+								$number++;
+								} 
+								?>
 								<fieldset>
-									<label for="start" title="3. <?php echo $LanguageInstance->get('start')?>"><img class="point" src="css/images/p3.png" alt="3. <?php echo $LanguageInstance->get('start')?>" /></label>
+									<label for="start" title="<?php echo $number?>. <?php echo $LanguageInstance->get('start')?>"><img class="point" src="css/images/p<?php echo $number?>.png" alt="3. <?php echo $LanguageInstance->get('start')?>" /></label>
 									<input type="button" onclick="Javascript:putLink();" id="start" name="start" disabled="disabled" value="<?php echo $LanguageInstance->get('start')?>" class="tandem-btn" tabindex="3" />
 								</fieldset>
 						<?php } else {

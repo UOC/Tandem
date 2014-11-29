@@ -55,6 +55,8 @@ define ('ID_USER_GUEST', 'id_user_guest');
 define ('ID_FEEDBACK', 'id_feedback');
 define ('ID_EXTERNAL', 'id_external');
 define ('TIME_TO_FAILED_TANDEM', 60);
+define ('FORCE_EXERCISE', 'force_exercise');
+define ('FORCED_EXERCISE_NUMBER', 'forced_exercise_number');
 
 class BasicLTIConstants {
    /**

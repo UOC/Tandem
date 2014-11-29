@@ -135,6 +135,8 @@ try {
 	    $user_obj->id = $user_id;
 	    $waiting_room = $tandemBLTI->getDataInfo($context, 'custom_waiting_room')==1;
 	    $waiting_room_select_room = $tandemBLTI->getDataInfo($context, 'custom_select_room')==1;
+	    $force_exercise = $tandemBLTI->getDataInfo($context, 'custom_force_exercise')==1;
+	    $exercise_number_forced = $tandemBLTI->getDataInfo($context, 'custom_exercise_number_forced');
 	    $portfolio 		= $tandemBLTI->getDataInfo($context, 'custom_portfolio')==1;
 	    $ranking 	 = $tandemBLTI->getDataInfo($context, 'custom_ranking')==1;
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
@@ -178,6 +180,8 @@ try {
 		    //disabled to select current tandem // $tandem = $gestorBD->is_invited_to_join($user_id, $id_resource, $course_id);
 		    $_SESSION[ID_RESOURCE] = $id_resource;
             $_SESSION[USE_WAITING_ROOM] = $waiting_room;
+            $_SESSION[FORCE_EXERCISE] = $force_exercise;
+            $_SESSION[FORCED_EXERCISE_NUMBER] = $force_exercise?$exercise_number_forced:0;
             $_SESSION[FORCE_SELECT_ROOM] = $waiting_room_select_room;
             $_SESSION[OPEN_TOOL_ID] = $open_tool_id && $open_tool_id>0?$open_tool_id:false;
             $_SESSION[WEEK] = !empty($week) ? $week : false;
