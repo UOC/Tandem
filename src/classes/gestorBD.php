@@ -3175,9 +3175,9 @@ class GestorBD {
                         $mail->isHTML(true);                                  // Set email format to HTML
 
                         $mail->Subject = $LanguageInstance->get('Your partner is waiting for you to do a tandem');
-                        $body = $LanguageInstance->getTag("Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%1'>Go to Tandem</a>", $destination_url);
+                        $body = $LanguageInstance->getTag("Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%s'>Go to Tandem</a>", $destination_url);
                         $body .= "<br /><br /><img src='".FULL_URL_TO_SITE."/css/images/logo_Tandem.png' />";
-
+error_log("destination $destination_url and body ".$body);
                         $mail->Body = $body;                        
                         if(!$mail->send()) {
                             return false;                                                   
