@@ -2565,18 +2565,40 @@ class GestorBD {
 
         /**
          * This function gets the position in the ranking of someone
-         * TODO : improve this code :P
          */
          function  getUserRankingPosition($user_id,$language,$course_id){
-                 $result = $this->consulta("select user_id from user_ranking where course_id = ".$this->escapeString($course_id)." and lang = ".$this->escapeString($language)." order by points desc");
-                 if ($this->numResultats($result) > 0){ 
-                    $data =  $this->obteComArray($result);                    
-                    foreach($data as $key => $val){
-                         if($val['user_id'] == $user_id) 
-                            return $key+1;
-                    }
-                 }
-                 return 0;
+            $pos = 0;
+            $sql = "select user_id,user_ranking_general.lang,user_ranking_general.points, ".
+                    "(SELECT COUNT(*)+1  ".
+                     " FROM  user_ranking as user_ranking_pos ".
+                     " inner join user_course on user_course.id_user=user_ranking_pos.user_id and user_course.id_course=user_ranking_pos.course_id  and user_course.is_instructor = 0 ".
+                     "WHERE user_ranking_pos.points > user_ranking_general.points and  user_ranking_pos.lang = user_ranking_general.lang) AS position ".
+                 "from user_ranking as user_ranking_general where course_id =".$this->escapeString($course_id)." and lang=".$this->escapeString($language).
+                " and user_id = ".$this->escapeString($user_id);
+
+             $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){ 
+                $data =  $this->obteComArray($result);                    
+                $pos = $data[0]['position'];
+             }
+             return $pos;
+         }
+
+        /**
+         * This function gets the position in the ranking of someone
+         */
+         function  getRankingUserData($user_id,$course_id){
+            $user_data = array();
+            $sql = "select * ".
+                 "from user_ranking where course_id =".$this->escapeString($course_id)." 
+                and user_id = ".$this->escapeString($user_id);
+
+             $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){ 
+                $data =  $this->obteComArray($result);                    
+                $user_data = $data[0];
+             }
+             return $user_data;
          }
 
          /**
@@ -2710,19 +2732,6 @@ class GestorBD {
             }
             return 0;
          }
-
-         function getSkillsLevel($skills_grade, $LanguageInstance) {
-            $skillGrade = '';
-            switch($skills_grade){ 
-                case 'A': $skillGrade = $LanguageInstance->get('Excellent');break;
-                case 'B': $skillGrade = $LanguageInstance->get('Very Good');break;
-                case 'C': $skillGrade = $LanguageInstance->get('Good');break;
-                case 'D': $skillGrade = $LanguageInstance->get('Pass');break;
-                case 'F': $skillGrade = $LanguageInstance->get('Fail');break;
-            }
-            return $skillGrade;
-        }
-
 
         /**
          * Returns all the users waiting on the waiting_room for spanish and english
