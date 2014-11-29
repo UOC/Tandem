@@ -1,0 +1,403 @@
+# Translation of Tandem (trunk) in English
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2014-11-26 21:34+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.6.10\n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi\n"
+
+msgid "welcome"
+msgstr "Tervetuloa"
+
+msgid "no estas autoritzat"
+msgstr "ei pääsyä"
+
+msgid "back"
+msgstr "takaisin"
+
+msgid "txtOtherUserConn"
+msgstr "Sinut on nyt yhdistetty Tandem-parisi kanssa."
+
+msgid "txtWaiting4User"
+msgstr "Odottaa Tandem-yhteyden muodostumista..."
+
+msgid "no_users_in_course"
+msgstr "Ei käyttäjiä tällä kurssilla."
+
+msgid "txtTheUser"
+msgstr "<b>Parisi ("
+
+msgid "txtReplied"
+msgstr ") on vastannut. Odottaa vahvistusta.</b>"
+
+msgid "refresh"
+msgstr "Päivitä käyttäjät"
+
+msgid "user_in_tandem"
+msgstr "Yhteyttä pariisi ei voida muodostaa. Yritä myöhemmin uudelleen."
+
+msgid "show_tandem"
+msgstr "Näytä Tandemit"
+
+msgid "txtDesconnected"
+msgstr "Ei yhdistetty"
+
+msgid "select_user"
+msgstr "Valitse käyttäjä"
+
+msgid "select_users"
+msgstr "Valitse käyttäjiä"
+
+msgid "tandems"
+msgstr "Tandemit"
+
+msgid "no_tandems"
+msgstr "Tälle käyttäjälle ei ole olemassa Tandem-yhteyksiä."
+
+msgid "date"
+msgstr "Päivämäärä"
+
+msgid "points"
+msgstr "Pisteet"
+
+msgid "user_host"
+msgstr "Isäntä"
+
+msgid "user"
+msgstr "Käyttäjä"
+
+msgid "user_guest"
+msgstr "Vieras"
+
+msgid "date_guest_user_logged"
+msgstr "Päivämäärä kirjautunut toinen käyttäjä"
+
+msgid "finalized"
+msgstr "Päivämäärä valmistunut"
+
+msgid "total_time"
+msgstr "Yhteensä minuutit "
+
+msgid "start"
+msgstr "Aloita!"
+
+msgid "accept"
+msgstr "Hyväksy"
+
+msgid "select_exercise"
+msgstr "Valitse harjoitus"
+
+msgid "tandem_description_1"
+msgstr ""
+"Tervetuloa %s Tandem Pilottiin. Tämä työkalu toimii Google Chromella, "
+"Firefoxilla (versiosta 4 eteenpäin) ja Safari 5:llä."
+
+msgid "tandem_description_2"
+msgstr ""
+"Tandem-työkalu EI toimi Internet Explorerilla. IE:n käyttämiseen liittyvää "
+"ongelmaa selvitetään parhaillaan."
+
+msgid "tandem_logo"
+msgstr "Logo Tandem"
+
+msgid "tandem"
+msgstr "Tandem"
+
+msgid "exercise"
+msgstr "Harjoitus"
+
+msgid "go"
+msgstr "Aloita"
+
+msgid "waiting"
+msgstr "Odottaa käyttäjää..."
+
+msgid "waitingUserX"
+msgstr "Odottaa"
+
+msgid "acceptance"
+msgstr "Jos Tandem-parisi ei hyväksy kutsua minuutin sisällä, kutsu vanhentuu."
+
+msgid "direct_access_to_content"
+msgstr "Suora pääsy sisältöön"
+
+msgid "pending_tandems"
+msgstr "Odottavia kutsuja"
+
+msgid "no_pending_tandems"
+msgstr "Sinulla ei ole odottavia Tandem-kutsuja"
+
+msgid "reload_pending"
+msgstr "Lataa uudelleen odottavat Tandem-kutsut"
+
+msgid "tasks_tandems"
+msgstr "Tehtävät"
+
+msgid "questions_tasks_tandems"
+msgstr "Kysymykset"
+
+msgid "task"
+msgstr "Tehtävä"
+
+msgid "question"
+msgstr "Kysymys"
+
+msgid "total_time_seconds"
+msgstr "Kokonaisaika:&#13 %s minuuttia&#13 %s sekuntia"
+
+msgid "start_date"
+msgstr "Aloitusaika"
+
+msgid "finish_date"
+msgstr "Lopetusaika"
+
+msgid "finished"
+msgstr "Valmis"
+
+msgid "caducado"
+msgstr "Vanhentunut"
+
+msgid "all"
+msgstr "Kaikki"
+
+msgid "no"
+msgstr "Ei"
+
+msgid "yes"
+msgstr "Kyllä"
+
+msgid "no_results_found"
+msgstr "Tuloksia ei löytynyt"
+
+msgid "play_as_user_host"
+msgstr "Pelaa isäntänä"
+
+msgid "play_as_user_guest"
+msgstr "Pelaa vieraana"
+
+msgid "play"
+msgstr "Pelaa"
+
+msgid "just_been_invited"
+msgstr "Sinut on kutsuttu Tandemiin, jossa toisena osallistujana on"
+
+msgid "user_agent_host"
+msgstr "Isäntäselain info"
+
+msgid "user_agent_guest"
+msgstr "Vierasselain info"
+
+msgid "mange_exercises_tandem"
+msgstr "Hallinnoi harjoituksia"
+
+msgid "choose_zip_file"
+msgstr "Valitse ladattava zip-tiedosto"
+
+msgid "zip_upload_ok"
+msgstr "Tiedosto %s ladattiin ja purettiin."
+
+msgid "error_uploading_file"
+msgstr "Lataus epäonnistui. Ole hyvä ja yritä uudelleen."
+
+msgid "error_no_zip_format"
+msgstr ""
+"Tiedosto, jota yrität ladata, ei ole zip-tiedosto. Ole hyvä ja yritä "
+"uudelleen."
+
+msgid "error_getting_information_of_exercise"
+msgstr "Harjoitusta ei löydy tietokannasta"
+
+msgid "exercise_name"
+msgstr "Harjoituksen nimi"
+
+msgid "name_xml_file"
+msgstr "Xml nimi"
+
+msgid "enabled"
+msgstr "Sallittu"
+
+msgid "delete"
+msgstr "Poista"
+
+msgid "show_profile"
+msgstr "näytä profiili"
+
+msgid "hide_profile"
+msgstr "piilota profiili"
+
+msgid "quit"
+msgstr "Lopeta"
+
+msgid "task_remaining_time"
+msgstr "Jäljellä oleva aika"
+
+msgid "overrides_xml_file"
+msgstr "Korvaa XML-tiedoston, jos sillä on sama nimi"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"Tiedosto %s on jo olemassa. Oletko varma, että haluat korvata sen? Jos "
+"haluat varmasti korvata tiedoston, valitse  \"Korvaa tiedosto\""
+
+msgid "update"
+msgstr "Päivitä"
+
+msgid "upload"
+msgstr "Lataa"
+
+msgid "error_choose_file"
+msgstr "Ladattava zip-tiedosto täytyy valita."
+
+msgid "exercise_deleted_ok"
+msgstr "Harjoitus poistettiin onnistuneesti"
+
+msgid "error_delete_exercise"
+msgstr ""
+"Harjoitusta poistettaessa tapahtui virhe. Varmista, että tiedosto on "
+"olemassa ja sillä on riittävät oikeudet."
+
+msgid "main_xml_file_not_found"
+msgstr "Tiedoston käsittely ei onnistu, koska XML-päätiedostoa ei löydy"
+
+msgid "no_exercises_found"
+msgstr "Harjoituksia ei löydy."
+
+msgid "Solution"
+msgstr "Ratkaisu"
+
+msgid "See Solution"
+msgstr "Katso ratkaisu"
+
+msgid "Next Task"
+msgstr "Seuraava tehtävä"
+
+msgid "Click to finish"
+msgstr "Valitse lopettaaksesi"
+
+msgid "txtEndTask"
+msgstr ") on lopettanut tehtävän. Odottaa vahvistusta.</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "Odottaa, että parisi saa tehtävän valmiiksi"
+
+msgid "state"
+msgstr "Tila"
+
+msgid "activity_log"
+msgstr "Toimintaloki"
+
+msgid "exercises_list"
+msgstr "Harjoituslista"
+
+msgid "new_exercise"
+msgstr "Uusi harjoitus"
+
+msgid "edit_exercise"
+msgstr "Muokkaa harjoitusta"
+
+msgid "file_name"
+msgstr "Tiedoston nimi"
+
+msgid "browse"
+msgstr "Selaa"
+
+msgid "none_file_selected"
+msgstr "Ei tiedostoa valittuna"
+
+msgid "search_criteria"
+msgstr "Hakukriteerit"
+
+msgid "date_range"
+msgstr "Aikaskaala"
+
+msgid "from"
+msgstr "Mistä"
+
+msgid "to"
+msgstr "Mihin"
+
+msgid "status"
+msgstr "Tila"
+
+msgid "duration"
+msgstr "Kesto"
+
+msgid "browser_info"
+msgstr "Selaininfo"
+
+msgid "total"
+msgstr "Yhteensä"
+
+msgid "complete"
+msgstr "Valmis"
+
+msgid "incomplete"
+msgstr "Kesken"
+
+msgid "error"
+msgstr "Virhe"
+
+msgid "search"
+msgstr "Haku"
+
+msgid "invalid_tool"
+msgstr "Epäkelpo työkalu"
+
+msgid "Activityhasbeencompleted"
+msgstr "Aktiviteetti on suoritettu"
+
+msgid "ThankyouforusingTANDEM"
+msgstr "Kiitos TANDEM-työkalun käyttämisestä"
+
+msgid "Connecting..."
+msgstr "Yhdistää..."
+
+msgid "Task"
+msgstr "Tehtävä"
+
+msgid "See"
+msgstr "Katso"
+
+msgid "SlowConn"
+msgstr "Hidas yhteys"
+
+msgid "waiting_remaining_time"
+msgstr "Tehtävän lopettamisaika"
+
+msgid "Tandem"
+msgstr "Tandem"
+
+msgid "users_tandem"
+msgstr "Tandem-käyttäjät"
+
+msgid "Waiting"
+msgstr "Odottaa"
+
+msgid "users_waiting"
+msgstr "Käyttäjiä odottaa"
+
+msgid "time_up"
+msgstr "Aika loppui"
+
+msgid "close"
+msgstr "Sulje"
+
+msgid "please_stand_by"
+msgstr "Ole hyvä ja odota"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "Odottaa käyttäjäyhteyttä."
+
+msgid "waiting_for_tandem_connexion"
+msgstr "Odottaa Tandem-yhteyttä"
+
+msgid "room_taken"
+msgstr "Tämä huone on jo käytössä. Ole hyvä ja valitse uudelleen."
