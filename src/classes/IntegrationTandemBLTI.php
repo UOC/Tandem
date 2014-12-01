@@ -154,7 +154,7 @@ class IntegrationTandemBLTI {
 	function endSessionExternalToolXMLUser($user_id,$room,$username=''){  
 		if (file_exists(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml")) {
 			$xml = simplexml_load_file(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
-
+			if ($username=='') { $username=' ';}
 			$externalToolClosed = $this->addDataXML($xml, 'externalToolClosed',$username);		
 		  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
 		  }
