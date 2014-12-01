@@ -342,7 +342,7 @@ class GestorBD {
      */
     public function get_invited_to_join($id_user, $id_resource_lti, $id_course, $return_array) {
         $sql = 'SELECT t.*, e.name, e.name_xml_file, e.relative_path, user.firstname, user.surname from tandem as t ' .
-                'inner join exercise e on e.id=t.id_exercise and e.enabled=1 ' .
+                'inner join exercise e on e.id=t.id_exercise  ' . ($_SESSION[FORCE_EXERCISE] && $_SESSION[FORCED_EXERCISE_NUMBER]>0?'':' and e.enabled=1 ').
                 'LEFT outer join user on user.id=t.id_user_host ' .
                 'where id_course = ' . $id_course . ' AND id_resource_lti = ' . $this->escapeString($id_resource_lti) . ' and id_user_guest = ' . $id_user
                 . ' and is_guest_user_logged=0 and is_finished=0 order by t.created desc ';
