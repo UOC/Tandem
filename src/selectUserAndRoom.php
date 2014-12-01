@@ -276,7 +276,7 @@ if (!$user_obj || !$course_id) {
 			<?php if (!$_SESSION[FORCE_EXERCISE] || $_SESSION[FORCED_EXERCISE_NUMBER]==0){ ?>
 			if (value!='' && value>0) {
 				$('#room').removeAttr('disabled');
-				$( "#room" ).combobox();
+				$( "#room" ).combobox();	
 			}
 			else { 
 				$( "#room" ).destroy();
@@ -555,15 +555,16 @@ if (!$user_obj || !$course_id) {
 								</fieldset>
 								<?php 
 								$number = 2;
+								
 								if ($_SESSION[FORCE_EXERCISE] && $_SESSION[FORCED_EXERCISE_NUMBER]>0){ 
-									foreach ($array_exercises as $exercise) {
-										if ($exercise['id']==$_SESSION[FORCED_EXERCISE_NUMBER]){
-											$extra_exercise = isset($exercise['relative_path']) && strlen($exercise['relative_path'])>0?str_replace("/", "", $exercise['relative_path']).'/':'';?>
-											<input type="hidden" name="room" id="room" value="<?php echo  $extra_exercise.$exercise['name_xml_file']?>" />
-										<?php 
-										break;
-										}
-									}
+									
+									$exercise = $gestorBD->get_exercise($_SESSION[FORCED_EXERCISE_NUMBER]);
+									$exercise = $exercise[0];
+									if($exercise){										
+										$extra_exercise = isset($exercise['relative_path']) && strlen($exercise['relative_path'])>0?str_replace("/", "", $exercise['relative_path']).'/':'';?>
+										<input type="hidden" name="room" id="room" value="<?php echo  $extra_exercise.$exercise['name_xml_file']?>" />
+								<?php
+									} 								
 								} else { ?>
 								<fieldset>
 									<?php if ($array_exercises!==false &&

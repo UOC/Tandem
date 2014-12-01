@@ -21,6 +21,7 @@ if (!$user_obj) {
 
 $show_teacher_view = false;
 if ($user_obj->instructor== 1 || $user_obj->admin==1) {
+	$isTeacher = true;
 	$show_teacher_view = isset($_GET['student_view']) && $_GET['student_view']==1?false:true;
 }
 
@@ -48,10 +49,18 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
 		<div class='col-md-8'>
 			<button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';">
 				<?php echo $LanguageInstance->get('Go to your portfolio') ?></button>
-		  	<?php if ($show_teacher_view) {?>
-			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php?student_view=1';">
-				<?php echo $LanguageInstance->get('Show student view') ?></button>
-			<?php } ?>
+		  		<?php if ($show_teacher_view) { ?>				
+					<button class="btn btn-success" type='button' onclick="window.location ='ranking.php?student_view=1';">
+					<?php echo $LanguageInstance->get('Show student view') ?></button>			
+				<?php 
+				}else{
+						if( isset($_REQUEST['student_view']) && !empty($isTeacher) ){ ?>
+							<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';">
+							<?php echo $LanguageInstance->get('Show teacher view') ?>
+							</button>			
+				<?php 	}
+					} 
+				?>
 		</div>
 		<div class='col-md-4'>
 	  	<p class='text-right'>
@@ -86,7 +95,7 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
   	<div class='row'>
 	  <div class="col-md-6">
 	  <h3 class='green-for-english'><?php echo $LanguageInstance->get('Ranking for learners of English');?></h3>
-  		<table class="table table-striped">
+  		<table class="table table-striped <?php if($show_teacher_view) echo 'table-condensed'; ?>">
   		<tr>
 		  	<th class='text-center'><?php echo $LanguageInstance->get('Position');?></th>
 		  	<th><?php echo $LanguageInstance->get('User');?></th>
@@ -132,7 +141,7 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
   </div>
   <div class='col-md-6'>
     <h3 class='purple-for-spanish'><?php echo $LanguageInstance->get('Ranking for learners of Spanish');?></h3>
-  	<table class="table table-striped">
+  	<table class="table table-striped <?php if($show_teacher_view) echo 'table-condensed'; ?>">
   	<tr>
 	  	<th class='text-center'><?php echo $LanguageInstance->get('Position');?></th>
 	  	<th><?php echo $LanguageInstance->get('User');?></th>
