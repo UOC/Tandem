@@ -3177,7 +3177,7 @@ class GestorBD {
                         $mail->Subject = $LanguageInstance->get('Your partner is waiting for you to do a tandem');
                         $body = $LanguageInstance->getTag("Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%s'>Go to Tandem</a>", $destination_url);
                         $body .= "<br /><br /><img src='".FULL_URL_TO_SITE."/css/images/logo_Tandem.png' />";
-error_log("destination $destination_url and body ".$body);
+
                         $mail->Body = $body;                        
                         if(!$mail->send()) {
                             return false;                                                   
@@ -3287,6 +3287,7 @@ error_log("destination $destination_url and body ".$body);
                 $result = $this->consulta($sql);
                 $total_time = 0;
                 $number_of_tandems = 0;
+                $number_of_tandems_with_feedback = 0;
                 $user_fluency = 0;
                 $user_accuracy = 0;
                 $user_overall_grade = 0;
@@ -3327,14 +3328,15 @@ error_log("destination $destination_url and body ".$body);
                              if(!empty($user_evaluation->grade)){
                                  $user_overall_grade += getOverallAsNumber($user_evaluation->grade);
                              }
+                             $number_of_tandems_with_feedback++;
                          }
 
                          $number_of_tandems ++;                                                
                     } //End foreach
-                    if ($number_of_tandems>0) {
-                        $user_fluency = $user_fluency/$number_of_tandems;
-                        $user_accuracy = $user_accuracy/$number_of_tandems;
-                        $user_overall_grade = $user_overall_grade/$number_of_tandems;
+                    if ($number_of_tandems_with_feedback>0) {
+                        $user_fluency = $user_fluency/$number_of_tandems_with_feedback;
+                        $user_accuracy = $user_accuracy/$number_of_tandems_with_feedback;
+                        $user_overall_grade = $user_overall_grade/$number_of_tandems_with_feedback;
                     }
 
 
