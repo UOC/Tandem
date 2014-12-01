@@ -422,7 +422,7 @@ if(numCadenas==numUsers){
 
 						//lets see if the other user got disconnected from the external tool
 						var externalToolClosed = xml.getElementsByTagName('externalToolClosed');
-						if(externalToolClosed.length > 0){												
+						if(externalToolClosed.length > 0 && externalToolClosed[0].childNodes.length>0){												
 							userGotDisconnected(externalToolClosed[0].childNodes[0].nodeValue);
 						}
 						// This code is not used anymore because we only have solution buttons right now 20141022 .
@@ -1197,7 +1197,10 @@ windowNotificationTandem = $.window({
 //prevents from closing
 window.onbeforeunload = function() {
 <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>	
-	if(salir==0) return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. To send feedback to your tandem partner click on Review form (in tandem window)');?>";
+	if(salir==0) {
+		registerActionNextTask();
+		return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. To send feedback to your tandem partner click on Review form (in tandem window)');?>";
+	}
 <?php  } else {?>	
 	if(salir==0) return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. You will disconnect from your tandem partner');?>";
 <?php } ?>	
