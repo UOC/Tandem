@@ -768,5 +768,8 @@ msgstr "Generated on %s"
 msgid "SUMMARY"
 msgstr "SUMMARY"
 
-msgid "List of all %s tandems"
-msgstr "List of all %s tandems"
+msgid "%s portfolio"
+msgstr "%s portfolio"
+
+msgid "portfolio_header"
+msgstr "Here you can see a summary of your ranking position, the feedback that you have received throughout the whole course, and the feedback you have given to your tandem partners."

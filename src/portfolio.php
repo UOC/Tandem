@@ -76,7 +76,7 @@ if(isset($_POST['extra-info-form'])){
 	$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);	
 }
 
-
+// PDF was requested
 if($user_obj->instructor == 1 && !empty($_POST['get_pdf'])){ 
 	if(!empty($selectedUser)) $userForPdf = $selectedUser; else $userForPdf = $user_obj->id;
 	generatePdf($userForPdf,$course_id);

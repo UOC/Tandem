@@ -31,7 +31,7 @@ class TandemPDF extends TCPDF {
         // Set font
         $this->SetFont('helvetica', 'B', 20);
         // Title
-        $this->Cell(0, 26, $this->LanguageInstance->getTag("List of all %s tandems",$this->username), 0, false, 'C', 0, '', 0, false, 'M', 'M');        
+        $this->Cell(0, 26, $this->LanguageInstance->getTag("%s portfolio",$this->username), 0, false, 'C', 0, '', 0, false, 'M', 'M');        
         $style = array('width' => 0.1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
 		$this->Line(3, 22, 208, 22, $style);
     }
@@ -129,6 +129,8 @@ $user_data = $gestorBD->getRankingUserData($user_id,$course_id);
 if ($user_data && isset($user_data['lang'])) {
 	$user_position_ranking = $gestorBD->getUserRankingPosition($user_id,$user_data['lang'],$course_id);
 }
+
+// $html .= "<p><b>".$LanguageInstance->get("portfolio_header")."</b></p>";
 $show_tandem = false;
 if(!empty($feedBacks)){
 
