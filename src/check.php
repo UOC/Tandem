@@ -15,8 +15,13 @@ if (!$user_obj || !$course_id) {
 
 } else {
 
- 
-
+$current_time = time();
+//every 20 seconds we update the tandem total time 
+if ( !isset($_SESSION['udpated_tandem']) || $_SESSION['udpated_tandem']<(time()-20) ) {
+	$_SESSION['udpated_tandem'] = $current_time;
+	$is_final = false;
+	include_once(dirname(__FILE__).'/classes/register_action_user.php'); 
+}
 	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' ); 
 	header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' ); 
 	header( 'Cache-Control: no-store, no-cache, must-revalidate' ); 
