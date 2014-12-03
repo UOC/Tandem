@@ -25,6 +25,7 @@ if ($user_register_obj && $course_register_id && $id_register_tandem && isset($u
 	$number_task = isset($_GET[TANDEM_NUMBER_FIELD])?intval($_GET[TANDEM_NUMBER_FIELD],10):-1;
 	
 	
+	
 	if ($number_task > 0) {
 		$_SESSION[TANDEM_NUMBER_FIELD] = $number_task;
 	} else {

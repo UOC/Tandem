@@ -20,7 +20,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 } else {
 	
 
-	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : date("Y-m-d");
+	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : date("Y-m-d",strtotime( date("Y-m-d").' -1 months') ) ;
 	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : date("Y-m-d");
 
 	$finishedTandem = -1;
@@ -233,10 +233,10 @@ if($user_obj->instructor == 1 ){
  $usersList = $gestorBD->getAllUsers($course_id);
 ?>
 	<div class='row'>		
-		<div class='col-md-6'>
+		<div class='col-md-12'>
 			<form action='' method="POST" id='selectUserForm' class="form-inline" role='form'>
 				<div class="form-group">
-					<select name='selectUser' id="selectUser" class='form-control'>
+					<select name='selectUser' id="selectUser" class='form-control input-sm'>
 					<option value='0'><?php echo $LanguageInstance->get('Select user')?></option>
 
 					<option value='-1' <?php echo (isset($selectedUser) && $selectedUser ==-1?'selected':'')?>><?php echo $LanguageInstance->get('All users')?></option>
@@ -252,7 +252,7 @@ if($user_obj->instructor == 1 ){
 				</div>
 				&nbsp;
 				<div class="form-group">
-					<select name='showFeedback' id="showFeedback" class='form-control'>
+					<select name='showFeedback' id="showFeedback" class='form-control input-sm'>
 					<option value='-1' <?php echo (isset($showFeedback) && $showFeedback ==-1?'selected':'')?>><?php echo $LanguageInstance->get('All Feedbacks')?></option>
 					<option value='1' <?php echo (isset($showFeedback) && $showFeedback ==1?'selected':'')?>><?php echo $LanguageInstance->get('Complete')?></option>
 					<option value='2' <?php echo (isset($showFeedback) && $showFeedback ==2?'selected':'')?>><?php echo $LanguageInstance->get('Incomplete')?></option>
@@ -261,53 +261,50 @@ if($user_obj->instructor == 1 ){
 				</div>				
 				&nbsp;
 				<div class="form-group">
-					<select name='finishedTandem' id="finishedTandem" class='form-control'>
+					<select name='finishedTandem' id="finishedTandem" class='form-control input-sm'>
 					<option value='-1' <?php echo (isset($finishedTandem) && $finishedTandem ==-1?'selected':'')?>><?php echo $LanguageInstance->get('All')?></option>
 					<option value='1' <?php echo (isset($finishedTandem) && $finishedTandem ==1?'selected':'')?>><?php echo $LanguageInstance->get('Finished')?></option>
 					<option value='2' <?php echo (isset($finishedTandem) && $finishedTandem ==2?'selected':'')?>><?php echo $LanguageInstance->get('Unfinished')?></option>
 					</select>
 					<span class="help-block"><?php echo $LanguageInstance->get('Select tandem finished');?></span>
 				</div>
-                <div class='selectDatesForTandems'>
-                    <div class="form-group">                        
-                        <label  class="sr-only"> <?php echo $LanguageInstance->get('Start Date');?></label>
-                        <p class="form-control-static"> <?php echo $LanguageInstance->get('Start Date');?></p>                           
-                    </div>       
-                    <div class="form-group">
-                        <input type='text' class="form-control"  name='dateStart' id='dateStart' value='<?php echo $dateStart?>'>                         
-                    </div>
-                   <div class="form-group">                        
-                        <label  class="sr-only"> <?php echo $LanguageInstance->get('Start End');?></label>
-                        <p class="form-control-static"> <?php echo $LanguageInstance->get('End Date');?></p>                           
-                    </div>       
-                    <div class="form-group">
-                        <input type='text' class="form-control"  name='dateEnd' id='dateEnd' value='<?php echo $dateEnd?>'>                         
-                    </div>
-                        <button type="submit" class="btn btn-default"><?php echo $LanguageInstance->get('View');?></button>
+                <div class='selectDatesForTandems form-group'>                
+	                    <div class="form-group">
+	                        <input type='text' class="form-control input-sm"  name='dateStart' id='dateStart' value='<?php echo $dateStart?>'>                         
+	                       	<span class="help-block text-right"><?php echo $LanguageInstance->get('Start Date');?></span>
+	                    </div>	                      
+	                    <div class="form-group">
+	                        <input type='text' class="form-control input-sm"  name='dateEnd' id='dateEnd' value='<?php echo $dateEnd?>'>                         
+	                        <span class="help-block text-right"> <?php echo $LanguageInstance->get('End Date');?></span>  
+	                    </div>
+	                    <div class="form-group">
+	                    <button type="submit" class="btn btn-default input-sm"><?php echo $LanguageInstance->get('View');?></button>	                
+	                    <span class="help-block">  &nbsp;</span>
+	                    </div>
                 </div>        
 			</form>
 		</div>
-		<div class='col-md-6 text-right' >
-			<div class="row">
-				<div class='col-md-8  text-right' >
-					<form action='' method='POST' role='form' id='pdfForm'>
-						<input type='hidden'  name='get_pdf' value='1' />
-						<input type='submit' value='<?php echo $LanguageInstance->get('Download a PDF file with all Tandems');?>' class='btn btn-success' />
-					</form> 
-				</div>
-				<div class='col-md-4' >	
-					<form action='portfolio_excel.php' method='POST' role='form' id='excelForm'>
-						<input type='hidden'  name='showFeedback' value='<?php echo $showFeedback?>' />
-						<input type='hidden'  name='finishedTandem' value='<?php echo $finishedTandem?>' />
-						<input type='hidden'  name='selectUser' value='<?php echo $selectedUser?>' />
-						<input type='hidden'  name='dateStart' value='<?php echo $dateStart?>' />
-						<input type='submit' value='<?php echo $LanguageInstance->get('Export to excel');?>' class='btn btn-success' />
-					</form> 
-				</div>	
-			</div>	
 		</div>
-	</div>
+		<div class='row'>
+			<div class='col-md-3' >							
+						<form action='' method='POST' role='form' id='pdfForm'>
+							<input type='hidden'  name='get_pdf' value='1' />
+							<input type='submit' value='<?php echo $LanguageInstance->get('Download a PDF file with all Tandems');?>' class='btn btn-success' />
+						</form> 
+			</div>
+			<div class='col-md-9' >	
+						<form action='portfolio_excel.php' method='POST' role='form' id='excelForm'>
+							<input type='hidden'  name='showFeedback' value='<?php echo $showFeedback?>' />
+							<input type='hidden'  name='finishedTandem' value='<?php echo $finishedTandem?>' />
+							<input type='hidden'  name='selectUser' value='<?php echo $selectedUser?>' />
+							<input type='hidden'  name='dateStart' value='<?php echo $dateStart?>' />
+							<input type='submit' value='<?php echo $LanguageInstance->get('Export to excel');?>' class='btn btn-success' />
+						</form> 
+					</div>	
+		</div>	
+<p></p>
 <?php } else {?>
+<
 <div class='row'>		
 		<div class='col-md-6'>
 			<p>
