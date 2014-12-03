@@ -39,11 +39,11 @@ if (!$user_obj || !$course_id) {
 			//person_contact_email_primary
 			//roles: separats per comes
 			//lis_result_sourcedid
-                    	$users_course_lti = $lti_context->doMembershipsService(array()); //$users_course no ho passem per evitar problemes ja que el continguts son array i no un obj LTI
+             $users_course_lti = $lti_context->doMembershipsService(array()); //$users_course no ho passem per evitar problemes ja que el continguts son array i no un obj LTI
 			$users_course = array();
-			foreach ($users_course_lti as $user_lti) {
+			foreach ($users_course_lti as $user_lti) {				
 				$id_user_lti = $user_lti->getId(  );
-                                $id_user_lti = str_replace(":", "_", $id_user_lti);
+                $id_user_lti = str_replace(":", "_", $id_user_lti);
                                 
 				$firstname = convertToUtf8($user_lti->firstname);
 				$lastname = convertToUtf8($user_lti->lastname);

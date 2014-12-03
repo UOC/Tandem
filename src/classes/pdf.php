@@ -130,7 +130,7 @@ if ($user_data && isset($user_data['lang'])) {
 	$user_position_ranking = $gestorBD->getUserRankingPosition($user_id,$user_data['lang'],$course_id);
 }
 
-// $html .= "<p><b>".$LanguageInstance->get("portfolio_header")."</b></p>";
+$html .= "<p><b>".$LanguageInstance->get("portfolio_header")."</b></p>";
 $show_tandem = false;
 if(!empty($feedBacks)){
 

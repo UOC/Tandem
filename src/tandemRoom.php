@@ -56,16 +56,12 @@ if (!$user_obj || !$course_id) {
                 $fullname = mb_convert_encoding($user_lti->fullname, 'ISO-8859-1', 'UTF-8');
                 $email = mb_convert_encoding($user_lti->email, 'ISO-8859-1', 'UTF-8');
                 
-                //Afegim usuari x LTI
-                
+                //Afegim usuari x LTI                
                 $gestorBD->afegeixUsuari($course_id, $id_user_lti, $firstname, $lastname, $fullname, $email, '');
 //$users_course[$id_user_lti] = $gestorBD->get_user_by_username($id_user_lti);
             }
 //Reorder
-            $users_course = $gestorBD->obte_llistat_usuaris($course_id, $user_obj->id);
-            
-          
-            
+            $users_course = $gestorBD->obte_llistat_usuaris($course_id, $user_obj->id);            
         } else { //Mirem de carregar per OKI
              // echo 'Carreguem per OKI'.'<br>';
             
@@ -88,7 +84,6 @@ if (!$user_obj || !$course_id) {
     $user_tandems = null;
     $user_selected = isset($_POST['user_selected']) ? intval($_POST['user_selected']) : 0;
     
-  
     
     if ($is_showTandem && $user_selected) {
        // echo "EN PRINCIPI NO ENTREM!!!!".'<br>';

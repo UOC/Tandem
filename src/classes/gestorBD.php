@@ -316,7 +316,7 @@ class GestorBD {
         }
         if ($user) {
             $user_id = $user['id'];
-            $result = $this->join_course($course_id, $user_id, $isInstructor, $lis_result_sourceid);
+            $result = $this->join_course($course_id, $user_id, $isInstructor, $lis_result_sourceid,'');
         }
         return $result;
     }
