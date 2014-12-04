@@ -3281,7 +3281,7 @@ class GestorBD {
                          left join feedback_tandem as sFT on sFT.id_user = FT.id_partner and sFT.id_tandem = UT.id_tandem
                          left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
                          inner join tandem as T on T.id = UT.id_tandem
-                        where ((coalesce(UT.finalized,0)=0 and total_time>60) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and 
+                        where ((coalesce(UT.finalized,0)=0 and total_time>300) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and 
                         T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
 
                 $points = 0;
