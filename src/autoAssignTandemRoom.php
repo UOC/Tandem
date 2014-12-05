@@ -87,6 +87,7 @@ if (!$user_obj || !$course_id) {
 		<script type="text/javascript" src="js/jquery.timeline-clock.min.js"></script>
 		<script src="js/jquery.ui.progressbar.js"></script> 
 		<script>
+		var interval = null;
 		$(document).ready(function(){
 			<?php			
 			//if the max number of allowed tanden rooms is reached, then we send a modal. 
@@ -141,6 +142,9 @@ if (!$user_obj || !$course_id) {
 				if ($("#modal-end-task").length > 0){
 					//TODO put modal
 					$.modal($('#modal-end-task'));
+					clearInterval(interval);
+					clearInterval(intervalWaiting);
+					delete_user_waiting_list();
 					//accionTimer();
 				}
 			}        
@@ -155,6 +159,17 @@ if (!$user_obj || !$course_id) {
 			}
 			<?php } ?>
 
+			var delete_user_waiting_list = function() {
+	        	$.ajax({
+	        		type: 'POST',
+	        		url: "deleteUserWaitningList.php",
+	        		data : {
+	        		},
+	        		dataType: "JSON",
+	        		success: function(json){	        			
+	        		}
+	        	});
+			};
 
 			//Updates the number of people waiting for english and spanish tandems
 			var intervalWaiting = setInterval(function(){
@@ -286,7 +301,7 @@ if (!$user_obj || !$course_id) {
 	<!-- /footer -->
 	<?php include_once dirname(__FILE__) . '/js/google_analytics.php' ?>
 
-<audio id="foundTandemPartner" src="sweep.wav" preload="auto"></audio>
+<!--audio id="foundTandemPartner" src="sweep.wav" preload="auto"></audio-->
 </body>
 </html>
 <?php } ?>

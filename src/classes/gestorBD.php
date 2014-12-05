@@ -1521,13 +1521,37 @@ class GestorBD {
      * @param type $status
      * @return type
      */
-    private function moveUserToHistory($id_waiting_room, $id_user, $status,$tandemID) {
+    public function moveUserToHistory($id_waiting_room, $id_user, $status='give_up',$tandemID=-1) {
         $ok = false;
         //1. Check in waiting room user
-        $sql = 'Select * FROM `waiting_room_user` WHERE `id_waiting_room` = ' . $this->escapeString($id_waiting_room) . ' AND `id_user` = ' . $this->escapeString($id_user);
+        $sql = 'Select * FROM `waiting_room_user` WHERE `id_user` = ' . $this->escapeString($id_user);
+        if ($id_waiting_room>0) {
+            $sql .= ' AND `id_waiting_room` = ' . $this->escapeString($id_waiting_room) ;
+        }
         $result = $this->consulta($sql);
+        $deleted = false;
         if ($this->numResultats($result) > 0){
-            $object = $this->obteObjecteComArray($result);
+            $r =  $this->obteComArray($result);    
+            foreach($r as $object){
+                $id_user_wating_room = $object['id'];
+                $user_agent = $object['user_agent_guest'];
+                $created = $object['created'];
+                $id_waiting_room = $object['id_waiting_room'];
+                //2.Insert in history table
+                $sqlInsert = 'INSERT INTO `waiting_room_user_history` (`id`, `id_waiting_room`, `id_user`, `status`, `id_tandem` , `user_agent`, `created`, `created_history`) VALUES (NULL, ' . $this->escapeString($id_waiting_room) . ', ' . $this->escapeString($id_user) . ', '. $this->escapeString($status) .', ' . $this->escapeString($tandemID) . ', ' . $this->escapeString($user_agent) . ',' . $this->escapeString($created) . ', NOW())';
+                if ($this->consulta($sqlInsert)){
+                    //3. Delete from waiting_room_user
+                    $sqlDelete = 'DELETE FROM `waiting_room_user` WHERE `id` = ' . $this->escapeString($id_user_wating_room);
+                    if ($this->consulta($sqlDelete)){
+                        if (!$deleted) {
+                            $ok = $this->addOrRemoveUserToWaitingRoom($id_waiting_room, -1);
+                        }
+                        $deleted = true;
+                    }
+                }
+               
+            }
+/*            $object = $this->obteObjecteComArray($result);
             $id_user_wating_room = $object['id'];
             $user_agent = $object['user_agent_guest'];
             $created = $object['created'];
@@ -1536,10 +1560,7 @@ class GestorBD {
             if ($this->consulta($sqlInsert)){
                 //3. Delete from waiting_room_user
                 $sqlDelete = 'DELETE FROM `waiting_room_user` WHERE `id` = ' . $this->escapeString($id_user_wating_room);
-                /*if ($this->consulta($sqlDelete)){
-                    $ok = $this->addOrRemoveUserToWaitingRoom($id_waiting_room, -1);
-                }*/
-            }
+            }*/
         }
         return $ok;
     }
