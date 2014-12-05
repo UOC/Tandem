@@ -1534,7 +1534,7 @@ class GestorBD {
             $r =  $this->obteComArray($result);    
             foreach($r as $object){
                 $id_user_wating_room = $object['id'];
-                $user_agent = $object['user_agent_guest'];
+                $user_agent = $object['user_agent'];
                 $created = $object['created'];
                 $id_waiting_room = $object['id_waiting_room'];
                 //2.Insert in history table
