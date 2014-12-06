@@ -24,7 +24,7 @@ if (!$user_obj || !$course_id) {
 	die();
 } else {
 	require_once(dirname(__FILE__) . '/classes/constants.php');
-	$id_feedback = isset($_GET['id_feedback']) && $_GET['id_feedback']>0?$_GET['id_feedback']:$_SESSION[ID_FEEDBACK];
+	$id_feedback = isset($_GET['id_feedback']) && $_GET['id_feedback']>0?$_GET['id_feedback']:(isset($_POST['id_feedback']) && $_POST['id_feedback']>0?$_POST['id_feedback']:$_SESSION[ID_FEEDBACK]);
 
 	if (!$id_feedback ) {
 		die($LanguageInstance->get('Missing feedback parameter'));
@@ -36,6 +36,7 @@ if (!$user_obj || !$course_id) {
 	if (!$feedbackDetails) {
 		die($LanguageInstance->get('Can not find feedback'));
 	}
+	$_SESSION[ID_FEEDBACK] = $id_feedback; 
 
 	//we need these extra info to show like the list of portfolio
 	$extra_feedback_details = $gestorBD->getUserFeedback($id_feedback);
@@ -279,6 +280,7 @@ if (!$user_obj || !$course_id) {
 						    </div>
 						  </div>
 						   <input type='hidden' name='rating_partner' value='1' />
+						   <input type='hidden' name='id_feedback' value='<?php echo $id_feedback?>' />
 						   <?php if(empty($feedbackDetails->rating_partner_feedback_form)){ ?>
 						    <button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
 						   <?php } ?>
@@ -360,6 +362,7 @@ if (!$user_obj || !$course_id) {
 						  </div>
 						  <?php //<input type="submit" name="id" value="<?php echo $id_feedback" /> ?>
 						  <?php } ?>
+						  <input type='hidden' name='id_feedback' value='<?php echo $id_feedback?>' />
 						</form>
 				<!-- /content -->
 			</div>
