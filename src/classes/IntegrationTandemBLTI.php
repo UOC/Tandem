@@ -140,7 +140,8 @@ class IntegrationTandemBLTI {
 		if(count($xml->usuarios[0]->usuario)==0) {
 			$this->putDataXML($xml, $user_obj);
 		}
-		else if(count($xml->usuarios[0]->usuario)==1 && $xml->usuarios[0]->usuario[0]!=$user_obj->type_user) {
+		else if(count($xml->usuarios[0]->usuario)==1 && $xml->usuarios[0]->usuario[0]!=$user_obj->type_user
+			&& $xml->usuarios[0]->usuario[0]['email']!=$user_obj->email) {
 			$this->putDataXML($xml, $user_obj);
 		}
 	  	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");
