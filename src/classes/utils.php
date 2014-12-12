@@ -111,6 +111,12 @@ function lti_get_lang($context) {
 			case "nl":
 				$lang="nl_NL";
 				break;
+			case "it":
+				$lang="it_IT";
+				break;
+			case "fi":
+				$lang="fi_FI";
+				break;
 			case "de":
 				$lang="de_DE";
 				break;
@@ -486,4 +492,15 @@ function getSkillsLevel($skills_grade, $LanguageInstance) {
 		case 'F': $skillGrade = $LanguageInstance->get('Fail');break;
 	}
 	return $skillGrade;
+}
+
+/**
+ * Get Scale by Grade
+ * @param  [type] $LanguageInstance [description]
+ * @param  [type] $level            [description]
+ * @return [type]                   [description]
+ */
+function getScaleGrade($LanguageInstance, $level) {
+	$levelArray = array('not at all','a little', 'quite a bit', 'a lot');
+	return $LanguageInstance->get($levelArray[$level - 1]);
 }

@@ -22,16 +22,17 @@ class TandemPDF extends TCPDF {
         // Logo
         /*$this->Image($this->image_file, 2, 0, 0, 0, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
-        $this->SetFont('helvetica', 'B', 20);
+        $this->SetFont('times', 'B', 20);
         // Title
         $this->Cell(0, 0, $this->LanguageInstance->get("List of all your tandems").' '.$this->username, 0, false, 'C', 0, '', 0, false, 'M', 'B');
 */
 
         $this->Image($this->image_file, 10, 10, 26, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
         // Set font
-        $this->SetFont('helvetica', 'B', 20);
+        $this->SetFont('times', 'B', 20);
+        $this->SetTextColor(110, 106, 110); 
         // Title
-        $this->Cell(0, 26, $this->LanguageInstance->getTag("%s portfolio",$this->username), 0, false, 'C', 0, '', 0, false, 'M', 'M');        
+        $this->Cell(0, 55, "         ".$this->LanguageInstance->getTag("%s portfolio",$this->username), 0, false, 'C', 0, '', 0, false, 'M', 'M');        
         $style = array('width' => 0.1, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
 		$this->Line(3, 22, 208, 22, $style);
     }
@@ -41,7 +42,7 @@ class TandemPDF extends TCPDF {
         // Position at 15 mm from bottom
         $this->SetY(-15);
         // Set font
-        $this->SetFont('helvetica', 'I', 8);
+        $this->SetFont('times', 'I', 8);
         // Page number
         $this->Cell(0, 10, $this->LanguageInstance->getTag("Generated on %s", date('Y-m-d')).'- Page '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, 'R', 0, false, 'T', 'M');
     }
@@ -105,8 +106,8 @@ $pdf->setFontSubsetting(true);
 // Set font
 // dejavusans is a UTF-8 Unicode font, if you only need to
 // print standard ASCII chars, you can use core fonts like
-// helvetica or times to reduce file size.
-$pdf->SetFont('helvetica', '', 14, '', true);
+// times or times to reduce file size.
+$pdf->SetFont('times', '', 12, '', true);
 
 // Add a page
 // This method has several options, check the source code documentation for more information.
@@ -118,9 +119,9 @@ $pdf->AddPage();
 // Set some content to print
 $html = "
 	<style>
-	 ul li{font-size:11pt}
-	 p {font-size:12pt}
-	 span{font-size: 17pt;font-weight: bold;}
+	 .tit {font-size:14pt}
+	 .green {color: #6E6A6E}
+	 h2 {color: rgb(97,45,123)}
 	</style>
 ";
 $html .= "<body>";
@@ -130,7 +131,30 @@ if ($user_data && isset($user_data['lang'])) {
 	$user_position_ranking = $gestorBD->getUserRankingPosition($user_id,$user_data['lang'],$course_id);
 }
 
-$html .= "<p><b>".$LanguageInstance->get("portfolio_header")."</b></p>";
+$html .= "<h2>".strtoupper($LanguageInstance->get("Before this course"))."</h2>";
+$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_id);
+error_log("USER ID $user_id TTT ".serialize($firstProfileForm));
+$profileFluency = isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '0'; 
+$accuracyProfile = isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '0';
+$myPronunciation = isset($firstProfileForm['data']->improve_pronunciation) ? $firstProfileForm['data']->improve_pronunciation :'';
+$myVocabulary = !empty($firstProfileForm['data']->improve_vocabulary) ? $firstProfileForm['data']->improve_vocabulary : '';
+$myGrammar = !empty($firstProfileForm['data']->improve_grammar)?$firstProfileForm['data']->improve_grammar:'';
+
+define(SPACE_PX, '8px');
+
+$html .= '<table><tr><td width="'.SPACE_PX.'"></td><td width="99%">';
+$html .= "<span class=\"green\"><b>".$LanguageInstance->get("My language level was")."</b></span><br><br>";
+$html .= '<strong>'. $LanguageInstance->get('Grade your speaking skills').': </strong>'.getSkillsLevel($firstProfileForm['data']->skills_grade, $LanguageInstance).'<br>'.
+	   	'<strong>'. $LanguageInstance->get('Fluency').': </strong>'.$profileFluency.' %<br>'.
+	   	'<strong>'. $LanguageInstance->get('Accuracy').': </strong>'.$accuracyProfile.' %<br>'.
+	   	'<strong>'. $LanguageInstance->get('My pronunciation').': </strong>'.$myPronunciation.'<br>'.
+	   	'<strong>'. $LanguageInstance->get('My vocabulary').': </strong>'.$myVocabulary.'<br>'.
+	   	'<strong>'. $LanguageInstance->get('My grammar').': </strong>'.$myGrammar.'<br>';
+
+$html .= '</td></tr></table>';
+$html .= "<h2>".strtoupper($LanguageInstance->get("During this course"))."</h2>";
+$html .= '<table><tr><td width="'.SPACE_PX.'"></td><td width="99%">';
+$html .= "<span class=\"green\"><b>".$LanguageInstance->get("portfolio_header")."</b></span>";
 $show_tandem = false;
 if(!empty($feedBacks)){
 
@@ -138,52 +162,45 @@ if(!empty($feedBacks)){
 		if(!empty($value['feedback_form'])){
 
 			if (!$show_tandem) {
-				$html .="<p>".$LanguageInstance->get('SUMMARY')."<div align=\"center\"><table width=\"50%\" border=\"1\">";
-				if ($user_position_ranking>0) {
-					$html  .= "<tr><td>".$LanguageInstance->get('Ranking Position').": <b>".$user_position_ranking."</b></td></tr>";
-				}
-				$html .="<tr><td>".$LanguageInstance->get('Fluency').": <b>".$user_data['fluency']."%</b></td></tr>
-						<tr><td>".$LanguageInstance->get('Accuracy').": <b>".$user_data['accuracy']."%</b></td></tr>
-						<tr><td>".$LanguageInstance->get('Overall Grade').": <b>".getSkillsLevel(getOverallAsIdentifier($user_data['overall_grade']),$LanguageInstance)."</b></td></tr>
-					</table></div>
-				</p>";						
+				$html .="<br><br><span class=\"tit\">".$LanguageInstance->get('SUMMARY')."</span><br>";
+				$html .= "<b>".$LanguageInstance->get('Ranking Position').": </b>".$user_position_ranking."<br>
+							<b>".$LanguageInstance->get('Fluency').": </b>".$user_data['fluency']." %<br>				
+							<b>".$LanguageInstance->get('Accuracy').": </b>".$user_data['accuracy']." %<br>
+							<b>".$LanguageInstance->get('Overall Grade').": </b>".getSkillsLevel(getOverallAsIdentifier($user_data['overall_grade']),$LanguageInstance)."<br>	";
 			}
 			$show_tandem = true;
 
 			$value['feedback_form'] = @unserialize($value['feedback_form']);
 			 $title = str_replace("%1",$value['created'],$LanguageInstance->get("Tandem session created %1 with a total duration of %2"));
 			 $title = str_replace("%2",$value['total_time'],$title);
-			$html .= "<div ><b>".$title."</b>";
-			$html .= "<p style='font-size: 10pt;'>".$LanguageInstance->get('Review your partner\'s contribution') ."</p>";
-			$html .="<p><ul>
-							<li >".$LanguageInstance->get('Fluency').": <b>".$value['feedback_form']->fluency."%</b></li>
-							<li >".$LanguageInstance->get('Accuracy').": <b>".$value['feedback_form']->accuracy."%</b></li>
-							<li >".$LanguageInstance->get('Overall Grade').": <b>".getSkillsLevel($value['feedback_form']->grade,$LanguageInstance)."</b></li>				
-							<li >".$LanguageInstance->get('Pronunciation').": <b>".$value['feedback_form']->pronunciation."</b></li>
-							<li >".$LanguageInstance->get('Vocabulary').": <b>".$value['feedback_form']->vocabulary."</b></li>
-							<li >".$LanguageInstance->get('Grammar').": <b>".$value['feedback_form']->grammar."</b></li>
-							<li >".$LanguageInstance->get('Other Observations').": <b>".$value['feedback_form']->other_observations."</b></li>
-						</ul>
-			</p>";
+			$html .= "<div class=\"tit\"><b>".$title."</b>";
+			$html .= "<p class=\"tit\">".strtoupper($LanguageInstance->get('Sent Feedback')) ."</p>";
+			$html .="<b>".$LanguageInstance->get('Fluency').": </b>".$value['feedback_form']->fluency."%<br>
+							<b>".$LanguageInstance->get('Accuracy').": </b>".$value['feedback_form']->accuracy."%<br>
+							<b>".$LanguageInstance->get('Overall Grade').": </b>".getSkillsLevel($value['feedback_form']->grade,$LanguageInstance)."<br>				
+							<b>".$LanguageInstance->get('Pronunciation').": </b>".$value['feedback_form']->pronunciation."<br>
+							<b>".$LanguageInstance->get('Vocabulary').": </b>".$value['feedback_form']->vocabulary."<br>
+							<b>".$LanguageInstance->get('Grammar').": </b>".$value['feedback_form']->grammar."<br>
+							<b>".$LanguageInstance->get('Other Observations').": </b>".$value['feedback_form']->other_observations."<br>
+				";
 			$partnerFeedback = $gestorBD->checkPartnerFeedback($value['id_tandem'],$value['id']);
-			$html .= "<p class='tit'>".$LanguageInstance->get('View received Feedback')."</p>";
+			$html .= "<p class=\"tit\">".strtoupper($LanguageInstance->get('Received Feedback'))."</p>";
 			if(!empty($partnerFeedback)){
 				$partnerFeedback = @unserialize($partnerFeedback);			
 				if(is_object($partnerFeedback)){				
-					$html .="<p> <ul>
-									<li >".$LanguageInstance->get('Fluency').": <b>".$partnerFeedback->fluency."%</b></li>
-									<li >".$LanguageInstance->get('Accuracy').": <b>".$partnerFeedback->accuracy."%</b></li>
-									<li >".$LanguageInstance->get('Overall Grade').": <b>".getSkillsLevel($partnerFeedback->grade,$LanguageInstance)."</b></li>				
-									<li >".$LanguageInstance->get('Pronunciation').": <b>".$partnerFeedback->pronunciation."</b></li>
-									<li >".$LanguageInstance->get('Vocabulary').": <b>".$partnerFeedback->vocabulary."</b></li>
-									<li >".$LanguageInstance->get('Grammar').": <b>".$partnerFeedback->grammar."</b></li>
-									<li >".$LanguageInstance->get('Other Observations').": <b>".$partnerFeedback->other_observations."</b></li>
-						</ul>
-					</p>";
+					$html .="		<b>".$LanguageInstance->get('Fluency').": </b>".$partnerFeedback->fluency."%<br>
+									<b>".$LanguageInstance->get('Accuracy').": </b>".$partnerFeedback->accuracy."%<br>
+									<b>".$LanguageInstance->get('Overall Grade').": </b>".getSkillsLevel($partnerFeedback->grade,$LanguageInstance)."<br>				
+									<b>".$LanguageInstance->get('Pronunciation').": </b>".$partnerFeedback->pronunciation."<br>
+									<b>".$LanguageInstance->get('Vocabulary').": </b>".$partnerFeedback->vocabulary."<br>
+									<b>".$LanguageInstance->get('Grammar').": </b>".$partnerFeedback->grammar."<br>
+									<b>".$LanguageInstance->get('Other Observations').": </b>".$partnerFeedback->other_observations."<br>
+						
+					<hr>";
 			}else
-			 $html .= "<ul><li>".$LanguageInstance->get('partner_feedback_not_available')."</li></ul>";
+			 $html .= "<b class=\"tit\">".$LanguageInstance->get('partner_feedback_not_available')."</b>";
 			}else
-			$html .= "<ul><li>".$LanguageInstance->get('partner_feedback_not_available')."</li></ul>";
+			$html .= "<b class=\"tit\">".$LanguageInstance->get('partner_feedback_not_available')."</b>";
 			
 			$html .= "</div>";
 		}
@@ -192,7 +209,56 @@ if(!empty($feedBacks)){
 if (!$show_tandem) {
 	$html .= "<br><br>".$LanguageInstance->get('No tandems available');
 }
+$html .= '</td></tr></table>';
 
+if (SHOW_SECOND_FORM) {
+	$secondProfileForm  = $gestorBD->getUserPortfolioProfile("second",$user_id);
+	if (!empty($secondProfileForm) && $secondProfileForm) {
+
+			$html .= "<h2>".strtoupper($LanguageInstance->get("After this course"))."</h2>";
+		$html .= '<table><tr><td width="'.SPACE_PX.'"></td><td width="99%">';
+		$html .= "<span class=\"green\"><b>".$LanguageInstance->get("My language level is")."</b></span><br><br>";
+
+
+		$profileFluency = isset($secondProfileForm['data']->fluency) ? $secondProfileForm['data']->fluency : '';
+		$accuracyProfile = isset($secondProfileForm['data']->accuracy) ? $secondProfileForm['data']->accuracy : '';
+		$profileVocabulary = isset($secondProfileForm['data']->vocabulary) ? $secondProfileForm['data']->vocabulary : '';
+		$myGrammar = isset($secondProfileForm['data']->grammar) ? $secondProfileForm['data']->grammar : '';
+		$achived_objectives_proposed = isset($secondProfileForm['data']->achived_objectives_proposed)?ucfirst(getScaleGrade($LanguageInstance,$secondProfileForm['data']->achived_objectives_proposed)):'';
+		$what_I_can_do_better = isset($secondProfileForm['data']->what_I_can_do_better) ? $secondProfileForm['data']->what_I_can_do_better : '';
+		$how_I_can_do_improve = isset($secondProfileForm['data']->how_I_can_do_improve) ? $secondProfileForm['data']->how_I_can_do_improve : '';
+		$received_feedback_help_to_improve = isset($secondProfileForm['data']->received_feedback_help_to_improve)?ucfirst(getScaleGrade($LanguageInstance,$secondProfileForm['data']->received_feedback_help_to_improve)):'';
+		$what_feedback_do_received = isset($secondProfileForm['data']->what_feedback_do_received) ? $secondProfileForm['data']->what_feedback_do_received : '';
+		$feedback_to_partner_help_me = isset($secondProfileForm['data']->feedback_to_partner_help_me)?ucfirst(getScaleGrade($LanguageInstance,$secondProfileForm['data']->feedback_to_partner_help_me)):'';
+		$how_feedback_to_partner_help_me = isset($secondProfileForm['data']->how_feedback_to_partner_help_me) ? $secondProfileForm['data']->how_feedback_to_partner_help_me : '';
+
+
+		$have_more_confidence = isset($secondProfileForm['data']->have_more_confidence)?ucfirst(getScaleGrade($LanguageInstance,$secondProfileForm['data']->have_more_confidence)):'';
+		$can_apply_the_learning = isset($secondProfileForm['data']->can_apply_the_learning) ? ucfirst(getScaleGrade($LanguageInstance,$secondProfileForm['data']->can_apply_the_learning)) : '';
+		$know_how_apply_it = isset($secondProfileForm['data']->know_how_apply_it)?ucfirst(getScaleGrade($LanguageInstance,$secondProfileForm['data']->know_how_apply_it)):'';
+
+		$html .= '<strong>'. $LanguageInstance->get('My language level is').': </strong><br>'.$LanguageInstance->get($secondProfileForm['data']->my_language_level).'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('Could you asses your target level now?').' </strong>'.
+			   	'<ul><li><strong>'. $LanguageInstance->get('Fluency').': </strong>'.$profileFluency.' %</li>'.
+			   	'<li><strong>'. $LanguageInstance->get('Accuracy').': </strong>'.$accuracyProfile.' %</li>'.
+			   	'<li><strong>'. $LanguageInstance->get('Vocabulary').': </strong>'.$profileVocabulary.' %</li>'.
+			   	'<li><strong>'. $LanguageInstance->get('Grammar').': </strong>'.$myGrammar.' %</li></ul>'.
+			   	'<strong>'. $LanguageInstance->get('I have achieved the objectives I set at the beginning of the course').': </strong><br>'.$achived_objectives_proposed.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('What things could you have done better in this course?').' </strong><br>'.$what_I_can_do_better.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('After your participation in the course, are you more aware of how to improve your language level?').' </strong><br>'.$how_I_can_do_improve.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('The feedback I have been given has helped me to improve').': </strong><br>'.$received_feedback_help_to_improve.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('What aspects of the feedback provided to you were helpful and what were not?').' </strong><br>'.$what_feedback_do_received.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('Giving feedback to my partners has also helped me in the learning process').': </strong><br>'.$feedback_to_partner_help_me.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('Explain how').': </strong><br>'.$how_feedback_to_partner_help_me.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('I feel more confident when speaking the target language outside of the course').': </strong><br>'.$have_more_confidence.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('Thanks to this course I am able to use the language in different contexts, such as my personal life, at a professional level, in social networks (Facebook, etc)').': </strong><br>'.$can_apply_the_learning.'<br><br>'.
+			   	'<strong>'. $LanguageInstance->get('I know how to use what I’ve learned from the course in my daily life').': </strong><br>'.$know_how_apply_it.'<br>';
+
+
+		$html .= '</td></tr></table>';
+
+	}
+}
 
 $html .= "</body>";
 

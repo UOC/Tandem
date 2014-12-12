@@ -2707,6 +2707,30 @@ class GestorBD {
          }
 
          /**
+          * Save form user data
+          * @param  [type] $form_type         [description]
+          * @param  [type] $user_id           [description]
+          * @param  [type] $data              [description]
+          * @param  [type] $previousForm      [description]
+          * @param  [type] $portfolio_form_id [description]
+          * @return [type]                    [description]
+          */
+         function   saveFormUserProfile($form_type, $user_id, $data, $previousForm, $portfolio_form_id){
+            //first lets make sure they dont already have filled this formulary
+            if(!$previousForm || $portfolio_form_id<0){
+                $this->consulta("insert into user_portfolio_profile(user_id,data,type,created) values ('".$user_id."','".mysql_real_escape_string($data)."','".$form_type."',NOW())");
+                $previousForm['data'] = $data;
+            }
+            //if we have this value then we are updating
+            else{
+                $this->consulta("update user_portfolio_profile set data ='".mysql_real_escape_string($data)."' where id= ".$this->escapeString($portfolio_form_id));
+                $previousForm['data'] = $data;
+            }
+            return $previousForm;
+        }
+    
+
+         /**
           * Checks if the external tool video session is available
           */
          function checkExternalToolVideoSession($feedback_id){
