@@ -52,6 +52,8 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
 		  		<?php if ($show_teacher_view) { ?>				
 					<button class="btn btn-success" type='button' onclick="window.location ='ranking.php?student_view=1';">
 					<?php echo $LanguageInstance->get('Show student view') ?></button>			
+					<button class="btn btn-success" type='button' onclick="window.location ='ranking_excel.php';">
+					<?php echo $LanguageInstance->get('Export to excel') ?></button>			
 				<?php 
 				}else{
 						if( isset($_REQUEST['student_view']) && !empty($isTeacher) ){ ?>
