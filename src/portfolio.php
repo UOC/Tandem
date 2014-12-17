@@ -173,7 +173,7 @@ if(!empty($_POST['get_pdf'])){
 			<?php if($show_second_form){ ?>
 				<button class="btn btn-success" type='button' id='viewProfileFormSecond'><?php echo $LanguageInstance->get('Self Assessment') ?></button>
 			<?php 
-				if ($secondProfileForm && $secondProfileForm['data']->my_language_level){?>
+				if ($secondProfileForm && isset($secondProfileForm['data']) && isset($secondProfileForm['data']->my_language_level)){?>
 				<form action='' method='POST' role='form' id='pdfForm'>
 					<input type='hidden'  name='get_pdf' value='1' />
 					<button class="btn btn-success" type='submit' id='viewProfileFormSecond'><?php echo $LanguageInstance->get('Download a PDF file with all Tandems') ?></button>
