@@ -133,7 +133,6 @@ if ($user_data && isset($user_data['lang'])) {
 
 $html .= "<h2>".strtoupper($LanguageInstance->get("Before this course"))."</h2>";
 $firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_id);
-error_log("USER ID $user_id TTT ".serialize($firstProfileForm));
 $profileFluency = isset($firstProfileForm['data']->fluency) ? $firstProfileForm['data']->fluency : '0'; 
 $accuracyProfile = isset($firstProfileForm['data']->accuracy) ? $firstProfileForm['data']->accuracy : '0';
 $myPronunciation = isset($firstProfileForm['data']->improve_pronunciation) ? $firstProfileForm['data']->improve_pronunciation :'';

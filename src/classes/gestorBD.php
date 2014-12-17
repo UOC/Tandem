@@ -3622,6 +3622,45 @@ class GestorBD {
         }    
         return $feedback;
      }
+
+
+     /**
+      * Sums all the time and number of tandems, the return is like row['total_time'] and $row['count']
+      * @param  [type] $userid    [description]
+      * @param  [type] $course_id [description]
+      * @return [type]            [description]
+      */
+     public function getTotalTimeAndCountUserCourse($userid, $course_id) {
+
+        $sql = 'select sum(UT.total_time) as total_time,count(UT.id_tandem) as count from user_tandem as UT 
+                             left join feedback_tandem as FT on FT.id_tandem = UT.id_tandem and FT.id_user = UT.id_user
+                             left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
+                             left join feedback_tandem as sFT on sFT.id_user = FT.id_partner and sFT.id_tandem = UT.id_tandem
+                             left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
+                             inner join tandem as T on T.id = UT.id_tandem
+                            where 
+                            T.id_course = '.$this->escapeString($course_id).' and UT.id_user = '.$this->escapeString($userid);
+        $row = false;
+        $result = $this->consulta($sql);
+        if ($this->numResultats($result) > 0) {
+            $row = $this->obteObjecteComArray($result);
+        }
+        return $row;
+
+     }
+
+    function getUserEmail($user_id){
+        if ($user_id>0) {
+             $sql = " select email from user where id = ".$this->escapeString($user_id);
+             $result = $this->consulta($sql);
+             if ($this->numResultats($result) > 0){ 
+                 $names =  $this->obteComArray($result);
+                 return $names[0]['email'];
+             }            
+         }
+         return '';
+    }
+
 }//end of class
 
 ?>
