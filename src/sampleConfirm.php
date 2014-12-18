@@ -420,13 +420,15 @@ if(numCadenas==numUsers){
 					},
 					success: function(xml){
 
+						<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 						//lets see if the other user got disconnected from the external tool
 						var externalToolClosed = xml.getElementsByTagName('externalToolClosed');
 						if(externalToolClosed.length > 0 && externalToolClosed[0].childNodes.length>0){												
 							userGotDisconnected(externalToolClosed[0].childNodes[0].nodeValue);
 						}
+						<?php } else {?>
 						// This code is not used anymore because we only have solution buttons right now 20141022 .
-						/*users = xml.getElementsByTagName('usuarios');
+						users = xml.getElementsByTagName('usuarios');
 						total = users.length;
 						if (total>0) {
 							users = users[0].childNodes;
@@ -458,7 +460,8 @@ if(numCadenas==numUsers){
 									notifyTimerDown("<?php echo $LanguageInstance->get("txtTheUser");?>"+isFinishedFirst+"<?php echo $LanguageInstance->get("txtReplied");?>");
 								}					
 						}
-					}*/
+					}
+					<?php }?>
 },error: function (xhr, ajaxOptions, thrownError) {
         // console.log(xhr.status);
         // console.log(thrownError);
