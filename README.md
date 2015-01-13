@@ -59,3 +59,12 @@ url_notify_started_recording=%URL_TANDEM%/api.php?id=%ID_TANDEM%&started=1
 url_notify_ended_recording=%URL_TANDEM%/api.php?id=%ID_TANDEM%&ended=1
 
 
+# Managing and Upload Exercises to Tandem #
+To download exercises you can get from http://oer.speakapps.org/xwiki/bin/view/Main/
+Follow the instructions from:
+## Tandem ##
+http://langblog.speakapps.org/speakappsinfo/category/teacher/tandem-teacher/how-to-use-tandem-tandem-teacher/
+## OER ##
+http://langblog.speakapps.org/speakappsinfo/category/teacher/oer/introduction/?f=OER
+## Upload Tandem Activities ##
+http://langblog.speakapps.org/speakappsinfo/category/teacher/oer/uploading-tandem-activities-to-tandem-tool/?f=OER.
