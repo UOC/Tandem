@@ -68,3 +68,7 @@ http://langblog.speakapps.org/speakappsinfo/category/teacher/tandem-teacher/how-
 http://langblog.speakapps.org/speakappsinfo/category/teacher/oer/introduction/?f=OER
 ## Upload Tandem Activities ##
 http://langblog.speakapps.org/speakappsinfo/category/teacher/oer/uploading-tandem-activities-to-tandem-tool/?f=OER.
+
+# More Information
+Speak Apps Project has been funded with support from the Lifelong Learning Programme of the European Commission. This document reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein. 
+![EU Logo](http://www.speakapps.eu/wp-content/themes/speakapps/images/EU_flag.jpg)
