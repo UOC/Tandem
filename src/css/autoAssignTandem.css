@@ -236,7 +236,7 @@ body.acceso #main {
 	float:left;
 	padding-top:10px;
 	position:relative;
-	height:400px;
+	height:700px;
 }
 
 .solution-content{
@@ -285,10 +285,10 @@ font-weight:bold;
 
 #logo {
 	float:right;
-	margin:50px 0 0 0;
+	margin:-50px 0 0 0;
 	position: absolute;
 	right: 0;
-	top: 30px;
+	top: 55px;
 }
 
 #header #logo {
@@ -1094,7 +1094,7 @@ display:block;
 float:left;
 width:920px;
 height:18px;
-margin:10px 0px 0px;
+margin:70px 0px 40px;
 background:#e3e7d8 url('../img/timeline.png') repeat-x 0 0;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;

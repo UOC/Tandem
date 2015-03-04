@@ -97,6 +97,14 @@ if(!empty($_POST['get_pdf'])){
 <link rel="stylesheet" href="js/jquery-ui-1.11.2.custom/jquery-ui.min.css">
 <link href="css/tandem-waiting-room.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" media="all" href="css/slider.css" />
+
+<?php
+	//cmoyas change skin 
+	if(is_file('skins/css/styleSkin.css')){
+			echo '<link rel="stylesheet" type="text/css" media="all" href="skins/css/styleSkin.css" />';
+	}
+?>
+
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="js/jquery-ui-1.11.2.custom/jquery-ui.min.js"></script>
@@ -182,7 +190,12 @@ if(!empty($_POST['get_pdf'])){
 			} ?>
 		</div>
 		<div class='col-md-3 text-right'>
-				<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
+				<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>">
+					<?php //cmoyas change skin
+						if(is_file('skins/img/logo_APP.png')) echo '<img src="skins/img/logo_APP.png" alt="'.$LanguageInstance->get('tandem_logo').'" />';
+						else echo '<img src="css/images/logo_Tandem.png" alt="'.$LanguageInstance->get('tandem_logo').'" />';
+					?>
+				</a>
 		</div>
 	</div>
   	<div class="row">
@@ -317,13 +330,13 @@ if($user_obj->instructor == 1 ){
 		</div>
 		</div>
 		<div class='row'>
-			<div class='col-md-3' >							
+			<div class='col-md-4' >							
 						<form action='' method='POST' role='form' id='pdfForm'>
 							<input type='hidden'  name='get_pdf' value='1' />
 							<input type='submit' value='<?php echo $LanguageInstance->get('Download a PDF file with all Tandems');?>' class='btn btn-success' />
 						</form> 
 			</div>
-			<div class='col-md-9' >	
+			<div class='col-md-8' >	
 						<form action='portfolio_excel.php' method='POST' role='form' id='excelForm'>
 							<input type='hidden'  name='showFeedback' value='<?php echo $showFeedback?>' />
 							<input type='hidden'  name='finishedTandem' value='<?php echo $finishedTandem?>' />

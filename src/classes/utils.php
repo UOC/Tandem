@@ -96,14 +96,17 @@ function lti_get_lang($context) {
 	if (strlen($lang)<4){
 		switch ($lang)
 		{
+			case "ca":
+				$lang="ca_ES";
+				break;
+			case "de":
+				$lang="de_DE";
+				break;
 			case "en":
 				$lang="en_US";
 				break;
 			case "es":
 				$lang="es_ES";
-				break;
-			case "ca":
-				$lang="ca_ES";
 				break;
 			case "fr":
 				$lang="fr_FR";
@@ -117,8 +120,17 @@ function lti_get_lang($context) {
 			case "fi":
 				$lang="fi_FI";
 				break;
-			case "de":
-				$lang="de_DE";
+			case "pl":
+				$lang="pl_PL";
+				break;
+			case "hr":
+				$lang="hr_HR";
+				break;
+			case "sv":
+				$lang="sv_SE";
+				break;
+			case "ga":
+				$lang="ga_IE";
 				break;
 			default:
 				$lang="en_US";

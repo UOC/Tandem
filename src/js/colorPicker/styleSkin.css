@@ -1,0 +1,73 @@
+/**
+CSS TANDEM SKIN
+(c) 2012 - tandem
+**/
+
+/* 
+//cmoyas change skin
+ */
+
+ body{
+	font-family: font0 !important;
+ }
+
+a, a:link, a:active, a:visited {color:#111111 !important}
+
+p {
+	font-family:font1 !important;
+    color: #222222 !important;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-family: font2 !important; 
+	color: #333333 !important;
+}
+
+.welcome{
+	font-family: font3 !important; 
+	color: #333333 !important;
+}
+
+input[type=button],
+input[type=submit],
+input.tandem-btn, a.tandem-btn {
+	font-family:font4 !important;
+    background: #444444 !important;
+}
+
+.btn.btn-success{
+	font-family:font4 !important;
+   	background: #444444 !important;
+}
+
+#footer .footer-tandemBike {
+	display:block;
+	float:right;
+	width:269px;
+	height:256px;
+	margin-right:20px;
+	background: transparent url('../img/footer_bike.png');
+}
+
+#wrapperRoad {
+	min-height:100%; 
+	width: 100%;
+	background:#f7faf5 url('../img/footer_road.png') repeat-x 0 100%;
+}
+
+#footer-container-exerciseRoad {
+	position: relative;
+	margin-top: -90px;
+	height: 90px;
+	clear:both;
+	background:#f7faf5 url('../img/footer_road.png') repeat-x 0 100%;
+}
+
+.footer-containerRoad {
+	position: relative;
+	margin-top: -335px;
+	height: 335px;
+	clear:both;
+	background:#f7faf5 url('../img/footer_road.png') repeat-x 0 100% !important;
+	
+}

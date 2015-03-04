@@ -67,7 +67,13 @@ if (!$user_obj || !$course_id) {
 		<link rel="stylesheet" type="text/css" media="all" href="css/tandem-waiting-room.css?id=21" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 		<!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
-		<link rel="stylesheet" type="text/css" media="all" href="css/colorbox.css" />		
+		<link rel="stylesheet" type="text/css" media="all" href="css/colorbox.css" />
+		<?php
+			//cmoyas change skin 
+			if(is_file('skins/css/styleSkin.css')){
+					echo '<link rel="stylesheet" type="text/css" media="all" href="skins/css/styleSkin.css" />';
+			}
+		?>	
 		<!-- END -->
 		<!-- Timer End -->
 		<script src="js/jquery-1.7.2.min.js"></script>
@@ -201,7 +207,10 @@ if (!$user_obj || !$course_id) {
 	</div>
 	<!-- /accessibility -->
 	<!-- /wrapper -->
-	<div id="wrapper">
+	<?php //cmoyas change skin
+		if(is_file('skins/img/footer_road.png')) echo '<div id="wrapperRoad">';
+		else echo '<div id="wrapper">';
+	?>
 		<!-- main-container -->
 		<div id="main-container">
 			<!-- main -->
@@ -252,8 +261,8 @@ if (!$user_obj || !$course_id) {
  					<?php  					
  					if ($user_obj->instructor==1 || $user_obj->admin==1) { ?>                            
                                 <div class="clear">
-                                <a href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
-                                <a href='statistics_tandem.php'><?php echo $LanguageInstance->get("Tandem Statistics");?></a>
+                                <a class="tandem-btn btn-exercise" href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
+                                <a class="tandem-btn btn-exercise" href='statistics_tandem.php'><?php echo $LanguageInstance->get("Tandem Statistics");?></a>
                             </div>                                
                      <?php } ?>                            
 					</div>
@@ -262,7 +271,12 @@ if (!$user_obj || !$course_id) {
 					</div>
 					<div class="cleaner"></div>  
 					<div id="logo">
-						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo') ?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo') ?>" /></a>
+						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo') ?>">
+							<?php //cmoyas change skin
+								if(is_file('skins/img/logo_APP.png')) echo '<img src="skins/img/logo_APP.png" alt="'.Language::get('tandem_logo').'" />';
+								else echo '<img src="css/images/logo_Tandem.png" alt="'.Language::get('tandem_logo').'" />';
+							?>
+						</a>
 					</div>
 				</div>
 				<!-- /content -->
@@ -288,13 +302,27 @@ if (!$user_obj || !$course_id) {
     </div>
 	<!-- /wrapper -->
 	<!-- footer -->
-	<div id="footer-container">
+	<?php //cmoyas change skin
+		if(is_file('skins/img/footer_road.png')) echo '<div class="footer-containerRoad">';
+		else echo '<div id="footer-container">';
+	?>
 		<div id="footer">
-			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem') ?>"></div>
+			<?php //cmoyas change skin
+					if(is_file('skins/img/footer_bike.png')) echo '<div class="footer-tandemBike" title="'.Language::get('tandem').'"></div>';
+					else echo '<div class="footer-tandem" title="'.Language::get('tandem').'"></div>';
+			?>
 			<div class="footer-logos">
-				<img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
-				<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
-				<img src="css/images/logo_speakapps.png" alt="Speakapps" />
+				<!--img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
+				<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" /-->
+				<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	<?php //cmoyas change skin
+					if(is_file('skins/img/logo_footer1.png')) echo '<img src="skins/img/logo_footer1.png" alt="" />';
+					else echo '<img src="css/images/EU_flag.jpg" alt="" />';
+					if(is_file('skins/img/logo_footer3.png')) echo '<img src="skins/img/logo_footer3.png" alt="" />';
+					else echo '<img src="css/images/logo_speakapps.png" alt="Speakapps" />';
+				?>
 			</div>
 		</div>
 	</div>

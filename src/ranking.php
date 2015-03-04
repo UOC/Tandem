@@ -34,6 +34,13 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <link href="css/tandem-waiting-room.css" rel="stylesheet">
+
+<?php
+	//cmoyas change skin 
+	if(is_file('skins/css/styleSkin.css')){
+			echo '<link rel="stylesheet" type="text/css" media="all" href="skins/css/styleSkin.css" />';
+	}
+?>
 <style>
 .green-for-english{
 	color:#7E9F0B;
@@ -66,7 +73,12 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
 		</div>
 		<div class='col-md-4'>
 	  	<p class='text-right'>
-			<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>					
+			<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>">
+				<?php //cmoyas change skin
+					if(is_file('skins/img/logo_APP.png')) echo '<img src="skins/img/logo_APP.png" alt="'.$LanguageInstance->get('tandem_logo').'" />';
+					else echo '<img src="css/images/logo_Tandem.png" alt="'.$LanguageInstance->get('tandem_logo').'" />';
+				?>
+			</a>					
 	  	</p>
   	</div>
 	</div>

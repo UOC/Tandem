@@ -139,6 +139,7 @@ try {
 	    $exercise_number_forced = $tandemBLTI->getDataInfo($context, 'custom_exercise_number_forced');
 	    $portfolio 		= $tandemBLTI->getDataInfo($context, 'custom_portfolio')==1;
 	    $ranking 	 = $tandemBLTI->getDataInfo($context, 'custom_ranking')==1;
+	    $certificate = $tandemBLTI->getDataInfo($context, 'custom_certificate')==1;
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
 	    $week 		  = $tandemBLTI->getDataInfo($context, 'custom_week');
 	    $previous_week 	 = $tandemBLTI->getDataInfo($context, 'custom_previous_week');
@@ -209,7 +210,9 @@ try {
                                 } 
                                 if ($ranking==1){
                                     $redirectTo = 'ranking';
-                                } 
+                                } elseif ($certificate) {
+                                	$redirectTo = 'certificate';
+                                }
 		    		header ('Location: '.$redirectTo.'.php'.($waiting_room_select_room?'?select_room=1':''));
 		    	} 
 		    	//sino ja mostrara error

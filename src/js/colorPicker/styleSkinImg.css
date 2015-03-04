@@ -1,0 +1,39 @@
+/**
+CSS TANDEM SKIN
+(c) 2012 - tandem
+**/
+
+/* 
+//cmoyas change skin
+ */
+
+#footer .footer-tandemBike {
+	display:block;
+	float:right;
+	width:269px;
+	height:256px;
+	margin-right:20px;
+	background: transparent url('../img/footer_bike.png');
+}
+
+#wrapperRoad {
+	min-height:100%; 
+	width: 100%;
+	background:#f7faf5 url('../img/footer_road.png') repeat-x 0 100%;
+}
+
+#footer-container-exerciseRoad {
+	position: relative;
+	margin-top: -90px;
+	height: 90px;
+	clear:both;
+	background:#f7faf5 url('../img/footer_road.png') repeat-x 0 100%;
+}
+
+.footer-containerRoad {
+	position: relative;
+	margin-top: -335px;
+	height: 335px;
+	clear:both;
+	background:#f7faf5 url('../img/footer_road.png') repeat-x 0 100% !important;
+}

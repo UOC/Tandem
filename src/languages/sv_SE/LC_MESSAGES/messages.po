@@ -1,0 +1,400 @@
+# Translation of Tandem (trunk) in English
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2014-10-30 16:20+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.6.9\n"
+"POT-Creation-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+
+msgid "welcome"
+msgstr "Välkommen"
+
+msgid "no estas autoritzat"
+msgstr "ej berättigad"
+
+msgid "back"
+msgstr "Tillbaka"
+
+msgid "txtOtherUserConn"
+msgstr "Du är nu kopplad till ditt Tandem-par"
+
+msgid "txtWaiting4User"
+msgstr "Väntar på uppkopplingen till Tandem..."
+
+msgid "no_users_in_course"
+msgstr "Det finns inga användare på kursen"
+
+msgid "txtTheUser"
+msgstr "<b>Par ("
+
+msgid "txtReplied"
+msgstr ") har svarat. Väntar på bekräftelse</b>"
+
+msgid "refresh"
+msgstr "Uppdatera användare"
+
+msgid "user_in_tandem"
+msgstr "Ditt Tandem-par nås inte, försök igen senare"
+
+msgid "show_tandem"
+msgstr "Visa Tandem-paren"
+
+msgid "txtDesconnected"
+msgstr "Frånkoppling"
+
+msgid "select_user"
+msgstr "Välj användare"
+
+msgid "select_users"
+msgstr "Välj användare"
+
+msgid "tandems"
+msgstr "Tandem-paren"
+
+msgid "no_tandems"
+msgstr "Det finns inga Tandem-par för denna användare"
+
+msgid "date"
+msgstr "Datum"
+
+msgid "points"
+msgstr "Poäng"
+
+msgid "user_host"
+msgstr "Nätverksenhet"
+
+msgid "user"
+msgstr "Användare"
+
+msgid "user_guest"
+msgstr "Gästanvändare"
+
+msgid "date_guest_user_logged"
+msgstr "Datum för inloggning annan användare"
+
+msgid "finalized"
+msgstr "Datumet bekräftat"
+
+msgid "total_time"
+msgstr "Minuter sammanlagt"
+
+msgid "start"
+msgstr "Börja"
+
+msgid "accept"
+msgstr "Godkänn"
+
+msgid "select_exercise"
+msgstr "Välj övning"
+
+msgid "tandem_description_1"
+msgstr ""
+"Välkommen till pilotprogrammet Tandem. Detta verktyg fungerar med Google "
+"Chrome, Firefox 4 eller nyare, Safari 5"
+
+msgid "tandem_description_2"
+msgstr ""
+"Tandem-verktyget fungerar inte med Internet Explorer. Vi håller på att lösa "
+"problemet."
+
+msgid "tandem_logo"
+msgstr "Logo Tandem"
+
+msgid "tandem"
+msgstr "Tandem"
+
+msgid "exercise"
+msgstr "Övning"
+
+msgid "go"
+msgstr "Börja"
+
+msgid "waiting"
+msgstr "Väntar på användare..."
+
+msgid "waitingUserX"
+msgstr "Väntar på"
+
+msgid "acceptance"
+msgstr "Om ditt Tandem-par inte godkänner inom 1 minut, går inbjudan ut."
+
+msgid "direct_access_to_content"
+msgstr "Gå direkt till innehållet"
+
+msgid "pending_tandems"
+msgstr "Användare väntande på Tandem-par"
+
+msgid "no_pending_tandems"
+msgstr "Du har inga väntande inbjudningar till Tandem"
+
+msgid "reload_pending"
+msgstr "Ladda om väntande inbjudningar"
+
+msgid "tasks_tandems"
+msgstr "Uppgifter"
+
+msgid "questions_tasks_tandems"
+msgstr "Frågor"
+
+msgid "task"
+msgstr "Uppgift"
+
+msgid "question"
+msgstr "Fråga"
+
+msgid "total_time_seconds"
+msgstr "Tiden sammanlagt:&#13 %s minuter&#13 %s sekunder"
+
+msgid "start_date"
+msgstr "Datum för igångsättning"
+
+msgid "finish_date"
+msgstr "Datum för avslutning"
+
+msgid "finished"
+msgstr "Slutfört"
+
+msgid "caducado"
+msgstr "Föråldrad"
+
+msgid "all"
+msgstr "Alla"
+
+msgid "no"
+msgstr "Nej"
+
+msgid "yes"
+msgstr "Ja"
+
+msgid "no_results_found"
+msgstr "Inga sökresultat"
+
+msgid "play_as_user_host"
+msgstr "Spela som nätverksenhet"
+
+msgid "play_as_user_guest"
+msgstr "Spela som gäst"
+
+msgid "play"
+msgstr "Spela"
+
+msgid "just_been_invited"
+msgstr "Du har blivit inbjuden till Tandem med:"
+
+msgid "user_agent_host"
+msgstr "Nätverksenhet: info om webbläsaren"
+
+msgid "user_agent_guest"
+msgstr "Gästanvändare: info om webbläsaren"
+
+msgid "mange_exercises_tandem"
+msgstr "Hantera övningar"
+
+msgid "choose_zip_file"
+msgstr "Välj en ZIP-fil som du vill ladda upp"
+
+msgid "zip_upload_ok"
+msgstr "Filen laddades upp och packades upp"
+
+msgid "error_uploading_file"
+msgstr "Problem vid uppladdning. Försök igen."
+
+msgid "error_no_zip_format"
+msgstr "Filen som du försöker ladda upp är inte en ZIP-fil. Försök igen."
+
+msgid "error_getting_information_of_exercise"
+msgstr "Övningen hittades inte i databasen"
+
+msgid "exercise_name"
+msgstr "Övningsnamn"
+
+msgid "name_xml_file"
+msgstr "Xml-namn"
+
+msgid "enabled"
+msgstr "Tillåtet"
+
+msgid "delete"
+msgstr "Radera"
+
+msgid "show_profile"
+msgstr "visa profil"
+
+msgid "hide_profile"
+msgstr "dölj profil"
+
+msgid "quit"
+msgstr "Sluta"
+
+msgid "task_remaining_time"
+msgstr "Återstående tid i uppgiften"
+
+msgid "overrides_xml_file"
+msgstr "Överskrider XML-filen om den har samma namn"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"Filen finns redan, är du säker på att du vill skriva över? För att göra "
+"detta välj \"Ja\" till \"skriv över\""
+
+msgid "update"
+msgstr "Uppdatera"
+
+msgid "upload"
+msgstr "Ladda ner"
+
+msgid "error_choose_file"
+msgstr "Du måste välja en ZIP-fil för att ladda upp"
+
+msgid "exercise_deleted_ok"
+msgstr "Övningen är raderad"
+
+msgid "error_delete_exercise"
+msgstr ""
+"Fel vid radering av vald övning. Bekräfta att filen existerar och är giltig"
+
+msgid "main_xml_file_not_found"
+msgstr "Det går inte att behandla filen eftersom main.xml hittas inte"
+
+msgid "no_exercises_found"
+msgstr "Inga övningar tillgängliga, läraren måste konfigurera den"
+
+msgid "Solution"
+msgstr "Lösning"
+
+msgid "See Solution"
+msgstr "Visa lösningen"
+
+msgid "Next Task"
+msgstr "Nästa uppgift"
+
+msgid "Click to finish"
+msgstr "Click to finish"
+
+msgid "txtEndTask"
+msgstr ") har slutfört övningen. Väntar på bekräftelse</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "Väntar på att ditt par slutför uppgiften"
+
+msgid "state"
+msgstr "Läge"
+
+msgid "activity_log"
+msgstr "Aktivitetsloggbok"
+
+msgid "exercises_list"
+msgstr "Lista över övningarna"
+
+msgid "new_exercise"
+msgstr "Ny övning"
+
+msgid "edit_exercise"
+msgstr "Redigera övningen"
+
+msgid "file_name"
+msgstr "Filnamn"
+
+msgid "browse"
+msgstr "Bläddra"
+
+msgid "none_file_selected"
+msgstr "Inga filar är valda"
+
+msgid "search_criteria"
+msgstr "Sökkriterier"
+
+msgid "date_range"
+msgstr "Tidsperiod"
+
+msgid "from"
+msgstr "Från"
+
+msgid "to"
+msgstr "Till"
+
+msgid "status"
+msgstr "Läge"
+
+msgid "duration"
+msgstr "Varaktighet"
+
+msgid "browser_info"
+msgstr "Info om webbläsare"
+
+msgid "total"
+msgstr "Sammankagt"
+
+msgid "complete"
+msgstr "Färdigt"
+
+msgid "incomplete"
+msgstr "Inte färdigt"
+
+msgid "error"
+msgstr "Fel"
+
+msgid "search"
+msgstr "Sök"
+
+msgid "invalid_tool"
+msgstr "Ogiltigt verktyg"
+
+msgid "Activityhasbeencompleted"
+msgstr "Aktiviteten är slutförd"
+
+msgid "ThankyouforusingTANDEM"
+msgstr "Tack för att du använde TANDEM"
+
+msgid "Connecting..."
+msgstr "Kopplar..."
+
+msgid "Task"
+msgstr "Uppgift"
+
+msgid "See"
+msgstr "Visa"
+
+msgid "SlowConn"
+msgstr "Långsam koppling"
+
+msgid "waiting_remaining_time"
+msgstr "Tid att slutföra uppgiften"
+
+msgid "Tandem"
+msgstr "Tandem"
+
+msgid "users_tandem"
+msgstr "Användare i Tandem"
+
+msgid "Waiting"
+msgstr "Väntar"
+
+msgid "users_waiting"
+msgstr "Väntande användare"
+
+msgid "time_up"
+msgstr "Tiden är ute!"
+
+msgid "close"
+msgstr "Stäng"
+
+msgid "please_stand_by"
+msgstr "Var god vänta"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "Väntar på användaruppkoppling"
+
+msgid "waiting_for_tandem_connexion"
+msgstr "Väntar på koppling till Tandem "
+
+msgid "room_taken"
+msgstr "Detta rum är redan i Tandem, var god välj igen."

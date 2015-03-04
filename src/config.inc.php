@@ -33,3 +33,6 @@ define('SMTP_KEY','YOUR SMTP PWD');  // SMTP password
 define('SMTP_SMTPSECURE','tls'); // Enable TLS encryption, `ssl` also accepted
 define('MAIL_FROM','MAIL FROM ADDRESS'); 
 define('MAIL_FROM_NAME','MAIL FROM NAME');
+
+// User can edit skin?
+define('EDITSKIN', '0');

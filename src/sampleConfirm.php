@@ -46,6 +46,12 @@ else $Otheruser='a';
 	<link media="screen" rel="stylesheet" href="css/colorbox.css" />
 	<link media="screen" rel="stylesheet" href="css/default.css" />
 	<link rel="stylesheet" type="text/css" href="css/tandem.css" media="all" />
+	<?php
+	//cmoyas change skin 
+		if(is_file('skins/css/styleSkin.css')){
+				echo '<link rel="stylesheet" type="text/css" media="all" href="skins/css/styleSkin.css" />';
+		}
+	?>
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/jquery.colorbox-min.js"></script>
 	<script src="js/jquery.ui.widget.js"></script>
@@ -1284,7 +1290,7 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 							<span class="social" title="skype" id="chat_person_a">SkypeUser <span class="icon skype"></span></span>
 						<?php } ?>
 						</div>
-						<a href="#" id="lnk_quit" <?php echo (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1)?'style="right:-90px"':''?> onclick="desconn();"><?php echo $LanguageInstance->get((isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1)?'Review form':'quit')?></a>
+						<a href="#" id="lnk_quit" <?php echo (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1)?'style="right:-120px"':''?> onclick="desconn();"><?php echo $LanguageInstance->get((isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1)?'Review form':'quit')?></a>
 					</div>
 					<div class="user">
 						<div class="details">
@@ -1335,13 +1341,28 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 		<!-- /main-container -->    	
 	</div>
 
+	<!-- /wrapper -->
 	<!-- footer -->
-	<div id="footer-container-exercise">
+	<?php //cmoyas change skin
+		if(is_file('skins/img/footer_road.png')) echo '<div class="footer-containerRoad">';
+		else echo '<div id="footer-container">';
+	?>
 		<div id="footer">
+			<?php //cmoyas change skin
+					if(is_file('skins/img/footer_bike.png')) echo '<div class="footer-tandemBike" title="'.Language::get('tandem').'"></div>';
+					else echo '<div class="footer-tandem" title="'.Language::get('tandem').'"></div>';
+			?>
 			<div class="footer-logos">
-				<img src="img/logo_LLP.png" alt="Lifelong Learning Programme" />
-				<img src="img/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
-				<img src="img/logo_speakapps.png" alt="Speakapps" />
+				<div style="float: left; margin-top: 0pt; text-align: justify; width: 500px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	
+				<?php //cmoyas change skin
+					if(is_file('skins/img/logo_footer1.png')) echo '<img src="skins/img/logo_footer1.png" alt="" />';
+					else echo '<img src="css/images/EU_flag.jpg" alt="" />';
+					if(is_file('skins/img/logo_footer3.png')) echo '<img src="skins/img/logo_footer3.png" alt="" />';
+					else echo '<img src="css/images/logo_speakapps.png" alt="Speakapps" />';
+				?>
 			</div>
 		</div>
 	</div>

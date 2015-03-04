@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-12-03 18:16+0100\n"
+"PO-Revision-Date: 2014-12-12 14:16+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -807,3 +807,118 @@ msgstr ""
 "Aquí podrás ver un resumen de tu posición en el ranking, el feedback que has "
 "recibido durante todo el curso y el feedback que tú has aportado a tus "
 "compañeros de tándem."
+
+msgid "Self Assessment"
+msgstr "Autoevaluación"
+
+msgid "Self Autoevalua Form"
+msgstr "Formulario de autoevaluación"
+
+msgid "The aim of this form is for you to self-assess your own learning"
+msgstr ""
+"El objetivo de este formulario es que tú mismo evalúes cómo ha sido tu "
+"aprendizaje"
+
+msgid ""
+"Thinking about and being aware of your learning is key when learning a "
+"language"
+msgstr ""
+"Reflexionar sobre tu propio aprendizaje es clave cuando aprendes una lengua"
+
+msgid ""
+"If you are aware of your language level, you will know what to do to keep "
+"improving"
+msgstr ""
+"Si eres consciente de tu nivel de lengua, sabrás qué puedes hacer para "
+"seguir mejorando"
+
+msgid "My language level is"
+msgstr "El nivel de la lengua que tengo es"
+
+msgid "Could you asses your target level now?"
+msgstr "¿Podrías evaluar ahora tu nivel de lengua?"
+
+msgid "I have achieved the objectives I set at the beginning of the course"
+msgstr "He alcanzado los objetivos que me proponía al comienzo de este curso"
+
+msgid "not at all"
+msgstr "nada"
+
+msgid "a little"
+msgstr "poco"
+
+msgid "quite a bit"
+msgstr "bastante"
+
+msgid "a lot"
+msgstr "mucho"
+
+msgid "What things could you have done better in this course?"
+msgstr "¿Qué crees que podrías haber hecho mejor durante este curso?"
+
+msgid "(i.e. Searching for resources on my own, more participation , etc)"
+msgstr "(p.ej. Buscar más recursos por tu cuenta, participar más, etc)"
+
+msgid ""
+"After your participation in the course, are you more aware of how to improve "
+"your language level?"
+msgstr ""
+"Tras la participación en este curso eres más consciente de cómo puedes "
+"mejorar la lengua"
+
+msgid "(for instance, seeing films, reading books, etc)"
+msgstr "(por ejemplo: viendo películas, libros, etc.)"
+
+msgid "The feedback I have been given has helped me to improve"
+msgstr "El feedback que me han dado me ha ayudado a aprender"
+
+msgid ""
+"What aspects of the feedback provided to you were helpful and what were not?"
+msgstr "¿Qué aspectos del feedback recibido te resultaron útiles y cuáles no?"
+
+msgid ""
+"Giving feedback to my partners has also helped me in the learning process"
+msgstr "Al dar el feedback al compañero, también me ha ayudado a aprender"
+
+msgid "Explain how"
+msgstr "Explica cómo"
+
+msgid ""
+"I feel more confident when speaking the target language outside of the course"
+msgstr ""
+"Tengo más confianza para hablar la lengua que estoy aprendiendo fuera del "
+"curso"
+
+msgid ""
+"Thanks to this course I am able to use the language in different contexts, "
+"such as my personal life, at a professional level, in social networks "
+"(Facebook, etc)"
+msgstr ""
+"Gracias a este curso soy capaz de aplicar la lengua que estoy aprendiendo a "
+"un contexto diferente, como mi vida personal, profesional, redes social "
+"(Facebook, etc.)"
+
+msgid "I know how to use what I’ve learned from the course in my daily life"
+msgstr ""
+"Sé cómo voy a utilizar lo que aprendí en el curso en nuevas situaciones"
+
+msgid "You must fill all required fields"
+msgstr "Debes rellenar todos los campos requeridos"
+
+msgid "Sent Feedback"
+msgstr "Feedback Enviado"
+
+msgid "Received Feedback"
+msgstr "Feedback Recibido"
+
+msgid "Before this course"
+msgstr "Antes de este curso"
+
+msgid "During this course"
+msgstr "Durante este curso"
+
+msgid "After this course"
+msgstr "DESPUÉS DE ESTE CURSO"
+
+msgid "Download a PDF file with all Tandems"
+msgstr "Descargar un fichero PDF con todos mis Tandems"

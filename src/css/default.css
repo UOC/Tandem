@@ -156,7 +156,7 @@ margin-top:45px;
 
 #footer{
     background-image: url("../images/Tandem-Speakapps_03.gif");
-	float:left;
+	/*float:left;*/
     background-position: left top;
     background-repeat: no-repeat;
     height: 114px;

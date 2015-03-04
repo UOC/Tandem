@@ -122,6 +122,14 @@ if (!$user_obj || !$course_id) {
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" media="all" href="css/slider2.css" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/star-rating.min.css" />
+
+<?php
+	//cmoyas change skin 
+	if(is_file('skins/css/styleSkin.css')){
+			echo '<link rel="stylesheet" type="text/css" media="all" href="skins/css/styleSkin.css" />';
+	}
+?>
+		
 		<style>
 		#footer-container{margin-top:-222px;position:inherit;}
 		#wrapper{padding:0px 58px}

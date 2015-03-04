@@ -55,6 +55,13 @@ $peopleWaitedWithoutTandem  = $gestorBD->peopleWaitedWithoutTandem($course_id);
 <script src="js/highcharts/js/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/data.js"></script>
 <script src="http://code.highcharts.com/modules/drilldown.js"></script>
+
+        <?php
+            //cmoyas change skin 
+            if(is_file('skins/css/styleSkin.css')){
+                    echo '<link rel="stylesheet" type="text/css" media="all" href="skins/css/styleSkin.css" />';
+            }
+        ?>
 <style>
 	.container{ margin-top:20px;}
 </style>
@@ -571,7 +578,6 @@ $(function () {
 });
 
 
-
 });	
 </script>
 </head>
@@ -579,16 +585,28 @@ $(function () {
 <div class='container'>
 	<div class='row'>		
 		<div class='col-md-12 text-right'>
-				<p><a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a></p>
+				<p>
+                    <a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>">
+                        <?php //cmoyas change skin
+                                if(is_file('skins/img/logo_APP.png')) echo '<img src="skins/img/logo_APP.png" alt="'.$LanguageInstance->get('tandem_logo').'" />';
+                                else echo '<img src="css/images/logo_Tandem.png" alt="'.$LanguageInstance->get('tandem_logo').'" />';
+                            ?>
+                    </a>                   
+                </p>
 		</div>		
 	</div>
 		<div class='row'>
 		<div class='col-md-12'>
 		<p>
-			 <a class='btn btn-success' href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
+             <a class='btn btn-success' href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
              <a href='statistics_tandem.php' class='btn btn-success' ><?php echo $LanguageInstance->get("Tandem Statistics");?></a> 
              <a href='tandemInfo.php?force=1&lang=en_US<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Go to tandem to practise English");?></a> 
              <a href='tandemInfo.php?force=1&lang=es_ES<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Ir al tandem para practicar Español");?></a> 
+             <?php
+                if(EDITSKIN==1){
+                   echo '<a class="btn btn-success" href="manage_skin_tandem.php">'.$LanguageInstance->get("Skin").'</a>';
+                }
+             ?>
 		</p>
 		</div>
 	</div>

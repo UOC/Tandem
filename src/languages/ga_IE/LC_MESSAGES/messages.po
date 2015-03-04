@@ -1,0 +1,408 @@
+# Translation of Tandem (trunk) in English
+# This file is distributed under the same license as the Development (trunk) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tandem (trunk)\n"
+"PO-Revision-Date: 2015-02-27 13:09+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n<11 ? 3 : "
+"4);\n"
+"X-Generator: Poedit 1.5.5\n"
+"POT-Creation-Date: \n"
+"Last-Translator: Antoni Bertran <antoni@tresipunt.com>\n"
+"Language-Team: \n"
+"Language: ga_IE\n"
+
+msgid "welcome"
+msgstr "Fáilte"
+
+msgid "no estas autoritzat"
+msgstr "níl sé seo ceadaithe"
+
+msgid "back"
+msgstr "Ar ais"
+
+msgid "txtOtherUserConn"
+msgstr "Tá tú nasctha le páirtnéir Tandem anois"
+
+msgid "txtWaiting4User"
+msgstr "Ag feitheamh ar nasc.."
+
+msgid "no_users_in_course"
+msgstr "níl úsáideoir eile sa chúrsa"
+
+msgid "txtTheUser"
+msgstr "<b>Nasc á dhéanamh le ("
+
+msgid "txtReplied"
+msgstr ") ag feitheamh le deimhniú </b>"
+
+msgid "refresh"
+msgstr "Nuashonraigh na húsáideoirí"
+
+msgid "user_in_tandem"
+msgstr "Níl fáil ar do pháirtnéir faoi láthair, bain triail as ar ball"
+
+msgid "show_tandem"
+msgstr "Léirigh gach Tandem"
+
+msgid "txtDesconnected"
+msgstr "Dícheangailte"
+
+msgid "select_user"
+msgstr "Roghnaigh úsáideoir"
+
+msgid "select_users"
+msgstr "Roghnaigh úsáideoirí"
+
+msgid "tandems"
+msgstr "Tandems"
+
+msgid "no_tandems"
+msgstr "Níl aon Tandem ann don úsáideoir seo"
+
+msgid "date"
+msgstr "Dáta"
+
+msgid "points"
+msgstr "Pointí"
+
+msgid "user_host"
+msgstr "Úsáideoirí Óstála"
+
+msgid "user"
+msgstr "Úsáideoir"
+
+msgid "user_guest"
+msgstr "Aoi-úsáideoir"
+
+msgid "date_guest_user_logged"
+msgstr "Dáta Logáilte Úsáideoir Eile"
+
+msgid "finalized"
+msgstr "Dáta Socraithe"
+
+msgid "total_time"
+msgstr "Am Iomlán"
+
+msgid "start"
+msgstr "Tosaigh!"
+
+msgid "accept"
+msgstr "Glac leis"
+
+msgid "select_exercise"
+msgstr "Roghnaigh Ceacht"
+
+msgid "tandem_description_1"
+msgstr ""
+"Fáilte, a %, chuig tástáil phíolótach Tandem. Oibríonn an uirlis seo le "
+"Google Chrome, Firefox 4 ar aghaidh, Safari 5."
+
+msgid "tandem_description_2"
+msgstr ""
+"Ní oibríonn an uirlis Tandem le Internet Explorer. Tá obair ar siúl chun an "
+"fhadhb seo a réiteach.."
+
+msgid "tandem_logo"
+msgstr "Lógó Tandem"
+
+msgid "tandem"
+msgstr "Tandem"
+
+msgid "exercise"
+msgstr "Ceacht"
+
+msgid "go"
+msgstr "Téigh ar aghaidh"
+
+msgid "waiting"
+msgstr "ag feitheamh ar úsáideoir..."
+
+msgid "waitingUserX"
+msgstr "ag feitheamh ar"
+
+msgid "acceptance"
+msgstr ""
+"Rachaidh an cuireadh seo in éag faoi cheann nóiméid mura nglacfaidh do "
+"pháirtnéir leis."
+
+msgid "direct_access_to_content"
+msgstr "Rochtain dhíreach ar ábhar"
+
+msgid "pending_tandems"
+msgstr "Cuirí ar feitheamh"
+
+msgid "no_pending_tandems"
+msgstr "Níl cuireadh ar bith ann ar feitheamh duit"
+
+msgid "reload_pending"
+msgstr "Athlódáil Tandem ar feitheamh"
+
+msgid "tasks_tandems"
+msgstr "Tascanna"
+
+msgid "questions_tasks_tandems"
+msgstr "Ceisteanna"
+
+msgid "task"
+msgstr "Tasc"
+
+msgid "question"
+msgstr "Ceist"
+
+msgid "total_time_seconds"
+msgstr "Am iomlán:&#13 %s nóiméad&#13 %s soicind"
+
+msgid "start_date"
+msgstr "Dáta tosaithe"
+
+msgid "finish_date"
+msgstr "Dáta críche"
+
+msgid "finished"
+msgstr "Críochnaithe"
+
+msgid "caducado"
+msgstr "Imithe in éag"
+
+msgid "all"
+msgstr "Uile"
+
+msgid "no"
+msgstr "Ní hea"
+
+msgid "yes"
+msgstr "Is ea"
+
+msgid "no_results_found"
+msgstr "Ní bhfuarthas toradh ar bith"
+
+msgid "play_as_user_host"
+msgstr "Bí i d'úsáideoir óstála"
+
+msgid "play_as_user_guest"
+msgstr "bí i d'aoi-úsáideoir"
+
+msgid "play"
+msgstr "Imir"
+
+msgid "just_been_invited"
+msgstr "Fuair tú cuireadh ó"
+
+msgid "user_agent_host"
+msgstr "Eolas faoi bhrabhsálaí an óstálaí"
+
+msgid "user_agent_guest"
+msgstr "Eolas faoi bhrabhsálaí an aoi"
+
+msgid "mange_exercises_tandem"
+msgstr "Bainistigh ceachtanna Tandem"
+
+msgid "choose_zip_file"
+msgstr "Roghniagh comhad zipeáilte le huaslódáil"
+
+msgid "zip_upload_ok"
+msgstr "Uaslódáladh an comhad %s agus díphacáladh é"
+
+msgid "error_uploading_file"
+msgstr "Bhí fadhb leis an uaslódáil. Bain triail as arís le do thoil."
+
+msgid "error_no_zip_format"
+msgstr ""
+"Ní comhad .zip an comhad atá tú ag iarraidh a uaslódáil. Bain triail as arís "
+"le do thoil."
+
+msgid "error_getting_information_of_exercise"
+msgstr "Níor aimsíodh an ceacht sa bhunachar"
+
+msgid "exercise_name"
+msgstr "Ainm Ceachta"
+
+msgid "name_xml_file"
+msgstr "Ainm Xml"
+
+msgid "enabled"
+msgstr "Cumasaithe"
+
+msgid "delete"
+msgstr "Scrios"
+
+msgid "show_profile"
+msgstr "taispeáin próifíl"
+
+msgid "hide_profile"
+msgstr "folaigh próifíl"
+
+msgid "quit"
+msgstr "Scoir"
+
+msgid "task_remaining_time"
+msgstr "Am fágtha sa tasc"
+
+msgid "overrides_xml_file"
+msgstr "sáróidh sé seo an comhad XML má tá an t-ainm céanna orthu"
+
+msgid "file_exercise_xml_aready_exists"
+msgstr ""
+"Is ann don chomhad %s , an bhfuil tú cinnte go bhfuil tú ag iarraidh é a "
+"sharú? Más ea, roghnaigh \"Overwrite to Yes\""
+
+msgid "update"
+msgstr "Uasdátaigh"
+
+msgid "upload"
+msgstr "Uaslódáil"
+
+msgid "error_choose_file"
+msgstr "Ní mór comhad ZIP a roghnú chun ábhar a uaslódáil"
+
+msgid "exercise_deleted_ok"
+msgstr "Scriosadh an ceacht"
+
+msgid "error_delete_exercise"
+msgstr ""
+"Tharla earráid nuair a bhí an ceacht a roghnaíodh á scriosadh. Deimhnigh gur "
+"ann don chomhad agus go bhfuil na ceadanna cuí luaite leis."
+
+msgid "main_xml_file_not_found"
+msgstr ""
+"Ní féidir an comhad a phróiseáil mar ní féidir teacht ar an bpríomhchomhad "
+"XML"
+
+msgid "no_exercises_found"
+msgstr "Níl fáil ar cheacht. Is gá don mhúinteoir é a chumrú."
+
+msgid "Solution"
+msgstr "Réiteach"
+
+msgid "See Solution"
+msgstr "Féach ar an réiteach"
+
+msgid "Next Task"
+msgstr "An chéad tasc eile"
+
+msgid "Click to finish"
+msgstr "Cliceáil le críochnú"
+
+msgid "txtEndTask"
+msgstr ") atá críochnaithe leis an tasc. Ag fanacht ar dheimhniú</b>"
+
+msgid "txtWaiting4UserEndTask"
+msgstr "Ag feitheamh ar do pháirtnéir chun an tasc a chríochnú"
+
+msgid "state"
+msgstr "Staid"
+
+msgid "activity_log"
+msgstr "Taifead ar ghníomhaíochtaí"
+
+msgid "exercises_list"
+msgstr "Liosta Ceachtanna"
+
+msgid "new_exercise"
+msgstr "Ceacht Nua"
+
+msgid "edit_exercise"
+msgstr "Cuir ceacht in eagar"
+
+msgid "file_name"
+msgstr "Ainm comhaid"
+
+msgid "browse"
+msgstr "Brabhsáil"
+
+msgid "none_file_selected"
+msgstr "Níor roghnaíodh comhad"
+
+msgid "search_criteria"
+msgstr "Critéir Chuardaigh"
+
+msgid "date_range"
+msgstr "Raon Sonraí"
+
+msgid "from"
+msgstr "Ó"
+
+msgid "to"
+msgstr "Chuig"
+
+msgid "status"
+msgstr "Stádas"
+
+msgid "duration"
+msgstr "Fad"
+
+msgid "browser_info"
+msgstr "Eolas brabhsálaí"
+
+msgid "total"
+msgstr "An tIomlán"
+
+msgid "complete"
+msgstr "Curtha i gcrích"
+
+msgid "incomplete"
+msgstr "Neamhiomlán"
+
+msgid "error"
+msgstr "Earráid"
+
+msgid "search"
+msgstr "Cuardaigh"
+
+msgid "invalid_tool"
+msgstr "Uirlis Neamhbhailí"
+
+msgid "Activityhasbeencompleted"
+msgstr "Tá an ghníomhaíocht críochnaithe!"
+
+msgid "ThankyouforusingTANDEM"
+msgstr "Go raibh maith agat as TANDEM a úsáid"
+
+msgid "Connecting..."
+msgstr "Nascadh ar siúl..."
+
+msgid "Task"
+msgstr "Tasc"
+
+msgid "See"
+msgstr "Féach"
+
+msgid "SlowConn"
+msgstr "Nasc mall"
+
+msgid "waiting_remaining_time"
+msgstr "Am fágtha sa tasc"
+
+msgid "Tandem"
+msgstr "Tandem"
+
+msgid "users_tandem"
+msgstr "Úsáideoirí Tandem"
+
+msgid "Waiting"
+msgstr "Ag feitheamh"
+
+msgid "users_waiting"
+msgstr "Úsáideoirí ag feitheamh"
+
+msgid "time_up"
+msgstr "Am caite!!"
+
+msgid "close"
+msgstr "Dún!!"
+
+msgid "please_stand_by"
+msgstr "Fan le do thoil!!"
+
+msgid "waiting_for_waiting_user_connexion"
+msgstr "Ag feitheamh ar nasc ar húsáideoir!!"
+
+msgid "waiting_for_tandem_connexion"
+msgstr "Ag feitheamh ar nasc ar nasc tandem!!"
+
+msgid "room_taken"
+msgstr "Tá an seomra seo gafa, faraor. Déan rogh arís."

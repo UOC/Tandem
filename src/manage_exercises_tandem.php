@@ -145,6 +145,13 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all" href="css/tandem.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="css/font-awesome-4.3.0/css/font-awesome.min.css">
+<?php
+	//cmoyas change skin 
+	if(is_file('skins/css/styleSkin.css')){
+			echo '<link rel="stylesheet" type="text/css" media="all" href="skins/css/styleSkin.css" />';
+	}
+?>
 <script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/jquery.ui.core.js"></script>
 <script src="js/jquery.ui.widget.js"></script>
@@ -175,7 +182,10 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 	<!-- /accessibility -->
 	
 	<!-- /wrapper -->
-	<div id="wrapper">
+	<?php //cmoyas change skin
+		if(is_file('skins/img/footer_road.png')) echo '<div id="wrapperRoad">';
+		else echo '<div id="wrapper">';
+	?>
 		<!-- main-container -->
   		<div id="main-container">
   			<?php if($message) echo '<div class="alert '.$message_cls.'" style="margin-bottom:0"><button type="button" class="close" aria-hidden="true">&#215;</button>'.$message.'</div>'; ?>
@@ -185,9 +195,14 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 
 				<?php /* if($message) echo '<div class="info">'.$message.'</div>'; */ ?>
 				<div id="content">
-					<a href="autoAssignTandemRoom.php" id='GoBack' class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
+					<a href="autoAssignTandemRoom.php" id='GoBack' class="tandem-btn-secundary btn-back"><i class="fa fa-reply"></i>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
 					<div id="logo">
-						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
+						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>">
+							<?php //cmoyas change skin
+								if(is_file('skins/img/logo_APP.png')) echo '<img src="skins/img/logo_APP.png" alt="'.Language::get('tandem_logo').'" />';
+								else echo '<img src="css/images/logo_Tandem.png" alt="'.Language::get('tandem_logo').'" />';
+							?>
+						</a>
 					</div>
 					
 					<div class="clear">
@@ -314,13 +329,26 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 	</div>
 	<!-- /wrapper -->
 	<!-- footer -->
-	<div id="footer-container">
+	<?php //cmoyas change skin
+		if(is_file('skins/img/footer_road.png')) echo '<div class="footer-containerRoad">';
+		else echo '<div id="footer-container">';
+	?>
 		<div id="footer">
-			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem')?>"></div>
+			<?php //cmoyas change skin
+					if(is_file('skins/img/footer_bike.png')) echo '<div class="footer-tandemBike" title="'.Language::get('tandem').'"><p>269x256px</p></div>';
+					else echo '<div class="footer-tandem" title="'.Language::get('tandem').'"><p>269x256px</p></div>';
+			?>
 			<div class="footer-logos">
-				<img src="img/logo_LLP.png" alt="Lifelong Learning Programme" />
-				<img src="img/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
-				<img src="img/logo_speakapps.png" alt="Speakapps" />
+				<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	
+				<?php //cmoyas change skin
+					if(is_file('skins/img/logo_footer1.png')) echo '<img src="skins/img/logo_footer1.png" alt="" />';
+					else echo '<img src="css/images/EU_flag.jpg" alt="" />';
+					if(is_file('skins/img/logo_footer3.png')) echo '<img src="skins/img/logo_footer3.png" alt="" />';
+					else echo '<img src="css/images/logo_speakapps.png" alt="Speakapps" />';
+				?>
 			</div>
 		</div>
 	</div>
