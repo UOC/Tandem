@@ -15,7 +15,8 @@ define('BD_NAME', 'tandem_2');
 define('BD_USERNAME', 'XXX'); 
 define('BD_PASSWORD', 'XXX'); 
 define('PROTECTED_FOLDER', dirname(__FILE__).'/xml');
-define('GOOGLE_ANALYTICS_ID', 'XXX'); 
+define('GOOGLE_ANALYTICS_ID', 'XXX');
+define('EDITSKIN', '0'); // 0 inactive - 1 active
 ```
 * Modify configuration_oki.cfg if you have enable OKI OSIDS:
 ```
