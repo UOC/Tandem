@@ -110,6 +110,61 @@ notifyTimerDown = function(id){
 		txtNews=id;
 	}
 }
+
+
+//getInitialText
+<?php if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLDER].$extra.'/';?>
+setInitialText = function(){
+$.ajax({
+		type: 'GET',
+		url: "<?php echo $path;?>data<?php echo $data;?>.xml",
+		data: {
+		},
+		dataType: "xml",
+		success: function(xml){		
+			var txtInitial = $(xml).find("textIni").text();
+			if(txtInitial!=""){
+				jQuery("#modal-IntroText").modal({
+		                escClose: true,
+		                opacity: 100,
+		                minHeight:jQuery( document ).height()<200?(jQuery( document ).height()*0.80):200,
+		                minWidth: jQuery( document ).width()<500?(jQuery( document ).width()*0.80):500
+		        });
+				$("#modal-IntroText .msg").html(txtInitial);
+			}
+		}
+	});
+}
+
+//getEndText
+setTextEndText = function(){
+$.ajax({
+		type: 'GET',
+		url: "<?php echo $path;?>data<?php echo $data;?>.xml",
+		data: {
+		},
+		dataType: "xml",
+		success: function(xml){		
+			var txtInitial = $(xml).find("textEnd").text();
+			if(txtInitial!=""){
+				jQuery("#modal-EndText").modal({
+		                escClose: true,
+		                opacity: 100,
+		                minHeight:jQuery( document ).height()<200?(jQuery( document ).height()*0.80):200,
+		                minWidth: jQuery( document ).width()<500?(jQuery( document ).width()*0.80):500
+		        });
+				$("#modal-EndText .msg").html(txtInitial);
+			}
+		}
+	});
+}
+
+
+ejectRatingForm = function(){
+	$.colorbox({href:"end.php?room=<?php echo $room;?>",escKey:true,overlayClose:false,onLoad:function(){$('#cboxClose').hide();}});
+}
+
+
 //colorbox
 $("a[rel='example1']").click(function(event){
 	event.preventDefault();
@@ -836,7 +891,8 @@ accion = function(id,number){
 
 showFinishedAlert = function(){
 	endOfTandem=1;
-	$.colorbox({href:"end.php?room=<?php echo $room;?>",escKey:true,overlayClose:false,onLoad:function(){$('#cboxClose').hide();}});
+	setTextEndText();
+	
 	try {
 		
 		if (intervalIfNextQuestionAnswered) {
@@ -1066,20 +1122,13 @@ windowNotificationTandem = $.window({
 			showVideochat(windowVideochat, widthWindowVideochat, heightWindowVideochat);
 		}
 
+
 		
-	        /*jQuery("#modal-content-video").modal(
-	            {
-	                escClose: true,
-	                opacity: 100,
-	                minHeight:jQuery( document ).height()<400?(jQuery( document ).height()*0.80):400,
-	                minWidth: jQuery( document ).width()<700?(jQuery( document ).width()*0.80):600,
-	                onShow: function (dialog) {
-	                },
-	                onClose: function (dialog) {
-	                    jQuery("#iframe-modal-video").attr("src","about:blank");
-	                    jQuery.modal.close();
-	                }
-	            });*/
+	        
+
+
+
+
 	    var connection_success = false; 
 	    <?php 
 	    /*if($_GET['user']=="a") $userR = "user=b"; else $userR = "user=a";
@@ -1197,9 +1246,8 @@ windowNotificationTandem = $.window({
 			hideSoundNotification: function () {				
 				windowNotificationTandem.close();			
 			}
-		});		
+		});
 
-			
 <?php
 } 
 ?>
@@ -1372,11 +1420,23 @@ This site reflects only the views of the authors, and the European Commission ca
 		<p class="msg">This is a timer based task, please confirm to start: It will begin when both you and your partner confirm by clicking the “Start task” button.</p>
 		<p><a href='#' onclick="StartTandemTimer();return false;" id="lnk-start-task" class="btn">Start Task</a></p>
 	</div>
-
 	<div id="modal-end-task" class="modal">
 		<p class="msg">Time up!</p>
 		<p><a href='#' id="lnk-end-task" class="btn simplemodal-close">Close</a></p>
 	</div>
+
+	<div id="modal-IntroText" class="modal">
+		<p class="msg"></p>
+		<p><a href='#' onclick="jQuery.modal.close();return false;" id="lnk-start-task" class="btn">OK</a></p>
+	</div>
+
+	<div id="modal-EndText" class="modal">
+		<p class="msg"></p>
+		<p><a href='#' onclick="jQuery.modal.close();ejectRatingForm();return false;" id="lnk-start-task" class="btn">OK</a></p>
+	</div>
+
+	
+
 	<!-- /modals -->
 	<!-- /footer -->
 	<script type="text/javascript" src="js/tandem.js"></script>
