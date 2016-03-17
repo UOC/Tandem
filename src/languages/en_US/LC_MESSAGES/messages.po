@@ -3,14 +3,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2014-12-03 18:16+0100\n"
+"PO-Revision-Date: 2015-10-09 12:17+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.5.5\n"
 "POT-Creation-Date: \n"
-"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
+"Last-Translator: Antoni Bertran <antoni@tresipunt.com>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 
@@ -269,7 +269,7 @@ msgid "main_xml_file_not_found"
 msgstr "Unable to process the file because can not find main XML file"
 
 msgid "no_exercises_found"
-msgstr "Not exercises available, teacher has to configure it"
+msgstr "No exercises available yet. "
 
 msgid "Solution"
 msgstr "Solution"
@@ -776,3 +776,112 @@ msgstr ""
 "Below you can find a summary of your ranking position, the feedback that you "
 "received throughout the whole course, and the feedback provided by your "
 "tandem partners."
+
+msgid "Self Assessment"
+msgstr "Self-Assessment"
+
+msgid "Self Assessment Form"
+msgstr "Self-Assessment Form"
+
+msgid "The aim of this form is for you to self-assess your own learning"
+msgstr ""
+"The purpose of this form is that you evaluate yourself how was your learning"
+
+msgid ""
+"Thinking about and being aware of your learning is key when learning a "
+"language"
+msgstr ""
+"Thinking about and being aware of your learning is key when learning a "
+"language"
+
+msgid ""
+"If you are aware of your language level, you will know what to do to keep "
+"improving"
+msgstr ""
+"If you are aware of your language level, you will know what to do to keep "
+"improving"
+
+msgid "My language level is"
+msgstr "My language level is"
+
+msgid "Could you asses your target level now?"
+msgstr "Could you asses your target level now?"
+
+msgid "I have achieved the objectives I set at the beginning of the course"
+msgstr "I have achieved the objectives I set at the beginning of the course"
+
+msgid "not at all"
+msgstr "not at all"
+
+msgid "a little"
+msgstr "a little"
+
+msgid "quite a bit"
+msgstr "quite a bit"
+
+msgid "a lot"
+msgstr "a lot"
+
+msgid "What things could you have done better in this course?"
+msgstr "What things could you have done better in this course?"
+
+msgid "(i.e. Searching for resources on my own, more participation , etc)"
+msgstr "(i.e. Searching for resources on my own, more participation , etc)"
+
+msgid ""
+"After your participation in the course, are you more aware of how to improve "
+"your language level?"
+msgstr ""
+"After your participation in the course, are you more aware of how to improve "
+"your language level?"
+
+msgid "(for instance, seeing films, reading books, etc)"
+msgstr "(for instance, seeing films, reading books, etc)"
+
+msgid "The feedback I have been given has helped me to improve"
+msgstr "The feedback I have been given has helped me to improve"
+
+msgid "Explain how"
+msgstr "Explain how"
+
+msgid ""
+"What aspects of the feedback provided to you were helpful and what were not?"
+msgstr ""
+"What aspects of the feedback provided to you were helpful and what were not?"
+
+msgid "Do you agree with those comments?"
+msgstr "Do you agree with those comments?"
+
+msgid ""
+"Giving feedback to my partners has also helped me in the learning process"
+msgstr ""
+"Giving feedback to my partners has also helped me in the learning process"
+
+msgid ""
+"I feel more confident when speaking the target language outside of the course"
+msgstr ""
+"I feel more confident when speaking the target language outside of the course"
+
+msgid ""
+"Thanks to this course I am able to use the language in different contexts, "
+"such as my personal life, at a professional level, in social networks "
+"(Facebook, etc)"
+msgstr ""
+"Thanks to this course I am able to use the language in different contexts, "
+"such as my personal life, at a professional level, in social networks "
+"(Facebook, etc)"
+
+msgid "I know how to use what I’ve learned from the course in my daily life"
+msgstr "I know how to use what I’ve learned from the course in my daily life"
+
+msgid "You must fill all required fields"
+msgstr "You must fill all required fields"
+
+msgid "Sent Feedback"
+msgstr "Sent Feedback"
+
+msgid "Received Feedback"
+msgstr "Received Feedback"
+
+msgid "Download a PDF file with all Tandems"
+msgstr "Download a PDF file with all Tandems"
