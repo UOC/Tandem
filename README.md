@@ -51,12 +51,19 @@ http://<ip>/tandem/integration_tool.php
 * acceptroster: set preference to accept roster or not
 * acceptsetting: set preference to accept setting service or not
 * customparameters: separated by new line you can specify each custom parameter. You can set some variables like:
+* 
 ** %ID_TANDEM% that represents the current id.
 ** %URL_TANDEM% that represents the url of.
 
 To launch an lti you have to go: http://yourlocaltandem/ltiConsumer.php?id=%ID_TANDEM%
 url_notify_started_recording=%URL_TANDEM%/api.php?id=%ID_TANDEM%&started=1
 url_notify_ended_recording=%URL_TANDEM%/api.php?id=%ID_TANDEM%&ended=1
+
+*Custom parameters*
+* custom_waiting_room set to 1 allow to use a waiting room. By default the users are splitted in teams by language
+* custom_waiting_room_no_teams set to 1 students go to same team and can do tandem with everything
+* custom_select_room set to 1 allow to select the exercise
+* 
 
 
 # Managing and Upload Exercises to Tandem #
