@@ -20,7 +20,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 } else {
 	
 
-	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : date("Y-m-d",strtotime( date("Y-m-d").' -1 months') ) ;
+	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : '2014-11-01';//date("Y-m-d",strtotime( date("Y-m-d").' -1 months') ) ;
 	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : date("Y-m-d");
 
 	$finishedTandem = -1;
@@ -584,7 +584,7 @@ $number = 1;?>
   	<div class="form-group">
    		<label for="what_I_can_do_better" >
    			4. <?php echo $LanguageInstance->get('What things could you have done better in this course?');?>
-   			<br><span class="small"><?php echo $LanguageInstance->get('(i.e. Searching for resources on my own, more participation , etc)')?></small>
+   			<br><span class="small"><?php echo $LanguageInstance->get('(i.e. Searching for resources on my own, more participation , etc)')?></span>
    		</label>	   	 	
  			<textarea name='what_I_can_do_better' class="form-control" rows="3"><?php echo isset($secondProfileForm['data']->what_I_can_do_better) ? $secondProfileForm['data']->what_I_can_do_better : '' ?></textarea>	    	
   	</div> 
@@ -593,7 +593,7 @@ $number = 1;?>
   	<div class="form-group">
    		<label for="how_I_can_do_improve" >
    			5. <?php echo $LanguageInstance->get('After your participation in the course, are you more aware of how to improve your language level?');?>
-   			<br><span class="small"><?php echo $LanguageInstance->get('(for instance, seeing films, reading books, etc)')?></small>
+   			<br><span class="small"><?php echo $LanguageInstance->get('(for instance, seeing films, reading books, etc)')?></span>
    		</label>	   	 	
  			<textarea name='how_I_can_do_improve' class="form-control" rows="3"><?php echo isset($secondProfileForm['data']->how_I_can_do_improve) ? $secondProfileForm['data']->how_I_can_do_improve : '' ?></textarea>	    	
   	</div> 

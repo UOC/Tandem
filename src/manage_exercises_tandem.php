@@ -318,8 +318,12 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 		<div id="footer">
 			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem')?>"></div>
 			<div class="footer-logos">
-				<img src="img/logo_LLP.png" alt="Lifelong Learning Programme" />
-				<img src="img/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
+				<!--img src="img/logo_LLP.png" alt="Lifelong Learning Programme" />
+				<img src="img/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" /-->
+				<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
 				<img src="img/logo_speakapps.png" alt="Speakapps" />
 			</div>
 		</div>

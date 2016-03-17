@@ -120,8 +120,21 @@ function lti_get_lang($context) {
 			case "de":
 				$lang="de_DE";
 				break;
+			case "pl":
+				$lang="pl_PL";
+				break;
+			case "hr":
+				$lang="hr_HR";
+				break;
+			case "sv":
+				$lang="sv_SE";
+				break;
+			case "ga":
+				$lang="ga_IE";
+				break;
 			default:
 				$lang="en_US";
+
 		}
 	}
 	if ($lang=='en_GB') {

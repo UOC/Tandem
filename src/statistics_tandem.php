@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/constants.php';
@@ -11,7 +11,8 @@ $course_id = $_SESSION[COURSE_ID];
 if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	//Tornem a l'index
 	header ('Location: index.php');
-} 
+	exit();
+}
 	$id_resource_lti = $_SESSION[ID_RESOURCE];
 	$gestorBD	= new GestorBD();
 	$users_course = $gestorBD->obte_llistat_usuaris($course_id);
@@ -23,18 +24,18 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	$id_task = isset($_POST['id_task'])?intval($_POST['id_task']):0;
 	$id_question = isset($_POST['id_question'])?intval($_POST['id_question']):0;
 	$user_selected = isset($_POST['user_selected'])?intval($_POST['user_selected']):0;
-	
+
 	$order_by_tandems = isset($_POST['order_by_tandems'])?intval($_POST['order_by_tandems']):0;
 	$order_by_tandems_direction = isset($_POST['order_by_tandems_direction'])?intval($_POST['order_by_tandems_direction']):0;
 	$order_by_tasks = isset($_POST['order_by_tasks'])?intval($_POST['order_by_tasks']):0;
 	$order_by_tasks_direction = isset($_POST['order_by_tasks_direction'])?intval($_POST['order_by_tasks_direction']):0;
 	$order_by_questions = isset($_POST['order_by_questions'])?intval($_POST['order_by_questions']):0;
 	$order_by_questions_direction = isset($_POST['order_by_questions_direction'])?intval($_POST['order_by_questions_direction']):0;
-	
+
 	$start_date = isset($_POST['start_date'])?$_POST['start_date']:'';
 	$finish_date = isset($_POST['finish_date'])?$_POST['finish_date']:'';
 	$finished = isset($_POST['finished'])?intval($_POST['finished']):-1; //-1 all values, 0 not finished, 1 only finished, 2 error
-	
+
 	$exercise_form  = isset($_POST['room'])?intval($_POST['room'],10):false;
 	if ($is_showTandem){
 		$user_tandems = $gestorBD->obte_llistat_tandems($course_id, $user_selected, $exercise_form, $id_tandem, $order_by_tandems, $order_by_tandems_direction, $start_date, $finish_date, $finished);
@@ -199,7 +200,7 @@ input.focus(function(event) {
 					input.focus();
 				});
 		},
-		
+
 
 		destroy: function() {
 			this.wrapper.remove();
@@ -243,22 +244,22 @@ $(document).ready(function(){
 	}
 
 	$( "#start_date" ).datepicker({
-		dateFormat: 'yy-mm-dd', 
-		showOn: "both", 
-		buttonImage: "img/calendar.gif", 
+		dateFormat: 'yy-mm-dd',
+		showOn: "both",
+		buttonImage: "img/calendar.gif",
 		buttonImageOnly: true,
-		numberOfMonths: 2, 
+		numberOfMonths: 2,
 		onClose: function( selectedDate ) {
 			$( "#finish_date" ).datepicker( "option", "minDate", selectedDate );
 		}
 	});
 
 	$( "#finish_date" ).datepicker({
-		dateFormat: 'yy-mm-dd', 
-		showOn: "both", 
-		buttonImage: "img/calendar.gif", 
+		dateFormat: 'yy-mm-dd',
+		showOn: "both",
+		buttonImage: "img/calendar.gif",
 		buttonImageOnly: true,
-		numberOfMonths: 2, 
+		numberOfMonths: 2,
 		onClose: function( selectedDate ) {
 			$( "#start_date" ).datepicker( "option", "maxDate", selectedDate );
 		}
@@ -279,10 +280,10 @@ $(document).ready(function(){
 
 	<!-- accessibility -->
 	<div id="accessibility">
-		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> | 
+		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> |
 	</div>
 	<!-- /accessibility -->
-	
+
 	<!-- /wrapper -->
 	<div id="wrapper">
 		<!-- main-container -->
@@ -299,19 +300,19 @@ $(document).ready(function(){
 
 					<div class="clear">
 						<h1 class="main-title"><?php echo $LanguageInstance->get('activity_log')?></h1>
-						
+
 						<div id="criteria-wrapper">
 							<a href="#" class="tandem-btn btn-search-criteria" id="btn-search-criteria"><i class="icon"></i><span><?php echo $LanguageInstance->get('search_criteria')?></span></a>
 							<div id="applied-criteria"><ul></ul></div>
 						</div>
-						
+
 						<form action="#" method="post" class="" id="form_action">
 
 							<div id="search-criteria">
 
 								<fieldset>
 									<label for="select_user" class="search-lbl"><?php echo $LanguageInstance->get('user')?>:</label>
-									<?php 
+									<?php
 									if ($users_course && count($users_course)>0) {
 										?>
 										<select name="user_selected" id="user_selected" tabindex="1" data-title="<?php echo $LanguageInstance->get('user')?>">
@@ -320,14 +321,14 @@ $(document).ready(function(){
 											<option value="<?php echo $user['id']?>" <?php echo ($user_selected==$user['id']?'selected':'')?>><?php echo $user['surname'].', '.$user['firstname']?></option>
 											<?php }?>
 										</select>
-										<?php 
+										<?php
 									} else {
 										?>
 										<input type="text" name="not_users" value="<?php echo $LanguageInstance->get('no_users_in_course'); ?>" tabindex="1" disabled="disabled" />
 										<?php } ?>
 									</fieldset>
 
-									<?php if (count($array_exercises)>0) {?>
+									<?php if ($array_exercises && count($array_exercises)>0) { ?>
 									<fieldset>
 										<label for="select_exercise" class="search-lbl"><?php echo $LanguageInstance->get('exercise')?>:</label>
 										<select id="select_exercise" name="select_exercise" tabindex="2" data-title="<?php echo $LanguageInstance->get('exercise')?>">
@@ -335,7 +336,7 @@ $(document).ready(function(){
 											<?php foreach ($array_exercises as $exercise) {?>
 											<option value="<?php echo $exercise['name_xml_file']?>" <?php echo $selected_exercise==$exercise['name_xml_file']?'selected="selected"':''?>><?php echo $exercise['name']?></option>
 											<?php }?>
-										</select>	
+										</select>
 									</fieldset>
 									<?php }?>
 
@@ -366,23 +367,27 @@ $(document).ready(function(){
 
 								</div>
 								<div class="manage-area">
-									<?php 
+									<?php
 									if ($is_showTandem) { ?>
 									<h3 class="secundary-title"><?php echo $LanguageInstance->get('Tandems')?></h3>
-									<?
-									if ($user_selected==0 && ($user_tandems==null || count($user_tandems)==0)) {?>
-									<div class="message">
-										<p><strong><?php echo $LanguageInstance->get('no_results_found')?></strong></p>
-									</div>
-									<?php 
+									<?php
+									if ($user_selected==0 && ($user_tandems==null || count($user_tandems)==0)) {
+
+										?>
+										<div class="message">
+											<p><strong><?php echo $LanguageInstance->get('no_results_found') ?></strong>
+											</p>
+										</div>
+										<?php
+									}
 								} else {
 									if ($user_tandems==null || count($user_tandems)==0) {
 										?>
 										<div class="message">
 											<p><strong><?php echo $LanguageInstance->get('no_tandems')?></strong></p>
 										</div>
-										<?php 	
-									} else { 
+										<?php
+									} else {
 
 										?>
 										<table id="statistics1" class="table">
@@ -405,7 +410,7 @@ $(document).ready(function(){
 											</tr>
 										</thead>
 										<tbody>
-											<?php 
+											<?php
 											foreach ($user_tandems as $tandem) {
 												$seconds = isset($tandem['total_time']) ? $tandem['total_time']:0;
 												$minutes = minutes($seconds);
@@ -416,7 +421,7 @@ $(document).ready(function(){
 												$task_tandemsSubTime = $gestorBD->obte_task_tandems($course_id, $user_selected, $exercise_form, $tandem['id'], $id_task, $order_by_tasks, $order_by_tasks_direction, $start_date, $finish_date, $finished);
 												$subTimer= array();
 												$j=0;$i=0;
-												foreach ($task_tandemsSubTime as $question) {	
+												foreach ($task_tandemsSubTime as $question) {
 													$j++;
 													$secondsSt = isset($question['total_time']) ? $question['total_time']:0;
 													$minutesSt = minutes($secondsSt);
@@ -508,7 +513,7 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<?php 
+										<?php
 										foreach ($task_tandems as $task) {
 											$seconds = isset($task['total_time'])?$task['total_time']:0;
 											$minutes = minutes($seconds);
@@ -529,7 +534,7 @@ $(document).ready(function(){
 										<?php }?>
 									</tbody>
 								</table>
-								<?php 
+								<?php
 							}
 
 
@@ -550,7 +555,7 @@ $(document).ready(function(){
 										</tr>
 									</thead>
 									<tbody>
-										<?php 
+										<?php
 										foreach ($question_task_tandems as $question) {
 											$seconds = isset($question['total_time'])?$question['total_time']:0;
 											$minutes = minutes($seconds);
@@ -569,10 +574,10 @@ $(document).ready(function(){
 											<?php }?>
 										</tbody>
 									</table>
-									<?php 
+									<?php
 								}
 
-							}?>
+							?>
 
 							<input type="hidden" name="id_tandem" id="form_id_tandem" value="<?php echo $id_tandem?>" />
 							<input type="hidden" name="id_task" id="form_id_task" value="<?php echo $id_task?>" />
@@ -603,8 +608,12 @@ $(document).ready(function(){
 	<div id="footer">
 		<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem')?>"></div>
 		<div class="footer-logos">
-			<img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
-			<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
+			<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
+			<!--img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
+			<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" /-->
 			<img src="css/images/logo_speakapps.png" alt="Speakapps" />
 		</div>
 	</div>
@@ -612,6 +621,3 @@ $(document).ready(function(){
 <!-- /footer -->
 </body>
 </html>
-
-
-

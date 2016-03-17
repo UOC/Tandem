@@ -36,6 +36,7 @@ define ('OATUH_CONSUMER_KEY', 'oauth_consumer_key');
 define ('DELIMITER', ':');
 define ('CURRENT_USER', 'current_user');
 define ('USE_WAITING_ROOM', 'use_waiting_room');
+define ('USE_WAITING_ROOM_NO_TEAMS', 'use_waiting_room_no_teams');
 define ('FORCE_SELECT_ROOM', 'force_select_room');
 define ('OPEN_TOOL_ID', 'open_tool_id');
 define ('WEEK','week');

@@ -25,6 +25,7 @@ if ($_SESSION[OPEN_TOOL_ID]>0){?>
 	width:695px;
 	height:626px;  
 }
+
 -->
 </style>
 </head>
@@ -43,11 +44,11 @@ if (strpos($url_2_return, '?')!==false){
 	$separtor = '&';
 }
 $url_2_return .= $separtor.'id='.$id_register_tandem;
-?>
+	?>
 <script language="javascript">
-	window.onbeforeunload = function() {};
-	document.location.href='ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>&return_url=<?php echo $url_2_return?>';
+window.onbeforeunload = function() {};
+document.location.href='ltiConsumer.php?id=<?php echo $_SESSION[OPEN_TOOL_ID]?>&return_url=<?php echo $url_2_return?>';
 </script>
-<?php } ?>
+<?php }?>
 </body>
 </html>

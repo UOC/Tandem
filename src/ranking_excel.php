@@ -17,7 +17,7 @@ if (!$user_obj || $user_obj->instructor!=1) {
 	die();
 } 
 $gestorBD = new GestorBD();  	
-$usersRanking = $gestorBD->getUsersRanking($course_id);	
+$usersRanking = $gestorBD->getUsersRanking($course_id, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 //$xls = new Excel_XML('UTF-8', false, $LanguageInstance->get('Users Assigned'));
 $objPHPExcel = new PHPExcel();
 
@@ -26,96 +26,143 @@ $objPHPExcel->getProperties()->setCreator("Tandem MOOC")
 							 ->setLastModifiedBy("Tandem MOOC")
 							 ->setTitle("Ranking Export")
 							 ->setSubject("Ranking");
-$objWorkSheet = $objPHPExcel->createSheet(0); 
+$objWorkSheet = $objPHPExcel->createSheet(0);
+if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
+	$objWorkSheet->setTitle($LanguageInstance->get('Ranking for learners of English'));
+	if (!empty($usersRanking['en'])) {
+		$objWorkSheet->setCellValue('A1', $LanguageInstance->get('Ranking for learners of English'));
+		$objWorkSheet->setCellValue('A2', $LanguageInstance->get('User'))
+			->setCellValue('B2', $LanguageInstance->get('Email'))
+			->setCellValue('C2', $LanguageInstance->get('Points'))
+			->setCellValue('D2', $LanguageInstance->get('Total time'))
+			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
+			->setCellValue('F2', $LanguageInstance->get('Accuracy'))
+			->setCellValue('G2', $LanguageInstance->get('Fluency'))
+			->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+		$cont = 3;
+		$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
+		$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('A2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('B2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
 
-$objWorkSheet->setTitle($LanguageInstance->get('Ranking for learners of English'));	            
-if(!empty($usersRanking['en'])){
-	$objWorkSheet->setCellValue('A1', $LanguageInstance->get('Ranking for learners of English'));
-	$objWorkSheet->setCellValue('A2', $LanguageInstance->get('User'))
-					->setCellValue('B2', $LanguageInstance->get('Email'))
-					->setCellValue('C2', $LanguageInstance->get('Points'))
-		            ->setCellValue('D2', $LanguageInstance->get('Total time'))
-		            ->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
-		            ->setCellValue('F2', $LanguageInstance->get('Accuracy'))
-		            ->setCellValue('G2', $LanguageInstance->get('Fluency'))
-		            ->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
-		$cont = 3;   
-	$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
-	$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
-    $objWorkSheet->getStyle('A2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('B2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+		foreach ($usersRanking['en'] as $user_id => $f) {
 
-	  	foreach($usersRanking['en'] as $user_id => $f){
-		  		
-	  		$obj = secondsToTime($f['total_time']);$time = '';
-            if ($obj['h']>0) {
-                $time .= ($obj['h']<10?'0':'').$obj['h'].':';
-            }
-            $time .= ($obj['m']<10?'0':'').$obj['m'].':';
-            $time .= ($obj['s']<10?'0':'').$obj['s'];
-	 		  	
+			$obj = secondsToTime($f['total_time']);
+			$time = '';
+			if ($obj['h'] > 0) {
+				$time .= ($obj['h'] < 10 ? '0' : '') . $obj['h'] . ':';
+			}
+			$time .= ($obj['m'] < 10 ? '0' : '') . $obj['m'] . ':';
+			$time .= ($obj['s'] < 10 ? '0' : '') . $obj['s'];
+
+			$objWorkSheet->setCellValue('A' . $cont, (isset($f['user']) ? $f['user'] : ''))
+				->setCellValue('B' . $cont, $gestorBD->getUserEmail($user_id))
+				->setCellValue('C' . $cont, (isset($f['points']) ? $f['points'] : ''))
+				->setCellValue('D' . $cont, $time)
+				->setCellValue('E' . $cont, intval($f['number_of_tandems']))
+				->setCellValue('F' . $cont, $f['accuracy'])
+				->setCellValue('G' . $cont, $f['fluency'])
+				->setCellValue('H' . $cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+			$cont++;
+		}
+	}
+
+	$objWorkSheet = $objPHPExcel->createSheet(1);
+
+	$objWorkSheet->setTitle($LanguageInstance->get('Ranking for learners of Spanish'));
+	if (!empty($usersRanking['es'])) {
+		$objWorkSheet->setCellValue('A1', $LanguageInstance->get('Ranking for learners of Spanish'));
+		$objWorkSheet->setCellValue('A2', $LanguageInstance->get('User'))
+			->setCellValue('B2', $LanguageInstance->get('Email'))
+			->setCellValue('C2', $LanguageInstance->get('Points'))
+			->setCellValue('D2', $LanguageInstance->get('Total time'))
+			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
+			->setCellValue('F2', $LanguageInstance->get('Accuracy'))
+			->setCellValue('G2', $LanguageInstance->get('Fluency'))
+			->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+		$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
+		$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('A2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('B2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+		$cont = 3;
+		foreach ($usersRanking['es'] as $user_id => $f) {
+
+			$obj = secondsToTime($f['total_time']);
+			$time = '';
+			if ($obj['h'] > 0) {
+				$time .= ($obj['h'] < 10 ? '0' : '') . $obj['h'] . ':';
+			}
+			$time .= ($obj['m'] < 10 ? '0' : '') . $obj['m'] . ':';
+			$time .= ($obj['s'] < 10 ? '0' : '') . $obj['s'];
+
+			$objWorkSheet->setCellValue('A' . $cont, (isset($f['user']) ? $f['user'] : ''))
+				->setCellValue('B' . $cont, $gestorBD->getUserEmail($user_id))
+				->setCellValue('C' . $cont, (isset($f['points']) ? $f['points'] : ''))
+				->setCellValue('D' . $cont, $time)
+				->setCellValue('E' . $cont, intval($f['number_of_tandems']))
+				->setCellValue('F' . $cont, $f['accuracy'])
+				->setCellValue('G' . $cont, $f['fluency'])
+				->setCellValue('H' . $cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+			$cont++;
+		}
+	}
+} else {
+	$objWorkSheet->setTitle($LanguageInstance->get('Ranking for learners'));
+	if(!empty($usersRanking)){
+		$objWorkSheet->setCellValue('A1', $LanguageInstance->get('Ranking for learners'));
+		$objWorkSheet->setCellValue('A2', $LanguageInstance->get('User'))
+			->setCellValue('B2', $LanguageInstance->get('Email'))
+			->setCellValue('C2', $LanguageInstance->get('Points'))
+			->setCellValue('D2', $LanguageInstance->get('Total time'))
+			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
+			->setCellValue('F2', $LanguageInstance->get('Accuracy'))
+			->setCellValue('G2', $LanguageInstance->get('Fluency'))
+			->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+		$cont = 3;
+		$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
+		$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('A2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('B2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
+		$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+
+		foreach($usersRanking as $user_id => $f){
+
+			$obj = secondsToTime($f['total_time']);$time = '';
+			if ($obj['h']>0) {
+				$time .= ($obj['h']<10?'0':'').$obj['h'].':';
+			}
+			$time .= ($obj['m']<10?'0':'').$obj['m'].':';
+			$time .= ($obj['s']<10?'0':'').$obj['s'];
+
 			$objWorkSheet->setCellValue('A'.$cont, (isset($f['user'])?$f['user']:''))
-							->setCellValue('B'.$cont, $gestorBD->getUserEmail($user_id))
-							->setCellValue('C'.$cont, (isset($f['points'])?$f['points']:''))
-				            ->setCellValue('D'.$cont, $time)
-				            ->setCellValue('E'.$cont, intval($f['number_of_tandems']))
-				            ->setCellValue('F'.$cont, $f['accuracy'])
-				            ->setCellValue('G'.$cont, $f['fluency'])
-				            ->setCellValue('H'.$cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
-			  	$cont++;			
-	  	}
-	  }
-
-$objWorkSheet = $objPHPExcel->createSheet(1); 
-
-$objWorkSheet->setTitle($LanguageInstance->get('Ranking for learners of Spanish'));	            
-if(!empty($usersRanking['es'])){
-	$objWorkSheet->setCellValue('A1', $LanguageInstance->get('Ranking for learners of Spanish'));
-	$objWorkSheet->setCellValue('A2', $LanguageInstance->get('User'))
-					->setCellValue('B2', $LanguageInstance->get('Email'))
-					->setCellValue('C2', $LanguageInstance->get('Points'))
-		            ->setCellValue('D2', $LanguageInstance->get('Total time'))
-		            ->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
-		            ->setCellValue('F2', $LanguageInstance->get('Accuracy'))
-		            ->setCellValue('G2', $LanguageInstance->get('Fluency'))
-		            ->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
-	$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
-	$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
-    $objWorkSheet->getStyle('A2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('B2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
-	$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
-		$cont = 3;            
-	  	foreach($usersRanking['es'] as $user_id => $f){
-		  		
-	  		$obj = secondsToTime($f['total_time']);$time = '';
-            if ($obj['h']>0) {
-                $time .= ($obj['h']<10?'0':'').$obj['h'].':';
-            }
-            $time .= ($obj['m']<10?'0':'').$obj['m'].':';
-            $time .= ($obj['s']<10?'0':'').$obj['s'];
-	 		  	
-			$objWorkSheet->setCellValue('A'.$cont, (isset($f['user'])?$f['user']:''))
-							->setCellValue('B'.$cont, $gestorBD->getUserEmail($user_id))
-							->setCellValue('C'.$cont, (isset($f['points'])?$f['points']:''))
-				            ->setCellValue('D'.$cont, $time)
-				            ->setCellValue('E'.$cont, intval($f['number_of_tandems']))
-				            ->setCellValue('F'.$cont, $f['accuracy'])
-				            ->setCellValue('G'.$cont, $f['fluency'])
-				            ->setCellValue('H'.$cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
-			  	$cont++;			
-	  	}
-	  }	  
+				->setCellValue('B'.$cont, $gestorBD->getUserEmail($user_id))
+				->setCellValue('C'.$cont, (isset($f['points'])?$f['points']:''))
+				->setCellValue('D'.$cont, $time)
+				->setCellValue('E'.$cont, intval($f['number_of_tandems']))
+				->setCellValue('F'.$cont, $f['accuracy'])
+				->setCellValue('G'.$cont, $f['fluency'])
+				->setCellValue('H'.$cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+			$cont++;
+		}
+	}
+}
 	// Set active sheet index to the first sheet, so Excel opens this as the first sheet
 	$objPHPExcel->setActiveSheetIndex(0);
 	header('Content-Type: application/vnd.ms-excel');

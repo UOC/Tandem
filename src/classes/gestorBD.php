@@ -900,7 +900,7 @@ class GestorBD {
      */
     public function has_invited_to_tandem($id_exercise, $id_course, $id_resource_lti, $id_current_user, $id_other_user) {
         $ret = -1;
-        //Mirem si ens ha invitat
+     //Mirem si ens ha invitat
         $sql = 'SELECT id FROM tandem 
                 WHERE id_exercise = ' . $id_exercise . ' AND id_course = ' . $id_course . ' AND id_resource_lti = ' . $this->escapeString($id_resource_lti) . '
                 AND id_user_host = ' . $id_other_user . ' AND id_user_guest = ' . $id_current_user . ' AND is_guest_user_logged!=1 AND TIMESTAMPDIFF(HOUR,created,now()) <= 24 order by created desc ';
@@ -1952,11 +1952,12 @@ class GestorBD {
     /**
      *  We pass an array of exercices the user is waiting or 
      */
-    public function checkIfAvailableTandemForExercise($exercises_ids,$id_course,$language,$user_id,$otherlanguage){
+    public function checkIfAvailableTandemForExercise($exercises_ids,$id_course,$language,$user_id,$otherlanguage,
+                                                      $unique_team=false){
         
         //lets see if there is someone waiting for one ot these exercises.
         foreach($exercises_ids as $id_ex){
-            $val = $this->checkForTandems($id_ex,$id_course,$otherlanguage,$user_id);
+            $val = $this->checkForTandems($id_ex,$id_course,$otherlanguage,$user_id,$unique_team);
             if(!empty($val)){
                 // We have someone already waiting for one of the exercises :)
                 return $val;
@@ -1966,7 +1967,7 @@ class GestorBD {
         $this->deleteUserFromWaitingRooms($user_id,$id_course);
         //if we are here is because there is no one for this exercise, so lets offer them.         
         foreach($exercises_ids as $id_ex){          
-         $this->offer_exercise_autoassign($language, $id_course, $id_ex,$user_id);
+         $this->offer_exercise_autoassign($language, $id_course, $id_ex, $user_id,'',$unique_team);
         }  
 
         return false;     
@@ -1974,7 +1975,7 @@ class GestorBD {
     /**
      * Here we check if there are any tandems available from all the exercises id of the user.
      */
-    public function checkForTandems($exercises_ids,$id_course,$otherlanguage,$user_id){
+    public function checkForTandems($exercises_ids,$id_course,$otherlanguage,$user_id,$unique_team=false){
 
          if(strpos($exercises_ids,",") !== false){
             $exs = explode(",",$exercises_ids);
@@ -1983,15 +1984,15 @@ class GestorBD {
            $exs[] = $exercises_ids; 
          }
 
+         $where = $unique_team?'1=1':("wr.language='".$otherlanguage."'");
          //lets see if there anyone waiting that we can do a tandem with
          foreach($exs as $id_ex){            
             $sql = "select wr.*,wru.id_user as guest_user_id, wru.user_agent as user_agent from waiting_room as wr
                     inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
-             where wr.language='".$otherlanguage."' 
+             where ".$where."
              and wr.id_course ='".$id_course."' 
              and wr.id_exercise= '".$id_ex."'
              and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 30 seconds before
-            
             $result = $this->consulta($sql);
             if ($this->numResultats($result) > 0) { 
                 return $this->obteComArray($result);
@@ -2049,7 +2050,7 @@ class GestorBD {
      * @param type $courseID
      * @param type $exerciseID
      */
-    public function offer_exercise_autoassign($language, $courseID, $exerciseID,$idUser, $user_agent='')
+    public function offer_exercise_autoassign($language, $courseID, $exerciseID,$idUser, $user_agent='',$unique_team=false)
     {
         $ok = false;
         if ($user_agent=='') {
@@ -2059,7 +2060,7 @@ class GestorBD {
         $sqlDelete = 'delete from waiting_room where number_user_waiting = 0 and id_course = '.$courseID.' and id_exercise = ' . $exerciseID;
         $resultDelete = $this->consulta($sqlDelete);
         
-        $sqlSelect = 'select number_user_waiting, id from waiting_room where id_course = '.$courseID.' and id_exercise = ' . $exerciseID .' and language="'.$language.'"';
+        $sqlSelect = 'select number_user_waiting, id from waiting_room where id_course = '.$courseID.' and id_exercise = ' . $exerciseID .($unique_team?'':' and language="'.$language.'"');
         $resultSelect = $this->consulta($sqlSelect);
         $waiting_room_id = -1;
         
@@ -2544,43 +2545,50 @@ class GestorBD {
                 }
         }*/
 
+    /**
+     * Get ranking by name
+     * @param $course_id
+     * @param bool $lang
+     * @return array
+     */
+        function getRankingByLang($course_id, $lang=false) {
+            $r = array();
+            $estraSQL = '';
+            if ($lang) {
+                $extraSQL = " and UR.lang=". $this->escapeString($lang);
+            }
+            $result = $this->consulta("select * from user_ranking as UR
+                                            inner join user_course as UC on UC.id_user = UR.user_id
+                        where UR.course_id = " . $this->escapeString($course_id) . $extraSQL ." and UC.is_instructor = 0 order by points desc");
+            if ($this->numResultats($result) > 0) {
+                $data = $this->obteComArray($result);
+                foreach ($data as $key => $value) {
+                    $r[$value['user_id']]['user'] = $this->getUserName($value['user_id']);
+                    $r[$value['user_id']]['points'] = $value['points'];
+                    $r[$value['user_id']]['total_time'] = $value['total_time'];
+                    $r[$value['user_id']]['number_of_tandems'] = $value['number_of_tandems'];
+                    $r[$value['user_id']]['fluency'] = $value['fluency'];
+                    $r[$value['user_id']]['accuracy'] = $value['accuracy'];
+                    $r[$value['user_id']]['overall_grade'] = $value['overall_grade'];
+                }
+            }
+            return $r;
+
+        }
+
         /**
          * Gets all the users total time ranking for a specific course 
          */
-
-        function getUsersRanking($course_id){
+        function getUsersRanking($course_id, $unique_team=false){
                 $r = array();
 
-                $result = $this->consulta("select * from user_ranking as UR
-                                        inner join user_course as UC on UC.id_user = UR.user_id                                          
-                    where UR.course_id = ".$this->escapeString($course_id)." and UR.lang='en_US' and UC.is_instructor = 0 order by points desc");               
-                if ($this->numResultats($result) > 0){ 
-                    $data =  $this->obteComArray($result);                        
-                    foreach($data as $key => $value){
-                        $r['en'][$value['user_id']]['user'] = $this->getUserName($value['user_id']);
-                        $r['en'][$value['user_id']]['points'] = $value['points']; 
-                        $r['en'][$value['user_id']]['total_time'] = $value['total_time']; 
-                        $r['en'][$value['user_id']]['number_of_tandems'] = $value['number_of_tandems']; 
-                        $r['en'][$value['user_id']]['fluency'] = $value['fluency']; 
-                        $r['en'][$value['user_id']]['accuracy'] = $value['accuracy']; 
-                        $r['en'][$value['user_id']]['overall_grade'] = $value['overall_grade']; 
-                    }
-                } 
+                if (!$unique_team) {
 
-                $result = $this->consulta("select * from user_ranking as UR
-                                            inner join user_course as UC on UC.id_user = UR.user_id                                          
-                    where UR.course_id = ".$this->escapeString($course_id)." and UR.lang='es_ES' and UC.is_instructor = 0 order by points desc");                
-                if ($this->numResultats($result) > 0){ 
-                    $data =  $this->obteComArray($result);                        
-                    foreach($data as $key => $value){
-                        $r['es'][$value['user_id']]['user'] = $this->getUserName($value['user_id']);
-                        $r['es'][$value['user_id']]['points'] = $value['points'];
-                        $r['es'][$value['user_id']]['total_time'] = $value['total_time']; 
-                        $r['es'][$value['user_id']]['number_of_tandems'] = $value['number_of_tandems']; 
-                        $r['es'][$value['user_id']]['fluency'] = $value['fluency']; 
-                        $r['es'][$value['user_id']]['accuracy'] = $value['accuracy']; 
-                        $r['es'][$value['user_id']]['overall_grade'] = $value['overall_grade']; 
-                    }
+                    $r['en'] = $this->getRankingByLang($course_id, 'en_US');
+                    $r['es'] = $this->getRankingByLang($course_id, 'es_ES');
+                } else {
+                    $r['all_lang'] = $this->getRankingByLang($course_id);
+
                 }
                 return $r;
         }
@@ -2588,15 +2596,18 @@ class GestorBD {
         /**
          * This function gets the position in the ranking of someone
          */
-         function  getUserRankingPosition($user_id,$language,$course_id){
+         function  getUserRankingPosition($user_id,$language,$course_id, $unique_team=false){
             $pos = 0;
             $sql = "select user_id,user_ranking_general.lang,user_ranking_general.points, ".
                     "(SELECT COUNT(*)+1  ".
                      " FROM  user_ranking as user_ranking_pos ".
                      " inner join user_course on user_course.id_user=user_ranking_pos.user_id and user_course.id_course=user_ranking_pos.course_id  and user_course.is_instructor = 0 ".
                      "WHERE user_ranking_pos.points > user_ranking_general.points and  user_ranking_pos.lang = user_ranking_general.lang) AS position ".
-                 "from user_ranking as user_ranking_general where course_id =".$this->escapeString($course_id)." and lang=".$this->escapeString($language).
+                 "from user_ranking as user_ranking_general where course_id =".$this->escapeString($course_id).
                 " and user_id = ".$this->escapeString($user_id);
+             if (!$unique_team) {
+                 $sql.=" and lang=".$this->escapeString($language);
+             }
 
              $result = $this->consulta($sql);
              if ($this->numResultats($result) > 0){ 
@@ -2782,13 +2793,14 @@ class GestorBD {
         /**
          * Returns all the users waiting on the waiting_room for spanish and english
          */
-        function getUsersWaitingByLanguage($course_id,$language='es_ES'){
-            //$sql= "select count(id) as total from waiting_room where language=".$this->escapeString($language)." and id_course = ".$this->escapeString($course_id)."";    
-            $sql= "select 
+        function getUsersWaitingByLanguage($course_id,$language='es_ES', $unique_team=false){
+
+            $where = $unique_team?'1=1':('wr.language='.$this->escapeString($language));
+            $sql= "select
             count(distinct wru.id_user) as total
             from waiting_room wr
             inner join waiting_room_user as wru on wru.id_waiting_room=wr.id and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) ".  //check the wr has been created 30 seconds before";    
-            "where wr.language=".$this->escapeString($language)." and wr.id_course = ".$this->escapeString($course_id);
+            "where ".$where." and wr.id_course = ".$this->escapeString($course_id);
             
             $result = $this->consulta($sql);
              if ($this->numResultats($result) > 0){                 
@@ -3327,6 +3339,7 @@ class GestorBD {
                          left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
                          inner join tandem as T on T.id = UT.id_tandem
                         where ((coalesce(UT.finalized,0)=0 and total_time>300) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and 
+                        T.created <= '2014-12-10 12:00:00' and
                         T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
 
                 $points = 0;
@@ -3640,6 +3653,27 @@ class GestorBD {
                              inner join tandem as T on T.id = UT.id_tandem
                             where 
                             T.id_course = '.$this->escapeString($course_id).' and UT.id_user = '.$this->escapeString($userid);
+        $row = false;
+        $result = $this->consulta($sql);
+        if ($this->numResultats($result) > 0) {
+            $row = $this->obteObjecteComArray($result);
+        }
+        return $row;
+
+     }
+
+
+     /**
+      * Get Ranking data
+      * @param  [type] $userid    [description]
+      * @param  [type] $course_id [description]
+      * @return [type]            [description]
+      */
+     public function getRankingData($userid, $course_id) {
+
+        $sql = 'select * from user_ranking as UR
+                                            inner join user_course as UC on UC.id_user = UR.user_id                                          
+                    where UR.course_id = '.$this->escapeString($course_id).' and UR.user_id = '.$this->escapeString($userid);
         $row = false;
         $result = $this->consulta($sql);
         if ($this->numResultats($result) > 0) {

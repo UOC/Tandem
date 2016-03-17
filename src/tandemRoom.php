@@ -56,12 +56,16 @@ if (!$user_obj || !$course_id) {
                 $fullname = mb_convert_encoding($user_lti->fullname, 'ISO-8859-1', 'UTF-8');
                 $email = mb_convert_encoding($user_lti->email, 'ISO-8859-1', 'UTF-8');
                 
-                //Afegim usuari x LTI                
+                //Afegim usuari x LTI
+                
                 $gestorBD->afegeixUsuari($course_id, $id_user_lti, $firstname, $lastname, $fullname, $email, '');
 //$users_course[$id_user_lti] = $gestorBD->get_user_by_username($id_user_lti);
             }
 //Reorder
-            $users_course = $gestorBD->obte_llistat_usuaris($course_id, $user_obj->id);            
+            $users_course = $gestorBD->obte_llistat_usuaris($course_id, $user_obj->id);
+            
+          
+            
         } else { //Mirem de carregar per OKI
              // echo 'Carreguem per OKI'.'<br>';
             
@@ -84,6 +88,7 @@ if (!$user_obj || !$course_id) {
     $user_tandems = null;
     $user_selected = isset($_POST['user_selected']) ? intval($_POST['user_selected']) : 0;
     
+  
     
     if ($is_showTandem && $user_selected) {
        // echo "EN PRINCIPI NO ENTREM!!!!".'<br>';
@@ -1101,8 +1106,12 @@ jQuery(document).ready(function(){
                 <div id="footer">
                     <div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem') ?>"></div>
                     <div class="footer-logos">
-                        <img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
-                        <img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
+                    	<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
+                        <!--img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
+                        <img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" /-->
                         <img src="css/images/logo_speakapps.png" alt="Speakapps" />
                     </div>
                 </div>

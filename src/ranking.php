@@ -16,7 +16,7 @@ if (!$user_obj) {
 	die();
 } else {	
 	$gestorBD = new GestorBD();  	
-	$usersRanking = $gestorBD->getUsersRanking($course_id);	
+	$usersRanking = $gestorBD->getUsersRanking($course_id, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 }
 
 $show_teacher_view = false;
@@ -77,7 +77,7 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
 	  	<div class='col-md-6'>
 	  		<div class='welcomeMessage text-right'>
 				<?php 
-				$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);			
+				$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 				$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
 				$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
 				if($getUserRankingPosition > 0)
@@ -95,6 +95,7 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
   		</div>  		
   	</div>
   	<div class='row'>
+	<?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
 	  <div class="col-md-6">
 	  <h3 class='green-for-english'><?php echo $LanguageInstance->get('Ranking for learners of English');?></h3>
   		<table class="table table-striped <?php if($show_teacher_view) echo 'table-condensed'; ?>">
@@ -193,6 +194,60 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
   	?>
   </table>
   </div>
+	<?php } else { //no team ?>
+		<div class='col-md-offset-3  col-md-6'>
+			<h3 class='purple-for-spanish'><?php echo $LanguageInstance->get('Ranking for learners');?></h3>
+			<table class="table table-striped <?php if($show_teacher_view) echo 'table-condensed'; ?>">
+				<tr>
+					<th class='text-center'><?php echo $LanguageInstance->get('Position');?></th>
+					<th><?php echo $LanguageInstance->get('User');?></th>
+					<th><?php echo $LanguageInstance->get('Points');?></th>
+					<?php
+					if($show_teacher_view){
+						echo "<th>".$LanguageInstance->get('Total time')."</th>";
+						echo "<th>".$LanguageInstance->get('Number of Tandems')."</th>";
+						echo "<th>".$LanguageInstance->get('Accuracy')."</th>";
+						echo "<th>".$LanguageInstance->get('Fluency')."</th>";
+						echo "<th>".$LanguageInstance->get('Overall Grade')."</th>";
+					}
+					?>
+				</tr>
+				<?php
+				if(!empty($usersRanking)){
+					$cont = 1;
+					foreach($usersRanking as $f){
+						$class='';
+						if($cont <= 3) $class = 'class="success"';
+						if($cont > 3 && $cont <= 10) $class = 'class="warning"';
+						echo "<tr $class>";
+						echo "<td class='text-center'>".$cont."</td>";
+						//we only want to show the name of the top 3 , the rest just ....
+						echo "<td>".$f['user']."</td>";
+						echo "<td>".$f['points']."</td>";
+						if($show_teacher_view){
+							$obj = secondsToTime($f['total_time']);
+							$time = '';
+							if ($obj['h']>0) {
+								$time .= ($obj['h']<10?'0':'').$obj['h'].':';
+							}
+							$time .= ($obj['m']<10?'0':'').$obj['m'].':';
+							$time .= ($obj['s']<10?'0':'').$obj['s'];
+							echo "<td>".$time."</td>";
+							echo "<td>".intval($f['number_of_tandems'])."</td>";
+							echo "<td>".$f['accuracy']."</td>";
+							echo "<td>".$f['fluency']."</td>";
+							echo "<td>".getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance)."</td>";
+
+						}
+						echo "</tr>";
+
+						$cont++;
+					}
+				}
+				?>
+			</table>
+		</div>
+	<?php } ?>
   </div>
 </div>
 

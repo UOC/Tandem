@@ -39,11 +39,11 @@ if (!$user_obj || !$course_id) {
 			//person_contact_email_primary
 			//roles: separats per comes
 			//lis_result_sourcedid
-             $users_course_lti = $lti_context->doMembershipsService(array()); //$users_course no ho passem per evitar problemes ja que el continguts son array i no un obj LTI
+                    	$users_course_lti = $lti_context->doMembershipsService(array()); //$users_course no ho passem per evitar problemes ja que el continguts son array i no un obj LTI
 			$users_course = array();
-			foreach ($users_course_lti as $user_lti) {				
+			foreach ($users_course_lti as $user_lti) {
 				$id_user_lti = $user_lti->getId(  );
-                $id_user_lti = str_replace(":", "_", $id_user_lti);
+                                $id_user_lti = str_replace(":", "_", $id_user_lti);
                                 
 				$firstname = convertToUtf8($user_lti->firstname);
 				$lastname = convertToUtf8($user_lti->lastname);
@@ -754,8 +754,12 @@ if (!$user_obj || !$course_id) {
 		<div id="footer">
 			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem')?>"></div>
 			<div class="footer-logos">
-				<img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
-				<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
+				<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
+				<!--img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
+				<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" /-->
 				<img src="css/images/logo_speakapps.png" alt="Speakapps" />
 			</div>
 		</div>

@@ -5,7 +5,9 @@ $goto = 'autoAssignTandemRoom';
 if ($select_room) {
 	$goto = 'selectUserAndRoom';
 }
-if (isset($_GET['lang']) && isset($_GET['force']) && $_GET['force']) {
+if (
+    (isset($_GET['lang']) || $_SESSION[USE_WAITING_ROOM_NO_TEAMS])
+    && isset($_GET['force']) && $_GET['force']) {
 	$_SESSION[LANG] = $_GET['lang'];
 	
 	header('Location: '.$goto.'.php');
@@ -283,6 +285,7 @@ $(function () {
     });
 });
 
+<?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
 //feedback forms by language
 $(function () {
 	   Highcharts.getOptions().plotOptions.pie.colors = (function () {
@@ -388,6 +391,69 @@ $(function () {
         }]
     });
 });
+            //feedback forms not sent correctly by language
+            $(function () {
+                $('#chart7').highcharts({
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'People that waited for a tandem but never got a partner in total'
+                    },
+                    subtitle: {
+                        text: 'Tandem'
+                    },
+                    xAxis: {
+                        categories: ['Es', 'En'],
+                        title: {
+                            text: null
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Not sent',
+                            align: 'high'
+                        },
+                        labels: {
+                            overflow: 'justify'
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ' feedback forms'
+                    },
+                    plotOptions: {
+                        bar: {
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        x: -20,
+                        y: 190,
+                        floating: true,
+                        borderWidth: 1,
+                        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+                        shadow: true
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'People waited for tanden by language',
+                        data: [
+                            { color:'#4E2E77', y : <?php echo $peopleWaitedWithoutTandem['es'] ?>},
+                            { color:'#788B44', y : <?php echo $peopleWaitedWithoutTandem['en'] ?>}
+                        ]
+                    }]
+                });
+            });
+
+        <?php } ?>
 
 
 //ok tandems by webrtc and videochat
@@ -508,67 +574,6 @@ $(function () {
     });
 });
 
-//feedback forms not sent correctly by language
-$(function () {
-    $('#chart7').highcharts({
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'People that waited for a tandem but never got a partner in total'
-        },
-        subtitle: {
-            text: 'Tandem'
-        },
-        xAxis: {
-            categories: ['Es', 'En'],
-            title: {
-                text: null
-            }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Not sent',
-                align: 'high'
-            },
-            labels: {
-                overflow: 'justify'
-            }
-        },
-        tooltip: {
-            valueSuffix: ' feedback forms'
-        },
-        plotOptions: {
-            bar: {
-                dataLabels: {
-                    enabled: true
-                }
-            }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            x: -20,
-            y: 190,
-            floating: true,
-            borderWidth: 1,
-            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
-            shadow: true
-        },
-        credits: {
-            enabled: false
-        },
-        series: [{
-            name: 'People waited for tanden by language',
-            data: [
-            { color:'#4E2E77', y : <?php echo $peopleWaitedWithoutTandem['es'] ?>},
-            { color:'#788B44', y : <?php echo $peopleWaitedWithoutTandem['en'] ?>}
-            ]
-        }]
-    });
-});
 
 
 
@@ -587,8 +592,11 @@ $(function () {
 		<p>
 			 <a class='btn btn-success' href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
              <a href='statistics_tandem.php' class='btn btn-success' ><?php echo $LanguageInstance->get("Tandem Statistics");?></a> 
-             <a href='tandemInfo.php?force=1&lang=en_US<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Go to tandem to practise English");?></a> 
-             <a href='tandemInfo.php?force=1&lang=es_ES<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Ir al tandem para practicar Español");?></a> 
+            <?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {?><a href='tandemInfo.php?force=1&lang=en_US<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Go to tandem to practise English");?></a>
+             <a href='tandemInfo.php?force=1&lang=es_ES<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Ir al tandem para practicar Español");?></a>
+            <?php } else { ?>
+                <a href='tandemInfo.php?force=1<?php echo $select_room?'&select_room=1':''?>' class='btn btn-success' ><?php echo $LanguageInstance->get("Go to tandem");?></a>
+            <?php } ?>
 		</p>
 		</div>
 	</div>
@@ -626,7 +634,8 @@ $(function () {
     	   			 	echo $LanguageInstance->get('Total feedbacks submitted');
     	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_forms_sent']."</strong>";
     	   			?>	   				   				
-    	   			</div> 
+    	   			</div>
+                    <?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
     	   			<div class="list-group-item">
     	   			<?php
     	   			 	echo $LanguageInstance->get('Total feedbacks submitted for ES');
@@ -638,7 +647,8 @@ $(function () {
     	   			 	echo $LanguageInstance->get('Total feedbacks submitted for EN');
     	   			 	echo ": <strong>".$getFeedbackStats['feedback_tandem_form_en']."</strong>";
     	   			?>	   				   				
-    	   			</div> 
+    	   			</div>
+                    <?php } ?>
       			</div>
       		</div>	   	
       		<div class="col-md-6">
@@ -689,11 +699,15 @@ $(function () {
     	  		<div id='chart2' ></div>
             </div>	
 	  		<br />
-	  		<div id='chart3' class='well' style='width:380px;float:left;display:inline'></div>
-	  		<div id='chart4' class='well' style='width:380px;float:left;display:inline'></div>
+    <?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
+        <div id='chart3' class='well' style='width:380px;float:left;display:inline'></div>
+            <div id='chart4' class='well' style='width:380px;float:left;display:inline'></div>
+    <?php }?>
 	  		<div id='chart5' class='well' style='width:380px;float:left;display:inline'></div>
 	  		<div id='chart6' class='well' style='width:380px;float:left;display:inline'></div>
+    <?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
 	  		<div id='chart7' class='well' style='width:380px;float:left;display:inline'></div>
+    <?php }?>
 	  	</div>
   	</div>
   	<p></p>
