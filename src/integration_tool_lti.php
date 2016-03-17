@@ -134,11 +134,13 @@ try {
 	    $user_id 	  = $user['id'];
 	    $user_obj->id = $user_id;
 	    $waiting_room = $tandemBLTI->getDataInfo($context, 'custom_waiting_room')==1;
+		$waiting_room_no_teams = $tandemBLTI->getDataInfo($context, 'custom_waiting_room_no_teams')==1;
 	    $waiting_room_select_room = $tandemBLTI->getDataInfo($context, 'custom_select_room')==1;
 	    $force_exercise = $tandemBLTI->getDataInfo($context, 'custom_force_exercise')==1;
 	    $exercise_number_forced = $tandemBLTI->getDataInfo($context, 'custom_exercise_number_forced');
 	    $portfolio 		= $tandemBLTI->getDataInfo($context, 'custom_portfolio')==1;
 	    $ranking 	 = $tandemBLTI->getDataInfo($context, 'custom_ranking')==1;
+	    $certificate = $tandemBLTI->getDataInfo($context, 'custom_certificate')==1;
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
 	    $week 		  = $tandemBLTI->getDataInfo($context, 'custom_week');
 	    $previous_week 	 = $tandemBLTI->getDataInfo($context, 'custom_previous_week');
@@ -180,6 +182,7 @@ try {
 		    //disabled to select current tandem // $tandem = $gestorBD->is_invited_to_join($user_id, $id_resource, $course_id);
 		    $_SESSION[ID_RESOURCE] = $id_resource;
             $_SESSION[USE_WAITING_ROOM] = $waiting_room;
+			$_SESSION[USE_WAITING_ROOM_NO_TEAMS] = $waiting_room_no_teams;
             $_SESSION[FORCE_EXERCISE] = $force_exercise;
             $_SESSION[FORCED_EXERCISE_NUMBER] = $force_exercise?$exercise_number_forced:0;
             $_SESSION[FORCE_SELECT_ROOM] = $waiting_room_select_room;
@@ -209,7 +212,9 @@ try {
                                 } 
                                 if ($ranking==1){
                                     $redirectTo = 'ranking';
-                                } 
+                                } elseif ($certificate) {
+                                	$redirectTo = 'certificate';
+                                }
 		    		header ('Location: '.$redirectTo.'.php'.($waiting_room_select_room?'?select_room=1':''));
 		    	} 
 		    	//sino ja mostrara error
