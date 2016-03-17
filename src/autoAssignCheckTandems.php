@@ -1,6 +1,9 @@
 <?php
 //Here we will be checking if there is there is on the waiting room we can do a tandem with.
-require_once dirname(__FILE__) . '/classes/gestorBD.php';  
+require_once dirname(__FILE__) . '/classes/gestorBD.php';
+if (!$_SESSION) {
+	session_start();
+}
 
 if(isset($_REQUEST['otherlanguage'])){
     $otherlanguage = $_REQUEST['otherlanguage'];
@@ -22,8 +25,7 @@ if(empty($otherlanguage) or empty($courseID) or empty($exercisesID)){
 }
 
 $gestordb = new GestorBD();
-$response = $gestordb->checkForTandems($exercisesID, $courseID, $otherlanguage,$user_id);
-
+$response = $gestordb->checkForTandems($exercisesID, $courseID, $otherlanguage,$user_id, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 $debug = false;
 if ($debug) {
 	error_log("checking for ".$exercisesID." with user ".$user_id." otherlanguage ".$otherlanguage);

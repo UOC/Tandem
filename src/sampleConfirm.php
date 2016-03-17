@@ -420,7 +420,7 @@ if(numCadenas==numUsers){
 					},
 					success: function(xml){
 
-						<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
+<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 						//lets see if the other user got disconnected from the external tool
 						var externalToolClosed = xml.getElementsByTagName('externalToolClosed');
 						if(externalToolClosed.length > 0 && externalToolClosed[0].childNodes.length>0){												
@@ -1201,9 +1201,9 @@ windowNotificationTandem = $.window({
 window.onbeforeunload = function() {
 <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>	
 	if(salir==0) {
-		registerActionNextTask();
+registerActionNextTask();
 		return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. To send feedback to your tandem partner click on Review form (in tandem window)');?>";
-	}
+}
 <?php  } else {?>	
 	if(salir==0) return "<?php echo $LanguageInstance->get('Do you want to leave Tandem?. You will disconnect from your tandem partner');?>";
 <?php } ?>	
@@ -1339,8 +1339,12 @@ getUsersDataXml('<?php echo $user?>','<?php echo $room?>');
 	<div id="footer-container-exercise">
 		<div id="footer">
 			<div class="footer-logos">
-				<img src="img/logo_LLP.png" alt="Lifelong Learning Programme" />
-				<img src="img/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
+				<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
+				<!--img src="img/logo_LLP.png" alt="Lifelong Learning Programme" />
+				<img src="img/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" /-->
 				<img src="img/logo_speakapps.png" alt="Speakapps" />
 			</div>
 		</div>

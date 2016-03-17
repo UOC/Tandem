@@ -91,7 +91,7 @@ if (getinTandemStatus($id_user_host,$id_course) == 0 || compareDateTime(getlastA
 	setlastAccessTandemStatus($id_user_host,$id_course,$mysqldate);
 }
 $comunicandoA=0;
-if (!$use_waiting_room && getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlastAccessTandemStatus($id_user_guest,$id_course))==0 ){
+if (false && !$use_waiting_room && getinTandemStatus($id_user_guest,$id_course) == 1 && compareDateTime(getlastAccessTandemStatus($id_user_guest,$id_course))==0 ){
 	$comunicandoA=1;
 }else{
 	setinTandemStatus($id_user_guest,$id_course,1);

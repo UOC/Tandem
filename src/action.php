@@ -89,8 +89,9 @@ function editXMLMap($room,$user,$number,$nextSample) {
 		if($action!=$number || $action==null){ 
 			$action = $xml->actions[$nextSample]->addChild('action', $number);
 		}
-		if($action!="" && findAttribute($action,'firstUser')){
+		if($action!="" && findAttribute($action,firstUser)){
 			$action->addAttribute('secondUser',$user);
+
 		}else $action->addAttribute('firstUser',$user); 
 		
 		$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");

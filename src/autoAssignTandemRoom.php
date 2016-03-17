@@ -40,11 +40,11 @@ if (!$user_obj || !$course_id) {
 		$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
 		$gestorBD->tandemMaxWaitingTime();//we delete all waiting room that are older than the defined MAX_WAITING_TIME
 		$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
-		$numPeopleWaitingForTandem = $gestorBD->getUsersWaitingByLanguage($course_id,$user_language);
-		$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language);
+		$numPeopleWaitingForTandem = $gestorBD->getUsersWaitingByLanguage($course_id,$user_language, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
+		$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 
-		$getUsersWaitingEs = $gestorBD->getUsersWaitingByLanguage($course_id,"es_ES");
-		$getUsersWaitingEn = $gestorBD->getUsersWaitingByLanguage($course_id,"en_US");
+		$getUsersWaitingEs = $gestorBD->getUsersWaitingByLanguage($course_id,"es_ES", $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
+		$getUsersWaitingEn = $gestorBD->getUsersWaitingByLanguage($course_id,"en_US", $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 	}
 //abertranb not need it mange all using the autoAssingCheckTandem.php
 	/*
@@ -221,6 +221,7 @@ if (!$user_obj || !$course_id) {
 					<!-- WAITING MODAL -->
 					<!-- TANDEM MODAL -->
 					<div class='waitingForTandem'>
+						<?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {?>
 						<div class='waitingForButton english '>
 							<?php echo $LanguageInstance->get('Users waiting to practice English'); ?>:
 							<span id='UsersWaitingEn'><?php echo $getUsersWaitingEn;?></span>
@@ -229,7 +230,7 @@ if (!$user_obj || !$course_id) {
 							<?php echo $LanguageInstance->get('Usuarios esperando para practicar Español');?>:
 							<span id='UsersWaitingEs'><?php echo $getUsersWaitingEs;?></span>
 						</div>
-
+						<?php } ?>
 						<p class="clear"><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>.</p>
 						<!--span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>-->
 						<h3><?php echo $LanguageInstance->get("6 STEPS for a successful Tandem experience")?>:</h3>
@@ -292,8 +293,12 @@ if (!$user_obj || !$course_id) {
 		<div id="footer">
 			<div class="footer-tandem" title="<?php echo $LanguageInstance->get('tandem') ?>"></div>
 			<div class="footer-logos">
-				<img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
-				<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" />
+				<!--img src="css/images/logo_LLP.png" alt="Lifelong Learning Programme" />
+				<img src="css/images/logo_EAC.png" alt="Education, Audiovisual &amp; Culture" /-->
+				<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
+This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
+</div>
+		 &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
 				<img src="css/images/logo_speakapps.png" alt="Speakapps" />
 			</div>
 		</div>
