@@ -452,4 +452,4 @@ if (!$user_obj || !$course_id) {
 	</body>
 	</html>
 <?php
-	} ?>
+	}
