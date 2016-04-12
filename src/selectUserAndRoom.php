@@ -642,7 +642,7 @@ if (!$user_obj || !$course_id) {
 												setExpired(<?php echo $time2Expire;?>);
 												var intTimer;
 												function setExpired(i){
-													intTimer = setTimeout("getTime("+i+");", 1000);
+													intTimer = setTimeout("getTime("+i+");", 60000);
 												}
 												function getTime(i){
 													//var t;
