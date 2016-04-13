@@ -31,7 +31,7 @@ echo '<tandems>';
 			echo '<id>'.$tandem['id'].'</id>';
 			echo '<created>'.$tandem['created'].'</created>';
 			echo '<nameuser>'.$tandem['surname'].', '.$tandem['firstname'].'</nameuser>';
-			echo '<exercise>'.$tandem['name'].'</exercise>';
+			echo '<exercise>'.htmlspecialchars($tandem['name']).'</exercise>';
 		echo '</tandem>';
 		}
 	}
