@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2015-10-09 12:17+0100\n"
+"PO-Revision-Date: 2016-04-13 17:37+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -238,7 +238,7 @@ msgid "quit"
 msgstr "Quit"
 
 msgid "task_remaining_time"
-msgstr "Tiempo Restante de la Tarea"
+msgstr "Task remaining time"
 
 msgid "overrides_xml_file"
 msgstr "Overrides the XML file if it has the same name"
@@ -628,7 +628,7 @@ msgid "You should to be connected with your partner using videochat"
 msgstr "You should to be connected with your partner using videochat"
 
 msgid "Playing and recording videochat"
-msgstr "Vidochat is playing and recording"
+msgstr "Videochat is playing and recording"
 
 msgid "Return tandem"
 msgstr "Return to tandem"
