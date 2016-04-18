@@ -3,7 +3,7 @@
 	background-image: linear-gradient(to bottom, #62257b, #62257b) !important;
 }
 
-#ex1Slider .slider-selection,#ex2Slider .slider-selection {
+#ex1Slider .slider-selection,#ex2Slider .slider-selection, #ex3Slider .slider-selection, #ex4Slider .slider-selection, #ex5Slider .slider-selection {
 	background: #BABABA;
 }
 
