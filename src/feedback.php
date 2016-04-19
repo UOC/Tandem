@@ -62,21 +62,45 @@ if (!$user_obj || !$course_id) {
 		$message= false;
 		$can_edit = true;
 
-		$feedback_form = new stdClass();
-		$feedback_form->fluency = 0;
-		$feedback_form->accuracy = 0;
-		$feedback_form->grade = "";
-		$feedback_form->pronunciation = "";
-		$feedback_form->vocabulary = "";
-		$feedback_form->grammar = "";
-		$feedback_form->other_observations = "";
+                if ($_SESSION[USE_WAITING_ROOM_NO_TEAMS]){
+                    $feedback_form_new = new stdClass();
+                    $feedback_form_new->grammaticalresource = 0;
+                    $feedback_form_new->lexicalresource = 0;
+                    $feedback_form_new->discoursemangement = 0;
+                    $feedback_form_new->pronunciation = 0;
+                    $feedback_form_new->interactivecommunication = 0;
+                }else{
+                    $feedback_form = new stdClass();
+                    $feedback_form->fluency = 0;
+                    $feedback_form->accuracy = 0;
+                    $feedback_form->grade = "";
+                    $feedback_form->pronunciation = "";
+                    $feedback_form->vocabulary = "";
+                    $feedback_form->grammar = "";
+                    $feedback_form->other_observations = "";
+                }
 		if ($feedbackDetails->feedback_form) { //if it is false can edit
 			$can_edit = false;
 			$message = '<div class="alert alert-info" role="alert">'.$LanguageInstance->get('The information is stored you can only review it').'</div>';
 			$feedback_form = $feedbackDetails->feedback_form;
 		} else{
 			if ($user_obj->id==$feedbackDetails->id_user) { //check if is the user of feedback if not can't not set feedback
-				if (!empty($_POST['save_feedback'])) {
+                                if (!empty($_POST['save_feedback_new'])) {
+                                    $feedback_form_new->grammaticalresource = $_POST['grammaticalresource'];
+                                    $feedback_form_new->lexicalresource = $_POST['lexicalresource'];
+                                    $feedback_form_new->discoursemangement = $_POST['discoursemangement'];
+                                    $feedback_form_new->pronunciation = $_POST['pronunciation'];
+                                    $feedback_form_new->interactivecommunication = $_POST['interactivecommunication'];
+                                    if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form_new))) {
+                                            $message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
+                                            $can_edit = false;
+
+                                            //lets update this user ranking points
+                                            $gestorBD->updateUserRankingPoints($user_obj->id,$course_id,$_SESSION['lang']);
+                                            //now lets update the partner ranking points
+                                            $gestorBD->updateUserRankingPoints($feedbackDetails->id_partner,$course_id,$feedbackDetails->partner_language);
+                                    }
+                                }else if (!empty($_POST['save_feedback'])) {
 					//try to save it!
 					$feedback_form->fluency = isset($_POST['fluency'])?$_POST['fluency']:50;
 					$feedback_form->accuracy = $_POST['accuracy'];
@@ -109,6 +133,7 @@ if (!$user_obj || !$course_id) {
 			}
 		}
 		$partnerFeedback = $gestorBD->checkPartnerFeedback($feedbackDetails->id_tandem,$id_feedback);
+
 		$partnerName = $gestorBD->getPartnerName($id_feedback);
 		?>
 		<!DOCTYPE html>
@@ -220,6 +245,29 @@ if (!$user_obj || !$course_id) {
 				<?php
 					if(!empty($partnerFeedback)){
 						$feedBackFormPartner = unserialize($partnerFeedback);
+                                                if ($_SESSION[USE_WAITING_ROOM_NO_TEAMS]){ ?>
+                                                    <div class="form-group">
+                                                        <label for="grammaticalresource" class="control-label"><?php echo $LanguageInstance->get('Grammatical Resource') ?></label>
+                                                        <?php echo $feedBackFormPartner->grammaticalresource?> %
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="lexicalresource" class="control-label"><?php echo $LanguageInstance->get('Lexical Resource') ?></label>
+                                                        <?php echo $feedBackFormPartner->lexicalresource?> %
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="discoursemangement" class="control-label"><?php echo $LanguageInstance->get('Discourse Mangement') ?></label>
+                                                        <?php echo $feedBackFormPartner->discoursemangement?> %
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="interactivecommunication" class="control-label"><?php echo $LanguageInstance->get('Interactive Communication') ?></label>
+                                                        <?php echo $feedBackFormPartner->interactivecommunication?> %
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation') ?></label>
+                                                        <?php echo $feedBackFormPartner->pronunciation?> %
+                                                    </div>
+                                                <?php     
+                                                }else{ 
 				?>
 							  <div class="form-group">
 								<label for="fluency" class="control-label"><?php echo $LanguageInstance->get('Fluency') ?></label>
@@ -266,6 +314,7 @@ if (!$user_obj || !$course_id) {
 								  <textarea  readonly rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedBackFormPartner->other_observations?></textarea>
 								</div>
 							  </div>
+                                                <?php } ?>
 							  <!-- Rate your partner form -->
 							<div class='row well'>
 								<h3><?php echo $LanguageInstance->get('Rating Partner’s Feedback Form') ?></h3>
@@ -304,6 +353,49 @@ if (!$user_obj || !$course_id) {
 			<div class='col-md-12'>
 						<!-- main -->
 						<div id="main_old">
+                                                    
+                                                    <?php if ($_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
+                                                        <!-- content -->
+							<div id="content_old">
+							<form data-toggle="validator" role="form" method="POST">
+							  <div class="form-group">
+								<label for="grammaticalresource" class="control-label"><?php echo $LanguageInstance->get('Grammatical Resource') ?> *</label>
+								<input data-slider-id='ex1Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="grammaticalresource" id="grammaticalresource" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->grammaticalresource?>"/>%
+								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
+							  </div>
+							  <div class="form-group">
+								<label for="lexicalresource" class="control-label"><?php echo $LanguageInstance->get('Lexical Resource') ?> *</label>
+								<input data-slider-id='ex2Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="lexicalresource" id="lexicalresource" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->lexicalresource?>"/>%
+								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
+							  </div> 
+							  <div class="form-group">
+								<label for="discoursemangement" class="control-label"><?php echo $LanguageInstance->get('Discourse Mangement') ?> *</label>
+								<input data-slider-id='ex3Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="discoursemangement" id="discoursemangement" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->discoursemangement?>"/>%
+								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
+							  </div> 
+							  <div class="form-group">
+								<label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation') ?> *</label>
+								<input data-slider-id='ex4Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="pronunciation" id="pronunciation" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->pronunciation?>"/>%
+								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
+							  </div> 
+                                                          <div class="form-group">
+								<label for="interactivecommunication" class="control-label"><?php echo $LanguageInstance->get('Interactive Communication') ?> *</label>
+								<input data-slider-id='ex5Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="interactivecommunication" id="interactivecommunication" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->interactivecommunication?>"/>%
+								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
+							  </div> 
+							  <?php if ($can_edit) {?>
+							  <div class="form-group">
+								<small><?php echo $LanguageInstance->get('Required fields are noted with an asterisk (*)')?></small>
+							  </div>
+							  <div class="form-group">
+							  <input type='hidden' name='save_feedback_new' value='1' >
+								<button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
+								 <span class="small"><?php echo $LanguageInstance->get('cannot_be_modified')?></span>
+							  </div>
+							  <?php } ?>
+							  <input type='hidden' name='id_feedback' value='<?php echo $id_feedback?>' />
+							</form>
+                                                    <?php }else{ ?>
 							<!-- content -->
 							<div id="content_old">
 							<form data-toggle="validator" role="form" method="POST">
@@ -365,6 +457,7 @@ if (!$user_obj || !$course_id) {
 							  <?php } ?>
 							  <input type='hidden' name='id_feedback' value='<?php echo $id_feedback?>' />
 							</form>
+                                                    <?php } ?>
 					<!-- /content -->
 				</div>
 				<!-- /main -->
