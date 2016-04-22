@@ -187,7 +187,11 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 						
 						for(var i=1;i<=numNodes;i++){
 							var txtInfoTask = cad[i].getElementsByTagName("textE")[0].childNodes[0].data;
+							<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
+							$("#infoT"+i+"t").html(i);
+						<?php } else { ?>
 							$("#infoT"+i+"t").html("Task "+i);
+							<?php } ?>
 							$("#infoT"+i+"txt").html(txtInfoTask);
 						}
 
@@ -605,8 +609,8 @@ writeButtons = function(){
 	var tasksIt="<ul>";
 	for(var i=1;i<=numNodes;i++){
 		if(i<numExerc) tasksIt+='<li class="completed"><span class="lbl"><?php echo $LanguageInstance->get('Task');?> '+i+' <img src="img/ok.png" alt="completed" /></span></li>';
-					if(i==numExerc) tasksIt+='<li class="active"><span class="lbl"><?php echo $LanguageInstance->get('Task');?> '+i+'</span></li>';//<li class="arrow"></li>';
-					if(i>numExerc) tasksIt+='<li><span class="lbl"><?php echo $LanguageInstance->get('Task');?> '+i+'</span></li>';
+					if(i==numExerc) tasksIt+='<li class="active"><span class="lbl"><?php echo  isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1?'':$LanguageInstance->get('Task');?> '+i+'</span></li>';//<li class="arrow"></li>';
+					if(i>numExerc) tasksIt+='<li><span class="lbl"><?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1?'':$LanguageInstance->get('Task');?> '+i+'</span></li>';
 					if (i<numNodes) tasksIt+='<li class="arrow"></li>';
 				}
 				tasksIt+="</ul>";
