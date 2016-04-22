@@ -603,7 +603,7 @@ writeButtons = function(){
 			else botones+='<li class="step"><a href="#" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');return false;"><span class="lbl">'+j+'</span></a></li>';
 		}
 	}
-	if(numBtn>1) botones+='<li class="solution"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
+	 if(numBtn>1) botones+='<li class="solution"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
 	$("#steps").html(botones);
 
 	var tasksIt="<ul>";
@@ -700,6 +700,9 @@ accion = function(id,number){
 					$('#next_task').attr('onclick',"pass2NextQuestion();return false;");
 					if(document.getElementById('next1Item')) document.getElementById('next1Item').style.display='inline';
 				}else{
+					<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+					showGoodbyeMessage();
+					<?php } ?>
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");
 					$('#next_task').attr('onclick',"showFinishedAlert();return false;");					
 				}
@@ -888,6 +891,7 @@ showImage = function(id){
 		var windowVideochat = false;
 		var windowStartTandem = false;
 		var windowNotificationTandem = false;
+		var windowSayGoodbye = false;
 		var windowMessage = false;
 		var intervalVideochat = false;
 		var widthWindowVideochat = $( window ).width()*0.98;
@@ -943,8 +947,9 @@ showImage = function(id){
 			   showRoundCorner: true,
    			   custBtns: myButtons
 			});
-			
-windowNotificationTandem = $.window({
+
+			<?php if (!$_SESSION[FORCE_SELECT_ROOM]) {?>
+			windowNotificationTandem = $.window({
 			   title: "",
 			   url: "notificationStartTandem.php",
 			   width: 310,
@@ -959,6 +964,7 @@ windowNotificationTandem = $.window({
 			   modal: true,
 			   showRoundCorner: true				   			   
 			});
+			<?php } ?>
 
 			intervalVideochat = setInterval(function() {checkVideochat(windowVideochat)},2500);
 			createVideochatButtons(windowVideochat, widthWindowVideochat, heightWindowVideochat);
@@ -973,6 +979,27 @@ windowNotificationTandem = $.window({
 
 
 		});
+		function showGoodbyeMessage() {
+			windowSayGoodbye = $.window({
+				title: "",
+				url: "notificationSayGoodbye.php",
+				width:310,
+				height: 250,
+				maxWidth: 800,
+				maxHeight: 400,
+				draggable: false,
+				closable: true,
+				maximizable: false,
+				minimizable: false,
+				showFooter: true,
+				modal: true,
+				showRoundCorner: true
+			});
+			//Stop timer
+			if (timeline) {
+				timeline.stop();
+			}
+		}
 
 		function messageWindow(urlShow, is_videochat) {
 			if (windowMessage) {
@@ -1195,9 +1222,15 @@ windowNotificationTandem = $.window({
 			hideSoundNotification: function () {				
 				windowNotificationTandem.close();			
 			}
-		});		
+		});
 
-			
+
+		jQuery.fn.extend({
+			hideSayGoodbye: function () {
+				windowSayGoodbye.close();
+			}
+		});
+
 <?php
 } 
 ?>
