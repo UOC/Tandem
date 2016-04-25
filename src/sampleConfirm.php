@@ -227,7 +227,7 @@ if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLD
 						}
 						intervalUpdateLogin = setInterval('getXMLDone("<?php echo $user;?>","<?php echo $room;?>")',limitTimer);
 	//thread is so quick...
-	writeButtons();
+	writeButtons(endHTML == null ? true : false);
 	setTimeout(function(){notifyTimerDown('<?php echo $LanguageInstance->get('txtWaiting4User')?>');},250);
 }   
 });
@@ -591,13 +591,17 @@ hideText = function(){
 			//END
 //hide
 //hide all kind of stuff in page
-writeButtons = function(){
+writeButtons = function(hideSeeSolution){
 	$("#steps").addClass("steps_"+numBtn);
 	var botones="";
 	for(var i=0;i<numBtn;i++){
 		j=i+1;
 		if(numBtn==1){
-			botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
+                        if (!hideSeeSolution){
+                            botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
+                        }else{
+                            botones+='<li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('Next');?></span></a></li>';
+                        }
 		}else{
 			if(i==0) botones+='<li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');return false;"><span class="lbl">'+j+'</span></a></li>';
 			else botones+='<li class="step"><a href="#" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');return false;"><span class="lbl">'+j+'</span></a></li>';
@@ -689,6 +693,11 @@ accion = function(id,number){
 				showNextQuestion();
 			}
 			// END
+                        
+                        showNextTask = function(){
+                            salir = 1;
+                            pass2NextQuestion();
+                        }
 			
 			showNextQuestion = function(){
 				salir=1;
