@@ -34,7 +34,7 @@ $(document).ready(function(){
 	</div>
 	<div class='row'>
 		<div class='col-md-12'>
-			<?php echo $LanguageInstance->get('Say good-bye! When you click ‘Finish now’ the videocall will end and you will no longer able to speak with your partner.');?>
+			<?php echo $LanguageInstance->get(' Say good-bye! When you click "Click to finish" the videochat will end and you will no longer be able to speak with your partner');?>
 		</div>
 	</div>
 	<div class='row'>
