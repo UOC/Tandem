@@ -138,7 +138,18 @@
 	// ventana modal tiempo agotado
 	function theEnd(){
 		if ($("#modal-end-task").length > 0){
-			$.modal( $('#modal-end-task') );
+                        $("#modal-end-task").modal({
+                            onShow: function () {
+                                try{
+                                    parent.$.fn.hideVideochatEvent();
+                                } catch (e){}
+                            },
+                            onClose: function () {
+                                var a = this;
+                                a.close();
+                            }
+
+                        });
 			accionTimer();
 		}
 	}
