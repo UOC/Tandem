@@ -1010,6 +1010,25 @@ class GestorBD {
         }
         return $result;
     }
+    
+    public function deleteTandem($id){
+        
+        $sql = "select * from tandem where id = $id";
+        $result = $this->consulta($sql);
+        if ($result) {
+            $row = $this->obteObjecteComArray($result);
+            $sql = 'INSERT INTO tandem_deleted (id, id_exercise, id_course, id_resource_lti, id_user_host, id_user_guest, message, xml, is_guest_user_logged, date_guest_user_logged, user_agent_host, user_agent_guest, is_finished, finalized, created) ' .
+                        ' VALUES ' .
+                        '("' . $row['id'] . '", "' . $row['id_exercise'] . '", "' . $row['id_course'] . '", "' . $row['id_resource_lti'] . '", "' . $row['id_user_host'] . '", "' . $row['id_user_guest'] . '", "' . $row['message'] . '", "' . mysql_real_escape_string($row['xml'], $this->conn) . '", "' . $row['is_guest_user_logged'] . '", "' . $row['date_guest_user_logged'] . '", "' . $row['user_agent_host'] . '", "' . $row['user_agent_guest'] . '", "' . $row['is_finished'] . '", "' . $row['finalized'] . '", "' . $row['created'] . '")';            
+            $result = $this->consulta($sql);                
+            if ($result){
+                $sql = 'DELETE FROM tandem WHERE id = ' . $row['id'];
+                return $this->consulta($sql);  
+            }
+            return $result;
+        }
+        return $result;
+    }
 
     /**
      * Obté el usuari guest pel waiting for user
