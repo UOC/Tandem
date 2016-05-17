@@ -494,7 +494,7 @@ $number = 1;?>
   			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
   			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>";
                 if ($showDelete){
-                    echo "<td><button data-delete-id='".$f['id_tandem']."' class='btn btn-success btn-sm deleteFeedback' >".$LanguageInstance->get('delete')."</button></td>";
+                    echo "<td><button data-delete-id='".$f['id_tandem']."' class='btn btn-danger btn-sm deleteFeedback' >".$LanguageInstance->get('delete')."</button></td>";
                 }
   		echo "</tr>";
 	  	}
