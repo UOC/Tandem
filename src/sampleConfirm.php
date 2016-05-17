@@ -1408,7 +1408,7 @@ This site reflects only the views of the authors, and the European Commission ca
 	</div>
 	<!-- /modals -->
 	<!-- /footer -->
-	<script type="text/javascript" src="js/tandem.js"></script>
+	<script type="text/javascript" src="js/tandem.js?version=1"></script>
 	<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 	<!--link media="screen" rel="stylesheet" href="css/jquery_modal.css" /-->
 	<script type="text/javascript" src="js/window/jquery.window.min.js"></script>
