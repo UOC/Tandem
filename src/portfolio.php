@@ -59,6 +59,11 @@ if ($show_second_form) {
 	$secondProfileForm  = $gestorBD->getUserPortfolioProfile("second",$user_obj->id);
 }
 
+$showDelete = false;
+if (($user_obj->admin)||($user_obj->instructor)){
+    $showDelete = true;
+}
+
 //lets save the registration form
 if(isset($_POST['extra-info-form'])){
     $inputs  = array("skills_grade","fluency","accuracy","improve_pronunciation","improve_vocabulary","improve_grammar","s2_pronunciation_txt","s2_vowels_txt","s2_consonants_txt","s2_stress_txt","s2_intonation_txt","s2_vocabulary_txt","s2_vocab_txt","s2_false_friends_txt","s2_grammar_txt","s2_verb_agreement_txt","s2_noun_agreement_txt","s2_sentence_txt","s2_connectors_txt","s2_aspects_txt");
@@ -122,6 +127,32 @@ if(!empty($_POST['get_pdf'])){
 			var feedbackId = $this.data("feedback-id");
 			window.location = "feedback.php?id_feedback="+feedbackId;
 		})
+		$(".deleteFeedback").click(function(){
+			$this = $(this);
+			var deleteId = $this.data("delete-id");
+                        $('#deleteBtn').data("id-to-delete", deleteId);
+			$('#deleteModal').modal('show');
+		})
+                $("#deleteBtn").click(function(){
+                    $this = $(this);
+                    var deleteId = $this.data("id-to-delete");
+                    $.ajax({
+			type: 'POST',
+			url: "deleteTandem.php",
+			data: {'id': deleteId},
+			success: function(response){
+                            if (response == 1){
+                                setTimeout(function(){
+                                    window.location.reload();
+                                }, 500);
+                            }else{
+                                setTimeout(function(){
+                                    $('#deleteError').css("display", "block");
+                                }, 500);
+                            }
+			}
+		});
+                });
 		$('.alert').tooltip();
 
 		<?php if($user_obj->instructor == 1){ ?>
@@ -323,6 +354,13 @@ if(!empty($_POST['get_pdf'])){
   			<div class="alert alert-info" role="alert"><?php echo $LanguageInstance->get('portfolio_info')?></div>
   		</div>
   	</div>
+        <?php if ($showDelete) { ?>
+            <div class='row' id="deleteError" style="display: none">
+                    <div class='col-md-12'>
+                            <div class="alert alert-danger" role="alert"><?php echo $LanguageInstance->get('Error deleting tandem')?></div>
+                    </div>
+            </div>
+        <?php } ?>
   	<?php
 if($user_obj->instructor == 1 ){
  $usersList = $gestorBD->getAllUsers($course_id);
@@ -454,8 +492,11 @@ $number = 1;?>
 	  		  <td>".$f['created']."</td>
   			  <td>".$f['total_time']."</td>
   			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
-  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>
-  		  </tr>";
+  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>";
+                if ($showDelete){
+                    echo "<td><button data-delete-id='".$f['id_tandem']."' class='btn btn-success btn-sm deleteFeedback' >".$LanguageInstance->get('delete')."</button></td>";
+                }
+  		echo "</tr>";
 	  	}
 	  }
   	?>
@@ -858,6 +899,28 @@ $number = 1;?>
   </div>
 </div>
 <?php } ?>
+    
+<?php if ($showDelete){ ?>
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title"><?php echo $LanguageInstance->get('Delete Tandem')?></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $LanguageInstance->get('Do you want to delete this tandem?')?></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $LanguageInstance->get('Cancel')?></button>
+                        <button type="button" id="deleteBtn" data-id-to-delete="" class="btn btn-primary" data-dismiss="modal"><?php echo $LanguageInstance->get('delete')?></button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    
+<?php } ?>
+    
 <script>
 $(document).ready(function(){
 	$("#extra-info input[type=checkbox]").change(function(){
