@@ -421,4 +421,25 @@ create table user_ranking ( user_id int(10) not null,
 /*Volvemos a poner lo del total_time al user ranking */
 alter table user_ranking add total_time decimal(10,2);
 
+/* Tabla tandem_deleted */
+DROP TABLE IF EXISTS `tandem_deleted`;
+CREATE TABLE IF NOT EXISTS `tandem_deleted` (
+  `id` int(11) NOT NULL,
+  `id_exercise` int(11) DEFAULT NULL,
+  `id_course` int(11) DEFAULT NULL,
+  `id_resource_lti` varchar(100) DEFAULT NULL,
+  `id_user_host` int(11) DEFAULT NULL COMMENT 'User who invited to the tandem',
+  `id_user_guest` int(11) DEFAULT NULL COMMENT 'User who is invited to the tandem',
+  `message` mediumtext COMMENT 'To indicate to the other user to',
+  `xml` text COMMENT 'To save the xml to reproduce',
+  `is_guest_user_logged` bit(1) DEFAULT NULL,
+  `date_guest_user_logged` datetime DEFAULT NULL,
+  `user_agent_host` varchar(255) NOT NULL,
+  `user_agent_guest` varchar(255) NOT NULL,
+  `is_finished` bit(1) DEFAULT NULL,
+  `finalized` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
