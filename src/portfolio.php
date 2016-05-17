@@ -20,6 +20,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 } else {
 
 
+	$show_ranking = defined('SHOW_RANKING') && SHOW_RANKING==1 && !$_SESSION[USE_WAITING_ROOM_NO_TEAMS];
 	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : '2014-11-01';//date("Y-m-d",strtotime( date("Y-m-d").' -1 months') ) ;
 	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : date("Y-m-d");
 
@@ -215,7 +216,7 @@ if(!empty($_POST['get_pdf'])){
 <div class="container">
 	<div class='row'>
 		<div class='col-md-9'>
-			<?php if (defined('SHOW_RANKING') && SHOW_RANKING==1) {?>
+			<?php if ($show_ranking) {?>
 			<button class="btn btn-success" type='button' onclick="window.location ='ranking.php';"><?php echo $LanguageInstance->get('Go to the ranking') ?></button>
 			<?php } ?>
 			<?php //if(empty($firstProfileForm)){ ?>
@@ -243,16 +244,16 @@ if(!empty($_POST['get_pdf'])){
   			<div class='col-md-6 text-right'>
   				<div class='welcomeMessage'>
 					<?php
+						if ($show_ranking) {
 						$getUserRankingPosition = $gestorBD->getUserRankingPosition($user_obj->id,$_SESSION['lang'],$course_id);
 						$positionInRankingTxt =  $LanguageInstance->get('Hello %1');
 						$positionInRankingTxt = str_replace("%1",$gestorBD->getUserName($user_obj->id),$positionInRankingTxt);
-						if (defined('SHOW_RANKING') && SHOW_RANKING==1) {
 
 							if($getUserRankingPosition > 0)
 								$positionInRankingTxt .= $LanguageInstance->get(', your position in the ranking is ')."<b>".$getUserRankingPosition."</b>";
-						}
 
 						echo $positionInRankingTxt;
+						}
 					?>
 				</div>
 			</div>
