@@ -598,7 +598,8 @@ writeButtons = function(hideSeeSolution){
 		j=i+1;
 		if(numBtn==1){
                         if (!hideSeeSolution){
-                            botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
+//                            botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php // echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php // echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php // echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php // echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php // echo $LanguageInstance->get('See Solution');?></span></a></li>';
+                            botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="timeline.stop();accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
                         }else{
                             botones+='<li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('Next');?></span></a></li>';
                         }
@@ -711,10 +712,10 @@ accion = function(id,number){
 					if(document.getElementById('next1Item')) document.getElementById('next1Item').style.display='inline';
 				}else{
 					<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
-					showGoodbyeMessage();
+//					showGoodbyeMessage();
 					<?php } ?>
-					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");
-					$('#next_task').attr('onclick',"showFinishedAlert();return false;");					
+					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");					
+					$('#next_task').attr('onclick',"showVideoChatAndGoodbyeMessage();return false;");					
 				}
 				if (intervalIfNextQuestionAnswered) {
 					clearInterval(intervalIfNextQuestionAnswered);
@@ -844,6 +845,10 @@ accion = function(id,number){
 			}
 
 
+showVideoChatAndGoodbyeMessage = function(){
+    parent.$.fn.showVideochatEvent();
+    showGoodbyeMessage();
+}
 
 showFinishedAlert = function(){
 	endOfTandem=1;
@@ -1030,7 +1035,7 @@ showImage = function(id){
 			      }
 			   }
 			];
-
+                        
 			windowMessage = $.window({
 							   title: "",
 							   url: urlShow,
@@ -1040,7 +1045,7 @@ showImage = function(id){
 							   height: 230,
 							   maxWidth: 500,
 							   maxHeight: 400,
-							   closable: true,
+							   closable: false,
 							   draggable: true,
 							   resizable: true,
 							   maximizable: false,
@@ -1238,6 +1243,13 @@ showImage = function(id){
 		jQuery.fn.extend({
 			hideSayGoodbye: function () {
 				windowSayGoodbye.close();
+			}
+		});
+
+		jQuery.fn.extend({
+			hideSayGoodbyeAndRedirect: function () {
+				windowSayGoodbye.close();
+                                window.location ='feedback.php';
 			}
 		});
 

@@ -43,13 +43,12 @@ $is_videochat = isset($_GET['is_videochat'])?$_GET['is_videochat']==1:false;
 				<?php echo $LanguageInstance->get('Playing and recording videochat');?>
 				<img src="img/participantRecording.gif" id="imgVideochat" />
 			<div class='btn_review  col-md-3 col-md-offset-5'>
-				<button onclick="showVideochatW();" class="btn btn-success"><?php echo $LanguageInstance->get('Show Videochat');?></button>
+				<button onclick="showVideochatW();" class="btn btn-success"><?php echo $LanguageInstance->get('Show video');?></button>
 			</div>
 		<?php } else {?>
-				<?php echo $LanguageInstance->get('Return tandem');?>
 				<img src="img/footer_tandem.png" id="imgVideochat" />
 			<div class='btn_review  col-md-3 col-md-offset-5'>
-				<button onclick="showVideochatW();" class="btn btn-success"><?php echo $LanguageInstance->get('Show Tandem');?></button>
+				<button onclick="showVideochatW();" class="btn btn-success"><?php echo $LanguageInstance->get('Show task');?></button>
 			</div>
 		<?php }	?>
 		</div>

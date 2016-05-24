@@ -34,7 +34,8 @@ $(document).ready(function(){
 	</div>
 	<div class='row'>
 		<div class='col-md-12'>
-			<?php echo $LanguageInstance->get(' Say good-bye! When you click "Click to finish" the videochat will end and you will no longer be able to speak with your partner');?>
+			<?php echo $LanguageInstance->get(' Are you sure you want to end the videochat session this Videochat ?');?>
+                        <?php echo $LanguageInstance->get(' You will no longer be able to speak to your partner. To end Videochat, say good-bye to your partner and click "End". If you are not ready to close Videochat, click "Stay" ');?>
 		</div>
 	</div>
 	<div class='row'>
@@ -44,7 +45,8 @@ $(document).ready(function(){
 	</div>
 	<div class='row'>
 		<div class='col-md-12 col-md-offset-5'>
-			<button onclick="closeIT();" class="btn btn-success"><?php echo $LanguageInstance->get('Close');?></button>
+			<button onclick="closeIT();" class="btn btn-success"><?php echo $LanguageInstance->get('Stay');?></button>
+			<button onclick="parent.$.fn.hideVideochatEvent();parent.$.fn.hideSayGoodbyeAndRedirect();" class="btn btn-success"><?php echo $LanguageInstance->get('End');?></button>
 		</div>
 	</div>
 </div>
