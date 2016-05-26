@@ -1217,7 +1217,8 @@ showImage = function(id){
 			$(document).unbind('cbox_closed');
 			//$.colorbox.close();
 			windowStartTandem.close();
-			hideVideochat(windowVideochat, false);
+//			hideVideochat(windowVideochat, false);
+                        messageWindow('showVideochat.php?is_videochat=0', false);
 			getInitXML();
 		}
 		jQuery.fn.extend({
@@ -1422,7 +1423,7 @@ This site reflects only the views of the authors, and the European Commission ca
 
 	<div id="modal-end-task" class="modal">
 		<p class="msg">Time up!</p>
-		<p><a href='#' id="lnk-end-task" class="btn simplemodal-close">Close</a></p>
+                <p><a href='#' onclick="$('#next1Item').css('display', 'block')" id="lnk-end-task" class="btn simplemodal-close">Close</a></p>
 	</div>
 	<!-- /modals -->
 	<!-- /footer -->
