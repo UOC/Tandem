@@ -19,12 +19,16 @@ $is_videochat = isset($_GET['is_videochat'])?$_GET['is_videochat']==1:false;
 
 <script type="text/javascript">
 	showVideochatW = function(){
-		<?php if ($is_videochat) {?>
-		parent.$.fn.showVideochatEvent();
-		<?php } else {?>
-		parent.$.fn.hideVideochatEvent();
-		<?php } ?>
-		//parent.$.fn.colorbox.close();
+		try {
+			<?php if ($is_videochat) {?>
+			parent.$.fn.showVideochatEvent();
+			<?php } else {?>
+			parent.$.fn.hideVideochatEvent();
+			<?php } ?>
+			//parent.$.fn.colorbox.close();
+		} catch (e){
+			
+		}
 	}
 	$(document).ready(function(){
 		$('#imgVideochat').css('cursor','pointer');

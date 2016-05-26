@@ -714,8 +714,13 @@ accion = function(id,number){
 					<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
 //					showGoodbyeMessage();
 					<?php } ?>
-					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");					
-					$('#next_task').attr('onclick',"showVideoChatAndGoodbyeMessage();return false;");					
+					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");
+					<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
+					$('#next_task').attr('onclick',"showVideoChatAndGoodbyeMessage();return false;");
+					<?php } else {?>
+					$('#next_task').attr('onclick',"showFinishedAlert();return false;");
+					<?php } ?>
+
 				}
 				if (intervalIfNextQuestionAnswered) {
 					clearInterval(intervalIfNextQuestionAnswered);
