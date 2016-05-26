@@ -53,7 +53,7 @@ function preTimer($room,$user,$nextSample){
 		$xml->actions[$nextSample]->addAttribute('firstUser',$user);
 		$xml->actions[$nextSample]->addChild('action','0');
 	}else{		
-		if(findAttribute($xml->actions[$nextSample],firstUser)){
+		if(findAttribute($xml->actions[$nextSample],'firstUser')){
 			//encuentra y existe confirmacion primer usuario
 			$xml->actions[$nextSample]->addAttribute('secondUser',$user);
 		}
@@ -69,7 +69,11 @@ function editShowNextQuestion($room,$user,$nextSample){
 		}
 	}
 	else {
-		$xml->actions[$nextSample]->addAttribute('firstUserEnd',$user);
+		if ($xml->actions[$nextSample]) {
+			$xml->actions[$nextSample]->addAttribute('firstUserEnd', $user);
+		} else {
+			//error_log("Error can not find $nextSample");
+		}
 	}
 	$xml->asXML(PROTECTED_FOLDER.DIRECTORY_SEPARATOR.$room.".xml");	
 }
