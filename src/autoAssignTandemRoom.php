@@ -63,7 +63,7 @@ if (!$user_obj || !$course_id) {
 	<head>
 		<title>Tandem</title>
 		<meta charset="UTF-8" />
-		<link rel="stylesheet" type="text/css" media="all" href="css/autoAssignTandem.css?id=21" />
+		<link rel="stylesheet" type="text/css" media="all" href="css/autoAssignTandem.css?id=28" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/tandem-waiting-room.css?id=21" />
 		<link rel="stylesheet" type="text/css" media="all" href="css/jquery-ui.css" />
 		<!-- 10082012: nfinney> ADDED COLORBOX CSS LINK -->
@@ -209,10 +209,16 @@ if (!$user_obj || !$course_id) {
 				<!-- content -->
 				<div id="content">
 
-					<span class="welcome"><?php echo $LanguageInstance->get('welcome') ?> <?php echo $user_obj->fullname; ?>!</span>                             
-					<!-- *********************************** -->   
+					<h1 class="waiting_room"><?php echo $LanguageInstance->get('Waiting Room') ?></h1>
+					<span class="welcome"><?php echo $LanguageInstance->get('welcome') ?> <?php echo $user_obj->fullname; ?>!</span>
+					<div id="logo_waiting_room">
+						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo') ?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo') ?>" /></a>
+					</div>
+					<div class="clear"></div><div class="clear"></div>
+					<!-- *********************************** -->
 					<!-- ****WAITING-TANDEM-ROOM-dynamic**** -->
-					<!-- *********************************** -->                            
+					<!-- *********************************** -->
+					<h4 class="clear"><?php echo $LanguageInstance->get("There are no available partners for you at the moment. Please wait");?>.</h4>
 					<div id="timeline">
 						<div class="lbl"><?php echo $LanguageInstance->get('waiting_remaining_time')?></div>
 						<div class="clock" id="clock"><span class="mm">00</span>:<span class="ss">00</span></div>
@@ -222,18 +228,18 @@ if (!$user_obj || !$course_id) {
 					<!-- TANDEM MODAL -->
 					<div class='waitingForTandem'>
 						<?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {?>
-						<div class='waitingForButton english '>
-							<?php echo $LanguageInstance->get('Users waiting to practice English'); ?>:
-							<span id='UsersWaitingEn'><?php echo $getUsersWaitingEn;?></span>
+						<div class='waitingForButton english'>
+							<?php //echo $LanguageInstance->get('There are Users waiting to practice English'); ?>
+							<!--i class="glyphicons glyphicons-chat"></i-->There are <span id='UsersWaitingEn'><?php echo $getUsersWaitingEn;?></span> learners of English waiting
 						</div>
-						<div class='waitingForButton spanish '>
-							<?php echo $LanguageInstance->get('Usuarios esperando para practicar Español');?>:
-							<span id='UsersWaitingEs'><?php echo $getUsersWaitingEs;?></span>
+						<div class='waitingForButton spanish'>
+							<?php //echo $LanguageInstance->get('Usuarios esperando para practicar Español');?>
+							<!--i class="glyphicons glyphicons-chat"></i-->Hay <span id='UsersWaitingEs'><?php echo $getUsersWaitingEs;?></span> aprendices de Espa&ntilde;ol esperando
 						</div>
 						<?php } ?>
-						<p class="clear"><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>.</p>
+						<!--h3 class="clear"><?php echo $LanguageInstance->get("waiting_for_tandem_assignment");?>.</h3>-->
 						<!--span><i><?php echo $LanguageInstance->get("If you do not find partner in 10 minutes we recommend you access later")?>. <?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>-->
-						<h3><?php echo $LanguageInstance->get("6 STEPS for a successful Tandem experience")?>:</h3>
+						<!--h3><?php echo $LanguageInstance->get("6 STEPS for a successful Tandem experience")?>:</h3>
 						
 						<ol class="bullets">
 							<li class="bullets"><?php echo $LanguageInstance->get("Go online at every hour and half-hour")?>.</li>
@@ -242,7 +248,7 @@ if (!$user_obj || !$course_id) {
 							<li class="bullets"><?php echo $LanguageInstance->get("As soon as a Tandem partner connects with you, Videochat will be automatically activated and will start RECORDING.  Don’t be shy and don’t exit!  A window with the tandem tasks will be also automatically activated and you and your partner will be able to switch from the Videochat window to the Tandem window very easily")?>.</li>
 							<li class="bullets"><?php echo $LanguageInstance->get("Do the tandem with your partner and REMEMBER that when the instructions are in Spanish you and your partner speak Spanish. When the instructions are in English, you speak English")?>.</li>
 							<li class="bullets"><?php echo $LanguageInstance->get("IMMEDIATELY after the tandem activity, please evaluate your partner by clicking on 'peer review', where you fill in the portfolio")?>.</li>
-						</ol>	
+						</ol-->
 					</div>
 					<!-- Max number of active tandems reached -->
 					<div id='maxTandems' class='modal'>
@@ -251,20 +257,18 @@ if (!$user_obj || !$course_id) {
 					</div>
 					<div class='manageSection'>
  					<?php  					
- 					if ($user_obj->instructor==1 || $user_obj->admin==1) { ?>                            
+ 					if ($user_obj->instructor==1 || $user_obj->admin==1) { ?>
                                 <div class="clear">
                                 <a href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get("mange_exercises_tandem");?></a>
                                 <a href='statistics_tandem.php'><?php echo $LanguageInstance->get("Tandem Statistics");?></a>
-                            </div>                                
+                            </div>
+						<div class="clear"></div><div class="clear"></div>
                      <?php } ?>                            
 					</div>
 					<div class="clear">
 						<p id="roomStatus"></p>
 					</div>
 					<div class="cleaner"></div>  
-					<div id="logo">
-						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo') ?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo') ?>" /></a>
-					</div>
 				</div>
 				<!-- /content -->
 			</div>

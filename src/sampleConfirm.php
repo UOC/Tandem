@@ -100,7 +100,7 @@ notifyTimerDown = function(id){
 	if($.trim(txtNews)!=$.trim(id)){
 		$('#showNews').html(id);
 		$('#showNews').fadeIn(1000).slideDown("fast");
-		$("#showNews").delay(3000).fadeOut(1000).slideUp("fast");
+		$("#showNews").delay(8000).fadeOut(1000).slideUp("fast");
 		txtNews=id;
 	}
 }
@@ -599,7 +599,7 @@ writeButtons = function(hideSeeSolution){
 		if(numBtn==1){
                         if (!hideSeeSolution){
 //                            botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php // echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php // echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php // echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php // echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php // echo $LanguageInstance->get('See Solution');?></span></a></li>';
-                            botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="if (timeline){timeline.stop();}accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
+                            botones+='<li id="sol1Item" class="solution" style="display:none;"><span class="lbl"><?php echo $LanguageInstance->get("Solution");?> <img src="img/ok.png" alt="<?php echo $LanguageInstance->get('Solution');?>" /></span></li><li id="next1Item" style="display:none;"><a href="#" class="next" id="next_task" title="<?php echo $LanguageInstance->get('Next Task');?>"><span class="lbl"><?php echo $LanguageInstance->get("See Solution");?></span></a></li><li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="if (timeline){try {	timeline.stop();} catch (e) {}}accion(\'btn'+i+'\','+i+');waitStep('+i+');showSolutionAndShowNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('See Solution');?></span></a></li>';
                         }else{
                             botones+='<li class="step"><a href="#" class="active" id="step_'+i+'" title="step '+j+'" onclick="accion(\'btn'+i+'\','+i+');waitStep('+i+');showNextTask();document.getElementById(\'sol1Item\').style.display=\'inline\';document.getElementById(\'next1Item\').style.display=\'inline\';return false;"><span class="lbl"><?php echo $LanguageInstance->get('Next');?></span></a></li>';
                         }
@@ -1019,7 +1019,7 @@ showImage = function(id){
 			});
 			//Stop timer
 			if (timeline) {
-				timeline.stop();
+				try {	timeline.stop();} catch (e) {}
 			}
 		}
 

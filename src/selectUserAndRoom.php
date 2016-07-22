@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/constants.php';
 require_once dirname(__FILE__).'/classes/gestorBD.php';
@@ -21,18 +21,18 @@ if (!$user_obj || !$course_id) {
 	$use_waiting_room = isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1;
 	$path = '';
 	if (isset($_SESSION[TANDEM_COURSE_FOLDER])) $path = $_SESSION[TANDEM_COURSE_FOLDER].'/';
-	
+
 	$id_resource_lti = $_SESSION[ID_RESOURCE];
-	
+
 	$lti_context = unserialize($_SESSION[LTI_CONTEXT]);
-	
+
 	$gestorBD	= new GestorBD();
 	$users_course = $gestorBD->obte_llistat_usuaris($course_id, $user_obj->id);
 	$is_reload = isset($_POST['reload'])?$_POST['reload']!=null:false;
-	
+
 	if ($is_reload || !$users_course || count($users_course)==0) {
 		if ($lti_context->hasMembershipsService()) { //Carreguem per LTI
-			//Convertir el llistat d'usuaris a un array de 
+			//Convertir el llistat d'usuaris a un array de
 			//person_name_given
 			//person_name_family
 			//person_name_full
@@ -44,12 +44,12 @@ if (!$user_obj || !$course_id) {
 			foreach ($users_course_lti as $user_lti) {
 				$id_user_lti = $user_lti->getId(  );
                                 $id_user_lti = str_replace(":", "_", $id_user_lti);
-                                
+
 				$firstname = convertToUtf8($user_lti->firstname);
 				$lastname = convertToUtf8($user_lti->lastname);
 				$fullname = convertToUtf8($user_lti->fullname);
 				$email = convertToUtf8($user_lti->email);
-									
+
 				$gestorBD->afegeixUsuari($course_id, $id_user_lti, $firstname, $lastname, $fullname, $email, '');
 				//$users_course[$id_user_lti] = $gestorBD->get_user_by_username($id_user_lti);
 			}
@@ -75,13 +75,13 @@ if (!$user_obj || !$course_id) {
 		$exercise  = isset($_POST['room'])?intval($_POST['room'],10):false;
 		$user_tandems = $gestorBD->obte_llistat_tandems($course_id, $user_selected, $exercise);
 	}
-	
-	
-	
-	
+
+
+
+
 	//Permetem que seleccini l'exercici 20111110
 	$is_host = $user_obj->is_host;
-	
+
 	$array_exercises = $gestorBD->get_tandem_exercises($course_id);
 	$tandemBLTI = new IntegrationTandemBLTI();
 	$selected_exercise = $tandemBLTI->checkXML2GetExercise($user_obj);
@@ -92,7 +92,7 @@ if (!$user_obj || !$course_id) {
 
 	//Agafem les dades de l'usuari
 	$name = mb_convert_encoding($user_obj->name, 'UTF-8', 'UTF-8');
-	
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -189,7 +189,7 @@ if (!$user_obj || !$course_id) {
 	        });
 			//Aquesta linia es pq seleccioni
 			input.val( $(select).find("option:selected").text());
-			
+
 			input.data( "autocomplete" )._renderItem = function( ul, item ) {
 				return $( "<li></li>" )
 					.data( "item.autocomplete", item )
@@ -224,7 +224,7 @@ if (!$user_obj || !$course_id) {
 					input.focus();
 				});
 		},
-		
+
 
 		destroy: function() {
 			this.wrapper.remove();
@@ -237,7 +237,7 @@ if (!$user_obj || !$course_id) {
 	$(document).ready(function(){
 
 		$('#showNewsS').slideUp();
-		
+
 //IE DETECTION - ERROR MSG TO USER
 		var isIE11 = !!navigator.userAgent.match(/Trident\/7\./); //check compatibility with iE11 (user agent has changed within this version)
 		var isie8PlusF = (function(){var undef,v = 3,div = document.createElement('div'),all = div.getElementsByTagName('i');while(div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',all[0]);return v > 4 ? v : undef;}());if(isie8PlusF>=8) isie8Plus=true;else isie8Plus=false;
@@ -247,7 +247,7 @@ if (!$user_obj || !$course_id) {
 		if (isie8PlusF<8) $.colorbox({href:"warningIE.html",escKey:true,overlayClose:false, width:400, height:350,onLoad:function(){$('#cboxClose').hide();}});
 		// END
 
-//xml request for iexploiter11+/others 		
+//xml request for iexploiter11+/others
 		if (isIEOk || window.ActiveXObject) xmlReq = new ActiveXObject("Microsoft.XMLHTTP");
 		else xmlReq = new XMLHttpRequest();
 //global vars - will be extracted from dataROOM.xml
@@ -276,9 +276,9 @@ if (!$user_obj || !$course_id) {
 			<?php if (!$_SESSION[FORCE_EXERCISE] || $_SESSION[FORCED_EXERCISE_NUMBER]==0){ ?>
 			if (value!='' && value>0) {
 				$('#room').removeAttr('disabled');
-				$( "#room" ).combobox();	
+				$( "#room" ).combobox();
 			}
-			else { 
+			else {
 				$( "#room" ).destroy();
 				$('#room').attr('disabled', 'disabled');
 			}
@@ -287,16 +287,16 @@ if (!$user_obj || !$course_id) {
 		enable_button= function(value){
 			if (value!='')
 				$('#start').removeAttr('disabled');
-			else 
+			else
 				//$('#start').addClass('disabled');
 				$('#start').hide();
 		}
-		
+
 		putLink = function(){
 			getXML();
 			return false;
 		}
-//opens next exercise	
+//opens next exercise
 		openLink = function(value,nextExer){
 			top.document.location.href=classOf+".php?room="+value+"&user=a&nextSample="+nextSample+'&node='+node+'&data='+data;
 		}
@@ -328,7 +328,7 @@ if (!$user_obj || !$course_id) {
 		printError  = function(error){
 			$('#roomStatus').val(error);
 		}
-		
+
 //get dataROOM.xml params
 		getXML = function(){
 			user_selected = $('#user_selected').val();
@@ -386,7 +386,7 @@ if (!$user_obj || !$course_id) {
 		<?php } ?>
 		enable_button();
 		<?php /*if (!$is_host) {?>
-		$.colorbox.close = function(){}; 
+		$.colorbox.close = function(){};
 		$.colorbox({href:"waiting4user.php",escKey:false,overlayClose:false,width:300,height:180});
 		var interval = null;
 		checkExercise = function() {
@@ -400,7 +400,7 @@ if (!$user_obj || !$course_id) {
 						clearInterval(interval);
 					getXMLRoom(exercise);
 			}
-		 } 
+		 }
 		}
 
 		<?php if (isset($user_obj->custom_room)) {?>
@@ -449,7 +449,7 @@ if (!$user_obj || !$course_id) {
 						notifyTimerDown('<?php echo $LanguageInstance->get('SlowConn')?>');
 				  }
 			});
-		},TimerSUAR);			
+		},TimerSUAR);
 		<?php if ($selected_exercise && strlen($selected_exercise)>0){ echo 'getXML();'; }?>
 
 
@@ -467,7 +467,7 @@ if (!$user_obj || !$course_id) {
 				}
 			}
 		}
-			
+
 	});
 
 	var intTimerNow;
@@ -482,7 +482,7 @@ if (!$user_obj || !$course_id) {
 		if(itNow<10) tNow ="0"+itNow;
 		else tNow = itNow;
 			$("#startNowBtn").html("<?php echo $LanguageInstance->get('accept')?> 00:"+tNow);
-			if(itNow<=1){ 
+			if(itNow<=1){
 				$("#startNowBtn").removeClass("tandem-btn").addClass("tandem-btnout");
 				$("#startNowBtn").html("<?php echo $LanguageInstance->get('caducado')?>");
 				$("#startNowBtn").attr("href", "#");
@@ -497,14 +497,14 @@ if (!$user_obj || !$course_id) {
 
 <!-- accessibility -->
 	<div id="accessibility">
-		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> | 
+		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> |
 		<!--
-		<a href="#" accesskey="n" title="Acceso directo al men de navegacin">Acceso directo al men de navegacin</a> | 
-		<a href="#" accesskey="m" title="Mapa del sitio">Mapa del sitio</a> 
+		<a href="#" accesskey="n" title="Acceso directo al men de navegacin">Acceso directo al men de navegacin</a> |
+		<a href="#" accesskey="m" title="Mapa del sitio">Mapa del sitio</a>
 		-->
 	</div>
 	<!-- /accessibility -->
-	
+
 	<!-- /wrapper -->
 	<div id="wrapper">
 
@@ -525,7 +525,7 @@ if (!$user_obj || !$course_id) {
 					<form action="#" method="post" id="main_form" class="login_form">
 						<?php if ($array_exercises!==false && is_array($array_exercises) && count($array_exercises)>0) {?>
 								<fieldset>
-								<?php 
+								<?php
 									if ($users_course && count($users_course)>0) {
 									?>
 									<label for="select_user" title="1. <?php echo $LanguageInstance->get('select_users')?>"><img class="point" src="css/images/p1.png" alt="1. <?php echo $LanguageInstance->get('select_users')?>" /></label>
@@ -545,26 +545,26 @@ if (!$user_obj || !$course_id) {
 											<option value="<?php echo $user['id']?>" <?php echo ($user_selected==$user['id']?'selected':'')?>><?php echo $user['surname'].', '.$user['firstname'].$extra?></option>
 										<?php }
 											}?>
-									</select> 
-								<?php 
+									</select>
+								<?php
 								} else {
 									$msg = !$gestorOKI || $gestorOKI->getLastError()==null?$LanguageInstance->get('no_users_in_course'):$gestorOKI->getLastError();
-							?> 
+							?>
 							<label for="not_users" title="<?php echo $msg?>"><?php echo $msg?></label>
 							<?php } ?>
 								</fieldset>
-								<?php 
+								<?php
 								$number = 2;
-								
-								if ($_SESSION[FORCE_EXERCISE] && $_SESSION[FORCED_EXERCISE_NUMBER]>0){ 
-									
+
+								if ($_SESSION[FORCE_EXERCISE] && $_SESSION[FORCED_EXERCISE_NUMBER]>0){
+
 									$exercise = $gestorBD->get_exercise($_SESSION[FORCED_EXERCISE_NUMBER]);
 									$exercise = $exercise[0];
-									if($exercise){										
+									if($exercise){
 										$extra_exercise = isset($exercise['relative_path']) && strlen($exercise['relative_path'])>0?str_replace("/", "", $exercise['relative_path']).'/':'';?>
 										<input type="hidden" name="room" id="room" value="<?php echo  $extra_exercise.$exercise['name_xml_file']?>" />
 								<?php
-									} 								
+									}
 								} else { ?>
 								<fieldset>
 									<?php if ($array_exercises!==false &&
@@ -578,14 +578,14 @@ if (!$user_obj || !$course_id) {
 												?>
 												<option value="<?php echo $extra_exercise.$exercise['name_xml_file']?>" <?php echo ($selected_exercise_select==$exercise['name_xml_file']||$selected_exercise==$exercise['name_xml_file'])?'selected="selected"':''?>><?php echo $exercise['name']?></option>
 											<?php }?>
-										</select>	
+										</select>
 									<?php } else {?>
-										<input type="text" id="room" value="" size="10" onchange="putLink();"/>	
+										<input type="text" id="room" value="" size="10" onchange="putLink();"/>
 									<?php }?>
 								</fieldset>
-								<?php 
+								<?php
 								$number++;
-								} 
+								}
 								?>
 								<fieldset>
 									<label for="start" title="<?php echo $number?>. <?php echo $LanguageInstance->get('start')?>"><img class="point" src="css/images/p<?php echo $number?>.png" alt="3. <?php echo $LanguageInstance->get('start')?>" /></label>
@@ -610,10 +610,10 @@ if (!$user_obj || !$course_id) {
 									<h2><?php echo $LanguageInstance->get('pending_tandems')?></h2>
 									<a href="selectUserAndRoom.php" class="tandem-btn-secundary btn-reload"><i class="icon"></i><?php echo $LanguageInstance->get('reload_pending')?></a>
 								</div>
-								
+
 								<table id="statistics1" class="table">
 								<thead>
-									<tr>	
+									<tr>
 										<th style="width:30%"><?php echo $LanguageInstance->get('user_guest')?></th>
 										<th style="width:25%"><?php echo $LanguageInstance->get('exercise')?></th>
 										<th style="width:25%"><?php echo $LanguageInstance->get('date')?></th>
@@ -621,21 +621,21 @@ if (!$user_obj || !$course_id) {
 									</tr>
 								</thead>
 								<tbody>
-								<?php 
+								<?php
 								$ai=0;
 								foreach ($pending_invitations as $tandem) {
 								$ai++;
 								?>
 									<tr>
-										
+
 										<td><?php echo $tandem['surname'].', '.$tandem['firstname']?></td>
 										<td><?php echo $tandem['name']?></td>
 										<td><?php echo $tandem['created']?></td>
-										
+
 										<?php
 										$time2Expire=60;
 										if( (time() - strtotime($tandem['created']))>=$time2Expire){
-										?> 
+										?>
 										<td><a href="#" title="<?php echo $LanguageInstance->get('go')?>" class="tandem-btnout"><?php echo $LanguageInstance->get('caducado')?></a></td>
 										<?php }else{ ?>
 											<script>
@@ -651,8 +651,8 @@ if (!$user_obj || !$course_id) {
 													//else t = i;
 													for(var iT=0;iT<=<?php echo $ai;?>;iT++){
 														//$("#timer2expired"+iT).html("<?php echo $LanguageInstance->get('accept')?> 00:"+t);
-														
-														//if(i<=1 || isNowOn==1){ 
+
+														//if(i<=1 || isNowOn==1){
 															$("#timer2expired"+iT).removeClass("tandem-btn").addClass("tandem-btnout");
 															$("#timer2expired"+iT).html("<?php echo $LanguageInstance->get('caducado')?>");
 															$("#timer2expired"+iT).attr("href", "#")
@@ -663,36 +663,36 @@ if (!$user_obj || !$course_id) {
 												}
 											</script>
 										<td><a id="timer2expired<?php echo $ai;?>" href="accessTandem.php?id=<?php echo $tandem['id']?>" title="<?php echo $LanguageInstance->get('go')?>" class="tandem-btn"><?php echo $LanguageInstance->get('accept')?></a></td>
-										
+
 										<?php
 											}
 										?>
-										
+
 									</tr>
 								<?php }?>
 								</tbody>
 								</table>
-						 	<?php } ?>	
+						 	<?php } ?>
 						</div>
 						<?php /*
 						<div class="clear">
 						<p><a href="selectUserAndRoom.php"><?php echo $LanguageInstance->get('reload_pending')?></a></p>
-						</div> 
+						</div>
 						*/ ?>
 						<?php if ($user_obj->instructor) { ?>
 						<?php /*
 						<div class="clear">
-						
+
 							if ($is_showTandem) {
 								if ($user_selected==0) {?>
 									<p class="error"><?php echo $LanguageInstance->get('select_user')?></p>
-								<?php 
+								<?php
 								} else {
 									if ($user_tandems==null || count($user_tandems)==0) {
 									?>
 										<?php echo $LanguageInstance->get('no_tandems')?>
-									<?php 	
-									} else { 
+									<?php
+									} else {
 										?>
 											<div class="title"><?php echo $LanguageInstance->get('tandems')?></div>
 											<table>
@@ -703,7 +703,7 @@ if (!$user_obj || !$course_id) {
 												<th><?php echo $LanguageInstance->get('date_guest_user_logged')?></th>
 												<th><?php echo $LanguageInstance->get('finalized')?></th>
 												</tr>
-											<?php 
+											<?php
 											foreach ($user_tandems as $tandem) {
 											?>
 												<tr>
@@ -716,26 +716,26 @@ if (!$user_obj || !$course_id) {
 											<?php }?>
 											</table>
 											<div class="clear" >&nbsp;</div>
-							<?php  		}	
+							<?php  		}
 									}
 							}
 						</div>
 						*/ ?>
-                                                    
+
 						<div class="clear">
 							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo $LanguageInstance->get('refresh')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('activity_log')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo $LanguageInstance->get('mange_exercises_tandem')?>" />
-						</div>	
-                                                    
-						<?php } //is instructor ?>  
-						
+						</div>
+
+						<?php } //is instructor ?>
+
 						<div class="clear">
 							<?php /* <p>echo Language::getTag('tandem_description_1','<strong>'.$name.'</strong>') <!--10082012: nfinney> finney> replaced with popup on IE detection--><br/>
 							<?php echo $LanguageInstance->get('tandem_description_2');</p> */ ?>
 							<p id="roomStatus"></p>
 						</div>
-						
+
 						</div> <!-- /manage-area -->
 					</form>
 					<div id="logo">

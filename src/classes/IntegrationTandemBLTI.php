@@ -24,6 +24,7 @@ class IntegrationTandemBLTI {
 		}
 		
 		$file = dirname(__FILE__)."/../".$path.$relative_path."/data$exercise.xml";
+		$file = str_replace('//', '/', $file);
 		if (!file_exists($file)) {
 			if ($die_if_not_found)
 				die ("Exercise $file not exists");
