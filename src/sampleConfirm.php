@@ -95,6 +95,82 @@ function getTimeNow(itNow){
 //timer
 var totalUser = 0;
 $(document).ready(function(){
+    $('#moodModal').modal('show');
+    emojiSelected = function(selected){
+        $.ajax({
+                type: 'POST',
+                url: "updateUserMood.php",
+                data : {
+                           id_tandem : '<?php echo $_SESSION['current_tandem'];?>',
+                           id_user : '<?php echo $_SESSION['current_user']->id;?>',
+                           mood : selected
+                },
+                success: function(data){	        			
+                    //
+                }
+        });
+    }
+    emojiClick = function(selected){
+        $('#mood').val(0);
+        switch(selected) {
+            case 1:
+                switch($('#smile').attr('src')){
+                    case 'images/smile.png':
+                        $('#smile').attr('src','images/smile_selected.png');
+                        $('#neutral').attr('src','images/neutral.png');
+                        $('#sad').attr('src','images/sad.png');
+                        $('#mood').val(1);
+                        break;
+                    case 'images/smile_selected.png':
+                        $('#smile').attr('src','images/smile.png');
+                        break;    
+                }
+                break;
+            case 2:
+                switch($('#neutral').attr('src')){
+                    case 'images/neutral.png':
+                        $('#neutral').attr('src','images/neutral_selected.png');
+                        $('#smile').attr('src','images/smile.png');
+                        $('#sad').attr('src','images/sad.png');
+                        $('#mood').val(2);
+                        break;
+                    case 'images/neutral_selected.png':
+                        $('#neutral').attr('src','images/neutral.png');
+                        break;    
+                }
+                break;
+            case 3:
+                switch($('#sad').attr('src')){
+                    case 'images/sad.png':
+                        $('#sad').attr('src','images/sad_selected.png');
+                        $('#neutral').attr('src','images/neutral.png');
+                        $('#smile').attr('src','images/smile.png');
+                        $('#mood').val(3);
+                        break;
+                    case 'images/sad_selected.png':
+                        $('#sad').attr('src','images/sad.png');
+                        break;    
+                }
+                break;
+        }
+    }
+    
+    evaluateTask = function (){
+        $.ajax({
+                type: 'POST',
+                url: "evaluateTask.php",
+                data : {
+                           id_tandem : '<?php echo $_SESSION['current_tandem'];?>',
+                           id_user : '<?php echo $_SESSION['current_user']->id;?>',
+                           task_number : node,
+                           mood : $('#mood').val(),
+                           comment : $('#comment').val()
+                },
+                success: function(data){	        			
+                    //
+                }
+        });
+    }
 //colorbox js actionexample3
 notifyTimerDown = function(id){
 	if($.trim(txtNews)!=$.trim(id)){
@@ -687,6 +763,7 @@ accion = function(id,number){
 			//20121004 - Add - @abertranb 
 			showSolutionAndShowNextTask = function() {
 				showSolution();
+                                $('#evaluateTaskModal').modal('show');
 				$('#next_task').attr('onclick',"");
 				if(numNodes!=node){
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Next Task');?>");
@@ -1427,7 +1504,39 @@ This site reflects only the views of the authors, and the European Commission ca
 		<p class="msg">Time up!</p>
                 <p><a href='#' onclick="$('#next1Item').css('display', 'block')" id="lnk-end-task" class="btn simplemodal-close">Close</a></p>
 	</div>
-	<!-- /modals -->
+        <!--Mood Modal--> 
+        <div id="moodModal" class="modal">
+                <div class="modal-header">
+                    <button type="button" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <p class="msg">¿Cuál es tu estado de ánimo?</p>
+                <p class="msg">
+                    <img class="simplemodal-close mood-img" src="images/smile.png" onclick="emojiSelected(1)" />
+                    <img class="simplemodal-close mood-img" src="images/neutral.png" onclick="emojiSelected(2)" />
+                    <img class="simplemodal-close mood-img" src="images/sad.png" onclick="emojiSelected(3)" />
+                </p>
+	</div>
+        <!--Evaluate Task Modal--> 
+        <div id="evaluateTaskModal" class="modal">
+                <div class="modal-header">
+                    <button type="button" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <p class="msg">Valora la tarea:</p>
+                <p class="msg">
+                    <img id="smile" class="mood-img" src="images/smile.png" onclick="emojiClick(1)" />
+                    <img id="neutral"  class="mood-img" src="images/neutral.png" onclick="emojiClick(2)" />
+                    <img id="sad" class="mood-img" src="images/sad.png" onclick="emojiClick(3)" />
+                </p>
+                <p class="msg">Comentarios:</p>
+                <form role="form">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="10" id="comment"></textarea>
+                        <input id="mood" type="hidden" value="0"> 
+                        <input id="moodBtn" class="simplemodal-close" type="button" value="Enviar" onclick="evaluateTask()"/>
+                    </div>
+                </form>
+	</div>
+        <!-- /modals -->
 	<!-- /footer -->
 	<script type="text/javascript" src="js/tandem.js?version=1"></script>
 	<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>

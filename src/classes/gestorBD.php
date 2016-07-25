@@ -3735,6 +3735,18 @@ class GestorBD {
          }
          return '';
     }
+    
+    function setMoodToUser($id_tandem, $id_user, $mood){
+        $sql = 'update user_tandem set user_mood = ' . $mood . ' where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user;
+        $result = $this->consulta($sql);
+        return $result;
+    }
+    
+    function setTaskEvaluation($id_tandem, $id_user, $task_number, $mood, $comment){
+        $sql = 'update user_tandem_task set task_mood = ' . $mood . ', task_comment = "' . $comment . '" where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user . ' and task_number = ' . $task_number;
+        $result = $this->consulta($sql);
+        return $result;
+    }
 
 }//end of class
 
