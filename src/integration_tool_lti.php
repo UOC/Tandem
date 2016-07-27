@@ -144,6 +144,8 @@ try {
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
 	    $week 		  = $tandemBLTI->getDataInfo($context, 'custom_week');
 	    $previous_week 	 = $tandemBLTI->getDataInfo($context, 'custom_previous_week');
+            $enable_task_evaluation = $tandemBLTI->getDataInfo($context, 'custom_enable_task_evaluation')==1;
+            $show_user_status = $tandemBLTI->getDataInfo($context, 'custom_show_user_status')==1;
 
 
 	    //Check if course exists
@@ -189,6 +191,8 @@ try {
             $_SESSION[OPEN_TOOL_ID] = $open_tool_id && $open_tool_id>0?$open_tool_id:false;
             $_SESSION[WEEK] = !empty($week) ? $week : false;
             $_SESSION[PREVIOUS_WEEK] = !empty($previous_week) ? $previous_week : false;
+            $_SESSION[ENABLE_TASK_EVALUATION] = $enable_task_evaluation;
+            $_SESSION[SHOW_USER_STATUS] = $show_user_status;
 
 		    if (!$tandem) {
 		    	if (posa_osid_context_session($gestorBD, $course_id, $context)) {

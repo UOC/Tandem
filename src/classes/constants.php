@@ -58,6 +58,8 @@ define ('ID_EXTERNAL', 'id_external');
 define ('TIME_TO_FAILED_TANDEM', 60);
 define ('FORCE_EXERCISE', 'force_exercise');
 define ('FORCED_EXERCISE_NUMBER', 'forced_exercise_number');
+define ('ENABLE_TASK_EVALUATION', 'enable_task_evaluation');
+define ('SHOW_USER_STATUS', 'show_user_status');
 
 class BasicLTIConstants {
    /**

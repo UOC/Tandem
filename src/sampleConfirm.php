@@ -95,7 +95,9 @@ function getTimeNow(itNow){
 //timer
 var totalUser = 0;
 $(document).ready(function(){
-    $('#moodModal').modal('show');
+    <?php if ($_SESSION[SHOW_USER_STATUS]){ ?>
+        $('#moodModal').modal('show');
+    <?php } ?>
     emojiSelected = function(selected){
         $.ajax({
                 type: 'POST',
@@ -763,7 +765,9 @@ accion = function(id,number){
 			//20121004 - Add - @abertranb 
 			showSolutionAndShowNextTask = function() {
 				showSolution();
-                                $('#evaluateTaskModal').modal('show');
+                                <?php if ($_SESSION[ENABLE_TASK_EVALUATION]){ ?>
+                                    $('#evaluateTaskModal').modal('show');
+                                <?php } ?>
 				$('#next_task').attr('onclick',"");
 				if(numNodes!=node){
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Next Task');?>");
