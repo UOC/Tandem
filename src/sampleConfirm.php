@@ -98,6 +98,17 @@ $(document).ready(function(){
     <?php if ($_SESSION[SHOW_USER_STATUS]){ ?>
         $('#moodModal').modal('show');
     <?php } ?>
+    showEvaluateTaskModal = function(last){
+        <?php if ($_SESSION[ENABLE_TASK_EVALUATION]){ ?>
+                if (last == 0){
+                    $("#moodBtn").attr("onclick","evaluateTask(0)");
+                    $('#evaluateTaskModal').modal('show');
+                }else{
+                    $("#moodBtn").attr("onclick","evaluateTask(1);showVideoChatAndGoodbyeMessage();");
+                    $('#evaluateTaskModal').modal('show');
+                }
+        <?php } ?>    
+    }
     emojiSelected = function(selected){
         $.ajax({
                 type: 'POST',
@@ -157,14 +168,18 @@ $(document).ready(function(){
         }
     }
     
-    evaluateTask = function (){
+    evaluateTask = function (last){
+        var task_number = node
+        if (last == 0){
+            task_number = node - 1;
+        }
         $.ajax({
                 type: 'POST',
                 url: "evaluateTask.php",
                 data : {
                            id_tandem : '<?php echo $_SESSION['current_tandem'];?>',
                            id_user : '<?php echo $_SESSION['current_user']->id;?>',
-                           task_number : node,
+                           task_number : task_number,
                            mood : $('#mood').val(),
                            comment : $('#comment').val()
                 },
@@ -765,9 +780,6 @@ accion = function(id,number){
 			//20121004 - Add - @abertranb 
 			showSolutionAndShowNextTask = function() {
 				showSolution();
-                                <?php if ($_SESSION[ENABLE_TASK_EVALUATION]){ ?>
-                                    $('#evaluateTaskModal').modal('show');
-                                <?php } ?>
 				$('#next_task').attr('onclick',"");
 				if(numNodes!=node){
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Next Task');?>");
@@ -789,7 +801,7 @@ accion = function(id,number){
 				
 				//muestra el iframe de la solución
 				if(numNodes!=node){
-					$('#next_task').attr('onclick',"pass2NextQuestion();return false;");
+					$('#next_task').attr('onclick',"showEvaluateTaskModal(0);pass2NextQuestion();return false;");
 					if(document.getElementById('next1Item')) document.getElementById('next1Item').style.display='inline';
 				}else{
 					<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
@@ -797,7 +809,7 @@ accion = function(id,number){
 					<?php } ?>
 					$('#next_task .lbl').html("<?php echo $LanguageInstance->get('Click to finish');?>");
 					<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) { ?>
-					$('#next_task').attr('onclick',"showVideoChatAndGoodbyeMessage();return false;");
+					$('#next_task').attr('onclick',"showEvaluateTaskModal(1);return false;");
 					<?php } else {?>
 					$('#next_task').attr('onclick',"showFinishedAlert();return false;");
 					<?php } ?>
@@ -1536,7 +1548,7 @@ This site reflects only the views of the authors, and the European Commission ca
                     <div class="form-group">
                         <textarea class="form-control" rows="10" id="comment"></textarea>
                         <input id="mood" type="hidden" value="0"> 
-                        <input id="moodBtn" class="simplemodal-close" type="button" value="Enviar" onclick="evaluateTask()"/>
+                        <input id="moodBtn" class="simplemodal-close" type="button" value="Enviar" onclick=""/>
                     </div>
                 </form>
 	</div>
