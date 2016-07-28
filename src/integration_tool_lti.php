@@ -144,8 +144,8 @@ try {
 	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
 	    $week 		  = $tandemBLTI->getDataInfo($context, 'custom_week');
 	    $previous_week 	 = $tandemBLTI->getDataInfo($context, 'custom_previous_week');
-            $enable_task_evaluation = $tandemBLTI->getDataInfo($context, 'custom_enable_task_evaluation')==1;
-            $show_user_status = $tandemBLTI->getDataInfo($context, 'custom_show_user_status')==1;
+		$enable_task_evaluation = $tandemBLTI->getDataInfo($context, 'custom_enable_task_evaluation')==1;
+		$show_user_status = $tandemBLTI->getDataInfo($context, 'custom_show_user_status')==1;
 
 
 	    //Check if course exists
