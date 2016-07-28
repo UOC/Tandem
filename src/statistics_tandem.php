@@ -37,8 +37,8 @@ if (!isset($user_obj) || !isset($course_id) || !$user_obj->instructor) {
 	$finished = isset($_POST['finished'])?intval($_POST['finished']):-1; //-1 all values, 0 not finished, 1 only finished, 2 error
 
 	$exercise_form  = isset($_POST['room'])?intval($_POST['room'],10):false;
+	$user_tandems = $gestorBD->obte_llistat_tandems($course_id, $user_selected, $exercise_form, $id_tandem, $order_by_tandems, $order_by_tandems_direction, $start_date, $finish_date, $finished);
 	if ($is_showTandem){
-		$user_tandems = $gestorBD->obte_llistat_tandems($course_id, $user_selected, $exercise_form, $id_tandem, $order_by_tandems, $order_by_tandems_direction, $start_date, $finish_date, $finished);
 		//Busquem per tandem
 		if ($id_tandem>0) {
 			$task_tandems = $gestorBD->obte_task_tandems($course_id, $user_selected, $exercise_form, $id_tandem, $id_task, $order_by_tasks, $order_by_tasks_direction, $start_date, $finish_date, $finished);

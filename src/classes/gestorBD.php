@@ -564,10 +564,14 @@ class GestorBD {
 
         $result = $this->consulta($sql);
         if ($this->numResultats($result) > 0) {
-            $rows = $this->obteComArray($result);
-            /* foreach ($rows as $key => $row) {
-              $rows[$key]['other_user'] = $this->getUserRelatedTandem($row['id_user_host']!=$user_id?$row['id_user_host']:$row['id_user_guest']);
-              } */
+            $rows_temp = $this->obteComArray($result);
+            $rows = array();
+
+             foreach ($rows_temp as $key => $row) {
+                 if ($row['id_user_host']>0 && $row['id_user_guest']>0) {
+                     $rows[$key] = $row;
+                 }
+              }
         }
         return $rows;
     }
@@ -1645,7 +1649,7 @@ class GestorBD {
                     }
 
                 }else{
-                    $this->addToWaitingRoomHistory($id);
+                   // $this->addToWaitingRoomHistory($id);
 
                     $sqlDeleteWR = 'delete from waiting_room where id_exercise = '.$id_exercise.' and id_course = '.$courseID.' and number_user_waiting = 0';
                     $resultDeleteWR = $this->consulta($sqlDeleteWR);
@@ -3735,19 +3739,48 @@ class GestorBD {
          }
          return '';
     }
-    
+
+    /**
+     * Updates information of the user feeling
+     * @param $id_tandem
+     * @param $id_user
+     * @param $mood
+     * @return resource
+     */
     function setMoodToUser($id_tandem, $id_user, $mood){
         $sql = 'update user_tandem set user_mood = ' . $mood . ' where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user;
         $result = $this->consulta($sql);
         return $result;
     }
-    
+
+    /**
+     * Set the user task evaluation
+     * @param $id_tandem
+     * @param $id_user
+     * @param $task_number
+     * @param $mood
+     * @param $comment
+     * @return resource
+     */
     function setTaskEvaluation($id_tandem, $id_user, $task_number, $mood, $comment){
         $sql = 'update user_tandem_task set task_mood = ' . $mood . ', task_comment = "' . $comment . '" where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user . ' and task_number = ' . $task_number;
         $result = $this->consulta($sql);
         return $result;
     }
 
+
+    /**
+     * Updates the list of users of the current course
+     * @param $id_course
+     * @return resource
+     */
+    function delete_user_from_course($id_course){
+        $sql = 'update user_course set id_user = (-1*id_user) where id_course= ' . $id_course;
+        $result = $this->consulta($sql);
+        $sql = 'update tandem set id_user_host = (-1*id_user_host), id_user_guest = (-1*id_user_guest) where id_course= ' . $id_course;
+        $result = $this->consulta($sql);
+        return $result;
+    }
 }//end of class
 
 ?>
