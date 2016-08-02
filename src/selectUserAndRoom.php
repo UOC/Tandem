@@ -68,6 +68,10 @@ if (!$user_obj || !$course_id) {
 			}
 		}
 	}
+	if ($user_obj->instructor && isset($_POST['confirm_delete_users']) && $_POST['confirm_delete_users']!=null) {
+		$gestorBD->delete_user_from_course($course_id);
+		$users_course = array();
+	}
 	$is_showTandem = isset($_POST['showTandem'])?$_POST['showTandem']!=null:false;
 	$user_tandems = null;
 	$user_selected = isset($_POST['user_selected'])?intval($_POST['user_selected']):0;
@@ -511,7 +515,8 @@ if (!$user_obj || !$course_id) {
 		<div id="head-containerS">
 			<div id="headerS">
             	<div id="logoS">
-            		<div id="showNewsS"></div>
+            		<div id="showNewsS">
+					</div>
             	</div>
        		</div>
         </div>
@@ -595,6 +600,12 @@ if (!$user_obj || !$course_id) {
 							echo '<div id="alert-top" class="alert alert-warning"><div class="alert-inside"><i class="icon"></i><h3>'.Language::get('no_exercises_found').'</h3></div></div>';
 						} ?>
 						<div class="manage-area">
+							<?php if ($user_obj->instructor && isset($_POST['delete_users']) && $_POST['delete_users']!=null) {?>
+							<div id="alert-top" class="alert alert-warning"><div class="alert-inside"><i class="icon"></i><input type="submit" name="confirm_delete_users" onclick="Javascript:canviaAction('confirm_delete_users');" value="<?php echo $LanguageInstance->get('Click here to confirm user deletion, this action can not be undone')?>" /></div></div>
+							<?php }elseif ($user_obj->instructor && isset($_POST['confirm_delete_users']) && $_POST['confirm_delete_users']!=null) { ?>
+								<div id="alert-top" class="alert alert-warning"><div class="alert-inside"><i class="icon"></i>Users deleted!</div></div>
+							<?php } ?>
+
 						<div class="clear">
 							<div id="info-block" class="alert alert-info" style="display:none"></div>
 							<!--<div class="info" style="display:none"></div>--> <!-- 10092012 nfinney> type error: changed to 'none' from 'hidden' -->
@@ -723,6 +734,7 @@ if (!$user_obj || !$course_id) {
 						*/ ?>
 
 						<div class="clear">
+							<input type="submit" name="delete_users" onclick="Javascript:canviaAction('delete_users');" value="<?php echo $LanguageInstance->get('Delete users')?>" />
 							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo $LanguageInstance->get('refresh')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('activity_log')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo $LanguageInstance->get('mange_exercises_tandem')?>" />
