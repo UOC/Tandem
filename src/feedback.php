@@ -69,6 +69,7 @@ if (!$user_obj || !$course_id) {
                     $feedback_form_new->discoursemangement = 0;
                     $feedback_form_new->pronunciation = 0;
                     $feedback_form_new->interactivecommunication = 0;
+                    $feedback_form_new->other_observations = "";
                 }else{
                     $feedback_form = new stdClass();
                     $feedback_form->fluency = 0;
@@ -91,6 +92,7 @@ if (!$user_obj || !$course_id) {
                                     $feedback_form_new->discoursemangement = $_POST['discoursemangement'];
                                     $feedback_form_new->pronunciation = $_POST['pronunciation'];
                                     $feedback_form_new->interactivecommunication = $_POST['interactivecommunication'];
+                                    $feedback_form_new->other_observations = $_POST['other_observations'];
                                     if ($gestorBD->createFeedbackTandemDetail($id_feedback, serialize($feedback_form_new))) {
                                             $message = '<div class="alert alert-success" role="alert">'.$LanguageInstance->get('Data saved successfully').'</div>';
                                             $can_edit = false;
@@ -147,6 +149,8 @@ if (!$user_obj || !$course_id) {
 			<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 			<link rel="stylesheet" type="text/css" media="all" href="css/slider2.css" />
 			<link rel="stylesheet" type="text/css" media="all" href="css/star-rating.min.css" />
+                        <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap-tour.min.css" />
+                        <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap-tour-standalone.min.css" />
 			<style>
 			#footer-container{margin-top:-222px;position:inherit;}
 			#wrapper{padding:0px 58px}
@@ -161,7 +165,7 @@ if (!$user_obj || !$course_id) {
 		<div id="wrapper" class="container">
 		  <div class="page-header">
 		  <div class='row'>
-			<div class='col-md-6'>
+			<div class='col-md-5'>
 				<button class="btn btn-success" type='button' onclick="window.location ='portfolio.php';"><?php echo $LanguageInstance->get('Back to list') ?></button>
 				<h1><?php echo $LanguageInstance->get('peer_review_form') ?></h1>
 				<?php if ($user_obj->instructor == 1 ){ ?>
@@ -185,6 +189,9 @@ if (!$user_obj || !$course_id) {
 			</div>
 			</p>
 			</div>
+                        <div class='col-md-1'>
+                            <button type="button" id="button-help" class="btn btn-info" title="<?php echo $LanguageInstance->get('Help') ?>"><i class="glyphicon glyphicon-question-sign"></i> <?php echo $LanguageInstance->get('Help') ?></button>
+                        </div>
 			</div>
 		</div>
 		  <?php if ($message){
@@ -265,6 +272,12 @@ if (!$user_obj || !$course_id) {
                                                     <div class="form-group">
                                                         <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation') ?></label>
                                                         <?php echo $feedBackFormPartner->pronunciation?> %
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
+                                                        <div class="input-group">
+                                                          <textarea  readonly rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedBackFormPartner->other_observations?></textarea>
+                                                        </div>
                                                     </div>
                                                 <?php     
                                                 }else{ 
@@ -358,10 +371,126 @@ if (!$user_obj || !$course_id) {
                                                         <!-- content -->
 							<div id="content_old">
 							<form data-toggle="validator" role="form" method="POST">
+                                                        <div class="form-group">
+								<label for="grammatical-resource-rubric" class="control-label">Descriptor de Rúbrica <?php echo $LanguageInstance->get('Grammatical Resource') ?>:</label>
+								<select id="grammatical-resource-rubric" name="grammatical-resource-rubric">
+									<option value="">Select one</option>
+									<option value="A">Bla bla bla bla bla bla bla bla bla bla bla bla bla </option>
+									<option value="B">Ble ble ble ble ble ble ble ble ble ble ble ble ble </option>
+									<option value="C">Bli bli bli bli bli bli bli bli bli bli bli bli bli </option>
+								</select>
+								<!-- trigger modal -->
+								<div class="info" data-toggle="modal" data-target="#grammatical-resource-infoModal" style="display:initial; cursor:pointer"><img src="images/info.png"></div>
+								<!-- Modal -->
+								<div class="modal fade" id="grammatical-resource-infoModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+								  <div class="modal-dialog" role="document">
+									<div class="modal-content">
+									  <div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										  <span aria-hidden="true">×</span>
+										</button>
+										<h4 class="modal-title" id="grammatical-resource-modal-label">More information</h4>
+									  </div>
+									  <div class="modal-body" id="grammatical-resource-modal-body">
+										<div><ul>
+                                                                                        <li><b>Bla bla bla bla bla bla bla bla bla bla bla bla bla</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+											<li><b>Ble ble ble ble ble ble ble ble ble ble ble ble ble</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+											<li><b>Bli bli bli bli bli bli bli bli bli bli bli bli bli</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+										</ul></div>
+									  </div>
+									  <div class="modal-footer">
+										<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+									  </div>
+									</div>
+								  </div>
+								</div>
+                                                                <div id="grammatical-resource-text-info" style="display: none;">
+                                                                  <span id="grammatical-resource-text-info-span"></span>
+								  <div class="info" data-toggle="modal" data-target="#grammatical-resource-info-modal" style="display:initial; cursor:pointer"><img src="images/info.png"></div>
+								  <!-- Modal -->
+								  <div class="modal fade" id="grammatical-resource-info-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+									  <div class="modal-dialog" role="document">
+										  <div class="modal-content">
+											  <div class="modal-header">
+												  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													  <span aria-hidden="true">×</span>
+												  </button>
+												  <h4 class="modal-title" id="grammatical-resource-info-modal-label">Bla bla bla bla bla bla bla bla bla bla bla bla bla</h4>
+											  </div>
+											  <div class="modal-body" id="grammatical-resource-info-modal-body">
+												  <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.
+												  </div>
+											  </div>
+											  <div class="modal-footer">
+												  <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+											  </div>
+										  </div>
+									  </div>
+									  </div>
+								  </div>
+							  </div>
 							  <div class="form-group">
 								<label for="grammaticalresource" class="control-label"><?php echo $LanguageInstance->get('Grammatical Resource') ?> *</label>
 								<input data-slider-id='ex1Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="grammaticalresource" id="grammaticalresource" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->grammaticalresource?>"/>%
 								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
+							  </div>
+                                                          <div class="form-group">
+								<label for="lexical-resource-rubric" class="control-label">Descriptor de Rúbrica <?php echo $LanguageInstance->get('Lexical Resource') ?>:</label>
+								<select id="lexical-resource-rubric" name="lexical-resource-rubric">
+									<option value="">Select one</option>
+									<option value="A">Bla bla bla bla bla bla bla bla bla bla bla bla bla </option>
+									<option value="B">Ble ble ble ble ble ble ble ble ble ble ble ble ble </option>
+									<option value="C">Bli bli bli bli bli bli bli bli bli bli bli bli bli </option>
+								</select>
+								<!-- trigger modal -->
+								<div class="info" data-toggle="modal" data-target="#lexical-resource-infoModal" style="display:initial; cursor:pointer"><img src="images/info.png"></div>
+								<!-- Modal -->
+								<div class="modal fade" id="lexical-resource-infoModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+								  <div class="modal-dialog" role="document">
+									<div class="modal-content">
+									  <div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										  <span aria-hidden="true">×</span>
+										</button>
+										<h4 class="modal-title" id="lexical-resource-modal-label">More information</h4>
+									  </div>
+									  <div class="modal-body" id="lexical-resource-modal-body">
+										<div><ul>
+                                                                                        <li><b>Bla bla bla bla bla bla bla bla bla bla bla bla bla</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+											<li><b>Ble ble ble ble ble ble ble ble ble ble ble ble ble</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+											<li><b>Bli bli bli bli bli bli bli bli bli bli bli bli bli</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+										</ul></div>
+									  </div>
+									  <div class="modal-footer">
+										<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+									  </div>
+									</div>
+								  </div>
+								</div>
+                                                                <div id="lexical-resource-text-info" style="display: none;">
+                                                                  <span id="lexical-resource-text-info-span"></span>
+								  <div class="info" data-toggle="modal" data-target="#lexical-resource-info-modal" style="display:initial; cursor:pointer"><img src="images/info.png"></div>
+								  <!-- Modal -->
+								  <div class="modal fade" id="lexical-resource-info-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+									  <div class="modal-dialog" role="document">
+										  <div class="modal-content">
+											  <div class="modal-header">
+												  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													  <span aria-hidden="true">×</span>
+												  </button>
+												  <h4 class="modal-title" id="lexical-resource-info-modal-label">Bla bla bla bla bla bla bla bla bla bla bla bla bla</h4>
+											  </div>
+											  <div class="modal-body" id="lexical-resource-info-modal-body">
+												  <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.
+												  </div>
+											  </div>
+											  <div class="modal-footer">
+												  <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+											  </div>
+										  </div>
+									  </div>
+									  </div>
+								  </div>
 							  </div>
 							  <div class="form-group">
 								<label for="lexicalresource" class="control-label"><?php echo $LanguageInstance->get('Lexical Resource') ?> *</label>
@@ -373,6 +502,64 @@ if (!$user_obj || !$course_id) {
 								<input data-slider-id='ex3Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="discoursemangement" id="discoursemangement" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->discoursemangement?>"/>%
 								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
 							  </div> 
+                                                          <div class="form-group">
+								<label for="pronunciation-resource-rubric" class="control-label">Descriptor de Rúbrica <?php echo $LanguageInstance->get('Pronunciation') ?>:</label>
+								<select id="pronunciation-resource-rubric" name="pronunciation-resource-rubric">
+									<option value="">Select one</option>
+									<option value="A">Bla bla bla bla bla bla bla bla bla bla bla bla bla </option>
+									<option value="B">Ble ble ble ble ble ble ble ble ble ble ble ble ble </option>
+									<option value="C">Bli bli bli bli bli bli bli bli bli bli bli bli bli </option>
+								</select>
+								<!-- trigger modal -->
+								<div class="info" data-toggle="modal" data-target="#pronunciation-resource-infoModal" style="display:initial; cursor:pointer"><img src="images/info.png"></div>
+								<!-- Modal -->
+								<div class="modal fade" id="pronunciation-resource-infoModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+								  <div class="modal-dialog" role="document">
+									<div class="modal-content">
+									  <div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										  <span aria-hidden="true">×</span>
+										</button>
+										<h4 class="modal-title" id="pronunciation-resource-modal-label">More information</h4>
+									  </div>
+									  <div class="modal-body" id="pronunciation-resource-modal-body">
+										<div><ul>
+                                                                                        <li><b>Bla bla bla bla bla bla bla bla bla bla bla bla bla</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+											<li><b>Ble ble ble ble ble ble ble ble ble ble ble ble ble</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+											<li><b>Bli bli bli bli bli bli bli bli bli bli bli bli bli</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.</li>
+										</ul></div>
+									  </div>
+									  <div class="modal-footer">
+										<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+									  </div>
+									</div>
+								  </div>
+								</div>
+                                                                <div id="pronunciation-resource-text-info" style="display: none;">
+                                                                  <span id="pronunciation-resource-text-info-span"></span>
+								  <div class="info" data-toggle="modal" data-target="#pronunciation-resource-info-modal" style="display:initial; cursor:pointer"><img src="images/info.png"></div>
+								  <!-- Modal -->
+								  <div class="modal fade" id="pronunciation-resource-info-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+									  <div class="modal-dialog" role="document">
+										  <div class="modal-content">
+											  <div class="modal-header">
+												  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													  <span aria-hidden="true">×</span>
+												  </button>
+												  <h4 class="modal-title" id="pronunciation-resource-info-modal-label">Bla bla bla bla bla bla bla bla bla bla bla bla bla</h4>
+											  </div>
+											  <div class="modal-body" id="pronunciation-resource-info-modal-body">
+												  <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.
+												  </div>
+											  </div>
+											  <div class="modal-footer">
+												  <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+											  </div>
+										  </div>
+									  </div>
+									  </div>
+								  </div>
+							  </div>
 							  <div class="form-group">
 								<label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation') ?> *</label>
 								<input data-slider-id='ex4Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="pronunciation" id="pronunciation" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->pronunciation?>"/>%
@@ -383,13 +570,19 @@ if (!$user_obj || !$course_id) {
 								<input data-slider-id='ex5Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="interactivecommunication" id="interactivecommunication" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form_new->interactivecommunication?>"/>%
 								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
 							  </div> 
+                                                          <div class="form-group">
+								<label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
+								<div class="input-group">
+								  <textarea rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedback_form_new->other_observations?></textarea>
+								</div>
+							  </div>
 							  <?php if ($can_edit) {?>
 							  <div class="form-group">
 								<small><?php echo $LanguageInstance->get('Required fields are noted with an asterisk (*)')?></small>
 							  </div>
 							  <div class="form-group">
 							  <input type='hidden' name='save_feedback_new' value='1' >
-								<button type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
+								<button id="submitBtn" type="submit" class="btn btn-success"><?php echo $LanguageInstance->get('Send')?></button>
 								 <span class="small"><?php echo $LanguageInstance->get('cannot_be_modified')?></span>
 							  </div>
 							  <?php } ?>
@@ -476,6 +669,8 @@ if (!$user_obj || !$course_id) {
 	<script src="js/validator.min.js"></script>
 	<script src="js/bootstrap-slider2.js"></script>
 	<script src="js/star-rating.min.js"></script>
+        <script src="js/bootstrap-tour.min.js"></script>
+        <script src="js/bootstrap-tour-standalone.min.js"></script>
 	<script>
 	$('.sliderTandem').slider({
 		formatter: function(value) {
@@ -483,6 +678,55 @@ if (!$user_obj || !$course_id) {
 		}
 	});
 	$(document).ready(function(){
+                
+                $('#button-help').click(function(){
+                    // Instance the tour
+                    var tour = new Tour({
+                            name: 'tour',
+                            storage: false,
+                            steps: [
+                            {
+                              element: "#ex1Slider",
+                              title: "Grammatical Resource",
+                              content: "Review your partner grammatical resource"
+                            },
+                            {
+                              element: "#ex2Slider",
+                              title: "Lexical Resource",
+                              content: "Review your partner lexical resource"
+                            },
+                            {
+                              element: "#ex3Slider",
+                              title: "Discourse Mangement",
+                              content: "Review your partner discourse mangement"
+                            },
+                            {
+                              element: "#ex4Slider",
+                              title: "Pronunciation",
+                              content: "Review your partner pronunciation"
+                            },
+                            {
+                              element: "#ex5Slider",
+                              title: "Interactive Communication",
+                              content: "Review your partner interactive communication"
+                            },
+                            {
+                              element: "#other_observations",
+                              placement: 'top',
+                              title: "Other Observations",
+                              content: "Review your partner other observations"
+                            },
+                            {
+                              element: "#submitBtn",
+                              title: "Submit",
+                              content: "Submit yout partner review"
+                            }
+                      ]});
+                    // Initialize the tour
+                    tour.init();
+                    // Start the tour
+                    tour.start();
+                });
 
 		$(".sliderdisabled").slider("disable");
 		<?php
@@ -522,6 +766,70 @@ if (!$user_obj || !$course_id) {
 		$('#jwVideoModal').on('hidden.bs.modal', function (){
 			jwplayer().stop()
 		});
+                
+                $('#grammatical-resource-rubric').on('change', function() {
+                    if (this.value !== ""){
+                        switch (this.value){
+                            case 'A':   $('#grammatical-resource-text-info-span').html('A - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#grammatical-resource-info-modal-label').html('Bla bla bla bla bla bla bla bla bla bla bla bla bla');
+                                        $('#grammatical-resource-info-modal-body').html('A - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                            case 'B':   $('#grammatical-resource-text-info-span').html('B - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#grammatical-resource-info-modal-label').html('Ble ble ble ble ble ble ble ble ble ble ble ble ble');
+                                        $('#grammatical-resource-info-modal-body').html('B - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                            case 'C':   $('#grammatical-resource-text-info-span').html('C - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#grammatical-resource-info-modal-label').html('Bli bli bli bli bli bli bli bli bli bli bli bli bli');
+                                        $('#grammatical-resource-info-modal-body').html('C - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                        }
+                        $('#grammatical-resource-text-info').css('display', 'block');    
+                    }else{
+                        $('#grammatical-resource-text-info').css('display', 'none');
+                    }
+                });    
+                $('#lexical-resource-rubric').on('change', function() {
+                    if (this.value !== ""){
+                        switch (this.value){
+                            case 'A':   $('#lexical-resource-text-info-span').html('A - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#lexical-resource-info-modal-label').html('Bla bla bla bla bla bla bla bla bla bla bla bla bla');
+                                        $('#lexical-resource-info-modal-body').html('A - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                            case 'B':   $('#lexical-resource-text-info-span').html('B - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#lexical-resource-info-modal-label').html('Ble ble ble ble ble ble ble ble ble ble ble ble ble');
+                                        $('#lexical-resource-info-modal-body').html('B - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                            case 'C':   $('#lexical-resource-text-info-span').html('C - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#lexical-resource-info-modal-label').html('Bli bli bli bli bli bli bli bli bli bli bli bli bli');
+                                        $('#lexical-resource-info-modal-body').html('C - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                        }
+                        $('#lexical-resource-text-info').css('display', 'block');    
+                    }else{
+                        $('#lexical-resource-text-info').css('display', 'none');
+                    }
+                });    
+                $('#pronunciation-resource-rubric').on('change', function() {
+                    if (this.value !== ""){
+                        switch (this.value){
+                            case 'A':   $('#pronunciation-resource-text-info-span').html('A - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#pronunciation-resource-info-modal-label').html('Bla bla bla bla bla bla bla bla bla bla bla bla bla');
+                                        $('#pronunciation-resource-info-modal-body').html('A - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                            case 'B':   $('#pronunciation-resource-text-info-span').html('B - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#pronunciation-resource-info-modal-label').html('Ble ble ble ble ble ble ble ble ble ble ble ble ble');
+                                        $('#pronunciation-resource-info-modal-body').html('B - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                            case 'C':   $('#pronunciation-resource-text-info-span').html('C - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a.');
+                                        $('#pronunciation-resource-info-modal-label').html('Bli bli bli bli bli bli bli bli bli bli bli bli bli');
+                                        $('#pronunciation-resource-info-modal-body').html('C - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sollicitudin diam dui, nec efficitur orci iaculis a. Nunc quis lectus eget dui pharetra rhoncus id id tellus. Praesent sed ornare turpis, a auctor lectus. Ut imperdiet tempor lorem ut condimentum. Suspendisse sed ornare lectus. Aenean eget nunc eu purus bibendum tristique ac sed eros. Duis pretium tellus in neque tempus, a suscipit tellus maximus. Duis sodales nulla in quam auctor, vitae congue felis vestibulum. Phasellus eu lobortis erat, condimentum vehicula leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed gravida turpis vel neque sagittis, in mattis lacus vulputate. Cras quis nibh nunc. Nullam ac euismod nisl.');
+                                        break;
+                        }
+                        $('#pronunciation-resource-text-info').css('display', 'block');    
+                    }else{
+                        $('#pronunciation-resource-text-info').css('display', 'none');
+                    }
+                });    
 	});
 	</script>
 

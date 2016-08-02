@@ -1198,6 +1198,7 @@ border-radius: 2px 0 0 2px;
 	line-height:25px;
 	padding-left:50px;
 	padding-right:50px;
+        clear: both;
 }
 
 #waiting-container .msg{
@@ -1983,4 +1984,8 @@ overflow-x: hidden;
 #moodBtn{
     float: right;
     margin: 20px;
+}
+
+#enjoyedSlider, #nervousSlider{
+    margin-left: 29%;
 }

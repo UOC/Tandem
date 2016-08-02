@@ -56,9 +56,11 @@ else $Otheruser='a';
 	<script type="text/javascript" src="js/jquery.iframe-auto-height.plugin.1.7.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.infotip.min.js"></script>
 	<script type="text/javascript" src="js/jquery.timeline-clock.min.js"></script>
+        <script type="text/javascript" src="js/jquery.barrating.min.js"></script>
 	<?php include_once dirname(__FILE__).'/js/google_analytics.php';?>
 	<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 	<link type="text/css" href="js/window/css/jquery.window.css" rel="stylesheet" />
+        <link type="text/css" href="css/bars-square.css" rel="stylesheet" />
 	<script src="js/jquery-ui-1.9.2.custom.min.js"></script>
 	<?php }?>
 	<script type="text/javascript" src="js/jquery.simplemodal.1.4.2.min.js"></script>
@@ -95,16 +97,43 @@ function getTimeNow(itNow){
 //timer
 var totalUser = 0;
 $(document).ready(function(){
+    createRatings = function(){
+        $('#comment').val('')
+        $('#rating-square-enjoyed-div').html('');
+        $('#rating-square-enjoyed-div').html('<select id="rating-square-enjoyed" class="rating-square"><option value=""></option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select>');
+        $('#rating-square-enjoyed').barrating({
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false
+        });
+        $('#rating-square-nervous-div').html('');
+        $('#rating-square-nervous-div').html('<select id="rating-square-nervous" class="rating-square"><option value=""></option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select>');
+        $('#rating-square-nervous').barrating({
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false
+        });
+        $('#rating-square-enjoyed').on('change', function() {
+            $('#enjoyed').val(this.value);
+        });
+        $('#rating-square-nervous').on('change', function() {
+            $('#nervous').val(this.value);
+        });
+    }
     <?php if ($_SESSION[SHOW_USER_STATUS]){ ?>
         $('#moodModal').modal('show');
+        createRatings();
     <?php } ?>
     showEvaluateTaskModal = function(last){
         <?php if ($_SESSION[ENABLE_TASK_EVALUATION]){ ?>
+                $('#simplemodal-container').css('display', 'block');
+                $('#simplemodal-overlay').css('display', 'block');
                 if (last == 0){
                     $("#moodBtn").attr("onclick","evaluateTask(0)");
                     $('#evaluateTaskModal').modal('show');
                 }else{
                     $("#moodBtn").attr("onclick","evaluateTask(1);showVideoChatAndGoodbyeMessage();");
+                    $("#closeModalBtn").attr("onclick","closeModal(1)");
                     $('#evaluateTaskModal').modal('show');
                 }
         <?php } ?>    
@@ -123,52 +152,19 @@ $(document).ready(function(){
                 }
         });
     }
-    emojiClick = function(selected){
-        $('#mood').val(0);
-        switch(selected) {
-            case 1:
-                switch($('#smile').attr('src')){
-                    case 'images/smile.png':
-                        $('#smile').attr('src','images/smile_selected.png');
-                        $('#neutral').attr('src','images/neutral.png');
-                        $('#sad').attr('src','images/sad.png');
-                        $('#mood').val(1);
-                        break;
-                    case 'images/smile_selected.png':
-                        $('#smile').attr('src','images/smile.png');
-                        break;    
-                }
-                break;
-            case 2:
-                switch($('#neutral').attr('src')){
-                    case 'images/neutral.png':
-                        $('#neutral').attr('src','images/neutral_selected.png');
-                        $('#smile').attr('src','images/smile.png');
-                        $('#sad').attr('src','images/sad.png');
-                        $('#mood').val(2);
-                        break;
-                    case 'images/neutral_selected.png':
-                        $('#neutral').attr('src','images/neutral.png');
-                        break;    
-                }
-                break;
-            case 3:
-                switch($('#sad').attr('src')){
-                    case 'images/sad.png':
-                        $('#sad').attr('src','images/sad_selected.png');
-                        $('#neutral').attr('src','images/neutral.png');
-                        $('#smile').attr('src','images/smile.png');
-                        $('#mood').val(3);
-                        break;
-                    case 'images/sad_selected.png':
-                        $('#sad').attr('src','images/sad.png');
-                        break;    
-                }
-                break;
+    
+    closeModal = function(last){
+        $('#simplemodal-container').css('display', 'none');
+        $('#simplemodal-overlay').css('display', 'none');
+        createRatings();
+        if (last == 1){
+            showVideoChatAndGoodbyeMessage();
         }
     }
     
     evaluateTask = function (last){
+        $('#simplemodal-container').css('display', 'none');
+        $('#simplemodal-overlay').css('display', 'none');
         var task_number = node
         if (last == 0){
             task_number = node - 1;
@@ -180,11 +176,12 @@ $(document).ready(function(){
                            id_tandem : '<?php echo $_SESSION['current_tandem'];?>',
                            id_user : '<?php echo $_SESSION['current_user']->id;?>',
                            task_number : task_number,
-                           mood : $('#mood').val(),
+                           enjoyed : $('#enjoyed').val(),
+                           nervous : $('#nervous').val(),
                            comment : $('#comment').val()
                 },
-                success: function(data){	        			
-                    //
+                success: function(data){
+                    createRatings();
                 }
         });
     }
@@ -1525,7 +1522,8 @@ This site reflects only the views of the authors, and the European Commission ca
                 <div class="modal-header">
                     <button type="button" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <p class="msg">¿Cuál es tu estado de ánimo?</p>
+                <p class="msg"><?php echo $LanguageInstance->get('Hi!')?></p>
+                <p class="msg"><?php echo $LanguageInstance->get('How do you feel today?')?></p>
                 <p class="msg">
                     <img class="simplemodal-close mood-img" src="images/smile.png" onclick="emojiSelected(1)" />
                     <img class="simplemodal-close mood-img" src="images/neutral.png" onclick="emojiSelected(2)" />
@@ -1535,20 +1533,39 @@ This site reflects only the views of the authors, and the European Commission ca
         <!--Evaluate Task Modal--> 
         <div id="evaluateTaskModal" class="modal">
                 <div class="modal-header">
-                    <button type="button" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" id="closeModalBtn" class="mood-img" data-dismiss="modal" aria-label="Close" onclick="closeModal(0)"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <p class="msg">Valora la tarea:</p>
-                <p class="msg">
-                    <img id="smile" class="mood-img" src="images/smile.png" onclick="emojiClick(1)" />
-                    <img id="neutral"  class="mood-img" src="images/neutral.png" onclick="emojiClick(2)" />
-                    <img id="sad" class="mood-img" src="images/sad.png" onclick="emojiClick(3)" />
-                </p>
-                <p class="msg">Comentarios:</p>
+                <p class="msg"><?php echo $LanguageInstance->get('I enjoyed doing this task')?></p>
+                <div id="rating-square-enjoyed-div">
+                    <select id="rating-square-enjoyed" class="rating-square">
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <p class="msg"><?php echo $LanguageInstance->get('I felt nervous before doing the task')?></p>
+                <div id="rating-square-nervous-div">
+                    <select id="rating-square-nervous" class="rating-square">
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <p class="msg"><?php echo $LanguageInstance->get('The thing that has challenged me the most is:')?></p>
                 <form role="form">
                     <div class="form-group">
                         <textarea class="form-control" rows="10" id="comment"></textarea>
-                        <input id="mood" type="hidden" value="0"> 
-                        <input id="moodBtn" class="simplemodal-close" type="button" value="Enviar" onclick=""/>
+                        <input id="enjoyed" type="hidden" value="0"> 
+                        <input id="nervous" type="hidden" value="0"> 
+                        <input id="moodBtn" type="button" value="Enviar" onclick=""/>
                     </div>
                 </form>
 	</div>
