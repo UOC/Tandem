@@ -469,6 +469,8 @@ $number = 1;?>
   	<th><?php echo $LanguageInstance->get('Created');?></th>
   	<th><?php echo $LanguageInstance->get('Total Duration');?></th>
   	<th><?php echo $LanguageInstance->get('Duration per task');?></th>
+  	<th><?php echo $LanguageInstance->get('Feedback given');?></th>
+  	<th><?php echo $LanguageInstance->get('Feedback received');?></th>
   	<th><?php echo $LanguageInstance->get('Actions');?></th>
   	</tr>
  	<?php
@@ -479,10 +481,16 @@ $number = 1;?>
 	  	foreach($f['total_time_tasks'] as $key => $val){
 	  		$tt[] = "T".++$key." = ".$val;
 	  	}
-	  	$tr ="";
+
+	  	$feedback_given = true;
 	  	if(empty($f['feedback_form'])){
-	  		$tr = 'title ="'.$LanguageInstance->get('Insert your feedback').'" class="alert alert-danger" data-placement="top" data-toggle="tooltip" ';
+                    $feedback_given = false;
 	  	}
+                $feedback_received = false;
+                $partnerFeedback = $gestorBD->checkPartnerFeedback($f['id_tandem'], 1);
+                if ($partnerFeedback){
+                    $feedback_received = true;
+                }
 	  	echo "<tr $tr>";
 	  	echo "<td>".($number++)."</td>";
   		if ($user_obj->instructor == 1 ){
@@ -492,8 +500,18 @@ $number = 1;?>
 	  		  <td>".$f['exercise']."</td>
 	  		  <td>".$f['created']."</td>
   			  <td>".$f['total_time']."</td>
-  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>
-  			  <td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>";
+  			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>";
+                if ($feedback_given){
+                    echo "<td><i class='glyphicon glyphicon-ok green'></i></td>";
+                }else{
+                    echo "<td><i class='glyphicon glyphicon-remove red'></i></td>";
+                }      
+                if ($feedback_received){
+                    echo "<td><i class='glyphicon glyphicon-ok green'></i></td>";
+                }else{
+                    echo "<td><i class='glyphicon glyphicon-remove red'></i></td>";
+                }
+  		echo "<td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>";
                 if ($showDelete){
                     echo "<td><button data-delete-id='".$f['id_tandem']."' class='btn btn-danger btn-sm deleteFeedback' >".$LanguageInstance->get('delete')."</button></td>";
                 }
