@@ -446,3 +446,6 @@ msgstr "Feedback donat"
 
 msgid "Feedback received"
 msgstr "Feedback rebut"
+
+msgid "Partner Name"
+msgstr "Nom company"

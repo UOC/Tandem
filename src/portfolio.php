@@ -466,6 +466,7 @@ $number = 1;?>
   	<?php } ?>
   	<th><?php echo $LanguageInstance->get('Overall rating');?></th>
   	<th><?php echo $LanguageInstance->get('exercise');?></th>
+  	<th><?php echo $LanguageInstance->get('Partner Name');?></th>
   	<th><?php echo $LanguageInstance->get('Created');?></th>
   	<th><?php echo $LanguageInstance->get('Total Duration');?></th>
   	<th><?php echo $LanguageInstance->get('Duration per task');?></th>
@@ -498,6 +499,7 @@ $number = 1;?>
   		}
 	  	echo "<td class='text-center'>".getSkillsLevel($f['overall_grade'], $LanguageInstance)."</td>
 	  		  <td>".$f['exercise']."</td>
+	  		  <td>".$f['partner_fullname']."</td>
 	  		  <td>".$f['created']."</td>
   			  <td>".$f['total_time']."</td>
   			  <td style='font-size:10px'>".implode("<br />",$tt)."</td>";

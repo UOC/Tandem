@@ -2397,11 +2397,12 @@ class GestorBD {
             $extraSQL .= ' AND T.created<=\''.$dateEnd.' 23:59:59\' ';
        }
 
-        $result = $this->consulta("select FT.id,FT.id_tandem,FT.id_external_tool,FT.end_external_service,FT.external_video_url,FT.id_user,FT.language,FT.id_partner,FT.partner_language,FT.created,FTF.feedback_form, E.name as exercise, U.fullname from feedback_tandem as FT
+        $result = $this->consulta("select FT.id,FT.id_tandem,FT.id_external_tool,FT.end_external_service,FT.external_video_url,FT.id_user,FT.language,FT.id_partner,FT.partner_language,FT.created,FTF.feedback_form, E.name as exercise, U.fullname, U2.fullname as partner_fullname from feedback_tandem as FT
            ".$join_type." join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
            inner join tandem as T on T.id = FT.id_tandem
            inner join exercise E on E.id=T.id_exercise
            inner join user as U on U.id = FT.id_user
+           inner join user as U2 on U2.id = FT.id_partner
            where T.id_course = ".$this->escapeString($id_course).$condition_feedback_form.($user_id>0?" AND FT.id_user = ".$this->escapeString($user_id)."":"").
             $extraSQL);
 
@@ -2515,7 +2516,7 @@ class GestorBD {
                     $ft['grammar'] = $grammar_tmp;
                     $ft['other_observations'] = $other_observations_tmp;
                  }
-
+                 
                  $return[] = $ft;
             }
             return $return;

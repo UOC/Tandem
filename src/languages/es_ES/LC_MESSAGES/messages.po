@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2016-08-02 13:54+0200\n"
+"PO-Revision-Date: 2016-08-02 14:18+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -958,3 +958,6 @@ msgstr "Feedback dado"
 
 msgid "Feedback received"
 msgstr "Feedback recibido"
+
+msgid "Partner Name"
+msgstr "Nombre Compañero"
