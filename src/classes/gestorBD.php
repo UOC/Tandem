@@ -3747,8 +3747,8 @@ class GestorBD {
         return $result;
     }
     
-    function setTaskEvaluation($id_tandem, $id_user, $task_number, $enjoyed, $nervous, $comment){
-        $sql = 'update user_tandem_task set task_enjoyed = ' . $enjoyed . ', task_nervous = ' . $nervous . ', task_comment = "' . $comment . '" where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user . ' and task_number = ' . $task_number;
+    function setTaskEvaluation($id_tandem, $id_user, $task_number, $enjoyed, $nervous, $task_valoration, $comment){
+        $sql = 'update user_tandem_task set task_enjoyed = ' . $enjoyed . ', task_nervous = ' . $nervous . ', task_comment = "' . $comment . '", task_valoration = ' . $task_valoration . ' where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user . ' and task_number = ' . $task_number;
         $result = $this->consulta($sql);
         return $result;
     }

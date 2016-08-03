@@ -113,11 +113,21 @@ $(document).ready(function(){
             showValues: true,
             showSelectedRating: false
         });
+        $('#rating-square-task-valoration-div').html('');
+        $('#rating-square-task-valoration-div').html('<select id="rating-square-task-valoration" class="rating-square"><option value=""></option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option></select>');
+        $('#rating-square-task-valoration').barrating({
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false
+        });
         $('#rating-square-enjoyed').on('change', function() {
             $('#enjoyed').val(this.value);
         });
         $('#rating-square-nervous').on('change', function() {
             $('#nervous').val(this.value);
+        });
+        $('#rating-square-task-valoration').on('change', function() {
+            $('#task-valoration').val(this.value);
         });
     }
     <?php if ($_SESSION[SHOW_USER_STATUS]){ ?>
@@ -178,6 +188,7 @@ $(document).ready(function(){
                            task_number : task_number,
                            enjoyed : $('#enjoyed').val(),
                            nervous : $('#nervous').val(),
+                           task_valoration : $('#task-valoration').val(),
                            comment : $('#comment').val()
                 },
                 success: function(data){
@@ -1535,7 +1546,7 @@ This site reflects only the views of the authors, and the European Commission ca
                 <div class="modal-header">
                     <button type="button" id="closeModalBtn" class="mood-img" data-dismiss="modal" aria-label="Close" onclick="closeModal(0)"><span aria-hidden="true">&times;</span></button>
                 </div>
-                <p class="msg"><?php echo $LanguageInstance->get('I enjoyed doing this task')?></p>
+                <p class="msg"><?php echo $LanguageInstance->get('I enjoyed doing this task (1=not at all 6=a lot)')?></p>
                 <div id="rating-square-enjoyed-div">
                     <select id="rating-square-enjoyed" class="rating-square">
                         <option value=""></option>
@@ -1547,9 +1558,21 @@ This site reflects only the views of the authors, and the European Commission ca
                         <option value="6">6</option>
                     </select>
                 </div>
-                <p class="msg"><?php echo $LanguageInstance->get('I felt nervous before doing the task')?></p>
+                <p class="msg"><?php echo $LanguageInstance->get('I felt nervous doing the task (1=not at all 6=a lot)')?></p>
                 <div id="rating-square-nervous-div">
                     <select id="rating-square-nervous" class="rating-square">
+                        <option value=""></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <p class="msg"><?php echo $LanguageInstance->get('This task was (1 Very bad - 6 excellent)')?></p>
+                <div id="rating-square-task-valoration-div">
+                    <select id="rating-square-task-valoration" class="rating-square">
                         <option value=""></option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -1565,6 +1588,7 @@ This site reflects only the views of the authors, and the European Commission ca
                         <textarea class="form-control" rows="10" id="comment"></textarea>
                         <input id="enjoyed" type="hidden" value="0"> 
                         <input id="nervous" type="hidden" value="0"> 
+                        <input id="task-valoration" type="hidden" value="0"> 
                         <input id="moodBtn" type="button" value="Enviar" onclick=""/>
                     </div>
                 </form>
