@@ -3766,6 +3766,39 @@ class GestorBD {
         $result = $this->consulta($sql);
         return $result;
     }
+    
+    function send_email($msg, $subject, $partner_id){
+        $partner_data = $this->getUserData($partner_id);
+        include("phpmailer/PHPMailerAutoload.php");
+        $mail = new PHPMailer;
+        $mail->CharSet = "UTF-8";
+        //$mail->SMTPDebug = 3;                               // Enable verbose debug output
+        $mail->isSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = SMTP_HOST;  // Specify main and backup SMTP servers
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->Username = SMTP_USER;                 // SMTP username
+        $mail->Password = SMTP_KEY;                           // SMTP password
+        $mail->SMTPSecure = SMTP_SMTPSECURE;                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = 587;                                    // TCP port to connect to
+        $mail->From = MAIL_FROM;
+        $mail->FromName = MAIL_FROM_NAME;
+        $mail->addAddress($partner_data['email'], $partner_data['fullname']);     // Add a recipient
+        $mail->addReplyTo(MAIL_FROM, MAIL_FROM_NAME);
+
+        $mail->WordWrap = 50;                                 // Set word wrap to 50 character
+        $mail->isHTML(true);                                  // Set email format to HTML
+
+        $mail->Subject = $subject;
+        $body = $msg;
+
+        $mail->Body = $body;
+        if(!$mail->send()) {
+            return false;
+        } else {
+            return true;
+        }
+        return true;
+    }
 }//end of class
 
 ?>

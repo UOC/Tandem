@@ -171,7 +171,9 @@ if (!$user_obj || !$course_id) {
 				<?php if ($user_obj->instructor == 1 ){ ?>
 				<p><?php echo $LanguageInstance->get('Name') ?>: <?php echo $gestorBD->getUserName($feedbackDetails->id_user);?></p>
 				<?php } ?>
-				<p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?></p>
+				<p><?php echo $LanguageInstance->get('your_partners_name') ?>: <?php echo $partnerName;?>
+                                <button type="button" id="button-contact" data-toggle="modal" data-target="#contact-modal" class="btn btn-info" title="<?php echo $LanguageInstance->get('Contact') ?>"><i class="glyphicon glyphicon-envelope"></i> <?php echo $LanguageInstance->get('Contact') ?></button>
+                                </p>
 			</div>
 			<div class='col-md-6'>
 			<p><br /><br />
@@ -658,6 +660,37 @@ if (!$user_obj || !$course_id) {
 			</div>
 			</div>
 			<!-- /main-container -->
+                        <!-- Contact Modal -->
+                        <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                          </button>
+                                          <h4 class="modal-title"><?php echo $LanguageInstance->get('Contact') ?></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="subject"><?php echo $LanguageInstance->get('Subject') ?>:</label>
+                                            <input type="text" class="form-control" id="subject">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="comment"><?php echo $LanguageInstance->get('Comment') ?>:</label>
+                                            <textarea class="form-control" rows="5" id="comment"></textarea>
+                                        </div>
+                                        <div id="contact-modal-warning" class="alert alert-warning" style="display:none;">
+                                            <?php echo $LanguageInstance->get('Missing parameters') ?>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <button type="button" id="send-email-btn" class="btn btn-primary"><?php echo $LanguageInstance->get('Send') ?></button>
+                                            <button type="button" class="btn btn-success" data-dismiss="modal"><?php echo $LanguageInstance->get('Close') ?></button>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                        <!-- /Contact Modal -->
 		</div>
 		</div>
 
@@ -678,6 +711,29 @@ if (!$user_obj || !$course_id) {
 		}
 	});
 	$(document).ready(function(){
+            
+                $('#send-email-btn').click(function(){
+                    var msg = $('#comment').val();
+                    var subject = $('#subject').val();
+                    if ((msg !== "")&&(subject !== "")){
+                        $('#contact-modal-warning').css('display', 'none');
+                        $('#contact-modal').modal('toggle');
+                        $.ajax({
+                                type: 'POST',
+                                url: "send-email.php",
+                                data : {
+                                    msg : msg,
+                                    subject: subject,
+                                    partner_id: '<?php echo $feedbackDetails->id_partner ?>'
+                                },
+                                success: function(data){	        			
+                                    $('#comment').val("");
+                                }
+                        });
+                    }else{
+                        $('#contact-modal-warning').css('display', 'block');
+                    }
+                });
                 
                 $('#button-help').click(function(){
                     // Instance the tour
