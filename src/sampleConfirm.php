@@ -157,8 +157,8 @@ $(document).ready(function(){
                            id_user : '<?php echo $_SESSION['current_user']->id;?>',
                            mood : selected
                 },
-                success: function(data){	        			
-                    //
+                success: function(data){
+					$('#moodModal').modal('hide');
                 }
         });
     }
