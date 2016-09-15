@@ -77,7 +77,7 @@ var limitTimerConn = 1000;
 var node = <?php echo $node;?>;
 var numOfChecksSameNode = 0; //only applies when the cad is bigger than current node
 var ExerFolder = '<?php echo $ExerFolder?>';
-
+sessionStorage.checkModal = "0";
 
 function setExpiredNow(itNow){
 	intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
@@ -169,6 +169,61 @@ $(document).ready(function(){
         createRatings();
         if (last == 1){
             showVideoChatAndGoodbyeMessage();
+        }
+    }
+    
+    
+    allowClick = function(){
+        if ($('#allow').is(":checked")){
+            $('#send-contact-email-btn').prop('disabled', false);
+            $('#send-contact-email-btn').removeClass('disabled');
+        }else{
+            $('#send-contact-email-btn').prop('disabled', true);
+            $('#send-contact-email-btn').addClass('disabled');
+        }
+    }
+    
+    sendContactEmail = function(){
+        if (($('#contact-email-subject').val().trim() !== '') && ($('#contact-email-comment').val().trim() !== '')){
+            var msg = $('#contact-email-comment').val();
+            var subject = $('#contact-email-subject').val();
+            $('#contact-email-modal-warning').css('display', 'none');
+            $('#send-contact-email-cancel-btn').click();
+            $.ajax({
+                    type: 'POST',
+                    url: "send-contact-email.php",
+                    data : {
+                        msg : msg,
+                        subject: subject,
+                        current_user_id: '<?php echo $_SESSION['current_user']->id;?>',
+                        user_host_id: '<?php echo $tandem['id_user_host'];?>',
+                        user_guest_id: '<?php echo $tandem['id_user_guest'];?>'
+                    },
+                    success: function(data){	 
+                        // 
+                    }
+            });
+        }else{
+            $('#contact-email-modal-warning').css('display', 'block');
+        }
+    }
+    
+    checkIfExternalToolClosed = function(){
+        if (sessionStorage.getItem("checkModal") == "0"){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var xmlDoc = this.responseXML;
+                    if( xmlDoc.getElementsByTagName("externalToolClosed").length != 0 ){
+                        if ($('#contact-user-modal').length > 0) {
+                            $('#contact-user-modal').modal('show');
+                            sessionStorage.setItem("checkModal","1");
+                        }
+                    }
+                }
+            };
+            xhttp.open("GET", 'xml/' + '<?php echo $_GET['room']; ?>' + ".xml", true);
+            xhttp.send();
         }
     }
     
@@ -474,9 +529,9 @@ var UserGotDisconnectedMessage = 0;
 //here if isDisconnected is true, then we call the drop down popup to alert about this
 userGotDisconnected = function(UserName){	
 		if(UserName.length > 0 && UserGotDisconnectedMessage == 0){			
-			notifyTimerDown("<?php echo $LanguageInstance->get('The user %1 has been disconnected or closed the video chat session')?>".replace("%1",UserName));
-			UserGotDisconnectedMessage = 1;
-		}
+                    notifyTimerDown("<?php echo $LanguageInstance->get('The user %1 has been disconnected or closed the video chat session')?>".replace("%1",UserName));
+                    UserGotDisconnectedMessage = 1;
+                }
 }
 //check for both connected
 check4UsersConex = function(){
@@ -503,6 +558,7 @@ if(numCadenas==numUsers){
 	return false;
 }
 			check4BothChecked = function(){	
+                                checkIfExternalToolClosed();
 				$.ajax({
 					type: 'GET',
 					url: "check.php?room=<?php echo $room; ?>&t=3",
@@ -832,6 +888,7 @@ accion = function(id,number){
 
 
 			checkIfPass2NextQuestion = function(){
+                                checkIfExternalToolClosed();
 				$.ajax({
 					type: 'GET',
 					url: "check.php?room=<?php echo $room; ?>&t=4",
@@ -862,6 +919,7 @@ accion = function(id,number){
 			}
 
 			pass2NextQuestion = function(){
+                                checkIfExternalToolClosed();
 				$.ajax({
 					type: 'GET',
 					url: "action.php",
@@ -1530,9 +1588,9 @@ This site reflects only the views of the authors, and the European Commission ca
 	</div>
         <!--Mood Modal--> 
         <div id="moodModal" class="modal">
-                <div class="modal-header">
+<!--                <div class="modal-header">
                     <button type="button" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                </div>
+                </div>-->
                 <p class="msg"><?php echo $LanguageInstance->get('Hi!')?></p>
                 <p class="msg"><?php echo $LanguageInstance->get('How do you feel today?')?></p>
                 <p class="msg">
@@ -1543,9 +1601,9 @@ This site reflects only the views of the authors, and the European Commission ca
 	</div>
         <!--Evaluate Task Modal--> 
         <div id="evaluateTaskModal" class="modal">
-                <div class="modal-header">
+<!--                <div class="modal-header">
                     <button type="button" id="closeModalBtn" class="mood-img" data-dismiss="modal" aria-label="Close" onclick="closeModal(0)"><span aria-hidden="true">&times;</span></button>
-                </div>
+                </div>-->
                 <p class="msg"><?php echo $LanguageInstance->get('I enjoyed doing this task (1=not at all 6=a lot)')?></p>
                 <div id="rating-square-enjoyed-div">
                     <select id="rating-square-enjoyed" class="rating-square">
@@ -1593,6 +1651,40 @@ This site reflects only the views of the authors, and the European Commission ca
                     </div>
                 </form>
 	</div>
+        <!-- Contact Modal -->
+        <div id="contact-user-modal" class="modal">
+                <div class="modal-header">
+                    <button type="button" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <p class="msg"><?php echo $LanguageInstance->get('Your partner has been disconnected, to continue this tandem you can contact with him here')?></p>
+                    <form role="form">
+                        <div>
+                            <label for="subject" class="contact-user-modal-label"><?php echo $LanguageInstance->get('Subject') ?>:</label>
+                            <input type="text" id="contact-email-subject" value="<?php echo $LanguageInstance->get('Tandem disconnected. Partner contact details to continue the task.'); ?>">
+                        </div>
+                        <br/>
+                        <div>
+                            <label for="comment" class="contact-user-modal-label"><?php echo $LanguageInstance->get('Comment') ?>:</label>
+                            <textarea rows="5" id="contact-email-comment"><?php echo $LanguageInstance->get('You have been disconnected from tandem. You can contact to your partner at') ?> <?php echo $gestorBDSample->getUserEmail($_SESSION['current_user']->id); ?> <?php echo $LanguageInstance->get('to continue the task.') ?></textarea>
+                        </div>
+                        <br/>
+                        <div>
+                            <input type="checkbox" id="allow" onclick="allowClick()">
+                            <label for="allow"><?php echo $LanguageInstance->get('Check to allow sharing your contact info with your partner') ?>:</label>
+                        </div>
+                        <div id="contact-email-modal-warning" class="alert alert-warning" style="display:none;">
+                            <?php echo $LanguageInstance->get('Missing parameters') ?>
+                        </div>
+                    </form>
+                </div>
+                <br/>
+                <div class="modal-footer">
+                    <button type="button" id="send-contact-email-btn" class="btn btn-primary disabled" disabled onclick="sendContactEmail()"><?php echo $LanguageInstance->get('Send') ?></button>
+                    <button type="button" id="send-contact-email-cancel-btn" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><?php echo $LanguageInstance->get('Cancel') ?></button>
+                </div>
+	</div>
+        <!-- /Contact Modal -->
         <!-- /modals -->
 	<!-- /footer -->
 	<script type="text/javascript" src="js/tandem.js?version=1"></script>

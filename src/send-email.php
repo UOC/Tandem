@@ -16,9 +16,11 @@ if(isset($_REQUEST['partner_id'])){
 
 if(empty($msg) or empty($partner_id) or empty($subject)){
 	echo json_encode(array("result" => "Missing parameter"));
+}else{
+
+    $gestordb = new GestorBD();
+    $response = $gestordb->send_email($msg, $subject, $partner_id);
+
+    echo json_encode(array("result" => $response));
+    
 }
-
-$gestordb = new GestorBD();
-$response = $gestordb->send_email($msg, $subject, $partner_id);
-
-echo json_encode(array("result" => $response));
