@@ -1593,7 +1593,7 @@ This site reflects only the views of the authors, and the European Commission ca
                 </div>-->
                 <p class="msg"><?php echo $LanguageInstance->get('Hi!')?></p>
                 <p class="msg"><?php echo $LanguageInstance->get('How do you feel today?')?></p>
-                <p class="msg">
+                <p class="msg" style="min-height: 150px;">
                     <img class="simplemodal-close mood-img" src="images/smile.png" onclick="emojiSelected(1)" />
                     <img class="simplemodal-close mood-img" src="images/neutral.png" onclick="emojiSelected(2)" />
                     <img class="simplemodal-close mood-img" src="images/sad.png" onclick="emojiSelected(3)" />
