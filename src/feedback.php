@@ -617,7 +617,7 @@ if (!$user_obj || !$course_id) {
 											<select id="grade" name="grade" required <?php echo (!$can_edit) ? "disabled" : "" ?>>
 												<option value=""><?php echo $LanguageInstance->get('Select one')?></option><?php
 												foreach ($rubricks as $rubrick) {
-													echo('<option value="'.$rubrick['id'].'">'.$rubrick['title'].'</option>');
+													echo('<option value="'.$rubrick['title'].'" data-rubrick="'.$rubrick['id'].'">'.$rubrick['title'].'</option>');
 												}?>
 											</select>
 											<!-- trigger modal -->
@@ -982,7 +982,8 @@ if (!$user_obj || !$course_id) {
 		//@ybilbao 3iPunt -> fade rubriks info
 		$('#grade').change(function() {
 			$('.rubrickinfo').hide();
-			$('div[data-rubrickinfo='+$(this).val()+']').show();
+			var rubrickID = $(this).find(":selected").data( "rubrick" );			
+			$('div[data-rubrickinfo='+rubrickID+']').show();
 		});
 	</script>
 
