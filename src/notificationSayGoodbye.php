@@ -34,7 +34,7 @@ $(document).ready(function(){
 	</div>
 	<div class='row'>
 		<div class='col-md-12'>
-			<?php echo $LanguageInstance->get(' Are you sure you want to end the videochat session this Videochat ?');?>
+			<?php echo $LanguageInstance->get(' Are you sure you want to end this videochat session? ');?>
                         <?php echo $LanguageInstance->get(' You will no longer be able to speak to your partner. To end Videochat, say good-bye to your partner and click "End". If you are not ready to close Videochat, click "Stay" ');?>
 		</div>
 	</div>
