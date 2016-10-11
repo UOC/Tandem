@@ -136,16 +136,21 @@ $(document).ready(function(){
     <?php } ?>
     showEvaluateTaskModal = function(last){
         <?php if ($_SESSION[ENABLE_TASK_EVALUATION]){ ?>
-                $('#simplemodal-container').css('display', 'block');
+        	//ybilbao 3iPunt -> Solve next task review 
+        	if($('#next_task').hasClass('active')){
+        		$('#simplemodal-container').css('display', 'block');
                 $('#simplemodal-overlay').css('display', 'block');
                 if (last == 0){
                     $("#moodBtn").attr("onclick","evaluateTask(0)");
                     $('#evaluateTaskModal').modal('show');
                 }else{
+
                     $("#moodBtn").attr("onclick","evaluateTask(1);showVideoChatAndGoodbyeMessage();");
                     $("#closeModalBtn").attr("onclick","closeModal(1)");
                     $('#evaluateTaskModal').modal('show');
                 }
+        	}
+                
         <?php } ?>    
     }
     emojiSelected = function(selected){
