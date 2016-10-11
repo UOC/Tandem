@@ -2001,3 +2001,8 @@ margin-bottom:15px;
 	padding-right:25px;
 	background: transparent url('../img/ln_dot_v.gif') repeat-y 100% 0;
 }
+
+/*@ybilbao 3iPunt*/
+.modal-backdrop.in{
+	opacity: 0.6 !important;
+}
