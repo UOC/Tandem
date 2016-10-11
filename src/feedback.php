@@ -137,6 +137,10 @@ if (!$user_obj || !$course_id) {
 		$partnerFeedback = $gestorBD->checkPartnerFeedback($feedbackDetails->id_tandem,$id_feedback);
 
 		$partnerName = $gestorBD->getPartnerName($id_feedback);
+
+		//@ybilbao 3iPunt -> Get course rubricks
+		$rubricks = $gestorBD->get_course_rubrics($course_id);
+		//END
 		?>
 		<!DOCTYPE html>
 		<html>
@@ -604,17 +608,84 @@ if (!$user_obj || !$course_id) {
 								<input data-slider-id='ex2Slider' <?php echo (!$can_edit) ? "data-slider-enabled='0'" : "" ?> class="sliderTandem" name="accuracy" id="accuracy" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="<?php echo $feedback_form->accuracy?>"/>%
 								<p class="help-block"><?php echo $LanguageInstance->get('Please move the slider to set a value') ?></p>
 							  </div>
-							  <div class="form-group">
-								<label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?> *</label>
-								<select id="grade" name="grade" required <?php echo (!$can_edit) ? "disabled" : "" ?>>
-									<option value=""><?php echo $LanguageInstance->get('Select one')?></option>
-									<option value="A" <?php echo $feedback_form->grade=='A'?'selected':''?>><?php echo $LanguageInstance->get('Excellent')?></option>
-									<option value="B" <?php echo $feedback_form->grade=='B'?'selected':''?>><?php echo $LanguageInstance->get('Very Good')?></option>
-									<option value="C" <?php echo $feedback_form->grade=='C'?'selected':''?>><?php echo $LanguageInstance->get('Good')?></option>
-									<option value="D" <?php echo $feedback_form->grade=='D'?'selected':''?>><?php echo $LanguageInstance->get('Pass')?></option>
-									<option value="F" <?php echo $feedback_form->grade=='F'?'selected':''?>><?php echo $LanguageInstance->get('Fail')?></option>
-								</select>
-							  </div>
+
+							  	<!-- @ybilbao 3iPunt TODO -->
+							  	<?php
+									if(!empty($rubricks)){?>
+										<div class="form-group">
+											<label for="grade" class="control-label"><?php echo $LanguageInstance->get('Overall Grade:') ?> *</label>
+											<select id="grade" name="grade" required <?php echo (!$can_edit) ? "disabled" : "" ?>>
+												<option value=""><?php echo $LanguageInstance->get('Select one')?></option><?php
+												foreach ($rubricks as $rubrick) {
+													echo('<option value="'.$rubrick['id'].'">'.$rubrick['title'].'</option>');
+												}?>
+											</select>
+											<!-- trigger modal -->
+											<div class="info" data-toggle="modal" data-target="#infoModal" style="display:initial; cursor:pointer"><img src="img/info.png"/></div>
+											<!-- Modal -->
+											<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-hidden="true">
+												<div class="modal-dialog" role="document">
+													<div class="modal-content">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																<span aria-hidden="true">&times;</span>
+															</button>
+															<h4 class="modal-title" id="myModalLabel">More information</h4>
+														</div>
+														<div class="modal-body">
+															<div>
+																<ul>
+																	<?php
+																		foreach ($rubricks as $rubrick) {
+																			echo('<li><b>'.$rubrick['short_desc'].'</b>'.$rubrick['description'].'</li>');
+																		}
+																	?>
+																</ul>
+															</div>
+														</div>
+											  		</div>
+											  	</div>
+											</div>
+										</div>
+
+
+
+										<div>
+											<?php
+												foreach ($rubricks as $rubrick) {?>
+													<div class="rubrickinfo" data-rubrickinfo="<?php echo $rubrick['id'];?>" style="display: none;">
+														<?php echo $rubrick['short_desc'];?>
+														<div class="info" data-toggle="modal" data-target="#infoModalSeleccionat<?php echo $rubrick['id'];?>" style="display:initial; cursor:pointer"><img src="img/info.png"/></div>
+														  <!-- Modal -->
+														<div class="modal fade" id="infoModalSeleccionat<?php echo $rubrick['id'];?>" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+															<div class="modal-dialog" role="document">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																			<span aria-hidden="true">×</span>
+																		</button>
+																		<h4 class="modal-title" id="myModalLabel"><?php echo $rubrick['short_desc'];?></h4>
+																	</div>
+																	<div class="modal-body">
+																		<div><?php echo $rubrick['description'];?></div>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+																	</div>
+																</div>
+													  		</div>
+													  	</div>
+										  			</div><?php
+												}
+											?>											
+										</div><?php
+									}
+								?>							
+
+
+								
+
+
 							  <div class="form-group">
 								<label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation')?></label>
 								<div class="input-group">
@@ -906,6 +977,15 @@ if (!$user_obj || !$course_id) {
 		</div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+
+	<script type="text/javascript">
+		//@ybilbao 3iPunt -> fade rubriks info
+		$('#grade').change(function() {
+			$('.rubrickinfo').hide();
+			$('div[data-rubrickinfo='+$(this).val()+']').show();
+		});
+	</script>
+
 	</body>
 	</html>
 <?php

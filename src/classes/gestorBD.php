@@ -3799,6 +3799,21 @@ class GestorBD {
         }
         return true;
     }
+
+    //@ybilbao 3iPunt -> Get course rubrics
+    public function get_course_rubrics($course_id){
+        $sql = 'SELECT id,title,short_desc,description FROM feedback_rubrick WHERE id_feedback_definition = (SELECT id_feedback_definition FROM feedback_course_def WHERE id_course = '.$course_id.')';
+        $result = $this->consulta($sql);
+        $rubrics = array();
+        while ($row = mysql_fetch_array($result)) { 
+            $array['id'] = $row['id'];
+            $array['title'] = $row['title'];
+            $array['short_desc'] = $row['short_desc'];
+            $array['description'] = $row['description'];
+            $rubrics[] = $array;
+        }
+        return $rubrics;
+    }
 }//end of class
 
 ?>
