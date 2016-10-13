@@ -506,12 +506,14 @@ $number = 1;?>
                 if ($feedback_given){
                     echo "<td><i class='glyphicon glyphicon-ok green'></i></td>";
                 }else{
-                    echo "<td><i class='glyphicon glyphicon-remove red'></i></td>";
+                    //echo "<td><i class='glyphicon glyphicon-remove red'></i></td>";
+                    echo "<td><i class='glyphicon glyphicon-remove red'></i>".$LanguageInstance->get('Pending')."</td>";
                 }      
                 if ($feedback_received){
                     echo "<td><i class='glyphicon glyphicon-ok green'></i></td>";
                 }else{
-                    echo "<td><i class='glyphicon glyphicon-remove red'></i></td>";
+                    //echo "<td><i class='glyphicon glyphicon-remove red'></i></td>";
+                    echo "<td><i class='glyphicon glyphicon-remove red'></i>".$LanguageInstance->get('Pending')."</td>";
                 }
   		echo "<td><button data-feedback-id='".$f['id']."' class='btn btn-success btn-sm viewFeedback' >".$LanguageInstance->get('View')."</button></td>";
                 if ($showDelete){
