@@ -3803,7 +3803,8 @@ class GestorBD {
     //@ybilbao 3iPunt -> Get course rubrics
     public function get_course_rubrics($course_id){
         $sql = "SELECT id,name,description FROM feedback_rubric
-        LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric.feedback
+        LEFT JOIN feedback_rubric_def_items ON feedback_rubric_def_items.item_id = feedback_rubric.id
+        LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric_def_items.def_id        
         WHERE id_course = ".$course_id."
         AND lang = '".$_SESSION['lang']."'";
         
@@ -3815,7 +3816,17 @@ class GestorBD {
             }
             return $rubrics;
         }else{
-            return false;
+            $course_id = 0;
+            $result = $this->consulta($sql);
+            if(!empty($result)){
+                $rubrics = array();
+                while ($rubric = mysql_fetch_array($result)) {
+                    $rubrics[] = $rubric;
+                }
+                return $rubrics;
+            }else{
+                return false;
+            }
         }
         
     }
