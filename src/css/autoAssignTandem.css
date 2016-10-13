@@ -1192,6 +1192,7 @@ border-radius: 2px 0 0 2px;
 
 .modal {display:none;}
 .modal p{text-align:center;display:block;}
+.rubric-modal-body p{text-align:left;margin:0;padding-bottom:6px;}
 
 .modal .msg{
 	color:#2B3F26;

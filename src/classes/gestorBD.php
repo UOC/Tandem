@@ -3802,17 +3802,22 @@ class GestorBD {
 
     //@ybilbao 3iPunt -> Get course rubrics
     public function get_course_rubrics($course_id){
-        $sql = 'SELECT id,title,short_desc,description FROM feedback_rubrick WHERE id_feedback_definition = (SELECT id_feedback_definition FROM feedback_course_def WHERE id_course = '.$course_id.')';
+        $sql = "SELECT id,name,description FROM feedback_rubric
+        LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric.feedback
+        WHERE id_course = ".$course_id."
+        AND lang = '".$_SESSION['lang']."'";
+        
         $result = $this->consulta($sql);
-        $rubrics = array();
-        while ($row = mysql_fetch_array($result)) { 
-            $array['id'] = $row['id'];
-            $array['title'] = $row['title'];
-            $array['short_desc'] = $row['short_desc'];
-            $array['description'] = $row['description'];
-            $rubrics[] = $array;
+        if(!empty($result)){
+            $rubrics = array();
+            while ($rubric = mysql_fetch_array($result)) {
+                $rubrics[] = $rubric;
+            }
+            return $rubrics;
+        }else{
+            return false;
         }
-        return $rubrics;
+        
     }
 }//end of class
 
