@@ -3802,14 +3802,11 @@ class GestorBD {
 
     //@ybilbao 3iPunt -> Get course rubrics
     public function get_course_rubrics($course_id){
-        $sql = "SELECT id,name,description FROM feedback_rubric
-        LEFT JOIN feedback_rubric_def_items ON feedback_rubric_def_items.item_id = feedback_rubric.id
-        LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric_def_items.def_id        
-        WHERE id_course = ".$course_id."
-        AND lang = '".$_SESSION['lang']."'";
+        $sql = $this->get_rubrics_sql($course_id);
         
-        $result = $this->consulta($sql);
-        if(!empty($result)){
+        $result = $this->consulta($sql); 
+        $numResults = mysql_num_rows($result);
+        if($numResults > 0){
             $rubrics = array();
             while ($rubric = mysql_fetch_array($result)) {
                 $rubrics[] = $rubric;
@@ -3817,6 +3814,7 @@ class GestorBD {
             return $rubrics;
         }else{
             $course_id = 0;
+            $sql = $this->get_rubrics_sql($course_id);
             $result = $this->consulta($sql);
             if(!empty($result)){
                 $rubrics = array();
@@ -3827,8 +3825,12 @@ class GestorBD {
             }else{
                 return false;
             }
-        }
-        
+        }        
+    }
+
+    private function get_rubrics_sql($course_id){
+        $sql = "SELECT id,name,description FROM feedback_rubric LEFT JOIN feedback_rubric_def_items ON feedback_rubric_def_items.item_id = feedback_rubric.id LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric_def_items.def_id WHERE id_course = ".$course_id." AND lang = '".$_SESSION['lang']."'";
+        return $sql;
     }
 }//end of class
 

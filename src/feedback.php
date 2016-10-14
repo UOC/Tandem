@@ -147,6 +147,7 @@ if (!$user_obj || !$course_id) {
 		<head>
 			<title>Tandem</title>
 			<meta charset="UTF-8" />
+
 			<link rel="stylesheet" type="text/css" media="all" href="css/autoAssignTandem.css" />
 			<link rel="stylesheet" type="text/css" media="all" href="css/tandem-waiting-room.css" />
 			<link rel="stylesheet" type="text/css" media="all" href="css/defaultInit.css" />
