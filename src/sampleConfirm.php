@@ -1591,7 +1591,7 @@ This site reflects only the views of the authors, and the European Commission ca
 		<p class="msg">Time up!</p>
                 <p><a href='#' onclick="$('#next1Item').css('display', 'block')" id="lnk-end-task" class="btn simplemodal-close">Close</a></p>
 	</div>
-        <!--Mood Modal--> 
+        <!--Mood Modal-->
         <div id="moodModal" class="modal">
 <!--                <div class="modal-header">
                     <button type="button" class="simplemodal-close mood-img" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -1609,7 +1609,19 @@ This site reflects only the views of the authors, and the European Commission ca
 <!--                <div class="modal-header">
                     <button type="button" id="closeModalBtn" class="mood-img" data-dismiss="modal" aria-label="Close" onclick="closeModal(0)"><span aria-hidden="true">&times;</span></button>
                 </div>-->
-                <p class="msg"><?php echo $LanguageInstance->get('I enjoyed doing this task (1=not at all 6=a lot)')?></p>
+				<p class="msg"><?php echo $LanguageInstance->get('I felt comfortable in this speaking practice')?></p>
+				<div id="rating-square-nervous-div">
+					<select id="rating-square-nervous" class="rating-square">
+						<option value=""></option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+					</select>
+				</div>
+                <p class="msg"><?php echo $LanguageInstance->get('I enjoyed doing this task (absolutely no-absolutely yes)')?></p>
                 <div id="rating-square-enjoyed-div">
                     <select id="rating-square-enjoyed" class="rating-square">
                         <option value=""></option>
@@ -1621,19 +1633,7 @@ This site reflects only the views of the authors, and the European Commission ca
                         <option value="6">6</option>
                     </select>
                 </div>
-                <p class="msg"><?php echo $LanguageInstance->get('I felt nervous doing the task (1=not at all 6=a lot)')?></p>
-                <div id="rating-square-nervous-div">
-                    <select id="rating-square-nervous" class="rating-square">
-                        <option value=""></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
-                </div>
-                <p class="msg"><?php echo $LanguageInstance->get('This task was (1 Very bad - 6 excellent)')?></p>
+                <p class="msg"><?php echo $LanguageInstance->get('This task has helped me to feel more confident in the speaking practice (absolutely no-absolutely yes)')?></p>
                 <div id="rating-square-task-valoration-div">
                     <select id="rating-square-task-valoration" class="rating-square">
                         <option value=""></option>
@@ -1645,10 +1645,10 @@ This site reflects only the views of the authors, and the European Commission ca
                         <option value="6">6</option>
                     </select>
                 </div>
-                <p class="msg"><?php echo $LanguageInstance->get('The thing that has challenged me the most is:')?></p>
+                <!--p class="msg"><?php echo $LanguageInstance->get('This task has helped me to feel more confident in the speaking practice (absolutely no-absolutely yes)')?></p-->
                 <form role="form">
                     <div class="form-group">
-                        <textarea class="form-control" rows="10" id="comment"></textarea>
+                        <textarea class="form-control" style="display:none;" rows="10" id="comment"></textarea>
                         <input id="enjoyed" type="hidden" value="0"> 
                         <input id="nervous" type="hidden" value="0"> 
                         <input id="task-valoration" type="hidden" value="0"> 
