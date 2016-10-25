@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/classes/lang.php';
 $select_room = isset($_GET['select_room']) && $_GET['select_room'] == 1;
-$goto = 'autoAssignTandemRoom';
+$goto = 'preWaitingRoom';
 if ($select_room) {
 	$goto = 'selectUserAndRoom';
 }
@@ -14,6 +14,7 @@ if (
 	die();
 }
 
+$enabledWebRTC= false;
 require_once dirname(__FILE__) . '/classes/constants.php';
 require_once dirname(__FILE__) . '/classes/gestorBD.php';
 require_once 'IMSBasicLTI/uoc-blti/lti_utils.php';
@@ -35,6 +36,8 @@ $getUsersWaitingEs = $gestorBD->getUsersWaitingByLanguage($course_id,"es_ES");
 $getUsersWaitingEn = $gestorBD->getUsersWaitingByLanguage($course_id,"en_US");
 $tandemByDate = $gestorBD->getNumtandemsByDate(date("Y-m-d"),$course_id);
 $getNumOfSuccessFailedTandems = $gestorBD->getNumOfSuccessFailedTandems($course_id,$tandemFailedSuccessByDateStart,$tandemFailedSuccessByDateEnd);
+
+$stats = $gestorBD->get_stats_tandem_by_date($course_id, $tandemFailedSuccessByDateStart,$tandemFailedSuccessByDateEnd);
 
 $getCountAllTandemsByDate = $gestorBD->getCountAllTandemsByDate($course_id);
 $getCountAllUnFinishedTandemsByDate = $gestorBD->getCountAllUnFinishedTandemsByDate($course_id);
@@ -157,131 +160,6 @@ $(function () {
              ]
         }]
     
-    });
-});
-
-
-//sucessfull vs failed tandems
-$(function () {
-
-    Highcharts.data({
-        csv: document.getElementById('tsv').innerHTML,
-        itemDelimiter: '\t',
-        parsed: function (columns) {
-
-            var brands = {},
-                brandsData = [],
-                versions = {},
-                drilldownSeries = [];
-
-            // Parse percentage strings
-            columns[1] = $.map(columns[1], function (value) {
-                if (value.indexOf('%') === value.length - 1) {
-                    value = parseFloat(value);
-                }
-                return value;
-            });
-
-            $.each(columns[0], function (i, name) {
-                var brand,
-                    version;
-
-                if (i > 0) {
-
-                    // Remove special edition notes
-                    name = name.split(' -')[0];
-
-                    // Split into brand and version
-                    version = name.match(/([0-9]+[\.0-9x]*)/);
-                    if (version) {
-                        version = version[0];
-                    }
-                    brand = name.replace(version, '');
-
-                    // Create the main data
-                    if (!brands[brand]) {
-                        brands[brand] = columns[1][i];
-                    } else {
-                        brands[brand] += columns[1][i];
-                    }
-
-                    // Create the version data
-                    if (version !== null) {
-                        if (!versions[brand]) {
-                            versions[brand] = [];
-                        }
-                        versions[brand].push(['v' + version, columns[1][i]]);
-                    }
-                }
-
-            });
-
-            $.each(brands, function (name, y) {
-                brandsData.push({
-                    name: name,
-                    y: y,
-                    drilldown: versions[name] ? name : null
-                });
-            });
-            $.each(versions, function (key, value) {
-                drilldownSeries.push({
-                    name: key,
-                    id: key,
-                    data: value
-                });
-            });
-
-            // Create the chart
-            $('#chart2').highcharts({
-                chart: {
-                    type: 'column'
-                },
-                  credits: {
-          			  enabled: false
-        		},
-                title: {
-                    text: 'Successful vs Failed tandems by date range'
-                },
-                subtitle: {
-                    text: 'The success are all the tandems that the total_time is 60 seconds or more, and the Failed tandems are all the tandems counting the finished and unfinished and that the total_time is less than 60 seconds '
-                },
-                xAxis: {
-                    type: 'category'
-                },
-                yAxis: {
-                    title: {
-                        text: 'Total percent per success - failure'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    series: {
-                        borderWidth: 0,
-                        dataLabels: {
-                            enabled: true,
-                            format: '{point.y:1f}'
-                        }
-                    }
-                },
-
-
-                tooltip: {
-                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:1f}</b><br/>'
-                },
-
-                series: [{
-                    name: 'tandems',
-                    colorByPoint: true,
-                    data: brandsData
-                }],
-                drilldown: {
-                    series: drilldownSeries
-                }
-            });
-        }
     });
 });
 
@@ -455,7 +333,117 @@ $(function () {
 
         <?php } ?>
 
+			<?php
+			if ($stats['per_day_of_week']) {?>
+				$(function () {
+					$('#chart_per_day_of_week').highcharts({
+						chart: {
+							type: 'column'
+						},
+						title: {
+							text: 'Tandems per day of week from <?php echo $tandemFailedSuccessByDateStart?> to <?php echo $tandemFailedSuccessByDateEnd?>'
+						},
+						subtitle: {
+							text: 'Shows the finalized and not'
+						},
+						xAxis: {
+							categories: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00',
+								'09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00',
+								'19:00', '20:00', '21:00', '22:00', '23:00'],
+							crosshair: true,
+							title: {
+								text: 'Hours'
+							}
+						},
+						yAxis: {
+							min: 0,
+							title: {
+								text: 'Number of tandems'
+							}
+						},
+						tooltip: {
+							headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+							pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+							'<td style="padding:0"><b>{point.y:.0f} tandems</b></td></tr>',
+							footerFormat: '</table>',
+							shared: true,
+							useHTML: true
+						},
+						plotOptions: {
+							column: {
+								pointPadding: 0.2,
+								borderWidth: 0
+							}
+						},
+						series: [
+							<?php foreach ($stats['per_day_of_week'] as $key => $tandem_day){?>
+							{
+								name: "<?php echo $key?>",
+								data: [<?php echo implode(",",$tandem_day)?>]
+							},
+							<?php } ?>
+						]
+					});
+				});
 
+				<?php
+        		}
+				if ($stats['per_day_of_week']) {?>
+				//<div id='chart_per_day_of_week' class='well' style='width:380px;float:left;display:inline'></div>
+				<?php }
+				if ($stats['per_hour_finalized']) {?>
+				//<div id='chart_per_hour_finalized' class='well' style='width:380px;float:left;display:inline'></div>
+				<?php }
+				if ($stats['per_hour']) {?>
+			$(function () {
+				$('#chart_per_hour').highcharts({
+					chart: {
+						type: 'column'
+					},
+					title: {
+						text: 'Tandems per hour from <?php echo $tandemFailedSuccessByDateStart?> to <?php echo $tandemFailedSuccessByDateEnd?>'
+					},
+					subtitle: {
+						text: 'Shows the finalized and not'
+					},
+					xAxis: {
+						type: 'category',
+						title: {
+							text: 'Hours'
+						}
+					},
+					yAxis: {
+						min: 0,
+						title: {
+							text: 'Number of tandems'
+						}
+					},
+					tooltip: {
+						headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+						pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+						'<td style="padding:0"><b>{point.y:.0f} tandems</b></td></tr>',
+						footerFormat: '</table>',
+						shared: true,
+						useHTML: true
+					},
+					plotOptions: {
+						column: {
+							pointPadding: 0.2,
+							borderWidth: 0
+						}
+					},
+					series:[{
+						name: 'Tandems',
+						data: [<?php echo implode(",",$stats['per_hour'])?>]
+					}]
+				});
+			});
+				<?php }
+				?>
+
+
+
+				<?php if ($enabledWebRTC) {?>
 //ok tandems by webrtc and videochat
 $(function () {
     $('#chart5').highcharts({
@@ -573,8 +561,132 @@ $(function () {
         }]
     });
 });
+<?php } ?>
 
 
+//sucessfull vs failed tandems
+			$(function () {
+				//alert (document.getElementById('tsv').innerHTML);
+				Highcharts.data({
+					csv: document.getElementById('tsv').innerHTML,
+					itemDelimiter: '\t',
+					parsed: function (columns) {
+
+						var brands = {},
+							brandsData = [],
+							versions = {},
+							drilldownSeries = [];
+
+						// Parse percentage strings
+						columns[1] = $.map(columns[1], function (value) {
+							if (value.indexOf('%') === value.length - 1) {
+								value = parseFloat(value);
+							}
+							return value;
+						});
+
+						$.each(columns[0], function (i, name) {
+							var brand,
+								version;
+
+							if (i > 0) {
+
+								// Remove special edition notes
+								name = name.split(' -')[0];
+
+								// Split into brand and version
+								version = name.match(/([0-9]+[\.0-9x]*)/);
+								if (version) {
+									version = version[0];
+								}
+								brand = name.replace(version, '');
+
+								// Create the main data
+								if (!brands[brand]) {
+									brands[brand] = columns[1][i];
+								} else {
+									brands[brand] += columns[1][i];
+								}
+
+								// Create the version data
+								if (version !== null) {
+									if (!versions[brand]) {
+										versions[brand] = [];
+									}
+									versions[brand].push(['v' + version, columns[1][i]]);
+								}
+							}
+
+						});
+
+						$.each(brands, function (name, y) {
+							brandsData.push({
+								name: name,
+								y: y,
+								drilldown: versions[name] ? name : null
+							});
+						});
+						$.each(versions, function (key, value) {
+							drilldownSeries.push({
+								name: key,
+								id: key,
+								data: value
+							});
+						});
+
+						// Create the chart
+						$('#chart2').highcharts({
+							chart: {
+								type: 'column'
+							},
+							credits: {
+								enabled: false
+							},
+							title: {
+								text: 'Successful vs Failed tandems by date range'
+							},
+							subtitle: {
+								text: 'The success are all the tandems that the total_time is 60 seconds or more, and the Failed tandems are all the tandems counting the finished and unfinished and that the total_time is less than 60 seconds '
+							},
+							xAxis: {
+								type: 'category'
+							},
+							yAxis: {
+								title: {
+									text: 'Total percent per success - failure'
+								}
+							},
+							legend: {
+								enabled: false
+							},
+							plotOptions: {
+								series: {
+									borderWidth: 0,
+									dataLabels: {
+										enabled: true,
+										format: '{point.y:1f}'
+									}
+								}
+							},
+
+
+							tooltip: {
+								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:1f}</b><br/>'
+							},
+
+							series: [{
+								name: 'tandems',
+								colorByPoint: true,
+								data: brandsData
+							}],
+							drilldown: {
+								series: drilldownSeries
+							}
+						});
+					}
+				});
+			});
 
 
 });	
@@ -690,7 +802,7 @@ $(function () {
                             <p class="form-control-static"> <?php echo $LanguageInstance->get('End Date');?></p>                           
                         </div>       
                         <div class="form-group">
-                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateEnd' id='tandemFailedSuccessByDateEnd' value='<?php echo $tandemFailedSuccessByDateEnd?>'>                         
+                            <input type='text' class="form-control"  name='tandemFailedSuccessByDateEnd' id='tandemFailedSuccessByDateEnd' value='<?php echo $tandemFailedSuccessByDateEnd?>'>
                         </div>
                         <button type="submit" class="btn btn-default"><?php echo $LanguageInstance->get('View');?></button>
                     </form>
@@ -703,18 +815,49 @@ $(function () {
         <div id='chart3' class='well' style='width:380px;float:left;display:inline'></div>
             <div id='chart4' class='well' style='width:380px;float:left;display:inline'></div>
     <?php }?>
+	<?php if ($enabledWebRTC) {?>
 	  		<div id='chart5' class='well' style='width:380px;float:left;display:inline'></div>
 	  		<div id='chart6' class='well' style='width:380px;float:left;display:inline'></div>
+	<?php }?>
     <?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
 	  		<div id='chart7' class='well' style='width:380px;float:left;display:inline'></div>
     <?php }?>
 	  	</div>
   	</div>
+<?php
+if ($stats['per_day_of_week_finalized']) {?>
+	<div class='row'>
+		<div class='col-md-12'>
+			<div id='chart_per_day_of_week_finalized'></div>
+		</div>
+	</div>
+<?php }
+if ($stats['per_day_of_week']) {?>
+	<div class='row'>
+		<div class='col-md-12'>
+			<div id='chart_per_day_of_week'></div>
+		</div>
+	</div>
+<?php }
+if ($stats['per_hour_finalized']) {?>
+		<div class='row'>
+			<div class='col-md-12'>
+				<div id='chart_per_hour_finalized' ></div>
+			</div>
+		</div>
+<?php }
+if ($stats['per_hour']) {?>
+	<div class='row'>
+		<div class='col-md-12'>
+			<div id='chart_per_hour'></div>
+		</div>
+	</div>
+<?php }
+?>
   	<p></p>
 </div>
 
 <pre id="tsv" style="display:none">
-Microsoft Internet Explorer 8.0	26.61%
 
 Success 	<?php echo $getNumOfSuccessFailedTandems['success'];?>%
 

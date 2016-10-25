@@ -2017,6 +2017,7 @@ class GestorBD {
              and wr.id_exercise= '".$id_ex."'
              and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 30 seconds before
             $result = $this->consulta($sql);
+             error_log($sql);
             if ($this->numResultats($result) > 0) {
                 return $this->obteComArray($result);
             }
@@ -2093,7 +2094,7 @@ class GestorBD {
 
             $waiting_room_id = $resultSelect[0]['id'];
 
-            $sql= "UPDATE waiting_room SET number_user_waiting = number_user_waiting + 1  WHERE id = ".$waiting_room_id." and id_course = ".$courseID." and id_exercise = ".$exerciseID;
+            $sql= "UPDATE waiting_room SET number_user_waiting = number_user_waiting+1 WHERE id = ".$waiting_room_id." and id_course = ".$courseID." and id_exercise = ".$exerciseID;
             $ok = $this->consulta($sql);
 
         }else{
@@ -2147,17 +2148,16 @@ class GestorBD {
     //When we find someone to make a tandem, we create the tandem room here and return the id
     public function createTandemFromWaiting($response,$user_id,$id_resource_lti, $user_agent=""){
 
-
-    $tandem_id = $this->checkForOpenTandemRooms($user_id,$response['id_exercise'],$response['id_course'],$response['guest_user_id']);
-    //if the tandem was already created by the other user, then we are the guests.
-    if (!empty($tandem_id)){
-       return  $result[0]['id'];
-    }else{
-        //the tandem is not yet created, lets created it and we will be he host.
-        $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", $user_agent);
-        $this->update_user_guest_tandem($tandem_id, $response['user_agent']);
-         return $tandem_id;
-    }
+        $tandem_id = $this->checkForOpenTandemRooms($user_id,$response['id_exercise'],$response['id_course'],$response['guest_user_id']);
+        //if the tandem was already created by the other user, then we are the guests.
+        if (!empty($tandem_id)){
+           return  $tandem_id;
+        }else{
+            //the tandem is not yet created, lets created it and we will be he host.
+            $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", $user_agent);
+            $this->update_user_guest_tandem($tandem_id, $response['user_agent']);
+             return $tandem_id;
+        }
     }
      /**
      * Here we check if there are any tandems available from all the exercises id of the user.
@@ -3385,7 +3385,6 @@ class GestorBD {
                          left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
                          inner join tandem as T on T.id = UT.id_tandem
                         where ((coalesce(UT.finalized,0)=0 and total_time>300) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and
-                        T.created <= '2014-12-10 12:00:00' and
                         T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
 
                 $points = 0;
@@ -3831,6 +3830,124 @@ class GestorBD {
     private function get_rubrics_sql($course_id){
         $sql = "SELECT id,name,description FROM feedback_rubric LEFT JOIN feedback_rubric_def_items ON feedback_rubric_def_items.item_id = feedback_rubric.id LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric_def_items.def_id WHERE id_course = ".$course_id." AND lang = '".$_SESSION['lang']."'";
         return $sql;
+    }
+
+    /**
+     * Returns the tandem per day of week 1=> Sunday, 7 => Saturday
+     *
+     * @param $course_id
+     * @param $dateStart
+     * @param $dateEnd
+     * @return array with arrays for per_day_of_week_finalized, per_day_of_week, per_hour_finalized and per_hour
+     */
+    public function get_stats_tandem_by_date($course_id, $dateStart=false,$dateEnd=false) {
+        $datesql = '';
+        if($dateStart){
+         $datesql = "and date(created) >= '".$dateStart."' ";
+            if($dateEnd > $dateStart){
+                 $datesql .= "and date(created) <= '".$dateEnd."' ";
+            }
+        }
+        $stats = array(/*'per_day_of_week_finalized' => false,*/
+            'per_day_of_week' => false,
+            //'per_hour_finalized' => false,
+            'per_hour' => false);
+
+        $sql_per_day_of_week = 'select count(id) total_tandems, hour(created) as hour, DAYOFWEEK(created) as day, is_finished 
+                from tandem where id_course = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created), DAYOFWEEK(created), is_finished
+                order by DAYOFWEEK(created) , hour(created)';
+
+        $result = $this->consulta($sql_per_day_of_week);
+        if(!empty($result)){
+            $stats['per_day_of_week'] = $this->obteComArray($result);
+            $stats['per_day_of_week'] = $this->fill_data_hours_days($stats['per_day_of_week'], true);
+        }
+        /*$sql_per_day_of_week_finalized = 'select count(id) total_tandems, hour(created) as hour, DAYOFWEEK(created) as day
+                from tandem where id_course = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created), DAYOFWEEK(created)
+                order by DAYOFWEEK(created) , hour(created)';
+
+        $result = $this->consulta($sql_per_day_of_week_finalized);
+        if(!empty($result)){
+            $stats['per_day_of_week'] = $this->obteComArray($result);
+        }
+
+        $sql_per_hour_finalized = 'select count(id) total_tandems, hour(created) as hour, is_finished 
+                  from tandem where id_course  = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created),is_finished
+                  order by DAYOFWEEK(created) , hour(created)';
+        $result = $this->consulta($sql_per_hour_finalized);
+        if(!empty($result)){
+            $stats['per_hour_finalized'] = $this->obteComArray($result);
+        }*/
+
+        $sql_per_hour = 'select count(id) total_tandems, hour(created) as hour 
+                from tandem where id_course  = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created)
+                order by DAYOFWEEK(created) , hour(created)';
+        $result = $this->consulta($sql_per_hour);
+        if(!empty($result)){
+            $stats['per_hour'] = $this->obteComArray($result);
+            $stats['per_hour'] = $this->fill_data_hours_days($stats['per_hour'], false);
+        }
+
+        return $stats;
+    }
+
+    /**
+     * @param $array
+     * @param $per_day
+     * @return array
+     */
+    private function fill_data_hours_days($array, $per_day) {
+        $hours = array(0=>0, 1=>0, 2=>0, 3=>0, 4=>0, 5=>0, 6=>0, 7=>0, 8=>0, 9=>0,
+            10=>0, 11=>0, 12=>0, 13=>0, 14=>0, 15=>0, 16=>0, 17=>0, 18=>0, 19=>0,
+            20=>0, 21=>0, 22=>0, 23=>0);
+        if ($per_day) {
+            $normalized_array = array(
+                'Sunday' => $hours,
+                'Monday' => $hours,
+                'Tuesday' => $hours,
+                'Wednesday' => $hours,
+                'Thursday' => $hours,
+                'Friday' => $hours,
+                'Saturday' => $hours
+            );
+        } else {
+            $normalized_array = $hours;
+        }
+        foreach ($array as $value) {
+
+
+            if ($per_day) {
+                switch ($value['day']) {
+                    case 1: //Sunday
+                        $key = 'Sunday';
+                        break;
+                    case 2: //Monday
+                        $key = 'Monday';
+                        break;
+                    case 3: //Tuesday
+                        $key = 'Tuesday';
+                        break;
+                    case 4: //Wednesday
+                        $key = 'Wednesday';
+                        break;
+                    case 5: //Thursday
+                        $key = 'Thursday';
+                        break;
+                    case 6: //Friday
+                        $key = 'Friday';
+                        break;
+                    case 7: //Saturday
+                        $key = 'Saturday';
+                        break;
+                }
+                if (!$normalized_array[$key][$value['hour']]) {
+                    $normalized_array[$key][$value['hour']] = $value['total_tandems'];
+                }
+            } else {
+                $normalized_array[$value['hour']] = $value['total_tandems'];
+            }
+        }
+        return $normalized_array;
     }
 }//end of class
 
