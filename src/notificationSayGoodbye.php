@@ -3,6 +3,8 @@ require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/utils.php';
 require_once dirname(__FILE__).'/classes/gestorBD.php';
 
+$is_final = true;
+include_once(dirname(__FILE__).'/classes/register_action_user.php');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

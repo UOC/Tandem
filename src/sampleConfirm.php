@@ -144,10 +144,21 @@ $(document).ready(function(){
                     $("#moodBtn").attr("onclick","evaluateTask(0)");
                     $('#evaluateTaskModal').modal('show');
                 }else{
-
-                    $("#moodBtn").attr("onclick","evaluateTask(1);showVideoChatAndGoodbyeMessage();");
+					//end
+					$("#moodBtn").attr("onclick","evaluateTask(1);showVideoChatAndGoodbyeMessage();");
                     $("#closeModalBtn").attr("onclick","closeModal(1)");
                     $('#evaluateTaskModal').modal('show');
+
+					$.ajax({
+						type: 'GET',
+						url: "endAjax.php",
+						data : {
+							id_tandem : '<?php echo $_SESSION['current_tandem'];?>',
+							id_user : '<?php echo $_SESSION['current_user']->id;?>',
+						},
+						success: function(data){
+						}
+					});
                 }
         	}
                 
