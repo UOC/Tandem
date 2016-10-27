@@ -15,13 +15,14 @@ if(isset($_REQUEST['courseID'])){
 if(isset($_REQUEST['exercisesID'])){
     $exercisesID = $_REQUEST['exercisesID'];
 }
+
 if(isset($_REQUEST['user_id'])){
     $user_id = $_REQUEST['user_id'];
 }
 if(isset($_REQUEST['id_resource_lti'])){
     $id_resource_lti = $_REQUEST['id_resource_lti'];
 }
-if(empty($otherlanguage) or empty($courseID) or empty($exercisesID)){
+if(empty($otherlanguage) or empty($courseID)){
 	echo json_encode(array("result" => "Missing parameter")); die();
 }
 
@@ -41,8 +42,9 @@ if($response){
 	$response = $response[0];
 	if(isset($response['tandem_id'])){
 		$tandem_id = $response['tandem_id'];
-	}else
-	$tandem_id = $gestordb->createTandemFromWaiting($response,$user_id,$id_resource_lti, $_SERVER['HTTP_USER_AGENT']);
+	}else {
+        $tandem_id = $gestordb->createTandemFromWaiting($response, $user_id, $id_resource_lti, $_SERVER['HTTP_USER_AGENT']);
+    }
 
 	$gestordb->deleteFromWaitingRoom($user_id,$tandem_id);
 	echo json_encode(array("tandem_id" => $tandem_id));

@@ -39,7 +39,7 @@ if (!$user_obj || !$course_id) {
 		$gestorBD->deleteFromWaitingRoom($user_obj->id,-1);//we delete all waiting room that are older than the defined MAX_WAITING_TIME
 		$last_id = $gestorBD->get_lastid_invited_to_join($user_obj->id, $id_resource_lti, $course_id);
 		$gestorBD->tandemMaxWaitingTime();//we delete all waiting room that are older than the defined MAX_WAITING_TIME
-		$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id); 
+		$exercisesNotDone = $gestorBD->getExercicesNotDoneWeek($course_id,$user_obj->id);
 		$numPeopleWaitingForTandem = $gestorBD->getUsersWaitingByLanguage($course_id,$user_language, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 		$areThereTandems = $gestorBD->checkIfAvailableTandemForExercise($exercisesNotDone,$course_id,$user_language,$user_obj->id,$other_language, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 
@@ -100,8 +100,8 @@ if (!$user_obj || !$course_id) {
 	        		type: 'POST',
 	        		url: "autoAssignCheckTandems.php",
 	        		data : {
-	        			   exercisesID : '<?php echo implode(",",$exercisesNotDone);?>',
-	        			   otherlanguage    : '<?php echo $other_language;?>',
+						exercisesID : '<?php echo implode(",",$exercisesNotDone);?>',
+						otherlanguage    : '<?php echo $other_language;?>',
 	        			   courseID   : '<?php echo $course_id;?>',
 	        			   user_id    : '<?php echo $user_obj->id;?>',
 	        			   id_resource_lti : "<?php echo $id_resource_lti;?>"
