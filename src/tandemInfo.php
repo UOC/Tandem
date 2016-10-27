@@ -438,12 +438,51 @@ $(function () {
 					}]
 				});
 			});
-				<?php }
-				?>
+			<?php }
+			if ($stats['per_user_status']) {
+?>
 
+			$(function () {
+				$('#chart_per_user_status').highcharts({
+					chart: {
+						plotBackgroundColor: null,
+						plotBorderWidth: 1,//null,
+						plotShadow: false
+					},
+					title: {
+						text: 'User Status per tandem'
+					},
+					tooltip: {
+						pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+					},
+					plotOptions: {
+						pie: {
+							allowPointSelect: true,
+							cursor: 'pointer',
+							dataLabels: {
+								enabled: true,
+								format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+								style: {
+									color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+								}
+							}
+						}
+					},
+					series: [{
+						type: 'pie',
+						name: 'User status',
+						data: [
+							['Smilie',   <?php echo round(($stats['per_user_status']['smilies'] / $stats['per_user_status']['total']) * 100)?>],
+							['Neutral',   <?php echo round(($stats['per_user_status']['neutral'] / $stats['per_user_status']['total']) * 100)?>],
+							['Sad',   <?php echo round(($stats['per_user_status']['sad'] / $stats['per_user_status']['total']) * 100)?>]
+						]
+					}]
+				});
+			});
 
-
-				<?php if ($enabledWebRTC) {?>
+			<?php
+			}
+			if ($enabledWebRTC) {?>
 //ok tandems by webrtc and videochat
 $(function () {
     $('#chart5').highcharts({
@@ -567,7 +606,7 @@ $(function () {
 //sucessfull vs failed tandems
 			$(function () {
 				//alert (document.getElementById('tsv').innerHTML);
-				Highcharts.data({
+				highcharts.data({
 					csv: document.getElementById('tsv').innerHTML,
 					itemDelimiter: '\t',
 					parsed: function (columns) {
@@ -840,7 +879,7 @@ if ($stats['per_day_of_week']) {?>
 	</div>
 <?php }
 if ($stats['per_hour_finalized']) {?>
-		<div class='row'>
+		<div class='row'>y
 			<div class='col-md-12'>
 				<div id='chart_per_hour_finalized' ></div>
 			</div>
@@ -853,7 +892,14 @@ if ($stats['per_hour']) {?>
 		</div>
 	</div>
 <?php }
-?>
+if ($stats['per_user_status']) {?>
+	<div class='row'>
+		<div class='col-md-12'>
+			<div id='chart_per_user_status'></div>
+		</div>
+	</div>
+<?php } ?>
+
   	<p></p>
 </div>
 
