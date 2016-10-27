@@ -204,7 +204,7 @@ try {
                                 $redirectTo = 'selectUserAndRoom';
                                 if ($waiting_room==1) {
                                 	if (!$waiting_room_select_room) {
-	                                    $redirectTo = 'autoAssignTandemRoom';
+	                                    $redirectTo = 'preWaitingRoom';
 	                                    if ($user_obj->admin == 1 || $user_obj->instructor == 1 ) {
 											$redirectTo = 'tandemInfo';
 										}
