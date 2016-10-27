@@ -1921,29 +1921,41 @@ class GestorBD {
      ****************************/
 
     /**
+     *  Get all the exercices of the week
+     */
+    function getExercicesCurrentWeek($id_course)
+    {
+
+    //if they passed the custom parameter WEEK with the LTIcall , then we use that week, if not then we use the max week there is.
+        if (!empty($_SESSION[WEEK]))
+            $sql = 'SELECT id_exercise from course_exercise  WHERE week ="' . $_SESSION[WEEK] . '" and id_course = ' . $id_course;
+        elseif (!empty($_SESSION[PREVIOUS_WEEK])) {
+            $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select week from course_exercise  where id_course = ' . $id_course . ' order by week desc limit 1 offset 1 ) and id_course = ' . $id_course;
+        } else
+            $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select max(week) from course_exercise where id_course = ' . $id_course . ') and id_course = ' . $id_course;
+
+        $result = $this->consulta($sql);
+        $ids = array();
+
+        if ($this->numResultats($result) > 0) {
+            $ids_exercise = array_values($this->obteComArray($result));
+            foreach ($ids_exercise as $value) {
+                $ids[] = $value['id_exercise'];
+            }
+        }
+        return $ids;
+    }
+    /**
      *  Get all the exercices of the week that the user hasnt finished yet.
      */
     function getExercicesNotDoneWeek($id_course,$user_id){
 
-        //if they passed the custom parameter WEEK with the LTIcall , then we use that week, if not then we use the max week there is.
-        if(!empty($_SESSION[WEEK]))
-            $sql = 'SELECT id_exercise from course_exercise  WHERE week ="'.$_SESSION[WEEK].'" and id_course = '.$id_course;
-        elseif(!empty($_SESSION[PREVIOUS_WEEK])){
-            $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select week from course_exercise order by week desc limit 1 offset 1 ) and id_course = '.$id_course;
-        }else
-            $sql = 'SELECT id_exercise from course_exercise  WHERE week in( select max(week) from course_exercise) and id_course = '.$id_course;
+        $ids = $this->getExercicesCurrentWeek($id_course);
 
-            $result = $this->consulta($sql);
-            $ids  = array();
-
-        if ($this->numResultats($result) > 0) {
-            $ids_exercise = array_values($this->obteComArray($result));
-            foreach($ids_exercise as $value){
-                $ids[] = $value['id_exercise'];
-            }
+        if (count($ids)>0) {
 
             $sql = "SELECT distinct(id_exercise) from tandem where
-                    id_course = ".$this->escapeString($id_course)." and (id_user_guest = '".$user_id."') or (id_user_host = '".$user_id."') ";
+                    id_course = ".$this->escapeString($id_course)." and (id_user_guest = '".$user_id."' or id_user_host = '".$user_id."') ";
              $result = $this->consulta($sql);
               if ($this->numResultats($result) > 0) {
                     $r =  $this->obteComArray($result);
@@ -1953,9 +1965,9 @@ class GestorBD {
                          }
                     }
               }
-        }
+        } else {
 
-        if (count($ids)==0) {
+
             //there is nothing for that week, lets just grab them all :o
              $sql = 'SELECT id_exercise,created from course_exercise  WHERE  id_course = '.$id_course.' order by RAND() limit 10' ;
              $result = $this->consulta($sql);
@@ -1977,7 +1989,10 @@ class GestorBD {
      */
     public function checkIfAvailableTandemForExercise($exercises_ids,$id_course,$language,$user_id,$otherlanguage,
                                                       $unique_team=false){
-
+        if (count($exercises_ids)==0){
+            //then offer all
+            $exercises_ids = $this->getExercicesCurrentWeek($id_course);
+        }
         //lets see if there is someone waiting for one ot these exercises.
         foreach($exercises_ids as $id_ex){
             $val = $this->checkForTandems($id_ex,$id_course,$otherlanguage,$user_id,$unique_team);
@@ -2008,34 +2023,56 @@ class GestorBD {
          }
 
          $where = $unique_team?'1=1':("wr.language='".$otherlanguage."'");
-         //lets see if there anyone waiting that we can do a tandem with
-         foreach($exs as $id_ex){
-            $sql = "select wr.*,wru.id_user as guest_user_id, wru.user_agent as user_agent from waiting_room as wr
-                    inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
-             where ".$where."
-             and wr.id_course ='".$id_course."'
-             and wr.id_exercise= '".$id_ex."'
-             and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";  //check the wr has been created 30 seconds before
-            $result = $this->consulta($sql);
-             error_log($sql);
-            if ($this->numResultats($result) > 0) {
-                return $this->obteComArray($result);
-            }
-        }
+//MODIFIED ******+ abertranb improvement performance only get data
 
-        //if not lets check if there is someoe already created a tandem for us and is waiting.
-         foreach($exs as $id_ex){
-            $sql = "select id as tandem_id from tandem where id_exercise ='".$id_ex."' and id_course='".$id_course."'
+        //1. if not lets check if there is someoe already created a tandem for us and is waiting.
+        $sql = "select id as tandem_id from tandem where id_course='".$id_course."'
                     and id_user_guest ='".$user_id."'
-                    and created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";
+                    and created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) and is_finished = 0";
 
-           $result = $this->consulta($sql);
-            if ($this->numResultats($result) > 0) {
-               return  $this->obteComArray($result);
+        $result = $this->consulta($sql);
+        if ($this->numResultats($result) > 0) {
+            return  $this->obteComArray($result);
+        }
+         //2. lets see if there anyone waiting that we can do a tandem with
+        $sql = "select wr.*,wru.id_user as guest_user_id, wru.user_agent as user_agent from waiting_room as wr
+                inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
+         where ".$where."
+         and wr.id_course ='".$id_course."'
+         and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) order by wru.created, rand() limit 0,1 ";  //check the wr has been created 30 seconds before
+        $result = $this->consulta($sql);
+        if ($this->numResultats($result) > 0) {
+            return $this->obteComArray($result);
+        }
+// ******* ORIGINAL
+//         //lets see if there anyone waiting that we can do a tandem with
+//         foreach($exs as $id_ex){
+//            $sql = "select wr.*,wru.id_user as guest_user_id, wru.user_agent as user_agent from waiting_room as wr
+//                    inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
+//             where ".$where."
+//             and wr.id_course ='".$id_course."'
+//             and wr.id_exercise= '".$id_ex."'
+//             and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) order by wru.created asc ";  //check the wr has been created 30 seconds before
+//            $result = $this->consulta($sql);
+//            if ($this->numResultats($result) > 0) {
+//                return $this->obteComArray($result);
+//            }
+//        }
+//
+//        //if not lets check if there is someoe already created a tandem for us and is waiting.
+//         foreach($exs as $id_ex){
+//            $sql = "select id as tandem_id from tandem where id_exercise ='".$id_ex."' and id_course='".$id_course."'
+//                    and id_user_guest ='".$user_id."'
+//                    and created >= DATE_SUB(NOW(), INTERVAL 30 SECOND)";
+//
+//           $result = $this->consulta($sql);
+//            if ($this->numResultats($result) > 0) {
+//               return  $this->obteComArray($result);
+//
+//             }
+//
+//         }
 
-             }
-
-         }
         return false;
     }
     /**
@@ -2154,11 +2191,82 @@ class GestorBD {
            return  $tandem_id;
         }else{
             //the tandem is not yet created, lets created it and we will be he host.
-            $tandem_id = $this->register_tandem($response['id_exercise'], $response['id_course'], $id_resource_lti, $user_id, $response['guest_user_id'], "", $user_agent);
+            //try to get the not done exercise for 2 users
+            $id_exercise = $response['id_exercise'];
+            $id_course = $response['id_course'];
+            $new_id_exercise = $this->intersectExercisesNotDone($id_course,$user_id, $response['guest_user_id']);
+            if ($new_id_exercise!==false) {
+                $id_exercise = $new_id_exercise;
+            }
+            $tandem_id = $this->register_tandem($id_exercise, $id_course, $id_resource_lti, $user_id, $response['guest_user_id'], "", $user_agent);
             $this->update_user_guest_tandem($tandem_id, $response['user_agent']);
              return $tandem_id;
         }
     }
+
+    /**
+     *  Get all the exercices of the week that the user hasnt finished yet.
+     */
+    private function intersectExercisesNotDone($id_course,$user_id, $user_guest_id){
+
+        //if they passed the custom parameter WEEK with the LTIcall , then we use that week, if not then we use the max week there is.
+        $week = 0;
+        if(!empty($_SESSION[WEEK])) {
+            $week = $_SESSION[WEEK];
+        }else {
+            $sql = 'SELECT  max(week) as week from course_exercise where id_course = ' . $id_course;
+            $result = $this->consulta($sql);
+
+            if ($this->numResultats($result) > 0) {
+                $max_week = array_values($this->obteComArray($result));
+                $week = $max_week[0]['week'];
+                if(!empty($_SESSION[PREVIOUS_WEEK])) {
+                    if ($week>0) {
+                        $week--;
+                    }
+                }
+            }
+        }
+        $extra_week = $week>0?' and  week = '.$week.' ':'';
+        //1st. search for exercises that any of this users had done
+        $sql = 'select id_exercise from course_exercise where id_course = '.$id_course.' '.$extra_week.' and id_exercise not in
+                (
+                SELECT id_exercise from tandem where
+                    id_course = '.$id_course.' and 
+                    (id_user_guest = '.$user_id.' or id_user_host = '.$user_id.'
+                    OR
+                    id_user_guest = '.$user_guest_id.' or id_user_host = '.$user_guest_id.')
+                ) order by rand() limit 0,1';
+
+        $result = $this->consulta($sql);
+        $exercise_id  = false;
+
+        if ($this->numResultats($result) > 0) {
+            $ids_exercise = array_values($this->obteComArray($result));
+            $exercise_id = $ids_exercise[0]['id_exercise'];
+        } else {
+            //2nd. Search any exercise that user done less
+            $sql = 'SELECT tandem.id_exercise, count(*) from tandem
+inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and course_exercise.id_course=tandem.id_course  
+ where
+                    tandem.id_course = '.$id_course.' '.$extra_week.' 
+                    and (tandem.id_user_guest = '.$user_id.' or tandem.id_user_host = '.$user_id.'
+                    OR
+                    tandem.id_user_guest = '.$user_guest_id.' or tandem.id_user_host = '.$user_guest_id.')
+                    
+                    group by tandem.id_exercise order by count(*), rand() 
+                    limit 0,1';
+            $result = $this->consulta($sql);
+            $exercise_id  = false;
+
+            if ($this->numResultats($result) > 0) {
+                $ids_exercise = array_values($this->obteComArray($result));
+                $exercise_id = $ids_exercise[0]['id_exercise'];
+            }
+        }
+        return $exercise_id;
+    }
+
      /**
      * Here we check if there are any tandems available from all the exercises id of the user.
      */
@@ -2261,7 +2369,68 @@ class GestorBD {
             " where id_tandem =".$this->escapeString($id_tandem));
 
      }
-     /**
+
+    /**
+     * Insert into history of videoconnection
+     * @param $id_tandem
+     * @param $user_id
+     * @return resource
+     */
+    function insertUserAcceptedConnection($id_tandem, $user_id) {
+
+        return $this->consulta("insert into user_tandem_tandem_videoconnection (id_tandem, id_user, created)   ".
+            " values (".$this->escapeString($id_tandem).", ".$this->escapeString($user_id).", now())");
+
+    }
+
+    /**
+     * This functions allows to check if ther partner accepted connection and me not, then raise a message
+     * @param $id_tandem
+     * @param $user_id
+     * @return bool
+     */
+    public function myPartnerAcceptedConnectionAndMeNot($id_tandem, $user_id) {
+        $myPartnerAcceptedConnectionAndMeNot = false;
+        $sql = "select * from user_tandem_tandem_videoconnection 
+          where id_tandem = ".$this->escapeString($id_tandem);
+        $result = $this->consulta($sql.' and id_user !='.$this->escapeString($user_id));
+
+        //Check if partner accepted
+        if ($this->numResultats($result) > 0) {
+            $result = $this->consulta($sql.' and id_user ='.$this->escapeString($user_id));
+            if ($this->numResultats($result) == 0) {
+                //if the current user doesn't accept return
+                $myPartnerAcceptedConnectionAndMeNot = true;
+            }
+        }
+
+        return $myPartnerAcceptedConnectionAndMeNot;
+    }
+    /**
+     * This functions allows to check if ther partner accepted connection and me not, then raise a message
+     * @param $id_tandem
+     * @param $user_id
+     * @return bool
+     */
+    public function meAcceptedConnectionAndMyPartnerNot($id_tandem, $user_id) {
+        $iAcceptedMyPartnerNot = false;
+        $sql = "select * from user_tandem_tandem_videoconnection 
+          where id_tandem = ".$this->escapeString($id_tandem);
+        $result = $this->consulta($sql.' and id_user ='.$this->escapeString($user_id));
+
+        //Check if partner accepted
+        if ($this->numResultats($result) > 0) {
+            $result = $this->consulta($sql.' and id_user !='.$this->escapeString($user_id));
+            if ($this->numResultats($result) == 0) {
+                //if the current user doesn't accept return
+                $iAcceptedMyPartnerNot = true;
+            }
+        }
+
+        return $iAcceptedMyPartnerNot;
+    }
+
+    /**
       * Updtes the external_video_url based on id_tandem
       * @param  [type] $id_tandem      [description]
       * @param  [type] $external_video_url [description]
@@ -2516,7 +2685,7 @@ class GestorBD {
                     $ft['grammar'] = $grammar_tmp;
                     $ft['other_observations'] = $other_observations_tmp;
                  }
-                 
+
                  $return[] = $ft;
             }
             return $return;
@@ -2648,7 +2817,7 @@ class GestorBD {
                     "(SELECT COUNT(*)+1  ".
                      " FROM  user_ranking as user_ranking_pos ".
                      " inner join user_course on user_course.id_user=user_ranking_pos.user_id and user_course.id_course=user_ranking_pos.course_id  and user_course.is_instructor = 0 ".
-                     "WHERE user_ranking_pos.points > user_ranking_general.points and  user_ranking_pos.lang = user_ranking_general.lang) AS position ".
+                     "WHERE user_ranking_pos.points > user_ranking_general.points and  user_ranking_pos.lang = user_ranking_general.lang and user_ranking_pos.course_id = user_ranking_general.course_id) AS position ".
                  "from user_ranking as user_ranking_general where course_id =".$this->escapeString($course_id).
                 " and user_id = ".$this->escapeString($user_id);
              if (!$unique_team) {
@@ -3371,7 +3540,7 @@ class GestorBD {
         /**
          * Updates the user ranking stats with the formula on https://tresipunt.atlassian.net/browse/MOOCTANDEM-42
          */
-        function updateUserRankingPoints($user_id,$course_id,$lang){
+        function updateUserRankingPoints($user_id,$course_id,$lang, $start_date=false, $end_date=false){
 
             $updated = -1;
 
@@ -3386,6 +3555,10 @@ class GestorBD {
                          inner join tandem as T on T.id = UT.id_tandem
                         where ((coalesce(UT.finalized,0)=0 and total_time>300) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and
                         T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
+
+            if ($start_date!=false && $end_date!=false) {
+
+            }
 
                 $points = 0;
                 $result = $this->consulta($sql);
@@ -3741,7 +3914,8 @@ class GestorBD {
     }
 
     function setMoodToUser($id_tandem, $id_user, $mood){
-        $sql = 'update user_tandem set user_mood = ' . $mood . ' where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user;
+        $sql = 'update ona
+         set user_mood = ' . $mood . ' where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user;
         $result = $this->consulta($sql);
         return $result;
     }
@@ -3851,10 +4025,12 @@ class GestorBD {
         $stats = array(/*'per_day_of_week_finalized' => false,*/
             'per_day_of_week' => false,
             //'per_hour_finalized' => false,
-            'per_hour' => false);
+            'per_hour' => false,
+            'per_user_status' => false
+        );
 
-        $sql_per_day_of_week = 'select count(id) total_tandems, hour(created) as hour, DAYOFWEEK(created) as day, is_finished 
-                from tandem where id_course = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created), DAYOFWEEK(created), is_finished
+        $sql_per_day_of_week = 'select count(id) total_tandems, hour(created) as hour, DAYOFWEEK(created) as day 
+                from tandem where id_course = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created), DAYOFWEEK(created)
                 order by DAYOFWEEK(created) , hour(created)';
 
         $result = $this->consulta($sql_per_day_of_week);
@@ -3862,8 +4038,8 @@ class GestorBD {
             $stats['per_day_of_week'] = $this->obteComArray($result);
             $stats['per_day_of_week'] = $this->fill_data_hours_days($stats['per_day_of_week'], true);
         }
-        /*$sql_per_day_of_week_finalized = 'select count(id) total_tandems, hour(created) as hour, DAYOFWEEK(created) as day
-                from tandem where id_course = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created), DAYOFWEEK(created)
+        /*$sql_per_day_of_week_finalized = 'select count(id) total_tandems, hour(created) as hour, DAYOFWEEK(created) as day, is_finished
+                from tandem where id_course = '.$this->escapeString($course_id).$datesql.' GROUP BY hour(created), DAYOFWEEK(created), is_finished
                 order by DAYOFWEEK(created) , hour(created)';
 
         $result = $this->consulta($sql_per_day_of_week_finalized);
@@ -3886,6 +4062,34 @@ class GestorBD {
         if(!empty($result)){
             $stats['per_hour'] = $this->obteComArray($result);
             $stats['per_hour'] = $this->fill_data_hours_days($stats['per_hour'], false);
+        }
+
+        $sql_per_user_status = 'select user_mood, count(*) as total from user_tandem where id_tandem in '.
+            '(select id from tandem where id_course='.$this->escapeString($course_id).$datesql.') '.
+            'group by user_mood ';
+        $result = $this->consulta($sql_per_user_status);
+        if(!empty($result)){
+            $array = $this->obteComArray($result);
+            $total = 0;
+            $stats['per_user_status'] = array('smilies'=>0,'neutral'=>0, 'sad'=>0, 'total'=>0);
+            foreach ($array as $k) {
+                switch ($k['user_mood']) {
+                    case 1:
+                        $stats['per_user_status']['smilies'] = intval($k['total']);
+                        break;
+                    case 2:
+                        $stats['per_user_status']['neutral'] = intval($k['total']);
+                        break;
+                    case 3:
+                        $stats['per_user_status']['sad'] = intval($k['total']);
+                        break;
+                    }
+            }
+            $total = $stats['per_user_status']['smilies']+$stats['per_user_status']['neutral']+$stats['per_user_status']['sad'];
+            if ($total==0) {
+                $total=1;
+            }
+            $stats['per_user_status']['total'] = $total;
         }
 
         return $stats;
