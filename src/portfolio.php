@@ -21,7 +21,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 
 
 	$show_ranking = defined('SHOW_RANKING') && SHOW_RANKING==1 && !$_SESSION[USE_WAITING_ROOM_NO_TEAMS];
-	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : '2014-11-01';//date("Y-m-d",strtotime( date("Y-m-d").' -1 months') ) ;
+	$dateStart = !empty($_POST['dateStart']) ? $_POST['dateStart'] : '2016-10-17';//date("Y-m-d",strtotime( date("Y-m-d").' -1 months') ) ;
 	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : date("Y-m-d");
 
 	$finishedTandem = -1;
@@ -432,6 +432,7 @@ if($user_obj->instructor == 1 ){
 							<input type='hidden'  name='finishedTandem' value='<?php echo $finishedTandem?>' />
 							<input type='hidden'  name='selectUser' value='<?php echo $selectedUser?>' />
 							<input type='hidden'  name='dateStart' value='<?php echo $dateStart?>' />
+							<input type='hidden'  name='dateEnd' value='<?php echo $dateEnd?>' />
 							<input type='submit' value='<?php echo $LanguageInstance->get('Export to excel');?>' class='btn btn-success' />
 						</form>
 					</div>
