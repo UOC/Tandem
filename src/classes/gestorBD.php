@@ -2773,7 +2773,8 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
                 $extraSQL = " and UR.lang=". $this->escapeString($lang);
             }
             $result = $this->consulta("select * from user_ranking as UR
-                                            inner join user_course as UC on UC.id_user = UR.user_id
+                                            inner join user_course as UC on UC.id_user = UR.user_id 
+                                            and UC.is_instructor = 0  and UC.id_course = UR.course_id 
                         where UR.course_id = " . $this->escapeString($course_id) . $extraSQL ." and UC.is_instructor = 0 order by points desc");
             if ($this->numResultats($result) > 0) {
                 $data = $this->obteComArray($result);
