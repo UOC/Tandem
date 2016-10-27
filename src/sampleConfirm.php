@@ -79,6 +79,61 @@ var numOfChecksSameNode = 0; //only applies when the cad is bigger than current 
 var ExerFolder = '<?php echo $ExerFolder?>';
 sessionStorage.checkModal = "0";
 
+var yourPartnerIsWaiting = false;
+var messageYourPartnerIsWaitingShowed = false;
+var youAreWaitingForYourPartner = false;
+var messageYouAreWaitingForYourPartnerShowed = false;
+
+function showYourPartnerIsWaiting() {
+	if (yourPartnerIsWaiting && !messageYourPartnerIsWaitingShowed) {
+		messageYourPartnerIsWaitingShowed = true;
+		yourPartnerIsWaiting = false;
+		windowYourPartnerIsWaitingForYouTandem = $.window({
+			title: "",
+			url: "yourPartnerAcceptedConnectionAndYouNot.php",
+			width: 400,
+			//y: $( document ).height()*0.1,
+			height: 200,
+			maxWidth: 500,
+			maxHeight: 200,
+			closable: true,
+			draggable: false,
+			resizable: true,
+			maximizable: false,
+			minimizable: false,
+			showFooter: true,
+			modal: true,
+			showRoundCorner: true,
+			//custBtns: myButtons
+
+		});
+	}
+}
+function showYouAreWaitingForYourPartner() {
+	if (youAreWaitingForYourPartner && !messageYouAreWaitingForYourPartnerShowed) {
+		messageYouAreWaitingForYourPartnerShowed = true;
+		youAreWaitingForYourPartner = false;
+		windowYouAreWaitingForYourPartnerTandem = $.window({
+			title: "",
+			url: "youAreWaitingForYourPartnerAcceptedConnection.php",
+			width: 450,
+			//y: $( document ).height()*0.1,
+			height: 300,
+			maxWidth: 550,
+			maxHeight: 400,
+			closable: true,
+			draggable: false,
+			resizable: true,
+			maximizable: false,
+			minimizable: false,
+			showFooter: true,
+			modal: true,
+			showRoundCorner: true,
+			//custBtns: myButtons
+
+		});
+	}
+}
 function setExpiredNow(itNow){
 	intTimerNow = setTimeout("getTimeNow("+itNow+");", 1000);
 }
@@ -540,7 +595,6 @@ processXmlOverDone = function(){
 }
 }
 }
-
 var UserGotDisconnectedMessage = 0;
 //here if isDisconnected is true, then we call the drop down popup to alert about this
 userGotDisconnected = function(UserName){	
@@ -1085,6 +1139,8 @@ showImage = function(id){
 		//$.colorbox({href:"waitingForVideoChatSession.php?id=<?php echo $_SESSION[CURRENT_TANDEM];?>",escKey:false,overlayClose:false,width:380,height:280});
 		var windowVideochat = false;
 		var windowStartTandem = false;
+		var windowYouAreWaitingForYourPartnerTandem = false;
+		var windowYourPartnerIsWaitingForYouTandem = false;
 		var windowNotificationTandem = false;
 		var windowSayGoodbye = false;
 		var windowMessage = false;
@@ -1309,6 +1365,7 @@ showImage = function(id){
 	    $request_uri = $_SERVER['REQUEST_URI'];
 	    
 	    ?>
+	    var check_if_i_accepted_connection = 1;
 		function checkVideochat( winV){
 			$.ajax({
 				type: 'POST',
@@ -1316,7 +1373,8 @@ showImage = function(id){
 				data : {
 					   id : '<?php echo $_SESSION[CURRENT_TANDEM];?>',
 					   sent_url : '<?php echo base64_encode("http://".$_SERVER["SERVER_NAME"].$request_uri);?>',
-					   userab : '<?php echo $_GET["user"]; ?>'
+					   userab : '<?php echo $_GET["user"]; ?>',
+					   check_if_i_accepted_connection : check_if_i_accepted_connection
 				},
 				dataType: "JSON",
 				success: function(json){	
@@ -1341,7 +1399,10 @@ showImage = function(id){
 						$(document).bind('cbox_closed', function(){
 						  startTandemVC();
 						});*/
-						windowStartTandem = $.window({
+						yourPartnerIsWaiting = false;
+						youAreWaitingForYourPartner = false;
+
+							windowStartTandem = $.window({
 							   title: "",
 							   url: "connectedPartnerStartTandem.php",
 							   width: 400,
@@ -1361,8 +1422,19 @@ showImage = function(id){
 				   			   
 							});
 					}
+					if(json  &&   json.other_partner_connected_and_me_not !== "undefined" && json.other_partner_connected_and_me_not == 1){
+						yourPartnerIsWaiting = true;
+						setTimeout('showYourPartnerIsWaiting();',15000);
+					}
+					if(json  &&   json.i_connected_and_my_partner_not !== "undefined" && json.i_connected_and_my_partner_not == 1){
+						youAreWaitingForYourPartner = true;
+						check_if_i_accepted_connection = 0;
+						setTimeout('showYouAreWaitingForYourPartner();',15000);
+					}
 
 					if(json  &&   json.emailsent !== "undefined" && json.emailsent == 1){
+						yourPartnerIsWaiting = false;
+						youAreWaitingForYourPartner = false;
 					//if 30 seconds have passed since we are waiting for the partner, then we show this alert
 						sendEmailNotification = $.window({
 						   title: "",
@@ -1389,11 +1461,22 @@ showImage = function(id){
 				}
 			});
 		}
+
 		function startTandemVC() {
 			connection_success = true;
 			$(document).unbind('cbox_closed');
 			//$.colorbox.close();
 			windowStartTandem.close();
+			if (windowYouAreWaitingForYourPartnerTandem) {
+				try {
+					windowYouAreWaitingForYourPartnerTandem.close();
+				}catch (e){}
+			}
+			if (windowYourPartnerIsWaitingForYouTandem) {
+				try {
+					windowYourPartnerIsWaitingForYouTandem.close();
+				}catch (e){}
+			}
 //			hideVideochat(windowVideochat, false);
                         messageWindow('showVideochat.php?is_videochat=0', false);
 			getInitXML();
@@ -1709,5 +1792,11 @@ This site reflects only the views of the authors, and the European Commission ca
 	<script type="text/javascript" src="js/window/jquery.window.min.js"></script>
 	<?php }?>
 </body>
+<?php
+$_SESSION['sent_url']="http://".$_SERVER["SERVER_NAME"].$request_uri;
+$_SESSION['userab']= $_GET["user"];
+?>
+
+
 
 </html>
