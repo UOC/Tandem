@@ -105,12 +105,12 @@ if (!$user_obj || !$course_id) {
                                 }else if (!empty($_POST['save_feedback'])) {
 					//try to save it!
 					$feedback_form->fluency = isset($_POST['fluency'])?$_POST['fluency']:50;
-					$feedback_form->accuracy = $_POST['accuracy'];
-					$feedback_form->grade = $_POST['grade'];
-					$feedback_form->pronunciation = $_POST['pronunciation'];
-					$feedback_form->vocabulary = $_POST['vocabulary'];
-					$feedback_form->grammar = $_POST['grammar'];
-					$feedback_form->other_observations = $_POST['other_observations'];
+					$feedback_form->accuracy = isset($_POST['accuracy'])?$_POST['accuracy']:50;
+					$feedback_form->grade = isset($_POST['grade'])?$_POST['grade']:'';
+					$feedback_form->pronunciation = isset($_POST['pronunciation'])?$_POST['pronunciation']:'';
+					$feedback_form->vocabulary = isset($_POST['vocabulary'])?$_POST['vocabulary']:'';
+					$feedback_form->grammar = isset($_POST['grammar'])?$_POST['grammar']:'';
+					$feedback_form->other_observations = isset($_POST['other_observations'])?$_POST['other_observations']:'';
 					if (isset($_POST['fluency']) && strlen($_POST['fluency'])>0 &&
 						isset($_POST['accuracy']) && strlen($_POST['accuracy'])>0 &&
 						isset($_POST['grade']) && strlen($_POST['grade'])>0 /*&&
