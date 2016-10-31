@@ -87,13 +87,13 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
 			</div>
 	  	</div>
   	</div>
-  	<div class='row'>
+  	<!--div class='row'>
   		<div class='col-md-12'>
   			<div class="alert alert-info" role="alert"><?php echo $LanguageInstance->get('top_10_ranking_message')?><br>
 <?php echo $LanguageInstance->get('For each Tandem activity you complete, you will receive points based on the feedback you provide, and the feedback you receive')?>.
   			</div>
   		</div>  		
-  	</div>
+  	</div-->
   	<div class='row'>
 	<?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
 	  <div class="col-md-6">
