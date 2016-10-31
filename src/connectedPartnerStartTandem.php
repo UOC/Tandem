@@ -1,7 +1,11 @@
 <?php 
 require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/utils.php';
+require_once dirname(__FILE__).'/classes/constants.php';
 require_once dirname(__FILE__).'/classes/gestorBD.php';
+
+$gestorBD = new GestorBD();
+$gestorBD->set_time_to_zero($_SESSION[CURRENT_TANDEM]) ;
 
 
 ?>
