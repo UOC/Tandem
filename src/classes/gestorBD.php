@@ -3004,6 +3004,12 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
                    id_course =".$this->escapeString($id_course)." and
                 created >= DATE_SUB(NOW(),INTERVAL 1 HOUR)";
 
+             $sql = 'Select count(distinct tandem.id) as total from tandem
+                    inner join user_tandem on user_tandem.id_tandem=tandem.id
+                   where tandem.is_finished = 0 and tandem.finalized IS NULL and
+                   tandem.id_course = '.$this->escapeString($id_course).' and
+                user_tandem.updated >= DATE_SUB(NOW(),INTERVAL 1 MINUTE)';
+
             $result = $this->consulta($sql);
              if ($this->numResultats($result) > 0){
                 $result = $this->obteComArray($result);
@@ -4241,6 +4247,25 @@ table_task_enjoyed.task_enjoyed=table_task_nervous.task_nervous and table_task_e
         $result = $this->consulta($sql);
 
         return $result;
+    }
+
+    /**
+     * Return the lsit of user waiting
+     * @param $course_id
+     * @param $language
+     * @return array
+     */
+    public function getUsersDetailsWaitingByLang($course_id, $language){
+        $sql = 'select distinct user.fullname from waiting_room inner join waiting_room_user on waiting_room.id=waiting_room_user.id_waiting_room
+inner join user on user.id = waiting_room_user.id_user
+ where waiting_room.id_course='.$this->escapeString($course_id).' and waiting_room.language = '.$this->escapeString($language);
+        $result = $this->consulta($sql);
+        $rows = array();
+        if ($this->numResultats($result) > 0) {
+            $rows = $this->obteComArray($result);
+        }
+        return $rows;
+
     }
 /*
     public function removeUserFromWaiting($id_course,$id_exercises) {

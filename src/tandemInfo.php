@@ -122,8 +122,39 @@ if ($course['endDateRanking']) {
 				$("#tandemFailedSuccessByDateEnd").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
 				$("#startDateCurrentRanking").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
 				$("#endDateCurrentRanking").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+				$("#view_details_en_US").click(function() {
+					showUserList('en_US');
+				});
+				$("#view_details_es_ES").click(function() {
+					showUserList('es_ES');
+				});
        		})( jQuery );
+			function showUserList(lang) {
+				$('#view_details_'+lang).attr('disabled', true);
+				$.ajax({
+					type: 'GET',
+					url: "getUsersWaiting.php",
+					dataType: "JSON",
+					data :{lang : lang},
+					success: function(json){
+						$('#modalTitle').html("<?php echo $LanguageInstance->get('Details of users waiting to practice')?> "+(lang=="es_ES"?"Spanish":"English"));
+						var contentModalDetails = '';
+						if(json  &&  json.length>0){
+							contentModalDetails = '<ul>';
+							for(var i=0; i<json.length; i++) {
+								contentModalDetails += '<li>'+json[i].fullname+'</li>';
+							}
+							contentModalDetails += '</ul>';
 
+						} else {
+							contentModalDetails = "<?php echo $LanguageInstance->get('Not user found')?>";
+						}
+						$('#contentModalDetails').html(contentModalDetails);
+						$('#modalUser').modal();
+						$('#view_details_'+lang).attr('disabled', false);
+					}
+				});
+			}
 //finished vs unfinished tandems
 $(function () {
     Highcharts.setOptions({ 
@@ -817,13 +848,13 @@ $(function () {
     	   			<div class="list-group-item">
     	   			<?php
     	   			 	echo $LanguageInstance->get('Users waiting to practice English');
-    	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEn."</span></strong>";
+    	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEn."</span></strong> <button id=\"view_details_en_US\" class=\"btn btn-success\">".$LanguageInstance->get('View users')."</button>";
     	   			?>
     	   			</div> 
     	   			<div class="list-group-item">
     	   			<?php
     	   			 	echo $LanguageInstance->get('Usuarios esperando para practicar Español');
-    	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEs."</span></strong>";
+    	   			 	echo ": <strong><span id=\"UsersWaitingEn\">".$getUsersWaitingEs."</span></strong> <button id=\"view_details_es_ES\" class=\"btn btn-success\">".$LanguageInstance->get('Ver usuarios')."</button>";
     	   			?>	   				   				
     	   			</div> 
     	   			<div class="list-group-item">
@@ -961,7 +992,25 @@ Success 	<?php echo $getNumOfSuccessFailedTandems['success'];?>%
 
 Failed 	<?php echo $getNumOfSuccessFailedTandems['failed'];?>%</pre>
 
+<!-- Modal -->
+<div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="modalTitle"></h4>
 
+			</div>
+			<div class="modal-body"><div class="te" id="contentModalDetails"></div></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $LanguageInstance->get("Close");?></button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 </body>
 </html>
 
