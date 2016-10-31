@@ -493,7 +493,7 @@ $number = 1;?>
                 if ($partnerFeedback){
                     $feedback_received = true;
                 }
-	  	echo "<tr $tr>";
+	  	echo "<tr>";
 	  	echo "<td>".($number++)."</td>";
   		if ($user_obj->instructor == 1 ){
 			echo "<td>".$f['fullname']."</th>";
