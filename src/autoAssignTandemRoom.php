@@ -88,8 +88,22 @@ if (!$user_obj || !$course_id) {
 		<script src="js/jquery.ui.progressbar.js"></script> 
 		<script>
 		var interval = null;
+		var allowed_continue = false;
 		$(document).ready(function(){
-			<?php			
+			$(window).bind('beforeunload', function() {
+				if (!allowed_continue) {
+					delete_user_waiting_list();
+					setTimeout(function() {
+						setTimeout(function() {
+							allowed_continue = true;
+							window.location.reload();
+						}, 1000);
+					}, 1);
+					return "<?php echo $LanguageInstance->get('Do you want to leave the waiting room?') ?>"
+				}
+			});
+
+		<?php
 			//if the max number of allowed tanden rooms is reached, then we send a modal. 
 			if($currentActiveTandems >= MAX_TANDEM_USERS){ ?>
 				$.modal($('#maxTandems')); 	      
@@ -109,9 +123,9 @@ if (!$user_obj || !$course_id) {
 	        		dataType: "JSON",
 	        		success: function(json){	        			
 	        			if(json  &&  typeof json.tandem_id !== "undefined"){
-
-	        			window.location.replace("accessTandem.php?id="+json.tandem_id);
-						clearInterval(interval);
+							allowed_continue = true;
+							window.location.replace("accessTandem.php?id="+json.tandem_id);
+							clearInterval(interval);
 	        			}
 	        		}
 	        	});
@@ -140,11 +154,12 @@ if (!$user_obj || !$course_id) {
 			}    
 			function theEnd(){
 				if ($("#modal-end-task").length > 0){
-					//TODO put modal
 					$.modal($('#modal-end-task'));
 					clearInterval(interval);
 					clearInterval(intervalWaiting);
 					delete_user_waiting_list();
+					allowed_continue = true;
+					$('#waitingForTandemBody').hide();
 					//accionTimer();
 				}
 			}        
@@ -226,7 +241,7 @@ if (!$user_obj || !$course_id) {
 					</div>                            
 					<!-- WAITING MODAL -->
 					<!-- TANDEM MODAL -->
-					<div class='waitingForTandem'>
+					<div class='waitingForTandem' id="waitingForTandemBody">
 						<?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {?>
 						<div class='waitingForButton english'>
 							<?php //echo $LanguageInstance->get('There are Users waiting to practice English'); ?>
@@ -253,7 +268,7 @@ if (!$user_obj || !$course_id) {
 					<!-- Max number of active tandems reached -->
 					<div id='maxTandems' class='modal'>
 						<span class='text'><?php echo $LanguageInstance->get("max_num_of_tandem_rooms_reached")?></span>
-						<p><button class="btn btn-success refreshPage" type='button' onclick='window.location.reload()' ><?php echo $LanguageInstance->get("refresh_page");?></button></p>
+						<p><button class="btn btn-success refreshPage" type='button' onclick='allowed_continue=true;window.location.reload()' ><?php echo $LanguageInstance->get("refresh_page");?></button></p>
 					</div>
 					<div class='manageSection'>
  					<?php  					
@@ -283,7 +298,7 @@ if (!$user_obj || !$course_id) {
 	        </div>
 	        <div class="text">
 	                <p><?php echo $LanguageInstance->get('Time expired');?>
-	                <span><i><?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span>
+	                <!--span><i><?php echo $LanguageInstance->get("Check other participants' availability in the classroom calendar")?></i></span-->
 	                </p>
 	        </div>
 	        <div class="">
