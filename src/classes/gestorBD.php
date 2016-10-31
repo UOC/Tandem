@@ -743,11 +743,14 @@ class GestorBD {
      * @param unknown_type $userKey
      * @return array|boolean
      */
-    public function get_tandem_exercises($course_id, $enabled = 1) {
+    public function get_tandem_exercises($course_id, $enabled = 1, $week=false) {
         $row = false;
         $where = 'where (e.name_xml_file is not null and e.name_xml_file!=\'\' )';
         if ($enabled == 1) {
             $where .= 'and e.enabled=1 ';
+        }
+        if ($week!==false && intval($week)>0) {
+            $where .= 'and ce.week='.intval($week);
         }
         $result = $this->consulta('SELECT e.*, ce.id_course FROM exercise e  ' .
                 'inner join course_exercise ce on ce.id_exercise=e.id AND (ce.id_course = ' . $course_id . ' OR ce.id_course=-1) ' .
@@ -1117,7 +1120,7 @@ class GestorBD {
                         ' VALUES ' .
                         '(' . $id_tandem . ', ' . $id_user . ', ' . $total_time . ', ' . $points . ', ' . ($is_finished ? 1 : 0) . ', ' . ($is_finished ? 'now()' : 'null') . ', now())';
             } else {
-                $sql = 'UPDATE user_tandem SET total_time = ' . $total_time . ', points=' . $points . ', is_finished = ' . ($is_finished ? 1 : 0) . ', finalized = ' . ($is_finished ? 'now()' : 'null') . ' ' .
+                $sql = 'UPDATE user_tandem SET total_time = ' . $total_time . ', points=' . $points . ', is_finished = ' . ($is_finished ? 1 : 0) . ', finalized = ' . ($is_finished ? 'now()' : 'null') . ', updated = now() ' .
                         ' where id_tandem = ' . $id_tandem . ' AND id_user = ' . $id_user;
             }
 
@@ -1553,6 +1556,7 @@ class GestorBD {
         }
         $result = $this->consulta($sql);
         $deleted = false;
+        $previous_id_waiting_room =$id_waiting_room;
         if ($this->numResultats($result) > 0){
             $r =  $this->obteComArray($result);
             foreach($r as $object){
@@ -1569,7 +1573,9 @@ class GestorBD {
                         if (!$deleted) {
                             $ok = $this->addOrRemoveUserToWaitingRoom($id_waiting_room, -1);
                         }
-                        $deleted = true;
+                        if ($previous_id_waiting_room != -1) {
+                            $deleted = true;
+                        }
                     }
                 }
 
@@ -3541,27 +3547,31 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
         /**
          * Updates the user ranking stats with the formula on https://tresipunt.atlassian.net/browse/MOOCTANDEM-42
          */
-        function updateUserRankingPoints($user_id,$course_id,$lang, $start_date=false, $end_date=false){
+        function updateUserRankingPoints($user_id,$course_id,$lang){
 
             $updated = -1;
 
 
-                $sql = "select UT.id_user,FT.id_partner,UT.total_time,UT.id_tandem,FTF.feedback_form,FTF.rating_partner_feedback_form,
-                         sFTF.feedback_form as user_feedback_form,
-                         sFTF.rating_partner_feedback_form as the_partner_rating_my_feedback from user_tandem as UT
-                         left join feedback_tandem as FT on FT.id_tandem = UT.id_tandem and FT.id_user = UT.id_user
-                         left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
-                         left join feedback_tandem as sFT on sFT.id_user = FT.id_partner and sFT.id_tandem = UT.id_tandem
-                         left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
-                         inner join tandem as T on T.id = UT.id_tandem
-                        where ((coalesce(UT.finalized,0)=0 and total_time>300) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and
-                        T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
+            $sql = "select UT.id_user,FT.id_partner,UT.total_time,UT.id_tandem,FTF.feedback_form,FTF.rating_partner_feedback_form,
+                     sFTF.feedback_form as user_feedback_form,
+                     sFTF.rating_partner_feedback_form as the_partner_rating_my_feedback from user_tandem as UT
+                     left join feedback_tandem as FT on FT.id_tandem = UT.id_tandem and FT.id_user = UT.id_user
+                     left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
+                     left join feedback_tandem as sFT on sFT.id_user = FT.id_partner and sFT.id_tandem = UT.id_tandem
+                     left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
+                     inner join tandem as T on T.id = UT.id_tandem
+                    where ((coalesce(UT.finalized,0)=0 and total_time>300) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and
+                    T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
 
-            if ($start_date!=false && $end_date!=false) {
-
+            $course = $this->get_course_by_id($course_id);
+            if ($course['startDateRanking']) {
+                $sql .=' and date(T.created) >= '.$this->escapeString($course['startDateRanking']);
+            }
+            if ($course['endDateRanking']) {
+                $sql .=' and date(T.created) <= '.$this->escapeString($course['endDateRanking']);
             }
 
-                $points = 0;
+            $points = 0;
                 $result = $this->consulta($sql);
                 $total_time = 0;
                 $number_of_tandems = 0;
@@ -3643,7 +3653,7 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
 
         }
 
-        function updateAllUsersRankingPoints($course_id){
+        function updateAllUsersRankingPoints($course_id, $start_date=false, $end_date=false){
 
             $arrayReturn = array();
             $sql = "select distinct U.id,UC.language from user  as U
@@ -3915,7 +3925,7 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
     }
 
     function setMoodToUser($id_tandem, $id_user, $mood){
-        $sql = 'update ona
+        $sql = 'update user_tandem
          set user_mood = ' . $mood . ' where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user;
         $result = $this->consulta($sql);
         return $result;
@@ -4018,16 +4028,17 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
     public function get_stats_tandem_by_date($course_id, $dateStart=false,$dateEnd=false) {
         $datesql = '';
         if($dateStart){
-         $datesql = "and date(created) >= '".$dateStart."' ";
+         $datesql = "and date(tandem.created) >= '".$dateStart."' ";
             if($dateEnd > $dateStart){
-                 $datesql .= "and date(created) <= '".$dateEnd."' ";
+                 $datesql .= "and date(tandem.created) <= '".$dateEnd."' ";
             }
         }
         $stats = array(/*'per_day_of_week_finalized' => false,*/
             'per_day_of_week' => false,
             //'per_hour_finalized' => false,
             'per_hour' => false,
-            'per_user_status' => false
+            'per_user_status' => false,
+            'exercises' => false
         );
 
         $sql_per_day_of_week = 'select count(id) total_tandems, hour(created) as hour, DAYOFWEEK(created) as day 
@@ -4093,6 +4104,44 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
             $stats['per_user_status']['total'] = $total;
         }
 
+        $sql_exercises = 'select task_enjoyed, total_task_enjoyed, table_task_enjoyed.id, table_task_enjoyed.task_number, table_task_enjoyed.name, table_task_enjoyed.week, task_nervous, total_task_nervous, task_valoration, total_task_valoration
+from (
+select user_tandem_task1.task_enjoyed , count(*) total_task_enjoyed , exercise.id, task_number, exercise.name, course_exercise.week
+from tandem as tandem
+inner join exercise on tandem.id_exercise=exercise.id 
+inner join course_exercise on course_exercise.id_course=tandem.id_course and course_exercise.id_exercise=exercise.id 
+inner join user as user_host on user_host.id=tandem.id_user_host
+inner join user_course uc1 on uc1.id_user=user_host.id and uc1.is_instructor=0
+inner join user_tandem_task as user_tandem_task1 on user_tandem_task1.id_user=uc1.id_user and user_tandem_task1.id_tandem=tandem.id
+where tandem.id_course='.$this->escapeString($course_id).$datesql.'
+group by exercise.id, exercise.name, course_exercise.week, task_number, user_tandem_task1.task_enjoyed) as table_task_enjoyed,
+(select user_tandem_task1.task_nervous , count(*) total_task_nervous, exercise.id, task_number, exercise.name, course_exercise.week
+from tandem as tandem
+inner join exercise on tandem.id_exercise=exercise.id 
+inner join course_exercise on course_exercise.id_course=tandem.id_course and course_exercise.id_exercise=exercise.id 
+inner join user as user_host on user_host.id=tandem.id_user_host
+inner join user_course uc1 on uc1.id_user=user_host.id and uc1.is_instructor=0
+inner join user_tandem_task as user_tandem_task1 on user_tandem_task1.id_user=uc1.id_user and user_tandem_task1.id_tandem=tandem.id
+where tandem.id_course='.$this->escapeString($course_id).$datesql.'
+group by exercise.id, exercise.name, course_exercise.week, task_number, user_tandem_task1.task_nervous) as table_task_nervous,
+(select user_tandem_task1.task_valoration , count(*) total_task_valoration, exercise.id, task_number, exercise.name, course_exercise.week
+from tandem as tandem
+inner join exercise on tandem.id_exercise=exercise.id 
+inner join course_exercise on course_exercise.id_course=tandem.id_course and course_exercise.id_exercise=exercise.id 
+inner join user as user_host on user_host.id=tandem.id_user_host
+inner join user_course uc1 on uc1.id_user=user_host.id and uc1.is_instructor=0
+inner join user_tandem_task as user_tandem_task1 on user_tandem_task1.id_user=uc1.id_user and user_tandem_task1.id_tandem=tandem.id
+where tandem.id_course='.$this->escapeString($course_id).$datesql.'
+group by exercise.id, exercise.name, task_number, course_exercise.week, user_tandem_task1.task_nervous) as table_task_valoration
+
+where table_task_enjoyed.id=table_task_nervous.id and table_task_enjoyed.id=table_task_valoration.id and
+table_task_enjoyed.task_enjoyed=table_task_nervous.task_nervous and table_task_enjoyed.task_enjoyed=table_task_valoration.task_valoration';
+
+        /*$result = $this->consulta($sql_exercises);
+        if(!empty($result)) {
+            $stats['exercises'] = $this->obteComArray($result);
+        }*/
+
         return $stats;
     }
 
@@ -4154,6 +4203,59 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
         }
         return $normalized_array;
     }
+
+    /**
+     * @param $id_course
+     * @param $startDateRanking
+     * @param $endDateRanking
+     * @return resource
+     */
+    public function set_course_start_end_date_ranking($id_course, $startDateRanking, $endDateRanking) {
+        $result = $this->consulta("UPDATE course SET startDateRanking = " .
+            $this->escapeString($startDateRanking). ", endDateRanking = " .
+            $this->escapeString($endDateRanking). " WHERE id = " . $this->escapeString($id_course));
+        return $result;
+    }
+
+    /**
+     * @param $id_course
+     * @return resourceDeletes previous user ranking points
+     */
+    public function delete_previous_ranking($id_course) {
+        $result = $this->consulta("delete from user_ranking  WHERE course_id = " . $this->escapeString($id_course));
+        return $result;
+    }
+
+    /**
+     * This function is executed to set time to zero when both participants accepted connection
+     * @param $id_tandem
+     * @return resource
+     */
+    public function set_time_to_zero($id_tandem) {
+
+        $sql = 'update user_tandem set total_time=0, created=now() where id_tandem = ' . $id_tandem;
+        $this->consulta($sql);
+        $sql = 'update user_tandem_task set total_time=0, created=now() where id_tandem = ' . $id_tandem;
+        $this->consulta($sql);
+        $sql = 'update user_tandem_task_question set total_time=0, created=now() where id_tandem = ' . $id_tandem;
+        $result = $this->consulta($sql);
+
+        return $result;
+    }
+/*
+    public function removeUserFromWaiting($id_course,$id_exercises) {
+        $ret = true;
+        if (count($id_exercises)>0) {
+            $exercisesNotDone_str = implode(",",$id_exercises);
+            $sql = 'UPDATE waiting_room set number_user_waiting=number_user_waiting-1 where id_course = ' . $id_course . '
+            and id_exercise in (' . $exercisesNotDone_str . ')';
+            $this->consulta($sql);
+            $sqlDelete = 'DELETE from waiting_room where number_user_waiting<=0 and id_course = ' . $id_course;
+            $ret = $this->consulta($sqlDelete);
+
+        }
+        return $ret;
+    }*/
 }//end of class
 
 ?>
