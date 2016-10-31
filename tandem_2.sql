@@ -215,6 +215,7 @@ CREATE TABLE `user_tandem` (
   `is_finished` bit(1) DEFAULT NULL,
   `finalized` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
+  `updated` datetime DEFAULT NULL,
   PRIMARY KEY (`id_tandem`,`id_user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
