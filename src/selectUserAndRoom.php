@@ -86,7 +86,8 @@ if (!$user_obj || !$course_id) {
 	//Permetem que seleccini l'exercici 20111110
 	$is_host = $user_obj->is_host;
 
-	$array_exercises = $gestorBD->get_tandem_exercises($course_id);
+	$week = $use_waiting_room && $_SESSION[WEEK]>0?$_SESSION[WEEK]:false;
+	$array_exercises = $gestorBD->get_tandem_exercises($course_id, true, $week);
 	$tandemBLTI = new IntegrationTandemBLTI();
 	$selected_exercise = $tandemBLTI->checkXML2GetExercise($user_obj);
 	$selected_exercise_select = isset($_POST['room'])?$_POST['room']:'';
