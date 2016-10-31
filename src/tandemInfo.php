@@ -6,7 +6,7 @@ if ($select_room) {
 	$goto = 'selectUserAndRoom';
 }
 if (
-    (isset($_GET['lang']) || $_SESSION[USE_WAITING_ROOM_NO_TEAMS])
+    (isset($_GET['lang']) || (isset($_SESSION[USE_WAITING_ROOM_NO_TEAMS]) && $_SESSION[USE_WAITING_ROOM_NO_TEAMS]))
     && isset($_GET['force']) && $_GET['force']) {
 	$_SESSION[LANG] = $_GET['lang'];
 	
@@ -44,6 +44,21 @@ $getCountAllUnFinishedTandemsByDate = $gestorBD->getCountAllUnFinishedTandemsByD
 $getFeedbackStats = $gestorBD->getFeedbackStats($course_id);
 $tandemStatsByVideoType = $gestorBD->tandemStatsByVideoType($course_id);
 $peopleWaitedWithoutTandem  = $gestorBD->peopleWaitedWithoutTandem($course_id);
+if (isset($_POST['startDateCurrentRanking']) && isset($_POST['endDateCurrentRanking'])) {
+	$gestorBD->set_course_start_end_date_ranking($course_id, $_POST['startDateCurrentRanking'], $_POST['endDateCurrentRanking']);
+	$gestorBD->delete_previous_ranking($course_id);
+	$gestorBD->updateAllUsersRankingPoints($course_id);
+}
+$course = $gestorBD->get_course_by_id($course_id);
+$startDateCurrentRanking = '';
+$endDateCurrentRanking = '';
+if ($course['startDateRanking']) {
+	$startDateCurrentRanking = $course['startDateRanking'];
+}
+$endDateCurrentRanking = '';
+if ($course['endDateRanking']) {
+	$endDateCurrentRanking = $course['endDateRanking'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -71,12 +86,14 @@ $peopleWaitedWithoutTandem  = $gestorBD->peopleWaitedWithoutTandem($course_id);
 	        		type: 'POST',
 	        		url: "getCurrentUserCount.php",
 	        		data : {
+						"active_tandems": 1
 	        		},
 	        		dataType: "JSON",
 	        		success: function(json){	        			
 	        			if(json  &&  typeof json.users_en !== "undefined" &&  typeof json.users_es !== "undefined"){
 	        				$('#UsersWaitingEn').html(json.users_en);
 	        				$('#UsersWaitingEs').html(json.users_es);
+	        				$('#totalActiveTandems').html(json.active_tandems);
 	        			}
 	        		}
 	        	});
@@ -101,8 +118,10 @@ $peopleWaitedWithoutTandem  = $gestorBD->peopleWaitedWithoutTandem($course_id);
             })( jQuery );	
 
             (function( $ ) {
-        		$("#tandemFailedSuccessByDateStart").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
-                $("#tandemFailedSuccessByDateEnd").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+				$("#tandemFailedSuccessByDateStart").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+				$("#tandemFailedSuccessByDateEnd").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+				$("#startDateCurrentRanking").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
+				$("#endDateCurrentRanking").datepicker({dateFormat: 'yy-mm-dd',altFormat :'dd-mm-yy',firstDay: 1});
        		})( jQuery );
 
 //finished vs unfinished tandems
@@ -167,7 +186,7 @@ $(function () {
 //feedback forms by language
 $(function () {
 	   Highcharts.getOptions().plotOptions.pie.colors = (function () {
-        var colors = ["#4E2E77","#788B44"];
+        var colors = ["#4E2E77","#788B44",'#ff6600'];
             
             
         return colors;
@@ -201,8 +220,8 @@ $(function () {
             type: 'pie',
             name: 'Feedback form by language',
             data: [
-                ['ES',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_es'] / $getFeedbackStats['feedback_tandem_forms_sent']) * 100 )?>],
-                ['EN',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_en'] / $getFeedbackStats['feedback_tandem_forms_sent']) * 100 )?>]                                             
+                ['ES',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_es'] / ($getFeedbackStats['feedback_tandem_forms_sent']==0?1:$getFeedbackStats['feedback_tandem_forms_sent'])) * 100 )?>],
+                ['EN',   <?php echo round( ($getFeedbackStats['feedback_tandem_form_en'] / ($getFeedbackStats['feedback_tandem_forms_sent']==0?1:$getFeedbackStats['feedback_tandem_forms_sent'])) * 100 )?>]
             ]
         }]
     });
@@ -388,10 +407,10 @@ $(function () {
 
 				<?php
         		}
-				if ($stats['per_day_of_week']) {?>
+				if (isset($stats['per_day_of_week']) && $stats['per_day_of_week']) {?>
 				//<div id='chart_per_day_of_week' class='well' style='width:380px;float:left;display:inline'></div>
 				<?php }
-				if ($stats['per_hour_finalized']) {?>
+				if (isset($stats['per_hour_finalized']) && $stats['per_hour_finalized']) {?>
 				//<div id='chart_per_hour_finalized' class='well' style='width:380px;float:left;display:inline'></div>
 				<?php }
 				if ($stats['per_hour']) {?>
@@ -439,7 +458,7 @@ $(function () {
 				});
 			});
 			<?php }
-			if ($stats['per_user_status']) {
+			if (isset($stats['per_user_status']) && $stats['per_user_status']) {
 ?>
 
 			$(function () {
@@ -606,125 +625,129 @@ $(function () {
 //sucessfull vs failed tandems
 			$(function () {
 				//alert (document.getElementById('tsv').innerHTML);
-				highcharts.data({
-					csv: document.getElementById('tsv').innerHTML,
-					itemDelimiter: '\t',
-					parsed: function (columns) {
+				try {
+					highcharts.data({
+						csv: document.getElementById('tsv').innerHTML,
+						itemDelimiter: '\t',
+						parsed: function (columns) {
 
-						var brands = {},
-							brandsData = [],
-							versions = {},
-							drilldownSeries = [];
+							var brands = {},
+								brandsData = [],
+								versions = {},
+								drilldownSeries = [];
 
-						// Parse percentage strings
-						columns[1] = $.map(columns[1], function (value) {
-							if (value.indexOf('%') === value.length - 1) {
-								value = parseFloat(value);
-							}
-							return value;
-						});
-
-						$.each(columns[0], function (i, name) {
-							var brand,
-								version;
-
-							if (i > 0) {
-
-								// Remove special edition notes
-								name = name.split(' -')[0];
-
-								// Split into brand and version
-								version = name.match(/([0-9]+[\.0-9x]*)/);
-								if (version) {
-									version = version[0];
+							// Parse percentage strings
+							columns[1] = $.map(columns[1], function (value) {
+								if (value.indexOf('%') === value.length - 1) {
+									value = parseFloat(value);
 								}
-								brand = name.replace(version, '');
+								return value;
+							});
 
-								// Create the main data
-								if (!brands[brand]) {
-									brands[brand] = columns[1][i];
-								} else {
-									brands[brand] += columns[1][i];
-								}
+							$.each(columns[0], function (i, name) {
+								var brand,
+									version;
 
-								// Create the version data
-								if (version !== null) {
-									if (!versions[brand]) {
-										versions[brand] = [];
+								if (i > 0) {
+
+									// Remove special edition notes
+									name = name.split(' -')[0];
+
+									// Split into brand and version
+									version = name.match(/([0-9]+[\.0-9x]*)/);
+									if (version) {
+										version = version[0];
 									}
-									versions[brand].push(['v' + version, columns[1][i]]);
+									brand = name.replace(version, '');
+
+									// Create the main data
+									if (!brands[brand]) {
+										brands[brand] = columns[1][i];
+									} else {
+										brands[brand] += columns[1][i];
+									}
+
+									// Create the version data
+									if (version !== null) {
+										if (!versions[brand]) {
+											versions[brand] = [];
+										}
+										versions[brand].push(['v' + version, columns[1][i]]);
+									}
 								}
-							}
 
-						});
-
-						$.each(brands, function (name, y) {
-							brandsData.push({
-								name: name,
-								y: y,
-								drilldown: versions[name] ? name : null
 							});
-						});
-						$.each(versions, function (key, value) {
-							drilldownSeries.push({
-								name: key,
-								id: key,
-								data: value
-							});
-						});
 
-						// Create the chart
-						$('#chart2').highcharts({
-							chart: {
-								type: 'column'
-							},
-							credits: {
-								enabled: false
-							},
-							title: {
-								text: 'Successful vs Failed tandems by date range'
-							},
-							subtitle: {
-								text: 'The success are all the tandems that the total_time is 60 seconds or more, and the Failed tandems are all the tandems counting the finished and unfinished and that the total_time is less than 60 seconds '
-							},
-							xAxis: {
-								type: 'category'
-							},
-							yAxis: {
+							$.each(brands, function (name, y) {
+								brandsData.push({
+									name: name,
+									y: y,
+									drilldown: versions[name] ? name : null
+								});
+							});
+							$.each(versions, function (key, value) {
+								drilldownSeries.push({
+									name: key,
+									id: key,
+									data: value
+								});
+							});
+
+							// Create the chart
+							$('#chart2').highcharts({
+								chart: {
+									type: 'column'
+								},
+								credits: {
+									enabled: false
+								},
 								title: {
-									text: 'Total percent per success - failure'
-								}
-							},
-							legend: {
-								enabled: false
-							},
-							plotOptions: {
-								series: {
-									borderWidth: 0,
-									dataLabels: {
-										enabled: true,
-										format: '{point.y:1f}'
+									text: 'Successful vs Failed tandems by date range'
+								},
+								subtitle: {
+									text: 'The success are all the tandems that the total_time is 60 seconds or more, and the Failed tandems are all the tandems counting the finished and unfinished and that the total_time is less than 60 seconds '
+								},
+								xAxis: {
+									type: 'category'
+								},
+								yAxis: {
+									title: {
+										text: 'Total percent per success - failure'
 									}
+								},
+								legend: {
+									enabled: false
+								},
+								plotOptions: {
+									series: {
+										borderWidth: 0,
+										dataLabels: {
+											enabled: true,
+											format: '{point.y:1f}'
+										}
+									}
+								},
+
+
+								tooltip: {
+									headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+									pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:1f}</b><br/>'
+								},
+
+								series: [{
+									name: 'tandems',
+									colorByPoint: true,
+									data: brandsData
+								}],
+								drilldown: {
+									series: drilldownSeries
 								}
-							},
-
-
-							tooltip: {
-								headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-								pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:1f}</b><br/>'
-							},
-
-							series: [{
-								name: 'tandems',
-								colorByPoint: true,
-								data: brandsData
-							}],
-							drilldown: {
-								series: drilldownSeries
-							}
-						});
-					}
-				});
+							});
+						}
+					});
+				} catch (e) {
+					console.error("Error loading highchart", e);
+				}
 			});
 
 
@@ -751,6 +774,35 @@ $(function () {
 		</p>
 		</div>
 	</div>
+	<div class='well'>
+		<div class='row'>
+			<div class='col-md-12'>	<h3><?php echo $LanguageInstance->get('Tandem Configuration'); ?></h3></div>
+			<div class='col-md-12'>
+				<div class="list_group">
+					<div class="list-group-item">
+						<form role='form' class="form-inline" method="post">
+							<div class="form-group">
+								<label  class="sr-only"> <?php echo $LanguageInstance->get('Start date current ranking');?></label>
+								<p class="form-control-static"> <?php echo $LanguageInstance->get('Start date current ranking');?></p>
+							</div>
+							<div class="form-group">
+								<input type='text' class="form-control"  name='startDateCurrentRanking' id='startDateCurrentRanking' value='<?php echo $startDateCurrentRanking?>'>
+							</div>
+							<div class="form-group">
+								<label  class="sr-only"> <?php echo $LanguageInstance->get('End date current ranking');?></label>
+								<p class="form-control-static"> <?php echo $LanguageInstance->get('End date current ranking');?></p>
+							</div>
+							<div class="form-group">
+								<input type='text' class="form-control"  name='endDateCurrentRanking' id='endDateCurrentRanking' value='<?php echo $endDateCurrentRanking?>'>
+							</div>
+							<button type="submit" class="btn btn-default"><?php echo $LanguageInstance->get('Save');?></button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
     <div class='well'>
     	<div class='row'>
     	<div class='col-md-12'>	<h3><?php echo $LanguageInstance->get('Statistics'); ?></h3></div>
@@ -759,7 +811,7 @@ $(function () {
     	   			<div class="list-group-item">
     	   			<?php
     	   			 	echo $LanguageInstance->get('Current active tandems');
-    	   			 	echo ": <strong>".$currentActiveTandems."</strong>";
+    	   			 	echo ": <strong><span id=\"totalActiveTandems\">".$currentActiveTandems."</span></strong>";
     	   			?>
     	   			</div> 
     	   			<div class="list-group-item">
@@ -864,35 +916,35 @@ $(function () {
 	  	</div>
   	</div>
 <?php
-if ($stats['per_day_of_week_finalized']) {?>
+if (isset($stats['per_day_of_week_finalized']) && $stats['per_day_of_week_finalized']) {?>
 	<div class='row'>
 		<div class='col-md-12'>
 			<div id='chart_per_day_of_week_finalized'></div>
 		</div>
 	</div>
 <?php }
-if ($stats['per_day_of_week']) {?>
+if (isset($stats['per_day_of_week']) && $stats['per_day_of_week']) {?>
 	<div class='row'>
 		<div class='col-md-12'>
 			<div id='chart_per_day_of_week'></div>
 		</div>
 	</div>
 <?php }
-if ($stats['per_hour_finalized']) {?>
+if (isset($stats['per_hour_finalized']) && $stats['per_hour_finalized']) {?>
 		<div class='row'>y
 			<div class='col-md-12'>
 				<div id='chart_per_hour_finalized' ></div>
 			</div>
 		</div>
 <?php }
-if ($stats['per_hour']) {?>
+if (isset($stats['per_hour']) && $stats['per_hour']) {?>
 	<div class='row'>
 		<div class='col-md-12'>
 			<div id='chart_per_hour'></div>
 		</div>
 	</div>
 <?php }
-if ($stats['per_user_status']) {?>
+if (isset($stats['per_user_status']) && $stats['per_user_status']) {?>
 	<div class='row'>
 		<div class='col-md-12'>
 			<div id='chart_per_user_status'></div>
