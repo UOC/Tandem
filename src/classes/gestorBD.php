@@ -12,6 +12,7 @@ class GestorBD {
 
     public function __construct() {
         $this->conectar();
+
     }
 
     public function conectar() {
@@ -1485,6 +1486,7 @@ class GestorBD {
                             //3. Delete from waiting_room_user
 
                             $sqlDelete = 'DELETE FROM `waiting_room` WHERE `id` = ' . $this->escapeString($id_waiting_room);
+                    $this->debugMessage("1 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDelete);
                             if ($this->consulta($sqlDelete)) {
                                 $ok = true;
                             }
@@ -1524,7 +1526,8 @@ class GestorBD {
                             //3. Delete from waiting_room_user
 
                             $sqlDelete = 'DELETE FROM `waiting_room` WHERE `id` = ' . $this->escapeString($id_waiting_room);
-                            if ($this->consulta($sqlDelete)) {
+                        $this->debugMessage("2 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDelete);
+                        if ($this->consulta($sqlDelete)) {
                                 $ok = true;
                             }
                     }
@@ -1564,11 +1567,13 @@ class GestorBD {
                 $user_agent = $object['user_agent'];
                 $created = $object['created'];
                 $id_waiting_room = $object['id_waiting_room'];
+                $timestamp = $object['timestamp'];
                 //2.Insert in history table
-                $sqlInsert = 'INSERT INTO `waiting_room_user_history` (`id`, `id_waiting_room`, `id_user`, `status`, `id_tandem` , `user_agent`, `created`, `created_history`) VALUES (NULL, ' . $this->escapeString($id_waiting_room) . ', ' . $this->escapeString($id_user) . ', '. $this->escapeString($status) .', ' . $this->escapeString($tandemID) . ', ' . $this->escapeString($user_agent) . ',' . $this->escapeString($created) . ', NOW())';
+                $sqlInsert = 'INSERT INTO `waiting_room_user_history` (`id`, `id_waiting_room`, `id_user`, `status`, `id_tandem` , `user_agent`, `created`, `created_history`, `timestamp`) VALUES (NULL, ' . $this->escapeString($id_waiting_room) . ', ' . $this->escapeString($id_user) . ', '. $this->escapeString($status) .', ' . $this->escapeString($tandemID) . ', ' . $this->escapeString($user_agent) . ',' . $this->escapeString($created) . ', NOW(),' . $this->escapeString($timestamp) . ')';
                 if ($this->consulta($sqlInsert)){
                     //3. Delete from waiting_room_user
                     $sqlDelete = 'DELETE FROM `waiting_room_user` WHERE `id` = ' . $this->escapeString($id_user_wating_room);
+                    $this->debugMessage("3 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDelete);
                     if ($this->consulta($sqlDelete)){
                         if (!$deleted) {
                             $ok = $this->addOrRemoveUserToWaitingRoom($id_waiting_room, -1);
@@ -1641,6 +1646,7 @@ class GestorBD {
                         }
 
                         $sqlDeleteWR = 'delete from waiting_room_user where id_waiting_room = '.$id.' and id_user = '.$userID;
+                        $this->debugMessage("4 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDeleteWR);
                         $resultDeleteWR = $this->consulta($sqlDeleteWR);
 
                         if($number_user_waiting==0){
@@ -1648,6 +1654,7 @@ class GestorBD {
                             $this->addToWaitingRoomHistory($id);
 
                             $sqlDeleteWR = 'delete from waiting_room where id_exercise = '.$id_exercise.' and id_course = '.$courseID.' and number_user_waiting = 0';
+                            $this->debugMessage("5 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDeleteWR);
                             $resultDeleteWR = $this->consulta($sqlDeleteWR);
 
                         }
@@ -1658,6 +1665,7 @@ class GestorBD {
                    // $this->addToWaitingRoomHistory($id);
 
                     $sqlDeleteWR = 'delete from waiting_room where id_exercise = '.$id_exercise.' and id_course = '.$courseID.' and number_user_waiting = 0';
+                    $this->debugMessage("6 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDeleteWR);
                     $resultDeleteWR = $this->consulta($sqlDeleteWR);
 
 
@@ -1725,6 +1733,7 @@ class GestorBD {
         //return 'Dins offer exercise: '.$language.'-'.$courseID.'-'.$exerciseID;
         //TODO delete it
         $sqlDelete = 'delete from waiting_room where number_user_waiting = 0 and id_course = '.$courseID.' and id_exercise = ' . $exerciseID;
+        $this->debugMessage("7 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDelete);
         $resultDelete = $this->consulta($sqlDelete);
 
 
@@ -1861,6 +1870,7 @@ class GestorBD {
 
                 //$this->userIsNoWaitingMore($language,$idCourse,$idUser,$type='assigned',$id_tandem);
 
+                $this->debugMessage("20 ".$_SESSION[CURRENT_USER]->fullname." UPDATING USER Waiting $other_language,$idCourse,$id_user_host,'assigned',$id_tandem");
                 $this->userIsNoWaitingMore($other_language,$idCourse,$id_user_host,$type='assigned',$id_tandem);
 
                 //$ok = $this->tandem_exercise($language, $idCourse, $onlyExID);
@@ -2045,7 +2055,7 @@ class GestorBD {
                 inner join waiting_room_user as wru on wru.id_waiting_room = wr.id
          where ".$where."
          and wr.id_course ='".$id_course."'
-         and wru.created >= DATE_SUB(NOW(), INTERVAL 30 SECOND) order by wru.created, rand() limit 0,1 ";  //check the wr has been created 30 seconds before
+         and wru.created >= DATE_SUB(NOW(), INTERVAL 10 SECOND) order by wru.timestamp, rand() limit 0,1 ";  //check the wr has been created 30 seconds before
         $result = $this->consulta($sql);
         if ($this->numResultats($result) > 0) {
             return $this->obteComArray($result);
@@ -2098,6 +2108,7 @@ class GestorBD {
 
         $sql = 'delete from waiting_room_user set  created = NOW() where
         id_user = ' . $this->escapeString($id_user) ; //Don't care about course
+        $this->debugMessage("8 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sql);
         return $this->consulta($sql);
     }
     /**
@@ -2106,6 +2117,7 @@ class GestorBD {
      */
     public function deleteUserFromWaitingRooms($user_id,$course_id){
         $sql = "delete from waiting_room_user where id_user ='".$user_id."'";
+        $this->debugMessage("9 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sql);
         $this->consulta($sql);
     }
 
@@ -2125,6 +2137,7 @@ class GestorBD {
         }
 
         $sqlDelete = 'delete from waiting_room where number_user_waiting = 0 and id_course = '.$courseID.' and id_exercise = ' . $exerciseID;
+        $this->debugMessage("10 ".$_SESSION[CURRENT_USER]->fullname." DELETE ".$sqlDelete);
         $resultDelete = $this->consulta($sqlDelete);
 
         $sqlSelect = 'select number_user_waiting, id from waiting_room where id_course = '.$courseID.' and id_exercise = ' . $exerciseID .($unique_team?'':' and language="'.$language.'"');
@@ -2137,7 +2150,7 @@ class GestorBD {
 
             $waiting_room_id = $resultSelect[0]['id'];
 
-            $sql= "UPDATE waiting_room SET number_user_waiting = number_user_waiting+1 WHERE id = ".$waiting_room_id." and id_course = ".$courseID." and id_exercise = ".$exerciseID;
+            $sql = 'UPDATE waiting_room SET number_user_waiting = (select count(*)+1 from waiting_room_user where id_waiting_room=waiting_room.id and id_user!='.$idUser.') WHERE id = '.$waiting_room_id.' and id_course = '.$courseID.' and id_exercise = '.$exerciseID;
             $ok = $this->consulta($sql);
 
         }else{
@@ -2166,21 +2179,28 @@ class GestorBD {
             $resultSelect = $this->obteComArray($resultSelect);
             foreach($resultSelect as $key){
                 //insert into waiting_room_user_history
-                $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,user_agent, created,created_history)
-                    values('".$key['id_waiting_room']."','".$key['id_user']."','assigned','".$tandem_id."',".$this->escapeString($key['user_agent']).",'".$key['created']."',NOW()) ");
+                $type = $tandem_id>0?'assigned':'give_up';
+                $a = $this->consulta("insert into waiting_room_user_history (id_waiting_room,id_user,status,id_tandem,user_agent, created,created_history,timestamp)
+                    values('".$key['id_waiting_room']."','".$key['id_user']."','".$type."','".$tandem_id."',".$this->escapeString($key['user_agent']).",'".$key['created']."',NOW(),'".$key['timestamp']."') ");
                 if(mysql_affected_rows($this->conn) > 0){
                     //once we have copied it to the history , we delete it.
                     $e =$this->consulta("delete from waiting_room_user where id =".$key['id']);
-                     if(mysql_affected_rows($this->conn) > 0){
+                    $this->debugMessage("11 ".$_SESSION[CURRENT_USER]->fullname." DELETE "."delete from waiting_room_user where id =".$key['id']);
+                    if(mysql_affected_rows($this->conn) > 0){
                         //now lets backup the waiting_room table
                         $resultSelect2 = $this->consulta("select * from waiting_room where id=".$key['id_waiting_room']);
                         if ($this->numResultats($resultSelect2) > 0){
                             $res = $this->obteComArray($resultSelect2);
-                             $i = $this->consulta("insert into waiting_room_history(id_waiting_room,language,id_course,id_exercise,number_user_waiting,created,created_history)
-                                                    values('".$res[0]['id']."','".$res[0]['language']."','".$res[0]['id_course']."','".$res[0]['id_exercise']."','1','".$res[0]['created']."',NOW()) ");
-                             if(mysql_affected_rows($this->conn) > 0){
-                                $e =$this->consulta("delete from waiting_room where id =".$res[0]['id']);
-                             }
+                            if ($res[0]['number_user_waiting']==1) {
+                                $i = $this->consulta("insert into waiting_room_history(id_waiting_room,language,id_course,id_exercise,number_user_waiting,created,created_history)
+                                                        values('" . $res[0]['id'] . "','" . $res[0]['language'] . "','" . $res[0]['id_course'] . "','" . $res[0]['id_exercise'] . "','1','" . $res[0]['created'] . "',NOW()) ");
+                                if (mysql_affected_rows($this->conn) > 0) {
+                                    $e = $this->consulta("delete from waiting_room where id =" . $res[0]['id']);
+                                    $this->debugMessage("12 ".$_SESSION[CURRENT_USER]->fullname." DELETE "."delete from waiting_room where id =" . $res[0]['id']);
+                                }
+                            } else {
+                                $e = $this->consulta("update waiting_room set number_user_waiting = number_user_waiting-1 where id =" . $res[0]['id']);
+                            }
                         }
                     }
                 }
@@ -4019,7 +4039,7 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
     }
 
     private function get_rubrics_sql($course_id){
-        $sql = "SELECT id,name,description FROM feedback_rubric LEFT JOIN feedback_rubric_def_items ON feedback_rubric_def_items.item_id = feedback_rubric.id LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric_def_items.def_id WHERE id_course = ".$course_id." AND lang = '".$_SESSION['lang']."'";
+        $sql = "SELECT id,name,description,field_name FROM feedback_rubric LEFT JOIN feedback_rubric_def_items ON feedback_rubric_def_items.item_id = feedback_rubric.id LEFT JOIN feedback_rubric_course_def ON feedback_rubric_course_def.id_feedback_definition = feedback_rubric_def_items.def_id WHERE id_course = ".$course_id." AND lang = '".$_SESSION['lang']."'";
         return $sql;
     }
 
