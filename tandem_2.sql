@@ -308,14 +308,16 @@ CREATE TABLE `waiting_room_history` (
 
 DROP TABLE IF EXISTS `waiting_room_user`;
 
+-- Create syntax for TABLE 'waiting_room_user'
 CREATE TABLE `waiting_room_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_waiting_room` bigint(20) NOT NULL,
   `id_user` bigint(11) NOT NULL,
-  `user_agent` varchar(255) null,
   `created` datetime NOT NULL,
+  `user_agent` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 
@@ -324,18 +326,20 @@ CREATE TABLE `waiting_room_user` (
 
 DROP TABLE IF EXISTS `waiting_room_user_history`;
 
+-- Create syntax for TABLE 'waiting_room_user_history'
 CREATE TABLE `waiting_room_user_history` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_waiting_room` bigint(20) NOT NULL,
   `id_user` bigint(11) NOT NULL,
   `status` enum('waiting','assigned','lapsed','give_up') COLLATE utf8_bin NOT NULL,
   `id_tandem` int(11) DEFAULT NULL COMMENT 'only when user has partner and start tandem',
-  `user_agent` varchar(255) null,
   `created` datetime NOT NULL,
   `created_history` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
+  `user_agent` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `id_waiting_room` (`id_waiting_room`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 
 create table feedback_tandem
@@ -447,3 +451,26 @@ CREATE TABLE IF NOT EXISTS `tandem_deleted` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+-- Create syntax for TABLE 'feedback_rubric'
+CREATE TABLE `feedback_rubric` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `lang` varchar(10) NOT NULL DEFAULT '',
+  `name` varchar(250) DEFAULT NULL,
+  `description` text,
+  `field_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`,`lang`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- Create syntax for TABLE 'feedback_rubric_course_def'
+CREATE TABLE `feedback_rubric_course_def` (
+  `id_feedback_definition` int(11) NOT NULL,
+  `id_course` int(11) NOT NULL,
+  PRIMARY KEY (`id_feedback_definition`,`id_course`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- Create syntax for TABLE 'feedback_rubric_def_items'
+CREATE TABLE `feedback_rubric_def_items` (
+  `def_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  PRIMARY KEY (`def_id`,`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
