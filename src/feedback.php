@@ -51,6 +51,7 @@ if (!$user_obj || !$course_id) {
 			$gestorBD->updateUserRankingPoints($user_obj->id,$course_id,$_SESSION['lang']);
 			//now lets update the partner ranking points
 			$gestorBD->updateUserRankingPoints($feedbackDetails->id_partner,$course_id,$feedbackDetails->partner_language);
+			$feedbackDetails = $gestorBD->getFeedbackDetails($id_feedback);
 		}
 
 
@@ -141,6 +142,7 @@ if (!$user_obj || !$course_id) {
 		//@ybilbao 3iPunt -> Get course rubricks
 		$rubrics = $gestorBD->get_course_rubrics($course_id);
 		//END
+
 		?>
 		<!DOCTYPE html>
 		<html>
@@ -280,12 +282,12 @@ if (!$user_obj || !$course_id) {
                                                         <label for="pronunciation" class="control-label"><?php echo $LanguageInstance->get('Pronunciation') ?></label>
                                                         <?php echo $feedBackFormPartner->pronunciation?> %
                                                     </div>
-                                                    <div class="form-group">
+                                                    <!--div class="form-group">
                                                         <label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
                                                         <div class="input-group">
                                                           <textarea  readonly rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedBackFormPartner->other_observations?></textarea>
                                                         </div>
-                                                    </div>
+                                                    </div-->
                                                 <?php     
                                                 }else{ 
 				?>
@@ -328,12 +330,12 @@ if (!$user_obj || !$course_id) {
 								  <textarea readonly rows="3" cols="200" class="form-control" id="grammar"  name="grammar" placeholder="<?php echo $LanguageInstance->get('Indicate the level of grammar')?>" required><?php echo $feedBackFormPartner->grammar?></textarea>
 								</div>
 							  </div>
-							  <div class="form-group">
+							  <!--div class="form-group">
 								<label for="other_observations" class="control-label"><?php echo $LanguageInstance->get('Other Observations')?></label>
 								<div class="input-group">
 								  <textarea  readonly rows="3" cols="200" class="form-control" id="other_observations" name="other_observations" placeholder="<?php echo $LanguageInstance->get('Indicate other observations')?>"><?php echo $feedBackFormPartner->other_observations?></textarea>
 								</div>
-							  </div>
+							  </div-->
                                                 <?php } ?>
 							  <!-- Rate your partner form -->
 							<div class='row well'>
@@ -639,7 +641,7 @@ if (!$user_obj || !$course_id) {
 																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 																	<span aria-hidden="true">&times;</span>
 																</button>
-																<h4 class="modal-title" id="myModalLabel">More information</h4>
+																<h4 class="modal-title" id="myModalLabel"><?php echo $LanguageInstance->get('More information')?></h4>
 															</div>
 															<div class="modal-body rubric-modal-body" >
 																<div>
@@ -651,7 +653,7 @@ if (!$user_obj || !$course_id) {
 												  	</div>
 												</div>
 												<div class="input-group">
-											 		<textarea rows="3" cols="200" class="form-control" id="vocabulary"  name='<?php echo $rubric['name'];?>' placeholder="" ></textarea>
+											 		<textarea rows="3" cols="200" class="form-control" <?php echo (!$can_edit) ? "disabled" : "" ?> id="<?php echo $rubric['field_name'];?>"  name='<?php echo $rubric['field_name'];?>' placeholder="" ><?php echo $feedback_form && $feedback_form->{$rubric['field_name']}?$feedback_form->{$rubric['field_name']}:'';?></textarea>
 												</div>
 											</div><?php
 										}
@@ -791,12 +793,12 @@ if (!$user_obj || !$course_id) {
                               title: "Interactive Communication",
                               content: "Review your partner interactive communication"
                             },
-                            {
+                            /*{
                               element: "#other_observations",
                               placement: 'top',
                               title: "Other Observations",
                               content: "Review your partner other observations"
-                            },
+                            },*/
                             {
                               element: "#submitBtn",
                               title: "Submit",
