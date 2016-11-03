@@ -185,12 +185,12 @@ $(document).ready(function(){
             $('#task-valoration').val(this.value);
         });
     }
-    <?php if ($_SESSION[SHOW_USER_STATUS]){ ?>
+    <?php if (isset($_SESSION[SHOW_USER_STATUS]) && $_SESSION[SHOW_USER_STATUS]){ ?>
         $('#moodModal').modal('show');
         createRatings();
     <?php } ?>
     showEvaluateTaskModal = function(last){
-        <?php if ($_SESSION[ENABLE_TASK_EVALUATION]){ ?>
+        <?php if (isset($_SESSION[ENABLE_TASK_EVALUATION]) && $_SESSION[ENABLE_TASK_EVALUATION]){ ?>
         	//ybilbao 3iPunt -> Solve next task review 
         	if($('#next_task').hasClass('active')){
         		$('#simplemodal-container').css('display', 'block');
