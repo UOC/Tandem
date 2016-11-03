@@ -87,12 +87,23 @@ if ($user_obj->instructor== 1 || $user_obj->admin==1) {
 			</div>
 	  	</div>
   	</div>
+  	<div class='row'>
+  		<div class='col-md-12'>
+  			<div class="alert alert-info" role="alert"><?php echo $LanguageInstance->get('What give you points for making it to the top of the ranking?')?><ul>
+				<li><?php echo $LanguageInstance->get('Doing Tandems')?>.</li>
+				<li><?php echo $LanguageInstance->get('Giving feedback to your partner after each tandem')?>.</li>
+				<li><?php echo $LanguageInstance->get('Rating the quality of your tandem partner\'s feedback once you get it. (It\'s at the bottom of the feedback form your partner sent and it shows stars for rating)')?>.</li>
+				<li><?php echo $LanguageInstance->get('Received feedback ratings')?>.</li>
+			</ul>
+  			</div>
+  		</div>  		
+  	</div>
   	<!--div class='row'>
   		<div class='col-md-12'>
   			<div class="alert alert-info" role="alert"><?php echo $LanguageInstance->get('top_10_ranking_message')?><br>
 <?php echo $LanguageInstance->get('For each Tandem activity you complete, you will receive points based on the feedback you provide, and the feedback you receive')?>.
   			</div>
-  		</div>  		
+  		</div>
   	</div-->
   	<div class='row'>
 	<?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?>
