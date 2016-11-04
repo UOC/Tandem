@@ -443,7 +443,7 @@ if (!$user_obj || !$course_id) {
 						var exercise_txt = $(xml).find('exercise').text();
 						$("#info-block").show();
 						$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo $LanguageInstance->get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo $LanguageInstance->get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo $LanguageInstance->get('accept');?></a></div>");
-						setExpiredNow(60);
+						setExpiredNow(120);
 						clearInterval(intervalCheck);
 				  	}
 				  },
@@ -486,7 +486,11 @@ if (!$user_obj || !$course_id) {
 		itNow--;
 		if(itNow<10) tNow ="0"+itNow;
 		else tNow = itNow;
-			$("#startNowBtn").html("<?php echo $LanguageInstance->get('accept')?> 00:"+tNow);
+		var minutes = Math.floor(itNow/60);
+		if(minutes<10) minutes ="0"+minutes;
+		var seconds = itNow%60;
+		if(seconds<10) seconds ="0"+itNow;
+		$("#startNowBtn").html("<?php echo $LanguageInstance->get('accept')?> "+minutes+":"+seconds);
 			if(itNow<=1){
 				$("#startNowBtn").removeClass("tandem-btn").addClass("tandem-btnout");
 				$("#startNowBtn").html("<?php echo $LanguageInstance->get('caducado')?>");
@@ -645,7 +649,7 @@ if (!$user_obj || !$course_id) {
 										<td><?php echo $tandem['created']?></td>
 
 										<?php
-										$time2Expire=60;
+										$time2Expire=120;
 										if( (time() - strtotime($tandem['created']))>=$time2Expire){
 										?>
 										<td><a href="#" title="<?php echo $LanguageInstance->get('go')?>" class="tandem-btnout"><?php echo $LanguageInstance->get('caducado')?></a></td>
