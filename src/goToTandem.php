@@ -89,6 +89,8 @@ try {
     $_SESSION[CURRENT_TANDEM]= $tandem_id;
     $_SESSION[CURRENT_USER] = $user;
     $_SESSION[COURSE_ID] = $course_id;
+    $_SESSION[ENABLE_TASK_EVALUATION] = 1;
+    $_SESSION[SHOW_USER_STATUS] = 1;
     $gestorBD->update_user_access_tandem($tandem_id, $user->id);
 	
 	//update user_course
