@@ -3573,7 +3573,7 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
         /**
          * Updates the user ranking stats with the formula on https://tresipunt.atlassian.net/browse/MOOCTANDEM-42
          */
-        function updateUserRankingPoints($user_id,$course_id,$lang){
+        function updateUserRankingPoints($user_id,$course_id,$lang, $debug=false){
 
             $updated = -1;
 
@@ -3605,28 +3605,59 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
                 $user_fluency = 0;
                 $user_accuracy = 0;
                 $user_overall_grade = 0;
+            if ($debug) {
+                echo "<p>$sql</p>";
+            }
                 if ($this->numResultats($result) > 0){
                     $result =  $this->obteComArray($result);
+                    if ($debug) {
+                        var_dump($result);
+                    }
+
                     foreach($result as $key => $value){
+                        if ($debug) {
+                            echo "<p>Key $key current $points</p>";
+                        }
+
                          //now if they have sent the feedback we give 10 points :D
                          if(!empty($value['feedback_form'])){
                             $points += 10;
+                             if ($debug) {
+                                 echo "<p>Adding 10 points for feedback $points</p>";
+                             }
 
                              //For each 60 seconds of the total time , we add 1 point :p
                              if($value['total_time'] > 60){
                                  $points += ceil($value['total_time'] / 60);
-                             }else
-                             $points++;
+                             }else {
+                                 $points++;
+                             }
+                             if ($debug) {
+                                 echo "<p>Total time {$value['total_time']}</p>";
+                             }
+
                              //if we have rated the other person feedback then we give 5 points.
                              if(!empty($value['rating_partner_feedback_form'])){
                                 $points += 5;
+                                 if ($debug) {
+                                     echo "<p>Rating partner form {$value['rating_partner_feedback_form']}</p>";
+                                 }
                              }
                              //Now we need to find out if our partner has rated our feedback-form and we get 2 point for each star
                              if(!empty($value['the_partner_rating_my_feedback'])){
                                     $unserialize = unserialize($value['the_partner_rating_my_feedback']);
                                     if(!empty($unserialize->partner_rate)){
                                         $points += $unserialize->partner_rate * 2;
+                                        if ($debug) {
+                                            echo "<p>Starts partner {$unserialize->partner_rate}</p>";
+                                        }
+
                                     }
+                             }
+                         } else {
+                             if ($debug){
+                                 echo "<p>No gived feedback </p>";
+                                 print_r($value);
                              }
                          }
                          $total_time += $value['total_time'];
@@ -3675,6 +3706,10 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
                         $updated = 0;
                 }
             }
+            if ($debug) {
+                echo "<p>SQL $sql</p>";
+            }
+
             return ($updated==1?'UPDATED':($updated==0?'INSERTED':'NO UPDATED'))." $user_id and lang $lang in course $course_id Points = ".$points;
 
         }
@@ -3958,7 +3993,7 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
     }
     
     function setTaskEvaluation($id_tandem, $id_user, $task_number, $enjoyed, $nervous, $task_valoration, $comment){
-        $sql = 'update user_tandem_task set task_enjoyed = ' . $enjoyed . ', task_nervous = ' . $nervous . ', task_comment = "' . $comment . '", task_valoration = ' . $task_valoration . ' where id_tandem = ' . $id_tandem . ' and id_user = ' . $id_user . ' and task_number = ' . $task_number;
+        $sql = 'update user_tandem_task set task_enjoyed = ' . $this->escapeString($enjoyed) . ', task_nervous = ' . $this->escapeString($nervous) . ', task_comment = ' . $this->escapeString($comment) . ', task_valoration = ' . $this->escapeString($task_valoration) . ' where id_tandem = ' . $this->escapeString($id_tandem) . ' and id_user = ' . $this->escapeString($id_user) . ' and task_number = ' . $this->escapeString($task_number);
         $result = $this->consulta($sql);
         return $result;
     }
