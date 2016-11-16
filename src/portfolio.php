@@ -25,7 +25,7 @@ if (empty($user_obj) || !isset($user_obj->id)) {
 	$dateEnd = !empty($_POST['dateEnd']) ? $_POST['dateEnd'] : date("Y-m-d");
 
 	$finishedTandem = -1;
-	if ($user_obj->instructor ==1 && !empty($_POST['finishedTandem'])){
+	if ($user_obj->instructor && $user_obj->instructor ==1 && !empty($_POST['finishedTandem'])){
 		$finishedTandem = $_POST['finishedTandem'];
 	}
 
@@ -77,7 +77,7 @@ if(isset($_POST['extra-info-form'])){
 	$data = serialize($save);
 	$gestorBD->saveFormUserProfile('first', $user_obj->id, $data, $firstProfileForm, isset($_POST['portfolio_form_id'])?$_POST['portfolio_form_id']:false);
 	$firstProfileForm  = $gestorBD->getUserPortfolioProfile("first",$user_obj->id);
-}else if (($_SESSION[USE_WAITING_ROOM_NO_TEAMS])&&(isset($_POST['extra-info-form-new']))){
+}else if ((isset($_SESSION[USE_WAITING_ROOM_NO_TEAMS]) && $_SESSION[USE_WAITING_ROOM_NO_TEAMS])&&(isset($_POST['extra-info-form-new']))){
     $inputs  = array("grammaticalresource","lexicalresource","discoursemangement","pronunciation","interactivecommunication");
     $save = new stdclass();
 	foreach($inputs as $in){
