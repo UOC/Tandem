@@ -3019,10 +3019,10 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
           */
          function currentActiveTandems($id_course){
 
-            $sql= "Select count(id) as total from tandem
+            /*$sql= "Select count(id) as total from tandem
                    where is_finished = 0 and finalized IS NULL and
                    id_course =".$this->escapeString($id_course)." and
-                created >= DATE_SUB(NOW(),INTERVAL 1 HOUR)";
+                created >= DATE_SUB(NOW(),INTERVAL 1 HOUR)";*/
 
              $sql = 'Select count(distinct tandem.id) as total from tandem
                     inner join user_tandem on user_tandem.id_tandem=tandem.id
@@ -3570,144 +3570,185 @@ inner join course_exercise on course_exercise.id_exercise=tandem.id_exercise and
                  return $r;
         }
 
+    /**
+     * @param $user_id
+     * @param $course_id
+     * @param $lang
+     * @param bool $debug
+     * @param bool $filter_dates
+     * @return stdClass|string
+     */
+    function getUserRankingPoints($user_id,$course_id,$lang, $debug=false, $filter_dates=true)
+    {
+
+        $sql = "select UT.id_user,FT.id_partner,UT.total_time,UT.id_tandem,FTF.feedback_form,FTF.rating_partner_feedback_form,
+                         sFTF.feedback_form as user_feedback_form,
+                         sFTF.rating_partner_feedback_form as the_partner_rating_my_feedback from user_tandem as UT
+                         left join feedback_tandem as FT on FT.id_tandem = UT.id_tandem and FT.id_user = UT.id_user
+                         left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
+                         left join feedback_tandem as sFT on sFT.id_user = FT.id_partner and sFT.id_tandem = UT.id_tandem
+                         left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
+                         inner join tandem as T on T.id = UT.id_tandem
+                        where ((coalesce(UT.finalized,0)=0 and total_time>60) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and
+                        T.id_course = " . $this->escapeString($course_id) . " and UT.id_user = " . $this->escapeString($user_id) . " ";
+
+        if ($filter_dates) {
+            $course = $this->get_course_by_id($course_id);
+            if ($course['startDateRanking']) {
+                $sql .= ' and date(T.created) >= ' . $this->escapeString($course['startDateRanking']);
+            }
+            if ($course['endDateRanking']) {
+                $sql .= ' and date(T.created) <= ' . $this->escapeString($course['endDateRanking']);
+            }
+        }
+
+        $ret = new stdClass();
+        $points = 0;
+        $result = $this->consulta($sql);
+        $total_time = 0;
+        $number_of_tandems = 0;
+        $number_of_tandems_with_feedback = 0;
+        $user_fluency = 0;
+        $user_accuracy = 0;
+        $user_overall_grade = 0;
+        if ($debug) {
+            echo "<p>$sql</p>";
+        }
+        if ($this->numResultats($result) > 0) {
+            $result = $this->obteComArray($result);
+            if ($debug) {
+                var_dump($result);
+            }
+
+            foreach ($result as $key => $value) {
+                if ($debug) {
+                    echo "<p>Key $key current $points</p>";
+                }
+
+                //now if they have sent the feedback we give 10 points :D
+                if (!empty($value['feedback_form'])) {
+                    $points += 10;
+                    if ($debug) {
+                        echo "<p>Adding 10 points for feedback $points</p>";
+                    }
+
+                    //For each 60 seconds of the total time , we add 1 point :p
+                    if ($value['total_time'] > 60) {
+                        $points += ceil($value['total_time'] / 60);
+                    } else {
+                        $points++;
+                    }
+                    if ($debug) {
+                        echo "<p>Total time {$value['total_time']}</p>";
+                    }
+
+                    //if we have rated the other person feedback then we give 5 points.
+                    if (!empty($value['rating_partner_feedback_form'])) {
+                        $points += 5;
+                        if ($debug) {
+                            echo "<p>Rating partner form {$value['rating_partner_feedback_form']}</p>";
+                        }
+                    }
+                    //Now we need to find out if our partner has rated our feedback-form and we get 2 point for each star
+                    if (!empty($value['the_partner_rating_my_feedback'])) {
+                        $unserialize = unserialize($value['the_partner_rating_my_feedback']);
+                        if (!empty($unserialize->partner_rate)) {
+                            $points += $unserialize->partner_rate * 2;
+                            if ($debug) {
+                                echo "<p>Starts partner {$unserialize->partner_rate}</p>";
+                            }
+
+                        }
+                    }
+                } else {
+                    if ($debug) {
+                        echo "<p>No gived feedback </p>";
+                        print_r($value);
+                    }
+                }
+                $total_time += $value['total_time'];
+                //check if user has received evaluation from the partner
+                if (!empty($value['user_feedback_form'])) {
+                    $user_evaluation = unserialize($value['user_feedback_form']);
+                    if (!empty($user_evaluation->fluency)) {
+                        $user_fluency += $user_evaluation->fluency;
+                    }
+                    if (!empty($user_evaluation->accuracy)) {
+                        $user_accuracy += $user_evaluation->accuracy;
+                    }
+                    if (!empty($user_evaluation->grade)) {
+                        $user_overall_grade += getOverallAsNumber($user_evaluation->grade);
+                    }
+                    $number_of_tandems_with_feedback++;
+                }
+
+                $number_of_tandems++;
+            } //End foreach
+            $ret->points = $points;
+            $ret->number_of_tandems = $number_of_tandems;
+            $ret->number_of_tandems_with_feedback = $number_of_tandems_with_feedback;
+
+            if ($number_of_tandems_with_feedback > 0) {
+                $ret->user_fluency = $user_fluency / $number_of_tandems_with_feedback;
+                $ret->user_accuracy = $user_accuracy / $number_of_tandems_with_feedback;
+                $ret->user_overall_grade = $user_overall_grade / $number_of_tandems_with_feedback;
+            }
+            $ret->total_time = $total_time;
+        }
+        return $ret;
+    }
+
         /**
          * Updates the user ranking stats with the formula on https://tresipunt.atlassian.net/browse/MOOCTANDEM-42
          */
-        function updateUserRankingPoints($user_id,$course_id,$lang, $debug=false){
+        public function updateUserRankingPoints($user_id,$course_id,$lang, $debug=false){
 
             $updated = -1;
 
+            $ret = $this->getUserRankingPoints($user_id,$course_id,$lang, $debug, true);
 
-            $sql = "select UT.id_user,FT.id_partner,UT.total_time,UT.id_tandem,FTF.feedback_form,FTF.rating_partner_feedback_form,
-                     sFTF.feedback_form as user_feedback_form,
-                     sFTF.rating_partner_feedback_form as the_partner_rating_my_feedback from user_tandem as UT
-                     left join feedback_tandem as FT on FT.id_tandem = UT.id_tandem and FT.id_user = UT.id_user
-                     left join feedback_tandem_form as FTF on FTF.id_feedback_tandem = FT.id
-                     left join feedback_tandem as sFT on sFT.id_user = FT.id_partner and sFT.id_tandem = UT.id_tandem
-                     left join feedback_tandem_form as sFTF on sFTF.id_feedback_tandem = sFT.id
-                     inner join tandem as T on T.id = UT.id_tandem
-                    where ((coalesce(UT.finalized,0)=0 and total_time>300) OR (UT.finalized IS NOT NULL and UT.is_finished = 1)) and
-                    T.id_course = ".$this->escapeString($course_id)." and UT.id_user = ".$this->escapeString($user_id)." ";
-
-            $course = $this->get_course_by_id($course_id);
-            if ($course['startDateRanking']) {
-                $sql .=' and date(T.created) >= '.$this->escapeString($course['startDateRanking']);
-            }
-            if ($course['endDateRanking']) {
-                $sql .=' and date(T.created) <= '.$this->escapeString($course['endDateRanking']);
+            if ($this->theUserCompletedFinalQuestionnaire($course_id, $user_id)) {
+                $ret->points = ($ret->points?$ret->points:0) + 100;
             }
 
-            $points = 0;
-                $result = $this->consulta($sql);
-                $total_time = 0;
-                $number_of_tandems = 0;
-                $number_of_tandems_with_feedback = 0;
+            if ($ret->points) {
+                $points = $ret->points;
+
+                $number_of_tandems = $ret->number_of_tandems;
+
                 $user_fluency = 0;
                 $user_accuracy = 0;
                 $user_overall_grade = 0;
-            if ($debug) {
-                echo "<p>$sql</p>";
-            }
-                if ($this->numResultats($result) > 0){
-                    $result =  $this->obteComArray($result);
-                    if ($debug) {
-                        var_dump($result);
-                    }
-
-                    foreach($result as $key => $value){
-                        if ($debug) {
-                            echo "<p>Key $key current $points</p>";
-                        }
-
-                         //now if they have sent the feedback we give 10 points :D
-                         if(!empty($value['feedback_form'])){
-                            $points += 10;
-                             if ($debug) {
-                                 echo "<p>Adding 10 points for feedback $points</p>";
-                             }
-
-                             //For each 60 seconds of the total time , we add 1 point :p
-                             if($value['total_time'] > 60){
-                                 $points += ceil($value['total_time'] / 60);
-                             }else {
-                                 $points++;
-                             }
-                             if ($debug) {
-                                 echo "<p>Total time {$value['total_time']}</p>";
-                             }
-
-                             //if we have rated the other person feedback then we give 5 points.
-                             if(!empty($value['rating_partner_feedback_form'])){
-                                $points += 5;
-                                 if ($debug) {
-                                     echo "<p>Rating partner form {$value['rating_partner_feedback_form']}</p>";
-                                 }
-                             }
-                             //Now we need to find out if our partner has rated our feedback-form and we get 2 point for each star
-                             if(!empty($value['the_partner_rating_my_feedback'])){
-                                    $unserialize = unserialize($value['the_partner_rating_my_feedback']);
-                                    if(!empty($unserialize->partner_rate)){
-                                        $points += $unserialize->partner_rate * 2;
-                                        if ($debug) {
-                                            echo "<p>Starts partner {$unserialize->partner_rate}</p>";
-                                        }
-
-                                    }
-                             }
-                         } else {
-                             if ($debug){
-                                 echo "<p>No gived feedback </p>";
-                                 print_r($value);
-                             }
-                         }
-                         $total_time += $value['total_time'];
-                         //check if user has received evaluation from the partner
-                         if(!empty($value['user_feedback_form'])){
-                             $user_evaluation = unserialize($value['user_feedback_form']);
-                             if(!empty($user_evaluation->fluency)){
-                                 $user_fluency += $user_evaluation->fluency;
-                             }
-                             if(!empty($user_evaluation->accuracy)){
-                                 $user_accuracy += $user_evaluation->accuracy;
-                             }
-                             if(!empty($user_evaluation->grade)){
-                                 $user_overall_grade += getOverallAsNumber($user_evaluation->grade);
-                             }
-                             $number_of_tandems_with_feedback++;
-                         }
-
-                         $number_of_tandems ++;
-                    } //End foreach
-                    if ($number_of_tandems_with_feedback>0) {
-                        $user_fluency = $user_fluency/$number_of_tandems_with_feedback;
-                        $user_accuracy = $user_accuracy/$number_of_tandems_with_feedback;
-                        $user_overall_grade = $user_overall_grade/$number_of_tandems_with_feedback;
-                    }
-
-
-                $sql = "select * from user_ranking where user_id = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
-                $result = $this->consulta($sql);
-                if ($this->numResultats($result) > 0){
-                        $result =  $this->obteComArray($result);
-                        $sql = "update user_ranking set points = ".$this->escapeString($points).",total_time =".$this->escapeString($total_time).",
-                        number_of_tandems = ".$this->escapeString($number_of_tandems)."  , fluency = ".$this->escapeString($user_fluency)."  ,
-                        accuracy = ".$this->escapeString($user_accuracy)."  , overall_grade = ".$this->escapeString($user_overall_grade)."
-                        where user_id  = ".$this->escapeString($user_id)." and course_id = ".$this->escapeString($course_id)." ";
-                        $this->consulta($sql);
-                        $updated = 1;
-                }else {
-                        $sql = "insert into user_ranking (user_id,course_id,points,lang,
-                            total_time,number_of_tandems,fluency,
-                            accuracy, overall_grade) values (".$this->escapeString($user_id).",".$this->escapeString($course_id).",".$points.",".$this->escapeString($lang).
-                            ",".$this->escapeString($total_time).",".$this->escapeString($number_of_tandems).",".$this->escapeString($user_fluency).
-                            ",".$this->escapeString($user_accuracy).",".$this->escapeString($user_overall_grade).
-                            ")";
-                        $this->consulta($sql);
-                        $updated = 0;
+                if ($ret->number_of_tandems_with_feedback > 0) {
+                    $user_fluency = $ret->user_fluency?$ret->user_fluency:0;
+                    $user_accuracy = $ret->user_accuracy?$ret->user_accuracy:0;
+                    $user_overall_grade = $ret->user_overall_grade?$ret->user_overall_grade:0;
                 }
-            }
-            if ($debug) {
-                echo "<p>SQL $sql</p>";
+                $total_time = $ret->total_time?$ret->total_time:0;
+
+                $sql = "select * from user_ranking where user_id = " . $this->escapeString($user_id) . " and course_id = " . $this->escapeString($course_id) . " ";
+                $result = $this->consulta($sql);
+                if ($this->numResultats($result) > 0) {
+                    $result = $this->obteComArray($result);
+                    $sql = "update user_ranking set points = " . $this->escapeString($points) . ",total_time =" . $this->escapeString($total_time) . ",
+                        number_of_tandems = " . $this->escapeString($number_of_tandems) . "  , fluency = " . $this->escapeString($user_fluency) . "  ,
+                        accuracy = " . $this->escapeString($user_accuracy) . "  , overall_grade = " . $this->escapeString($user_overall_grade) . "
+                        where user_id  = " . $this->escapeString($user_id) . " and course_id = " . $this->escapeString($course_id) . " ";
+                    $this->consulta($sql);
+                    $updated = 1;
+                } else {
+                    $sql = "insert into user_ranking (user_id,course_id,points,lang,
+                            total_time,number_of_tandems,fluency,
+                            accuracy, overall_grade) values (" . $this->escapeString($user_id) . "," . $this->escapeString($course_id) . "," . $points . "," . $this->escapeString($lang) .
+                        "," . $this->escapeString($total_time) . "," . $this->escapeString($number_of_tandems) . "," . $this->escapeString($user_fluency) .
+                        "," . $this->escapeString($user_accuracy) . "," . $this->escapeString($user_overall_grade) .
+                        ")";
+                    $this->consulta($sql);
+                    $updated = 0;
+                }
+                if ($debug) {
+                    echo "<p>SQL $sql</p>";
+                }
             }
 
             return ($updated==1?'UPDATED':($updated==0?'INSERTED':'NO UPDATED'))." $user_id and lang $lang in course $course_id Points = ".$points;
@@ -4321,6 +4362,27 @@ inner join user on user.id = waiting_room_user.id_user
         }
         return $rows;
 
+    }
+
+    /**
+     * Returns if user completed the questionnaire
+     */
+    function theUserCompletedFinalQuestionnaire($id_course, $id_user){
+        $sql = 'select count(*) as total from user_course '.
+                'inner join user on user.id=user_course.id_user '.
+                'inner join course on course.id=user_course.id_course '.
+                'inner join questionnaire_certificate on questionnaire_certificate.useremail=user.email and questionnaire_certificate.courseKey=course.courseKey '.
+                'where '.
+                'user_course.id_user = '.$this->escapeString($id_user).' and '.
+                'user_course.id_course='.$this->escapeString($id_course);
+        $completed = false;
+        $result = $this->consulta($sql);
+        if ($this->numResultats($result) > 0){
+            $result = $this->obteComArray($result);
+            $completed = $result[0]['total']>0;
+        }
+
+        return $completed;
     }
 /*
     public function removeUserFromWaiting($id_course,$id_exercises) {
