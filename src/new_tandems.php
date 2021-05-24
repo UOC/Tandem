@@ -35,5 +35,6 @@ echo '<tandems>';
 		echo '</tandem>';
 		}
 	}
+	$gestorBD->update_last_action_time($user_obj->id, $course_id);
 echo '</tandems>';
 }

@@ -18,10 +18,10 @@ $return->result = 'error';
 $return->sessionid = $id;
 
 if ($id>0) {
-	$tandem = $gestorBD->obteTandem($id); 
+	$tandem = $gestorBD->obteTandem($id);
 }
 
-if ($tandem) {	
+if ($tandem) {
 
 	$gestorBD->updateTandemSessionAvailable($id);
 	if (strlen($download_url)>0) {
@@ -67,9 +67,9 @@ if ($tandem) {
 			}
 		}
 	}
-	$return->result = 'ok';	
+	$return->result = 'ok';
 
-	
+
 }
 else {
 	$return->error = 'Unknown tandem id';

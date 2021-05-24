@@ -23,8 +23,8 @@ define ('FULLNAME', 'fullname');
 define ('USER_ID', 'user_id');
 define ('INSTANCEC2ID', 'InstanceID');
 define ('IS_INSTRUCTOR', 'is_instructor');
-define('STOPSELECT', 'stop_selected');
-define('STARTSELECT', 'start_selected');
+define ('STOPSELECT', 'stop_selected');
+define ('STARTSELECT', 'start_selected');
 define ('SALVA_DADES', 'save');
 define ('HOURS_AUTOSTOP', 24);
 define ('EMAILOKI', 'email');
@@ -36,13 +36,16 @@ define ('OATUH_CONSUMER_KEY', 'oauth_consumer_key');
 define ('DELIMITER', ':');
 define ('CURRENT_USER', 'current_user');
 define ('USE_WAITING_ROOM', 'use_waiting_room');
+define ('USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE', 'fallback_waiting_room_avoid_language');
+define ('SHOW_ANXOMETER_BEFORE_SEE_SOLUTION', 'show_anxometer_before_see_solution');
 define ('USE_WAITING_ROOM_NO_TEAMS', 'use_waiting_room_no_teams');
 define ('FORCE_SELECT_ROOM', 'force_select_room');
 define ('OPEN_TOOL_ID', 'open_tool_id');
 define ('WEEK','week');
 define ('PREVIOUS_WEEK','previous_week');
-if (!defined('HTTPATTRIBUTEKEY_OSIDCONTEXT'))
-	define ('HTTPATTRIBUTEKEY_OSIDCONTEXT', 'osid_context');
+if (!defined('HTTPATTRIBUTEKEY_OSIDCONTEXT')) {
+    define('HTTPATTRIBUTEKEY_OSIDCONTEXT', 'osid_context');
+}
 define ('OKIBUSPHP_COMPONENTS', 'okibusPHP_components');
 define ('OKIBUSPHP_OKIBUSCLIENT', 'okibusPHP_okibusClient');
 define ('ID_RESOURCE', 'resource_link_id');
@@ -60,6 +63,9 @@ define ('FORCE_EXERCISE', 'force_exercise');
 define ('FORCED_EXERCISE_NUMBER', 'forced_exercise_number');
 define ('ENABLE_TASK_EVALUATION', 'enable_task_evaluation');
 define ('SHOW_USER_STATUS', 'show_user_status');
+define ('DISABLE_PROFILE_FORM', 'disable_profile_form');
+define ('FEEDBACK_SELFREFLECTION_FORM', 'feedback_selfreflection_form');
+define ('LMS_RETURN_URL', 'launch_presentation_return_url ');
 
 class BasicLTIConstants {
    /**
@@ -97,7 +103,7 @@ class BasicLTIConstants {
   const CONTEXT_TYPE_COURSE_SECTION = 'CourseSection';
   const CONTEXT_TYPE_COURSE_TEMPLATE = 'CourseTemplate';
   const CONTEXT_TYPE_GROUP = 'GROUP';
-  
+
   const EXT_IMS_LIS_BASIC_OUTCOME_URL='ext_ims_lis_basic_outcome_url';
   const EXT_IMS_LIS_MEMBERSHIPS_ID = 'ext_ims_lis_memberships_id';
   const EXT_IMS_LIS_MEMBERSHIPS_URL = 'ext_ims_lis_memberships_url';
@@ -189,13 +195,13 @@ class BasicLTIConstants {
    */
   const LAUNCH_PRESENTATION_WIDTH = 'launch_presentation_width';
   /**
-   * launch_presentation_css_url=http://www.toolconsumer.url/path/to/lti.css 
+   * launch_presentation_css_url=http://www.toolconsumer.url/path/to/lti.css
    * <p>
    * This points to a fully qualified URL for a CSS which can be used to style the tool.
-   * There are no officially defined CSS classes for this file, but the Consumer can 
-   * apply styles to paragraphs, body, and the various HTML elements.  It is up to the 
+   * There are no officially defined CSS classes for this file, but the Consumer can
+   * apply styles to paragraphs, body, and the various HTML elements.  It is up to the
    * tool as to whether this CSS is used or not, and in what order this is included relative
-   * to the tool-specific CSS. 
+   * to the tool-specific CSS.
    */
   const LAUNCH_PRESENTATION_CSS_URL = 'launch_presentation_css_url';
   /**
@@ -234,11 +240,11 @@ class BasicLTIConstants {
   /**
    * lis_person_sourcedid=school.edu:user
    * <p>
-   * This field contains the LIS identifier for the user account that is 
-   * performing this launch.    The example syntax of "school:user" 
+   * This field contains the LIS identifier for the user account that is
+   * performing this launch.    The example syntax of "school:user"
    * is not the required format ‚Äì lis_person_sourcedid is simply a
-   * globally unique identifier (i.e., a normalized string). This field 
-   * is optional and its content and meaning are defined by LIS.    
+   * globally unique identifier (i.e., a normalized string). This field
+   * is optional and its content and meaning are defined by LIS.
    */
   const LIS_PERSON_SOURCEDID = 'lis_person_sourcedid';
 
@@ -246,9 +252,9 @@ class BasicLTIConstants {
    * lis_course_offering_sourcedid=school.edu:SI182-F08 <br/>
    * lis_course_section_sourcedid=school.edu:SI182-001-F08
    * <p>
-   * These fields contain LIS course identifiers associated with the 
-   * context of this launch.  These fields are optional and their 
-   * content and meaning are defined by LIS. 
+   * These fields contain LIS course identifiers associated with the
+   * context of this launch.  These fields are optional and their
+   * content and meaning are defined by LIS.
    */
   const LIS_COURSE_OFFERING_SOURCEDID = 'lis_course_offering_sourcedid';
   const LIS_COURSE_SECTION_SOURCEDID = 'lis_course_section_sourcedid';
@@ -256,9 +262,9 @@ class BasicLTIConstants {
   /**
    * lis_result_sourcedid=83873872987329873264783687634
    * <p>
-   * This field contains an identifier that indicates the LIS Result 
-   * Identifier (if any) associated with this launch. This field is 
-   * optional and its content and meaning is defined by LIS.    
+   * This field contains an identifier that indicates the LIS Result
+   * Identifier (if any) associated with this launch. This field is
+   * optional and its content and meaning is defined by LIS.
    */
   const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
 
@@ -293,7 +299,7 @@ class BasicLTIConstants {
   /**
    * resource_link_title=My Weekly Wiki
    * <p>
-   * A title for the resource. This is the clickable text that appears 
+   * A title for the resource. This is the clickable text that appears
    * in the link. This parameter is recommended.
    */
   const RESOURCE_LINK_TITLE = 'resource_link_title';
@@ -301,8 +307,8 @@ class BasicLTIConstants {
   /**
    * resource_link_description=‚Ä¶
    * <p>
-   * A plain text description of the link‚Äôs destination, suitable for 
-   * display alongside the link. Typically no more than several lines 
+   * A plain text description of the link‚Äôs destination, suitable for
+   * display alongside the link. Typically no more than several lines
    * long. This parameter is optional.
    */
   const RESOURCE_LINK_DESCRIPTION = 'resource_link_description';
@@ -368,8 +374,8 @@ class BasicLTIConstants {
   /**
    * user_id=0ae836b9-7fc9-4060-006f-27b2066ac545
    * <p>
-   * This attribute specifies the URI for an image of the user who launched this 
-   * request. This image is suitable for use as a "profile picture" or an avatar 
+   * This attribute specifies the URI for an image of the user who launched this
+   * request. This image is suitable for use as a "profile picture" or an avatar
    * representing the user.  This parameter is optional.
    */
   const USER_IMAGE = 'user_image';
@@ -385,12 +391,11 @@ class BasicLTIConstants {
       LAUNCH_PRESENTATION_WIDTH, LIS_PERSON_CONTACT_EMAIL_PRIMARY,
       LAUNCH_PRESENTATION_CSS_URL,
       LIS_PERSON_NAME_FAMILY, LIS_PERSON_NAME_FULL, LIS_PERSON_NAME_GIVEN,
-      LIS_PERSON_SOURCEDID, LIS_COURSE_OFFERING_SOURCEDID, 
+      LIS_PERSON_SOURCEDID, LIS_COURSE_OFFERING_SOURCEDID,
       LIS_COURSE_SECTION_SOURCEDID, LIS_RESULT_SOURCEDID,
-      LTI_MESSAGE_TYPE, LTI_VERSION, RESOURCE_LINK_ID, 
+      LTI_MESSAGE_TYPE, LTI_VERSION, RESOURCE_LINK_ID,
       RESOURCE_LINK_TITLE, RESOURCE_LINK_DESCRIPTION, ROLES,
       TOOL_CONSUMER_INSTANCE_CONTACT_EMAIL, TOOL_CONSUMER_INSTANCE_DESCRIPTION,
       TOOL_CONSUMER_INSTANCE_GUID, TOOL_CONSUMER_INSTANCE_NAME,
       TOOL_CONSUMER_INSTANCE_URL, USER_ID, USER_IMAGE );
-      
 }

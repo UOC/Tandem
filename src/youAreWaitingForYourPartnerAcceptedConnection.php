@@ -31,11 +31,12 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 					if(json  &&  typeof json.emailsent !== "undefined" &&  json.emailsent == 1){
 						alert("<?php echo $LanguageInstance->get('Email sent')?>");
 					} else {
-						alert("<?php echo $LanguageInstance->get('There are an error sending the email to your partner')?>");
+						alert("<?php echo $LanguageInstance->get('There are is error in sending the email to your partner')?>");
 					}
+
 				},
 				fail: function() {
-					alert("<?php echo $LanguageInstance->get('There are an error sending the email to your partner')?>");
+					alert("<?php echo $LanguageInstance->get('There are is error in sending the email to your partner')?>");
 				}
 			});
 		});

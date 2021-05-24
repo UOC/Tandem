@@ -102,6 +102,7 @@ if (false && !$use_waiting_room && getinTandemStatus($id_user_guest,$id_course) 
 	$room = $gestorBD->has_invited_to_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest);
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	if ($room <= 0){
+        $_SESSION[TANDEM_NUMBER_FIELD] = -1;
 		$room = $gestorBD->register_tandem($id_exercise, $id_course, $id_resource_lti, $id_user_host, $id_user_guest, $message, $user_agent);
 	}
 	$_SESSION[CURRENT_TANDEM] = $room;
@@ -212,3 +213,4 @@ if (false && !$use_waiting_room && getinTandemStatus($id_user_guest,$id_course) 
 	}
 	}?>
 </script>
+

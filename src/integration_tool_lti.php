@@ -38,24 +38,24 @@ require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/utils.php';
 
 $debug = false;
-if (isset($_SESSION['debug']) && $_SESSION['debug'] == '1')
-	$debug = true;
+if (isset($_SESSION['debug']) && $_SESSION['debug'] == '1') {
+    $debug = true;
+}
 
-//Netegem la sessio
-session_unset();
+// Netegem la sessio
+//session_unset();
 
-if ( ! $debug && isset($_GET['debug'])) {
-	$debug = $_GET['debug']=='1';
-	if ($debug)
-	  $_SESSION['debug'] = '1';
+if (!$debug && isset($_GET['debug'])) {
+    $debug = $_GET['debug'] == '1';
+    if ($debug) {
+        $_SESSION['debug'] = '1';
+    }
 }
 
 $required_class = 'IMSBasicLTI/uoc-blti/bltiUocWrapper.php';
-$exists = filexists_tandem ($required_class);
+$exists = filexists_tandem($required_class);
 if (!$exists) {
-
 	die('Required classes LTI not exists check the include_path is correct');
-
 }
 
 require_once $required_class;
@@ -64,57 +64,55 @@ require_once dirname(__FILE__).'/classes/IntegrationTandemBLTI.php';
 require_once dirname(__FILE__).'/classes/gestorBD.php';
 require_once dirname(__FILE__).'/classes/constants.php';
 
-if ( ! is_basic_lti_request() ) {
-		$good_message_type = $_REQUEST["lti_message_type"] == "basic-lti-launch-request";
-		$good_lti_version = $_REQUEST["lti_version"] == "LTI-1p0";
-		$resource_link_id = $_REQUEST["resource_link_id"];
-		if ($good_message_type && $good_lti_version && !isset($resource_link_id) ) {
-			$launch_presentation_return_url = $_REQUEST["launch_presentation_return_url"];
-			if (isset($launch_presentation_return_url)) {
-				header('Location: '.$launch_presentation_return_url);
-				exit();
-			}
-		}
-	die('LTI Authentication Failed, not valid request');
- }
-    // See if we get a context, do not set session, do not redirect
-    $context = new bltiUocWrapper(false, false);
-    if ( ! $context->valid ) {
-        die('LTI Authentication Failed, not valid request (make sure that consumer is authorized and secret is correct)');
+if (!is_basic_lti_request()) {
+    $good_message_type = isset($_REQUEST["lti_message_type"]) ? $_REQUEST["lti_message_type"] == "basic-lti-launch-request" : false;
+    $good_lti_version = isset($_REQUEST["lti_version"])?$_REQUEST["lti_version"] == "LTI-1p0":false;
+    $resource_link_id = isset($_REQUEST["resource_link_id"])?$_REQUEST["resource_link_id"]:false;
+    if ($good_message_type && $good_lti_version && $resource_link_id) {
+        $launch_presentation_return_url = $_REQUEST["launch_presentation_return_url"];
+        if (isset($launch_presentation_return_url)) {
+            header('Location: ' . $launch_presentation_return_url);
+            exit();
+        }
     }
+    die('LTI Authentication Failed, not valid request');
+}
+// See if we get a context, do not set session, do not redirect
+$context = new bltiUocWrapper(false, false);
+if (!$context->valid) {
+    die('LTI Authentication Failed, not valid request (make sure that consumer is authorized and secret is correct)');
+}
 
 debugMessageIT('LTI call validated', $debug);
 
-
 try {
-
 	$gestorBD = new gestorBD();
 	$tandemBLTI = new IntegrationTandemBLTI();
-	//Getting BLTI data
-	$user_obj = new stdClass();
-	$user_obj->username = lti_get_username($context);
-	$user_obj->fullname = $context->getUserName();
-	$user_obj->name = isset($context->info['lis_person_name_given'])?$context->info['lis_person_name_given']:$user_obj->fullname;
-	$user_obj->surname = isset($context->info['lis_person_name_family'])?$context->info['lis_person_name_family']:$user_obj->fullname;
-	$user_obj->email = $context->getUserEmail();
-	$user_obj->admin = strpos(strtolower($context->info['roles']), 'administrator')!==false;
-	$user_obj->instructor = $context->isInstructor();
-	$user_obj->icq = $tandemBLTI->getDataInfo($context, 'custom_icq');
-	$user_obj->skype = $tandemBLTI->getDataInfo($context, 'custom_skype');
-	$user_obj->yahoo = $tandemBLTI->getDataInfo($context, 'custom_yahoo');
-	$user_obj->msn = $tandemBLTI->getDataInfo($context, 'custom_msn');
-	$user_obj->points = rand ( 0, 1000 );
-	$user_obj->lis_result_sourceid = $tandemBLTI->getDataInfo($context, LIS_RESULT_SOURCEID);
-	//Icon
+
+	// Getting BLTI data
+    $user_obj = new stdClass();
+    $user_obj->username = lti_get_username($context);
+    $user_obj->fullname = $context->getUserName();
+    $user_obj->name = isset($context->info['lis_person_name_given']) ? $context->info['lis_person_name_given'] : $user_obj->fullname;
+    $user_obj->surname = isset($context->info['lis_person_name_family']) ? $context->info['lis_person_name_family'] : $user_obj->fullname;
+    $user_obj->email = $context->getUserEmail();
+    $user_obj->admin = strpos(strtolower($context->info['roles']), 'administrator') !== false;
+    $user_obj->instructor = $context->isInstructor();
+    $user_obj->icq = $tandemBLTI->getDataInfo($context, 'custom_icq');
+    $user_obj->skype = $tandemBLTI->getDataInfo($context, 'custom_skype');
+    $user_obj->yahoo = $tandemBLTI->getDataInfo($context, 'custom_yahoo');
+    $user_obj->msn = $tandemBLTI->getDataInfo($context, 'custom_msn');
+    $user_obj->points = mt_rand(0, 1000);
+    $user_obj->lis_result_sourceid = $tandemBLTI->getDataInfo($context, LIS_RESULT_SOURCEID);
+	// Icon
 	$user_obj->image = $context->getUserImage();
 	$_SESSION[LANG] = lti_get_lang($context);
 	$_SESSION[LTI_CONTEXT] = serialize($context->getLTI_Context());
+    $_SESSION[CURRENT_TANDEM] = -1;
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
-
 
 	$user = $gestorBD->get_user_by_username($user_obj->username);
 	if (!$user) {
-
 		$user_id = $gestorBD->register_user($user_obj->username, $user_obj->name, $user_obj->surname, $user_obj->fullname, $user_obj->email, $user_obj->image, $user_obj->icq, $user_obj->skype, $user_obj->yahoo, $user_obj->msn, $user_agent);
 		if ($user_id) {
 			$user = $gestorBD->get_user_by_username($user_obj->username);
@@ -123,32 +121,40 @@ try {
 			$user=false;
 		}
 	} else {
-		if (!$gestorBD->update_user($user_obj->username, $user_obj->name, $user_obj->surname, $user_obj->fullname, $user_obj->email, $user_obj->image, $user_obj->icq, $user_obj->skype, $user_obj->yahoo, $user_obj->msn, $user_agent))
-    	{
+		if (!$gestorBD->update_user($user_obj->username, $user_obj->name, $user_obj->surname, $user_obj->fullname, $user_obj->email, $user_obj->image, $user_obj->icq, $user_obj->skype, $user_obj->yahoo, $user_obj->msn, $user_agent)) {
     		show_error("updated_user_error");
     		$user = false;
     	}
-
     }
+
     if ($user) {
-	    $user_id 	  = $user['id'];
-	    $user_obj->id = $user_id;
-	    $waiting_room = $tandemBLTI->getDataInfo($context, 'custom_waiting_room')==1;
-		$waiting_room_no_teams = $tandemBLTI->getDataInfo($context, 'custom_waiting_room_no_teams')==1;
-	    $waiting_room_select_room = $tandemBLTI->getDataInfo($context, 'custom_select_room')==1;
-	    $force_exercise = $tandemBLTI->getDataInfo($context, 'custom_force_exercise')==1;
-	    $exercise_number_forced = $tandemBLTI->getDataInfo($context, 'custom_exercise_number_forced');
-	    $portfolio 		= $tandemBLTI->getDataInfo($context, 'custom_portfolio')==1;
-	    $ranking 	 = $tandemBLTI->getDataInfo($context, 'custom_ranking')==1;
-	    $certificate = $tandemBLTI->getDataInfo($context, 'custom_certificate')==1;
-	    $open_tool_id = $tandemBLTI->getDataInfo($context, 'custom_open_tool_id');
-	    $week 		  = $tandemBLTI->getDataInfo($context, 'custom_week');
-	    $previous_week 	 = $tandemBLTI->getDataInfo($context, 'custom_previous_week');
-		$enable_task_evaluation = $tandemBLTI->getDataInfo($context, 'custom_enable_task_evaluation')==1;
-		$show_user_status = $tandemBLTI->getDataInfo($context, 'custom_show_user_status')==1;
+        $user_id = $user['id'];
+        $user_obj->id = $user_id;
 
+	    // Fresh values from context or default to session values (if they exist)
+	    $waiting_room = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_waiting_room', USE_WAITING_ROOM);
+	    $fallback_waiting_room_avoid_language = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_fallback_waiting_room_avoid_language', USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE);
+	    $show_anxometer_before_see_solution = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_show_anxometer_before_see_solution', SHOW_ANXOMETER_BEFORE_SEE_SOLUTION);
+        $waiting_room_no_teams = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_waiting_room_no_teams', USE_WAITING_ROOM_NO_TEAMS);
+        $waiting_room_select_room = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_select_room', FORCE_SELECT_ROOM);
+        $force_exercise = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_force_exercise', FORCE_EXERCISE);
+        $week = (int)$tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_week', WEEK, false);
+        $enable_task_evaluation = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_enable_task_evaluation', ENABLE_TASK_EVALUATION);
+        $open_tool_id = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_open_tool_id', OPEN_TOOL_ID, false);
+        $feedback_selfreflection_form = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_feedback_selfreflection_form', FEEDBACK_SELFREFLECTION_FORM);
+        $show_user_status = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_show_user_status', SHOW_USER_STATUS);
+        $disable_profile_form = $tandemBLTI->getDataFromContextOrDefaultToSession($context, 'custom_disable_profile_form', DISABLE_PROFILE_FORM);
 
-	    //Check if course exists
+        // Fresh values from context
+        $exercise_number_forced = $tandemBLTI->getDataInfo($context, 'custom_exercise_number_forced');
+        $portfolio = $tandemBLTI->getDataInfo($context, 'custom_portfolio') == 1;
+        $ranking = $tandemBLTI->getDataInfo($context, 'custom_ranking') == 1;
+        $certificate = $tandemBLTI->getDataInfo($context, 'custom_certificate') == 1;
+        $previous_week = $tandemBLTI->getDataInfo($context, 'custom_previous_week');
+
+	    $launch_presentation_return_url = $_REQUEST["launch_presentation_return_url"];
+
+	    // Check if course exists
 	    $course_name = $context->getCourseName();
 	    $course_key = $context->getCourseKey();
 	    if (isset($context->info['custom_is_multiple']) && $context->info['custom_is_multiple']) {
@@ -182,43 +188,62 @@ try {
 		    //Gets the object of tandem if exists, if not this user is the host
 		    $tandem = false;
 		    //disabled to select current tandem // $tandem = $gestorBD->is_invited_to_join($user_id, $id_resource, $course_id);
-		    $_SESSION[ID_RESOURCE] = $id_resource;
+            $_SESSION[ID_RESOURCE] = $id_resource;
             $_SESSION[USE_WAITING_ROOM] = $waiting_room;
-			$_SESSION[USE_WAITING_ROOM_NO_TEAMS] = $waiting_room_no_teams;
+            $_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE] = $fallback_waiting_room_avoid_language;
+            $_SESSION[USE_WAITING_ROOM_NO_TEAMS] = $waiting_room_no_teams;
             $_SESSION[FORCE_EXERCISE] = $force_exercise;
-            $_SESSION[FORCED_EXERCISE_NUMBER] = $force_exercise?$exercise_number_forced:0;
+            $_SESSION[FORCED_EXERCISE_NUMBER] = $force_exercise ? $exercise_number_forced : 0;
+            $_SESSION[SHOW_ANXOMETER_BEFORE_SEE_SOLUTION] = $show_anxometer_before_see_solution ? $show_anxometer_before_see_solution : 0;
             $_SESSION[FORCE_SELECT_ROOM] = $waiting_room_select_room;
-            $_SESSION[OPEN_TOOL_ID] = $open_tool_id && $open_tool_id>0?$open_tool_id:false;
-            $_SESSION[WEEK] = !empty($week) ? $week : false;
+            $_SESSION[OPEN_TOOL_ID] = $open_tool_id && $open_tool_id > 0 ? $open_tool_id : false;
+            $_SESSION[DISABLE_PROFILE_FORM] = $disable_profile_form;
+            $_SESSION[WEEK] = !empty($week) || $week===0 ? $week : false;
             $_SESSION[PREVIOUS_WEEK] = !empty($previous_week) ? $previous_week : false;
             $_SESSION[ENABLE_TASK_EVALUATION] = $enable_task_evaluation;
             $_SESSION[SHOW_USER_STATUS] = $show_user_status;
+            $_SESSION[FEEDBACK_SELFREFLECTION_FORM] = $feedback_selfreflection_form;
+            $_SESSION[LMS_RETURN_URL] = $launch_presentation_return_url ;
+
+		    $gestorBD->set_userInTandem($user_obj->id,$course_id,0);
 
 		    if (!$tandem) {
 		    	if (posa_osid_context_session($gestorBD, $course_id, $context)) {
 					$user_obj->is_host = true;
 
 		    		//Anem a seleccionar la room
-                                $_SESSION[CURRENT_USER] = $user_obj;
-		    					$_SESSION[COURSE_ID] = $course_id;
-                                $redirectTo = 'selectUserAndRoom';
-                                if ($waiting_room==1) {
-                                	if (!$waiting_room_select_room) {
-	                                    $redirectTo = 'preWaitingRoom';
-	                                    if ($user_obj->admin == 1 || $user_obj->instructor == 1 ) {
-											$redirectTo = 'tandemInfo';
-										}
-	                                }
-								}
+                    $_SESSION[CURRENT_USER] = $user_obj;
+                    $_SESSION[COURSE_ID] = $course_id;
+                    $redirectTo = 'selectUserAndRoom';
+                    if ($waiting_room == 1) {
+                        if (!$waiting_room_select_room) {
+                            $redirectTo = defined('BBB_SECRET') ? 'autoAssignTandemRoom' : 'preWaitingRoom';
+                            if ($user_obj->admin == 1 || $user_obj->instructor == 1) {
+                                $redirectTo = 'tandemInfo';
+                            } elseif (!defined('BBB_SECRET')) {
+                                $user_tandems = $gestorBD->obte_llistat_tandems($course_id, $user_id, 0,
+                                    -1,
+                                    0,
+                                    0,
+                                    '',
+                                    '',
+                                    1);
+                                if (count($user_tandems)>0) {
+                                    $redirectTo = 'autoAssignTandemRoom';
+                                }
+                            }
+                        }
+                    }
 
-                                if ($portfolio){
-                                    $redirectTo = 'portfolio';
-                                }
-                                if ($ranking==1){
-                                    $redirectTo = 'ranking';
-                                } elseif ($certificate) {
-                                	$redirectTo = 'certificate';
-                                }
+                    if ($portfolio) {
+                        $redirectTo = 'portfolio';
+                    }
+                    if ($ranking == 1) {
+                        $redirectTo = 'ranking';
+                    } elseif ($certificate) {
+                        $redirectTo = 'certificate';
+                    }
+                    include_once __DIR__ .'/tandemLog.php';
 		    		header ('Location: '.$redirectTo.'.php'.($waiting_room_select_room?'?select_room=1':''));
 		    	}
 		    	//sino ja mostrara error
@@ -226,7 +251,6 @@ try {
 				$user_obj->is_host = false;
 		    	//T'han convidat
 				$exercise = $tandem['name_xml_file'];
-				$room = '';
 				$room = sanitise_string($exercise.getTandemIdentifier($tandem['id'], $id_resource));
 				$_SESSION[CURRENT_TANDEM] = $tandem['id'];
 				//we need to identify the exercise
@@ -246,9 +270,11 @@ try {
 		    	if (!$gestorBD->update_user_guest_tandem($tandem['id'], $user_agent)) {
 					die(show_error('Error updating tandem logged guest user'));
 				}
+                $_SESSION[TANDEM_NUMBER_FIELD] = -1;
 				if (!$gestorBD->update_user_guest_tandem_others($tandem)) {
 					die(show_error('Error updating tandem logged guest user'));
 				}
+                include_once __DIR__ .'/tandemLog.php';
 
 				header ('Location: '.$data_exercise->classOf.'.php?room='.$room.'&user='.$user_obj->type_user.'&nextSample='.$data_exercise->nextSample.'&node='.$data_exercise->node.'&data='.$exercise);
 	     	}
@@ -260,8 +286,8 @@ try {
     }
 
 } catch (Exception $e) {
-	var_dump($e);
+    /** @noinspection ForgottenDebugOutputInspection */
+    var_dump($e);
 	die("Error");
 }
 
-?>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/utils.php';
 require_once dirname(__FILE__).'/classes/constants.php';
@@ -43,7 +43,7 @@ $gestorBD->set_time_to_zero($_SESSION[CURRENT_TANDEM]) ;
 		if(itNow<10) tNow ="0"+itNow;
 		else tNow = itNow;
 			$("#startNowTandem").html(tNow);
-			if(itNow<=1){ 
+			if(itNow<=1){
 				startTandemConnectedTandem();
 			}
 			else setTime(itNow);
@@ -65,7 +65,7 @@ $gestorBD->set_time_to_zero($_SESSION[CURRENT_TANDEM]) ;
 <p></p>
 	<div class="text">
 		<p><?php echo $LanguageInstance->get('You are in a videochat with your partner')?>.</p>
-		<p><?php echo $LanguageInstance->get('Your session is now being recorded. Click on the green button to see your partner.')?></p>
+		<p><?php echo $LanguageInstance->get('Your session is now being recorded. Click on the button to see your partner.')?></p>
 		<p><?php echo $LanguageInstance->get('You will redirect to tandem activity in');?> <span id="startNowTandem"></span> <?php echo $LanguageInstance->get('seconds');?>.</p>
 		<p><?php echo $LanguageInstance->get('During the session, click on Show task/Show video (on the bottom right of the screen) to switch between the conversation with your partner and the task.');?>.</p>
 	</div>

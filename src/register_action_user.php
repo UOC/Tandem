@@ -5,11 +5,21 @@ require_once dirname(__FILE__).'/constants.php';
 require_once dirname(__FILE__).'/gestorBD.php';
 require_once dirname(__FILE__).'/utils.php';
 
-$gestorBDRegister = new GestorBD();
+$gestorBDRegister   = new GestorBD();
 
-$user_register_obj = isset($_SESSION[CURRENT_USER])?$_SESSION[CURRENT_USER]:false;
+$user_register_obj  = isset($_SESSION[CURRENT_USER])?$_SESSION[CURRENT_USER]:false;
 $course_register_id = isset($_SESSION[COURSE_ID])?$_SESSION[COURSE_ID]:false;
 $id_register_tandem = isset($_SESSION[CURRENT_TANDEM])?$_SESSION[CURRENT_TANDEM]:false;
+
+// tandem_id value on session sometimes goes to -1 because the user has acceess to LTI tool again the we try to get it from
+/*if ($id_register_tandem == -1) {
+    if (isset($_GET['room'])) {
+        $exploded = explode('_', $_GET['room']);
+        $id_register_tandem = end($exploded);
+    } else {
+        error_log("can not get room in check when tandem_id was -1!!!");
+    }
+}*/
 
 if ($user_register_obj && $course_register_id && $id_register_tandem && isset($user_register_obj->id) && $user_register_obj->id>0) {
 
@@ -23,6 +33,7 @@ if ($user_register_obj && $course_register_id && $id_register_tandem && isset($u
 	$number_task_old = isset($_SESSION[TANDEM_NUMBER_FIELD])?intval($_SESSION[TANDEM_NUMBER_FIELD],10):-1;
 	
 	$number_task = isset($_GET[TANDEM_NUMBER_FIELD])?intval($_GET[TANDEM_NUMBER_FIELD],10):-1;
+	
 	
 	
 	if ($number_task > 0) {
@@ -79,23 +90,24 @@ if ($user_register_obj && $course_register_id && $id_register_tandem && isset($u
 	
 	$tandem_register = $gestorBDRegister->obteTandem($id_register_tandem);
 	$id_resource_register = $_SESSION[ID_RESOURCE];
-	$user_obj->is_host = false;
+	//$user_obj->is_host = false;
 	//T'han convidat
 	$exercise_register = $tandem_register['name_xml_file'];
 	$room_register = '';
 	$room_register = sanitise_string($exercise_register.getTandemIdentifier($id_register_tandem, $id_resource_register));
 
 
-	if(is_file($room_register.".xml")) {
+	if(is_file(PROTECTED_FOLDER.'/'.$room_register.".xml")) {
 		//Obtenim el xml i el guardem a la bd
-		$xml_register = file_get_contents($room_register.".xml");
+		$xml_register = file_get_contents(PROTECTED_FOLDER.'/'.$room_register.".xml");
 		$gestorBDRegister->registra_xml_tandem($id_register_tandem, $xml_register);
 		if ($is_final) {
-			//DELETE - 20121005 - abertranb - Deletes the unset session 
-			//Netegem la sessio
-			//session_unset();
-			//END
-			unlink($room_register.".xml");
+			delete_xml_file($room_register);
 		}
+	}
+} else {
+	if ($is_final) {
+		$room_register = $_REQUEST['room'];
+		delete_xml_file($room_register);
 	}
 }

@@ -15,16 +15,16 @@ $return->result = 'error';
 $return->sessionid = $id;
 
 if ($id>0) {
-	$tandem = $gestorBD->obteTandem($id); 
+	$tandem = $gestorBD->obteTandem($id);
 }
 
-if ($tandem) {	
+if ($tandem) {
 	$username = $gestorBD->getUserName($user_id);
 	$exercise = $tandem['name_xml_file'];
 	$room = sanitise_string($exercise.getTandemIdentifier($id, $tandem['id_resource_lti']));
 	$tandemBLTI = new IntegrationTandemBLTI();
 	//we need to identify the exercise
-	//Now we try to get data course	
+	//Now we try to get data course
 	$relative_path = isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0 ? $tandem['relative_path'].DIRECTORY_SEPARATOR:'';
 	$data_exercise = $tandemBLTI->getDataExercise($exercise, true, '/'.$relative_path, 'course/'.$tandem['id_course']);
 
@@ -32,7 +32,7 @@ if ($tandem) {
 	$tandemBLTI->endSessionExternalToolXMLUser($user_id, $room,$username);
 	$return->result = 'ok';
 
-	
+
 }
 else {
 	$return->error = 'Unknown tandem id';

@@ -15,23 +15,23 @@ $return->ok = false;
 $return->error = false;
 
 if ($id>0) {
-	$tandem = $gestorBD->obteTandem($id); 
+	$tandem = $gestorBD->obteTandem($id);
 }
 
-if ($tandem && $user_id > 0) {	
+if ($tandem && $user_id > 0) {
 	$username = $gestorBD->getUserName($user_id);
 	$exercise = $tandem['name_xml_file'];
 	$room = sanitise_string($exercise.getTandemIdentifier($id, $tandem['id_resource_lti']));
 	$tandemBLTI = new IntegrationTandemBLTI();
 	//we need to identify the exercise
-	//Now we try to get data course	
+	//Now we try to get data course
 	$relative_path = isset($tandem['relative_path']) && strlen($tandem['relative_path'])>0 ? $tandem['relative_path'].DIRECTORY_SEPARATOR:'';
 	$data_exercise = $tandemBLTI->getDataExercise($exercise, true, $relative_path);
 
 	$room = $tandem['name_xml_file'].$tandem['id_resource_lti']."_".$tandem['id'];
 	$tandemBLTI->endSessionExternalToolXMLUser($user_id, $room,$username);
 	$return->ok = true;
-	
+
 }
 else {
 	$return->error = 'Missing parameters';

@@ -23,6 +23,7 @@ $(document).ready(function(){
 	closeIT = function(){
 		//Lets stop the sound();
 		parent.$.fn.hideSayGoodbye();
+        parent.showExitButton();
 	}
 });
 </script>
@@ -37,7 +38,7 @@ $(document).ready(function(){
 	<div class='row'>
 		<div class='col-md-12'>
 			<?php echo $LanguageInstance->get('Are you sure you want to end this videochat session?');?>
-                        &nbsp;<?php echo $LanguageInstance->get('You will no longer be able to speak to your partner. To end Videochat, say good-bye to your partner and click "End". If you are not ready to close Videochat, click "Stay"');?>
+                        &nbsp;<?php echo $LanguageInstance->get('You will no longer be able to speak to your partner. To end Videochat, say good-bye to your partner and click "End". If you open in a new tab close it. If you are not ready to close Videochat, click "Stay"');?>
 		</div>
 	</div>
 	<div class='row'>

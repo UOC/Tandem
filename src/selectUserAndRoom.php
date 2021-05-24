@@ -86,7 +86,7 @@ if (!$user_obj || !$course_id) {
 	//Permetem que seleccini l'exercici 20111110
 	$is_host = $user_obj->is_host;
 
-	$week = $use_waiting_room && $_SESSION[WEEK]>0?$_SESSION[WEEK]:false;
+	$week = $_SESSION[WEEK]>0?$_SESSION[WEEK]:false;
 	$array_exercises = $gestorBD->get_tandem_exercises($course_id, true, $week);
 	$tandemBLTI = new IntegrationTandemBLTI();
 	$selected_exercise = $tandemBLTI->checkXML2GetExercise($user_obj);
@@ -297,6 +297,80 @@ if (!$user_obj || !$course_id) {
 				$('#start').hide();
 		}
 
+        checkLastPartnerConnection =  function() {
+            var user_selected = $('#user_selected').val();
+            if (user_selected=="" || user_selected=="-1") {
+                alert("<?php echo $LanguageInstance->get( 'select_user' )?>");
+            } else {
+                $.ajax({
+                    type: 'GET',
+                    url: "api/check_partner_last_session.php",
+                    data: {
+                        user_selected: user_selected
+                    },
+                    success: function(ret){
+                        var data = JSON.parse(ret);
+                        if (data.result == "ok" && data.data) {
+                            if (data.data.minutesDiff > 5) {
+                                var str = timeSince(data.data.lastActionTime, data.data.now);
+                                var translated = "<?php echo $LanguageInstance->get( 'your_partner_has_not_connected_since' );?>".replace("FROMTIME", str);
+                                $("#info-block").show();
+                                if ($('#invitationBlock').length>0) {
+                                    $('#invitationBlock').remove();
+                                }
+                                $("#info-block").append("<div class='alert-inside' id='invitationBlock'><i class='icon'></i><h3>" + translated + "</h3><a id='startNowBtnForced' href=\"#\" class='tandem-btn'><?php echo $LanguageInstance->get( 'Yes' );?></a></div>");
+                                $('#startNowBtnForced').click(function (e) {
+                                    e.preventDefault();
+                                    putLink();
+                                });
+                            } else {
+                                putLink();
+                            }
+                        } else {
+                            putLink();
+                        }
+                    },
+                    fail: function() {
+                        putLink();
+                    }
+                });
+                }
+        }
+
+        timeSince = function(date_last_connection, date_now) {
+
+            var t = date_now.split(/[- :]/);
+// Apply each element to the Date function
+            var dNow = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+            t = date_last_connection.split(/[- :]/);
+            var dLastConn = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+
+            var seconds = Math.floor((dNow - dLastConn) / 1000);
+
+            var interval = Math.floor(seconds / 31536000);
+
+            if (interval > 1) {
+                return interval + " <?php echo $LanguageInstance->get('years');?>";
+            }
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) {
+                return interval + " <?php echo $LanguageInstance->get('months');?>";
+            }
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) {
+                return interval + " <?php echo $LanguageInstance->get('days');?>";
+            }
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) {
+                return interval + " <?php echo $LanguageInstance->get('hours');?>";
+            }
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) {
+                return interval + " <?php echo $LanguageInstance->get('minutes');?>";
+            }
+            return Math.floor(seconds) + " <?php echo $LanguageInstance->get('seconds');?>";
+        }
+
 		putLink = function(){
 			getXML();
 			return false;
@@ -425,6 +499,7 @@ if (!$user_obj || !$course_id) {
 		//interval = setInterval("checkExercise_interval",3000);
 		<?php } */?>
 
+        var id_txt_invited_on = 0;
 
 
 		intervalCheck = setInterval(function(){
@@ -437,14 +512,22 @@ if (!$user_obj || !$course_id) {
 				  dataType: "xml",
 				  success: function(xml){
 				  	var id_txt = $(xml).find('id').text();
-				  	if (id_txt &&  id_txt.length>0) {
+				  	if (id_txt &&  id_txt.length>0 && id_txt_invited_on!=id_txt) {
+                        id_txt_invited_on = id_txt;
 						var created_txt = $(xml).find('created').text();
 						var nameuser_txt = $(xml).find('nameuser').text();
 						var exercise_txt = $(xml).find('exercise').text();
 						$("#info-block").show();
-						$("#info-block").append("<div class='alert-inside'><i class='icon'></i><h3><?php echo $LanguageInstance->get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo $LanguageInstance->get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo $LanguageInstance->get('accept');?></a></div>");
+						if ($('#invitationBlock').length>0) {
+                            $('#invitationBlock').remove();
+                        }
+						$("#info-block").append("<div class='alert-inside' id='invitationBlock'><i class='icon'></i><h3><?php echo $LanguageInstance->get('just_been_invited');?> <em>"+nameuser_txt+"</em> <?php echo $LanguageInstance->get('exercise');?>: <em>"+exercise_txt+"</em> </h3><a id='startNowBtn' href=\"accessTandem.php?id="+id_txt+"\" class='tandem-btn'><?php echo $LanguageInstance->get('accept');?></a></div>");
+                        if (intTimerNow) {
+                            clearInterval(intTimerNow);
+                        }
 						setExpiredNow(120);
-						clearInterval(intervalCheck);
+						//Allow multiples
+						//clearInterval(intervalCheck);
 				  	}
 				  },
 				  error: function(){
@@ -599,10 +682,10 @@ if (!$user_obj || !$course_id) {
 								?>
 								<fieldset>
 									<label for="start" title="<?php echo $number?>. <?php echo $LanguageInstance->get('start')?>"><img class="point" src="css/images/p<?php echo $number?>.png" alt="3. <?php echo $LanguageInstance->get('start')?>" /></label>
-									<input type="button" onclick="Javascript:putLink();" id="start" name="start" disabled="disabled" value="<?php echo $LanguageInstance->get('start')?>" class="tandem-btn" tabindex="3" />
+									<input type="button" onclick="Javascript:checkLastPartnerConnection();" id="start" name="start" disabled="disabled" value="<?php echo $LanguageInstance->get('start')?>" class="tandem-btn" tabindex="3" />
 								</fieldset>
 						<?php } else {
-							echo '<div id="alert-top" class="alert alert-warning"><div class="alert-inside"><i class="icon"></i><h3>'.Language::get('no_exercises_found').'</h3></div></div>';
+							echo '<div id="alert-top" class="alert alert-warning"><div class="alert-inside"><i class="icon"></i><h3>'. $LanguageInstance->get('no_exercises_found').'</h3></div></div>';
 						} ?>
 						<div class="manage-area">
 							<?php if ($user_obj->instructor && isset($_POST['delete_users']) && $_POST['delete_users']!=null) {?>
@@ -639,6 +722,7 @@ if (!$user_obj || !$course_id) {
 								<tbody>
 								<?php
 								$ai=0;
+								$user_invited_id_user_host = array();
 								foreach ($pending_invitations as $tandem) {
 								$ai++;
 								?>
@@ -650,7 +734,7 @@ if (!$user_obj || !$course_id) {
 
 										<?php
 										$time2Expire=120;
-										if( (time() - strtotime($tandem['created']))>=$time2Expire){
+										if( (time() - strtotime($tandem['created']))>=$time2Expire || isset($user_invited_id_user_host[$tandem['id_user_host']])){
 										?>
 										<td><a href="#" title="<?php echo $LanguageInstance->get('go')?>" class="tandem-btnout"><?php echo $LanguageInstance->get('caducado')?></a></td>
 										<?php }else{ ?>
@@ -685,7 +769,9 @@ if (!$user_obj || !$course_id) {
 										?>
 
 									</tr>
-								<?php }?>
+								<?php
+                                    $user_invited_id_user_host[$tandem['id_user_host']] = 1;
+								}?>
 								</tbody>
 								</table>
 						 	<?php } ?>
@@ -741,7 +827,7 @@ if (!$user_obj || !$course_id) {
 						<div class="clear">
 							<input type="submit" name="delete_users" onclick="Javascript:canviaAction('delete_users');" value="<?php echo $LanguageInstance->get('Delete users')?>" />
 							<input type="submit" name="reload" onclick="Javascript:canviaAction('');" value="<?php echo $LanguageInstance->get('refresh')?>" />
-							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('activity_log')?>" />
+							<input type="submit" name="showTandemResults" onclick="Javascript:canviaAction('show');" value="<?php echo $LanguageInstance->get('activity_log')?>" />
 							<input type="submit" name="showTandem" onclick="Javascript:canviaAction('exercises');" value="<?php echo $LanguageInstance->get('mange_exercises_tandem')?>" />
 						</div>
 

@@ -341,7 +341,7 @@ CREATE TABLE `waiting_room_user_history` (
   KEY `id_waiting_room` (`id_waiting_room`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
+drop table if exists feedback_tandem;
 create table feedback_tandem
 (
 id bigint auto_increment,
@@ -357,15 +357,16 @@ created  datetime DEFAULT NULL,
 primary key (id)
 );
 
-
+drop table if exists feedback_tandem_form;
 create table feedback_tandem_form(
 id_feedback_tandem bigint,
 feedback_form longtext,
 rating_partner_feedback_form longtext,
-primary key (id_feedback_tandem) 
+primary key (id_feedback_tandem)
 );
 
 
+drop table if exists session;
 CREATE TABLE `session` (
   `id_tandem` int(10) NOT NULL,
   `status` int(10) DEFAULT '0' COMMENT '0, is not set, 1 started video sessio, 2 session available',
@@ -423,7 +424,7 @@ create table user_ranking ( user_id int(10) not null,
               points int(10) default 0,
               course_id int(10) not null,
               lang varchar(50),
-              primary key (user_id,course_id)) 
+              primary key (user_id,course_id))
               ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Volvemos a poner lo del total_time al user ranking */
@@ -474,3 +475,87 @@ CREATE TABLE `feedback_rubric_def_items` (
   `item_id` int(11) NOT NULL,
   PRIMARY KEY (`def_id`,`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- Table to handle the mailing queue
+DROP TABLE IF EXISTS `mailing_queue`;
+CREATE TABLE `mailing_queue` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` enum('queued','processing','done','failed') NOT NULL DEFAULT 'queued',
+  `error_text` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `fullname` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `body` text NOT NULL,
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- Create syntax for TABLE 'questionnaire_certificate'
+DROP TABLE IF EXISTS `questionnaire_certificate`;
+CREATE TABLE `questionnaire_certificate` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `useremail` varchar(100) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `courseKey` varchar(100) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `presurvey` tinyint(1) NOT NULL DEFAULT 0,
+  `presurvey_date` datetime DEFAULT NULL,
+  `postsurvey` tinyint(1) NOT NULL DEFAULT 0,
+  `postsurvey_date` datetime DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+
+CREATE TABLE `tandem_logs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) DEFAULT NULL,
+  `id_course` int(11) DEFAULT NULL,
+  `id_tandem` varchar(100) DEFAULT NULL,
+  `page`  varchar(100) DEFAULT NULL,
+  `params`  mediumtext DEFAULT NULL,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tandem_quiz` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(150) DEFAULT NULL,
+  `language` varchar(10) DEFAULT NULL,
+  `question` text,
+  `correctAnswer` ENUM ('a', 'b','c','d','e'),
+  `correctAnswerText` text,
+  `falseAnswerText` text,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tandem_quiz_answer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `answer` ENUM ('a', 'b','c','d','e'),
+  `answerText` text,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+CREATE TABLE `tandem_quiz` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(150) DEFAULT NULL,
+  `language` varchar(10) DEFAULT NULL,
+  `question` text,
+  `correctAnswer` ENUM ('a', 'b','c','d','e'),
+  `correctAnswerText` text,
+  `falseAnswerText` text,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `tandem_quiz_answer` (
+  `quiz_id` int(11) NOT NULL,
+  `answer` ENUM ('a', 'b','c','d','e'),
+  `answerText` text,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`quiz_id`, `answer`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

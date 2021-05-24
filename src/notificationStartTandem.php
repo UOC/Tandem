@@ -15,6 +15,7 @@ require_once dirname(__FILE__).'/classes/gestorBD.php';
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="js/page-visibility.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	var intTimerNow;
@@ -22,9 +23,13 @@ $(document).ready(function(){
 		//Lets stop the sound();
 		document.getElementById('alertSound').pause();
 		parent.$.fn.hideSoundNotification();
-	}
+	};
 	//Lets make a sound to alert students
 	document.getElementById('alertSound').play();
+    //console.log("Visibility.isHidden());
+    //if (Visibility.isHidden()) {
+    //    alert("<?php //echo $LanguageInstance->get('You are in a videochat with your partner');?>//");
+    //}
 });
 </script>
 </head>

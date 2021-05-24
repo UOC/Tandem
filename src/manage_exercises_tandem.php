@@ -1,4 +1,4 @@
-<?php 
+<?php
 require_once dirname(__FILE__).'/classes/lang.php';
 require_once dirname(__FILE__).'/classes/constants.php';
 require_once dirname(__FILE__).'/classes/gestorBD.php';
@@ -17,6 +17,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 } else {
 	$exercise_name = '';
 	$exercise_week = '';
+	$exercise_type = 'all';
 	$exercise_id = -1;
 	$gestorBD	= new GestorBD();
 	if(isset($_FILES["zip_file"]) && $_FILES["zip_file"]["name"]) {
@@ -24,7 +25,8 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 		$source = $_FILES["zip_file"]["tmp_name"];
 		$type = $_FILES["zip_file"]["type"];
 		$exercise_week = isset($_POST["week"])?$_POST["week"]:0;
-		
+		$exercise_lang = isset($_POST["lang"])?$_POST["lang"]:'all';
+
 		$name = explode(".", $filename);
 		$accepted_types = array('application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed');
 		foreach($accepted_types as $mime_type) {
@@ -33,27 +35,28 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				break;
 			}
 		}
-	
-		$continue = strtolower($name[(count($name)-1)]) == 'zip' ? true : false;
+
+		$continue = strtolower($name[(count($name)-1)]) === 'zip' ? true : false;
 		if(!$continue) {
 			$message = $LanguageInstance->get('error_no_zip_format');
 		} else {
 			$target_path = dirname(__FILE__).DIRECTORY_SEPARATOR.$course_folder;
-			
+
 			$target_path_temp = $target_path.'/temp'.rand();
-				
-			if (!file_exists($target_path))
-				mkdir($target_path, 0777, true);
-			if (!file_exists($target_path_temp))
-				mkdir($target_path_temp, 0777, true);
+			if (!file_exists($target_path)) {
+                mkdir($target_path, 0777, true);
+            }
+			if (!file_exists($target_path_temp)) {
+                mkdir($target_path_temp, 0777, true);
+            }
 			$target_path_file = $target_path.DIRECTORY_SEPARATOR.$filename;
 			if(move_uploaded_file($source, $target_path_file)) {
 				$zip = new ZipArchive();
 				$x = $zip->open($target_path_file);
 				if ($x === true) {
-					$zip->extractTo($target_path_temp); 
+					$zip->extractTo($target_path_temp);
 					$zip->close();
-		
+
 					unlink($target_path_file);
 				}
 				$name_form = isset($_REQUEST['name'])?$_REQUEST['name']:$name[0];
@@ -62,7 +65,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				}
 				$overrides_xml_file = 1==(isset($_REQUEST['overrides_xml_file'])?$_REQUEST['overrides_xml_file']:0);
 				$name_xml_file = getNameXmlFileUnZipped($target_path_temp);
-				
+
 				if (file_exists($target_path.DIRECTORY_SEPARATOR.'data'.$name_xml_file.'.xml') && !$overrides_xml_file) {
 					$message = $LanguageInstance->getTag('file_exercise_xml_aready_exists','<strong>'.$name_xml_file.'</strong>');
 					rrmdir($target_path_temp);
@@ -70,16 +73,16 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 					$message = $LanguageInstance->get('main_xml_file_not_found');
 					rrmdir($target_path_temp);
 				}
-				else 
-				{ 
+				else
+				{
 					$delete = array();
 					$enabled = 1;
-					$id = $gestorBD->register_tandem_exercise($course_id, -1, $user_obj->id, $name_form, $name_xml_file, $enabled, $exercise_week);
+					$id = $gestorBD->register_tandem_exercise($course_id, -1, $user_obj->id, $name_form, $name_xml_file, $enabled, $exercise_week, $exercise_lang);
 					$target_path = dirname(__FILE__).DIRECTORY_SEPARATOR.$course_folder.DIRECTORY_SEPARATOR.$id;
-			
+
 					$delete = moveFromTempToCourseFolder($target_path_temp, $target_path, $delete);
 					rrmdir($target_path_temp);
-					
+
 					$message = $LanguageInstance->getTag('zip_upload_ok',$filename);
 					$message_cls = 'alert-info';
 					$exercise_name = '';
@@ -90,7 +93,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 			}
 		}
 	} else {
-	
+
 		if (isset($_POST['submit']) && strlen($_POST['submit'])>0) {
 			//Here is a POST and dind't get the $_FILE for that reason show error;
 			$message = $LanguageInstance->get('error_choose_file');
@@ -98,10 +101,10 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				$exercise_name = $_POST['name'];
 			}
 		}
-	
-		if (isset($_GET['delete'])) { 
+
+		if (isset($_GET['delete'])) {
 			$delete = $_GET['delete'];
-			
+
 			$exercise = $gestorBD->delete_exercise($course_id, $delete);
 			if ($exercise) {
 				//Eliminem el fitxer xml
@@ -129,14 +132,14 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				$message = $LanguageInstance->get('error_getting_information_of_exercise');
 			}
 		}
-	} 
+	}
 	$array_exercises = $gestorBD->get_tandem_exercises($course_id, 0);
 	$max_upload = (int)(ini_get('upload_max_filesize'));
 	$max_post = (int)(ini_get('post_max_size'));
 	$memory_limit = (int)(ini_get('memory_limit'));
 	$upload_mb = min($max_upload, $max_post, $memory_limit);
 	$force_select_room = isset($_SESSION[FORCE_SELECT_ROOM]) && $_SESSION[FORCE_SELECT_ROOM];
-                    
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -166,14 +169,14 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 
 <!-- accessibility -->
 	<div id="accessibility">
-		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> | 
+		<a href="#content" accesskey="s" title="Acceso directo al contenido"><?php echo $LanguageInstance->get('direct_access_to_content')?></a> |
 		<!--
-		<a href="#" accesskey="n" title="Acceso directo al men� de navegaci�n">Acceso directo al men� de navegaci�n</a> | 
-		<a href="#" accesskey="m" title="Mapa del sitio">Mapa del sitio</a> 
+		<a href="#" accesskey="n" title="Acceso directo al men� de navegaci�n">Acceso directo al men� de navegaci�n</a> |
+		<a href="#" accesskey="m" title="Mapa del sitio">Mapa del sitio</a>
 		-->
 	</div>
 	<!-- /accessibility -->
-	
+
 	<!-- /wrapper -->
 	<div id="wrapper">
 		<!-- main-container -->
@@ -189,7 +192,7 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 					<div id="logo">
 						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
 					</div>
-					
+
 					<div class="clear">
 
 						<h1 class="main-title"><?php echo $LanguageInstance->get('mange_exercises_tandem')?></h1>
@@ -203,11 +206,11 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 
 						<form id="frm-new-exercise" enctype="multipart/form-data" method="post" action="" style="display:none">
 							<div class="frm-group">
-								<label class="frm-label"><?php echo $LanguageInstance->get('exercise_name')?>:</label> 
+								<label class="frm-label"><?php echo $LanguageInstance->get('exercise_name')?>:</label>
 								<input type="text" name="name" value="" />
 							</div>
 							<div class="frm-group">
-								<label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('choose_zip_file')?>:" data-title-none="<?php echo $LanguageInstance->get('file_name')?>:"><?php echo $LanguageInstance->get('choose_zip_file')?>:</label> 
+								<label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('choose_zip_file')?>:" data-title-none="<?php echo $LanguageInstance->get('file_name')?>:"><?php echo $LanguageInstance->get('choose_zip_file')?>:</label>
 								<span class="attach-input">
 									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('none_file_selected')?>" />
 									<span class="attach-input-btn">
@@ -220,7 +223,7 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 							</div>
 							<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
 							<div class="frm-group">
-								<label class="frm-label"><?php echo $LanguageInstance->get('select week')?>:</label> 
+								<label class="frm-label"><?php echo $LanguageInstance->get('select week')?>:</label>
 								<select name="week" >
 									<option value="1">1</option>
 									<option value="2">2</option>
@@ -231,7 +234,18 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 									<option value="0"><?php echo $LanguageInstance->get('not apply')?>:</option>
 								</select>
 							</div>
-							
+
+							<?php } ?>
+							<?php if (isset($_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]) && $_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]==1) {?>
+							<div class="frm-group">
+								<label class="frm-label"><?php echo $LanguageInstance->get('Language')?>:</label>
+								<select name="lang" >
+									<option value="all"><?php echo $LanguageInstance->get('All')?></option>
+									<option value="en_US"><?php echo $LanguageInstance->get('English')?></option>
+									<option value="es_ES"><?php echo $LanguageInstance->get('Spanish')?></option>
+								</select>
+							</div>
+
 							<?php } ?>
 							<div class="frm-foot">
 								<input type="hidden" name="id" value="-1" />
@@ -243,11 +257,11 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 						<?php if ($exercise_id != -1 ) { ?>
 						<form id="frm-edit-exercise" enctype="multipart/form-data" method="post" action="" style="display:block">
 							<div class="frm-group">
-								<label  class="frm-label"><?php echo $LanguageInstance->get('exercise_name')?>:</label> 
+								<label  class="frm-label"><?php echo $LanguageInstance->get('exercise_name')?>:</label>
 								<input type="text" name="name" value="<?php echo $exercise_name ?>" />
 							</div>
 							<div class="frm-group">
-								<label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('choose_zip_file')?>:" data-title-none="<?php echo $LanguageInstance->get('file_name')?>:"><?php echo $LanguageInstance->get('choose_zip_file')?>:</label> 
+								<label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('choose_zip_file')?>:" data-title-none="<?php echo $LanguageInstance->get('file_name')?>:"><?php echo $LanguageInstance->get('choose_zip_file')?>:</label>
 								<span class="attach-input">
 									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('none_file_selected')?>" />
 									<span class="attach-input-btn">
@@ -265,7 +279,7 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 							</div>
 						</form>
 						<?php } ?>
-						
+
 						<div class="manage-area">
 							<h3 class="secundary-title"><?php echo $LanguageInstance->get('exercises_list')?></h3>
 							<?php if ($array_exercises && count($array_exercises)>0) {?>
@@ -275,6 +289,12 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 									<tr>
 										<th><?php echo $LanguageInstance->get('exercise_name')?></th>
 										<th><?php echo $LanguageInstance->get('name_xml_file')?></th>
+										<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
+                                            <th><?php echo $LanguageInstance->get('Week')?></th>
+										<?php } ?>
+										<?php if (isset($_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]) && $_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]==1) {?>
+                                            <th><?php echo $LanguageInstance->get('Language')?></th>
+										<?php } ?>
 										<th class="center"><?php echo $LanguageInstance->get('enabled')?></th>
 										<th class="center"><?php echo $LanguageInstance->get('update')?></th>
 										<th class="center"><?php echo $LanguageInstance->get('delete')?></th>
@@ -286,14 +306,20 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 									<tr class="<?php echo $i%2==0?'normalRow':'alternateRow'?>">
 										<td><?php echo $exercise['name']?></td>
 										<td><?php echo $exercise['name_xml_file']?></td>
-										<td class="center"><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo Language::get($exercise['enabled']=='1'?'yes':'no')?></a></td>
+										<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
+										<td><?php echo $exercise['week']?></td>
+										<?php } ?>
+										<?php if (isset($_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]) && $_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]==1) {?>
+										<td><?php echo $exercise['lang']?></td>
+										<?php } ?>
+										<td class="center"><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo $LanguageInstance->get($exercise['enabled']=='1'?'yes':'no')?></a></td>
 										<td class="center"><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>" class="lnk-btn-edit" title="<?php echo $LanguageInstance->get('update')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('update')?></span></a></td>
 										<td class="center"><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>" class="lnk-btn-trash" title="<?php echo $LanguageInstance->get('delete')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('delete')?></span></a></td>
 									</tr>
-									<?php 
+									<?php
 									$i++;
 									}?>
-								 </tbody> 
+								 </tbody>
 							</table>
 
 							<!--</div>-->
@@ -304,7 +330,7 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 							<?php }?>
 						</div>
 					</div>
-					
+
 				</div>
 				<!-- /content -->
 			</div>
@@ -328,7 +354,7 @@ This site reflects only the views of the authors, and the European Commission ca
 			</div>
 		</div>
 	</div>
-	    
+
 	<!-- /footer -->
 </body>
 </html>

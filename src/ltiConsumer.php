@@ -19,6 +19,7 @@ if ($consumer->get('id')>0) {
 	// LTI consumer launch
 	$manageLTI = new ManageLTI();
 	echo $manageLTI->lti_consumer_launch($consumer, $user, $lang, array('course_id' => $_SESSION[COURSE_ID], 'course_title' => $course["title"]));
+    include_once __DIR__ .'/tandemLog.php';
 } else {
 	show_error(Language::get('invalid_tool'));
 }

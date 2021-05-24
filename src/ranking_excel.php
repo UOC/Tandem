@@ -10,16 +10,18 @@ require_once(dirname(__FILE__) . '/classes/phpexcel-1.8.0/PHPExcel.php');
 
 $user_obj = isset($_SESSION[CURRENT_USER]) ? $_SESSION[CURRENT_USER] : false;
 $course_id = isset($_SESSION[COURSE_ID]) ? $_SESSION[COURSE_ID] : false;
-
+$feedback_selfreflection_form = isset($_SESSION[FEEDBACK_SELFREFLECTION_FORM]) ? $_SESSION[FEEDBACK_SELFREFLECTION_FORM] : false;
 if (!$user_obj || $user_obj->instructor!=1) {
 //Tornem a l'index
 	header('Location: index.php');
 	die();
-} 
-$gestorBD = new GestorBD();  	
+}
+$gestorBD = new GestorBD();
 $usersRanking = $gestorBD->getUsersRanking($course_id, $_SESSION[USE_WAITING_ROOM_NO_TEAMS]);
 //$xls = new Excel_XML('UTF-8', false, $LanguageInstance->get('Users Assigned'));
 $objPHPExcel = new PHPExcel();
+
+include_once __DIR__ .'/tandemLog.php';
 
 // Set document properties
 $objPHPExcel->getProperties()->setCreator("Tandem MOOC")
@@ -35,10 +37,13 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 			->setCellValue('B2', $LanguageInstance->get('Email'))
 			->setCellValue('C2', $LanguageInstance->get('Points'))
 			->setCellValue('D2', $LanguageInstance->get('Total time'))
-			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
-			->setCellValue('F2', $LanguageInstance->get('Accuracy'))
-			->setCellValue('G2', $LanguageInstance->get('Fluency'))
-			->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'));
+		if (!$feedback_selfreflection_form) {
+            $objWorkSheet->
+            setCellValue('F2', $LanguageInstance->get('Accuracy'))
+                ->setCellValue('G2', $LanguageInstance->get('Fluency'))
+                ->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+        }
 		$cont = 3;
 		$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
 		$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
@@ -47,9 +52,11 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 		$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
 		$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
 		$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+        if (!$feedback_selfreflection_form) {
+            $objWorkSheet->getStyle('F2')->getFont()->setBold(true);
+            $objWorkSheet->getStyle('G2')->getFont()->setBold(true);
+            $objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+        }
 
 		foreach ($usersRanking['en'] as $user_id => $f) {
 
@@ -65,10 +72,14 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 				->setCellValue('B' . $cont, $gestorBD->getUserEmail($user_id))
 				->setCellValue('C' . $cont, (isset($f['points']) ? $f['points'] : ''))
 				->setCellValue('D' . $cont, $time)
-				->setCellValue('E' . $cont, intval($f['number_of_tandems']))
-				->setCellValue('F' . $cont, $f['accuracy'])
-				->setCellValue('G' . $cont, $f['fluency'])
-				->setCellValue('H' . $cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+				->setCellValue('E' . $cont, intval($f['number_of_tandems']));
+            if (!$feedback_selfreflection_form) {
+                $objWorkSheet->
+                setCellValue('F' . $cont, $f['accuracy'])
+                    ->setCellValue('G' . $cont, $f['fluency'])
+                    ->setCellValue('H' . $cont,
+                        getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+            }
 			$cont++;
 		}
 	}
@@ -82,20 +93,25 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 			->setCellValue('B2', $LanguageInstance->get('Email'))
 			->setCellValue('C2', $LanguageInstance->get('Points'))
 			->setCellValue('D2', $LanguageInstance->get('Total time'))
-			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
-			->setCellValue('F2', $LanguageInstance->get('Accuracy'))
-			->setCellValue('G2', $LanguageInstance->get('Fluency'))
-			->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'));
+        if (!$feedback_selfreflection_form) {
+            $objWorkSheet->
+            setCellValue('F2', $LanguageInstance->get('Accuracy'))
+                ->setCellValue('G2', $LanguageInstance->get('Fluency'))
+                ->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+        }
 		$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
 		$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
 		$objWorkSheet->getStyle('A2')->getFont()->setBold(true);
 		$objWorkSheet->getStyle('B2')->getFont()->setBold(true);
 		$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+        $objWorkSheet->getStyle('D2')->getFont()->setBold(true);
+        $objWorkSheet->getStyle('E2')->getFont()->setBold(true);
+        if (!$feedback_selfreflection_form) {
+            $objWorkSheet->getStyle('F2')->getFont()->setBold(true);
+            $objWorkSheet->getStyle('G2')->getFont()->setBold(true);
+            $objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+        }
 		$cont = 3;
 		foreach ($usersRanking['es'] as $user_id => $f) {
 
@@ -111,10 +127,14 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 				->setCellValue('B' . $cont, $gestorBD->getUserEmail($user_id))
 				->setCellValue('C' . $cont, (isset($f['points']) ? $f['points'] : ''))
 				->setCellValue('D' . $cont, $time)
-				->setCellValue('E' . $cont, intval($f['number_of_tandems']))
-				->setCellValue('F' . $cont, $f['accuracy'])
-				->setCellValue('G' . $cont, $f['fluency'])
-				->setCellValue('H' . $cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+				->setCellValue('E' . $cont, intval($f['number_of_tandems']));
+            if (!$feedback_selfreflection_form) {
+
+                $objWorkSheet->setCellValue('F' . $cont, $f['accuracy'])
+                    ->setCellValue('G' . $cont, $f['fluency'])
+                    ->setCellValue('H' . $cont,
+                        getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+            }
 			$cont++;
 		}
 	}
@@ -126,10 +146,13 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 			->setCellValue('B2', $LanguageInstance->get('Email'))
 			->setCellValue('C2', $LanguageInstance->get('Points'))
 			->setCellValue('D2', $LanguageInstance->get('Total time'))
-			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'))
-			->setCellValue('F2', $LanguageInstance->get('Accuracy'))
-			->setCellValue('G2', $LanguageInstance->get('Fluency'))
-			->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+			->setCellValue('E2', $LanguageInstance->get('Number of Tandems'));
+            if (!$feedback_selfreflection_form) {
+                $objWorkSheet->
+                setCellValue('F2', $LanguageInstance->get('Accuracy'))
+                    ->setCellValue('G2', $LanguageInstance->get('Fluency'))
+                    ->setCellValue('H2', $LanguageInstance->get('Overall Grade'));
+            }
 		$cont = 3;
 		$objWorkSheet->getStyle('A1')->getFont()->setSize(15);
 		$objWorkSheet->getStyle('A1')->getFont()->setBold(true);
@@ -138,9 +161,11 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 		$objWorkSheet->getStyle('C2')->getFont()->setBold(true);
 		$objWorkSheet->getStyle('D2')->getFont()->setBold(true);
 		$objWorkSheet->getStyle('E2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('F2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('G2')->getFont()->setBold(true);
-		$objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+        if (!$feedback_selfreflection_form) {
+            $objWorkSheet->getStyle('F2')->getFont()->setBold(true);
+            $objWorkSheet->getStyle('G2')->getFont()->setBold(true);
+            $objWorkSheet->getStyle('H2')->getFont()->setBold(true);
+        }
 
 		foreach($usersRanking as $user_id => $f){
 
@@ -155,10 +180,14 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 				->setCellValue('B'.$cont, $gestorBD->getUserEmail($user_id))
 				->setCellValue('C'.$cont, (isset($f['points'])?$f['points']:''))
 				->setCellValue('D'.$cont, $time)
-				->setCellValue('E'.$cont, intval($f['number_of_tandems']))
-				->setCellValue('F'.$cont, $f['accuracy'])
-				->setCellValue('G'.$cont, $f['fluency'])
-				->setCellValue('H'.$cont, getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+				->setCellValue('E'.$cont, intval($f['number_of_tandems']));
+                if (!$feedback_selfreflection_form) {
+                    $objWorkSheet->
+                    setCellValue('F' . $cont, $f['accuracy'])
+                        ->setCellValue('G' . $cont, $f['fluency'])
+                        ->setCellValue('H' . $cont,
+                            getSkillsLevel(getOverallAsIdentifier($f['overall_grade']), $LanguageInstance));
+                }
 			$cont++;
 		}
 	}
@@ -179,4 +208,4 @@ if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) {
 
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 	$objWriter->save('php://output');
-	exit;	  
+	exit;
