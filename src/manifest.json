@@ -1,0 +1,14 @@
+{
+    "name": "Tandem74 Push Notification",
+    "short_name": "tandem74",
+    "gcm_sender_id": "539876079581",
+    "start_url": "/",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "https://cdn.pushalert.co/img/pushalert-square-icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
