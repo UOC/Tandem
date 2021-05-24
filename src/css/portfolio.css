@@ -1,0 +1,37 @@
+.container {
+    margin-top: 20px;
+}
+
+.star-rating {
+    display: inline-block;
+}
+
+.clear-rating {
+    visibility: hidden;
+    display: none;
+    padding-right: 0;
+    width: 0;
+}
+
+.star-rating,
+.clear-rating,
+.rating-container,
+.rating-container > .rating-stars,
+.rating-container > .caption,
+.rating-container > .caption > .label {
+    cursor: default;
+}
+
+.rating-xs {
+    font-size: 20px;
+}
+
+.rating-xs .label {
+    font-size: 12px;
+}
+
+.tandem-badge {
+    width:100%;
+    max-width:47px;
+    margin-right: 3px;
+}

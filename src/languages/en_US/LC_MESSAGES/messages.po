@@ -3,16 +3,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
-"PO-Revision-Date: 2016-10-19 10:30+0100\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2020-03-13 17:07+0100\n"
+"Last-Translator: Antoni Bertran <antoni@tresipunt.com>\n"
+"Language-Team: \n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.5.5\n"
-"POT-Creation-Date: \n"
-"Last-Translator: Antoni Bertran <antoni@tresipunt.com>\n"
-"Language-Team: \n"
-"Language: en_US\n"
+"X-Generator: Poedit 2.2.4\n"
 
 msgid "welcome"
 msgstr "Welcome"
@@ -96,14 +96,10 @@ msgid "select_exercise"
 msgstr "Select Exercise"
 
 msgid "tandem_description_1"
-msgstr ""
-"Welcome %s to the Tandem Pilot. This tool works with Google Chrome, Firefox "
-"4 onwards, Safari 5."
+msgstr "Welcome %s to the Tandem Pilot. This tool works with Google Chrome, Firefox 4 onwards, Safari 5."
 
 msgid "tandem_description_2"
-msgstr ""
-"The Tandem Tool does NOT work with Internet Explorer. We are working on "
-"solving this problem."
+msgstr "The Tandem Tool does NOT work with Internet Explorer. We are working on solving this problem."
 
 msgid "tandem_logo"
 msgstr "Logo Tandem"
@@ -124,9 +120,7 @@ msgid "waitingUserX"
 msgstr "Waiting for"
 
 msgid "acceptance"
-msgstr ""
-"If your tandem partner does not accept within 1 min, this invitation will "
-"expire."
+msgstr "If your tandem partner does not accept within 1 min, this invitation will expire."
 
 msgid "direct_access_to_content"
 msgstr "Direct access to content"
@@ -210,8 +204,7 @@ msgid "error_uploading_file"
 msgstr "There was a problem with the upload. Please try again."
 
 msgid "error_no_zip_format"
-msgstr ""
-"The file you are trying to upload is not a .zip file. Please try again."
+msgstr "The file you are trying to upload is not a .zip file. Please try again."
 
 msgid "error_getting_information_of_exercise"
 msgstr "Exercise not found in data base"
@@ -244,9 +237,7 @@ msgid "overrides_xml_file"
 msgstr "Overrides the XML file if it has the same name"
 
 msgid "file_exercise_xml_aready_exists"
-msgstr ""
-"File %s exists, are you sure you want to overwrite? To do this select "
-"\"Overwrite to Yes\""
+msgstr "File %s exists, are you sure you want to overwrite? To do this select \"Overwrite to Yes\""
 
 msgid "update"
 msgstr "Update"
@@ -261,9 +252,7 @@ msgid "exercise_deleted_ok"
 msgstr "Exercise was successfully removed"
 
 msgid "error_delete_exercise"
-msgstr ""
-"Error deleting the selected exercise, verify that the file exists and has "
-"the correct permissions"
+msgstr "Error deleting the selected exercise, verify that the file exists and has the correct permissions"
 
 msgid "main_xml_file_not_found"
 msgstr "Unable to process the file because can not find main XML file"
@@ -371,7 +360,7 @@ msgid "SlowConn"
 msgstr "Slow connection"
 
 msgid "waiting_remaining_time"
-msgstr "Time for ending Task"
+msgstr "Waiting…"
 
 msgid "Tandem"
 msgstr "Tandem"
@@ -410,8 +399,7 @@ msgid "waiting_for_tandem_assignment"
 msgstr "Waiting for a partner to do tandem"
 
 msgid "number_of_people_waiting_for_tandem"
-msgstr ""
-"people who want to practice the same language as you waiting for a tandem"
+msgstr "people who want to practice the same language as you waiting for a tandem"
 
 msgid "check_if_feedbacks_are_submitted"
 msgstr "Check if other feedback is already sent"
@@ -524,9 +512,7 @@ msgstr "You will redirect to tandem activity in"
 msgid "seconds"
 msgstr "seconds"
 
-msgid ""
-"During the session you will be able to show tandem or videochat. Look at the "
-"buttons on the top"
+msgid "During the session you will be able to show tandem or videochat. Look at the buttons on the top"
 msgstr "During the session you will be able to show tandem or videochat."
 
 msgid "Start tandem now!"
@@ -593,7 +579,7 @@ msgid "Created"
 msgstr "Created"
 
 msgid "Total Duration"
-msgstr "Total Duration"
+msgstr "Total speaking time"
 
 msgid "Duration per task"
 msgstr "Duration per task"
@@ -617,15 +603,13 @@ msgid "View"
 msgstr "View"
 
 msgid "max_num_of_tandem_rooms_reached"
-msgstr ""
-"The maximum number of allowed active tandem rooms is currently in used, "
-"please try again later or refresh the page"
+msgstr "The maximum number of allowed active tandem rooms is currently in used, please try again later or refresh the page"
 
 msgid "refresh_page"
 msgstr "Refresh the page"
 
-msgid "You should to be connected with your partner using videochat"
-msgstr "You should to be connected with your partner using videochat"
+msgid "You and your partner have to enable microphone and webcam to start Tandem"
+msgstr "You and your partner have to enable microphone and webcam to start Tandem"
 
 msgid "Playing and recording videochat"
 msgstr "Videochat is playing and recording"
@@ -651,50 +635,20 @@ msgstr "Users waiting to practice English"
 msgid "Go online at every hour and half-hour"
 msgstr "Go online at every hour and half-hour"
 
-msgid ""
-"ALWAYS take your microphone and headphones (even if you have a laptop) and "
-"check that they work well in %s'Try your audio and video settings'%s on the "
-"top of the main page of the MOOC"
-msgstr ""
-"ALWAYS take your microphone and headphones (even if you have a laptop) and "
-"check that they work well in \"Try your audio and video settings\" on the "
-"top of the main page of the MOOC"
+msgid "ALWAYS take your microphone and headphones (even if you have a laptop) and check that they work well in %s'Try your audio and video settings'%s on the top of the main page of the MOOC"
+msgstr "ALWAYS take your microphone and headphones (even if you have a laptop) and check that they work well in \"Try your audio and video settings\" on the top of the main page of the MOOC"
 
-msgid ""
-"Enter Tandem (The tandem icon is a green 't'). Then wait until a tandem "
-"partner connects with you"
-msgstr ""
-"Enter Tandem (The tandem icon is a green \"t\"). Then wait until a tandem "
-"partner connects with you"
+msgid "Enter Tandem (The tandem icon is a green 't'). Then wait until a tandem partner connects with you"
+msgstr "Enter Tandem (The tandem icon is a green \"t\"). Then wait until a tandem partner connects with you"
 
-msgid ""
-"As soon as a Tandem partner connects with you, Videochat will be "
-"automatically activated and will start RECORDING.  Don’t be shy and don’t "
-"exit!  A window with the tandem tasks will be also automatically activated "
-"and you and your partner will be able to switch from the Videochat window to "
-"the Tandem window very easily"
-msgstr ""
-"As soon as a Tandem partner connects with you, Videochat will be "
-"automatically activated and will start RECORDING.  Don’t be shy and don’t "
-"exit!  A window with the tandem tasks will be also automatically activated "
-"and you and your partner will be able to switch from the Videochat window to "
-"the Tandem window very easily"
+msgid "As soon as a Tandem partner connects with you, Videochat will be automatically activated and will start RECORDING.  Don’t be shy and don’t exit!  A window with the tandem tasks will be also automatically activated and you and your partner will be able to switch from the Videochat window to the Tandem window very easily"
+msgstr "As soon as a Tandem partner connects with you, Videochat will be automatically activated and will start RECORDING.  Don’t be shy and don’t exit!  A window with the tandem tasks will be also automatically activated and you and your partner will be able to switch from the Videochat window to the Tandem window very easily"
 
-msgid ""
-"Do the tandem with your partner and REMEMBER that when the instructions are "
-"in Spanish you and your partner speak Spanish. When the instructions are in "
-"English, you speak English"
-msgstr ""
-"Do the tandem with your partner and REMEMBER that when the instructions are "
-"in Spanish you and your partner speak Spanish. When the instructions are in "
-"English, you speak English"
+msgid "Do the tandem with your partner and REMEMBER that when the instructions are in Spanish you and your partner speak Spanish. When the instructions are in English, you speak English"
+msgstr "Do the tandem with your partner and REMEMBER that when the instructions are in Spanish you and your partner speak Spanish. When the instructions are in English, you speak English"
 
-msgid ""
-"IMMEDIATELY after the tandem activity, please evaluate your partner by "
-"clicking on 'peer review', where you fill in the portfolio"
-msgstr ""
-"IMMEDIATELY after the tandem activity, please evaluate your partner by "
-"clicking on \"peer review\", where you fill in the portfolio"
+msgid "IMMEDIATELY after the tandem activity, please evaluate your partner by clicking on 'peer review', where you fill in the portfolio"
+msgstr "IMMEDIATELY after the tandem activity, please evaluate your partner by clicking on \"peer review\", where you fill in the portfolio"
 
 msgid "6 STEPS for a successful Tandem experience"
 msgstr "6 STEPS for a successful Tandem experience"
@@ -706,19 +660,16 @@ msgid "Close this Popup to start"
 msgstr "Close this Popup to start"
 
 msgid "thirty_second_notification_message"
-msgstr ""
-"We have sent an email to your partner because he/she has not connected in 60 "
-"seconds, waiting to connect..."
+msgstr "We have sent an email to your partner because he/she has not connected in 60 seconds, waiting to connect..."
 
-msgid ""
-"Your partner is waiting for you to do a tandem, please click on the "
-"following Link to access the tandem.<br ><br /><a href='%s'>Go to Tandem</a>"
-msgstr ""
-"Your partner is waiting for you to do a tandem, please click on the "
-"following Link to access the tandem.<br ><br /><a href='%s'>Go to Tandem</a>"
+msgid "Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%s'>Go to Tandem</a>"
+msgstr "Your partner is waiting for you to do a tandem, please click on the following Link to access the tandem.<br ><br /><a href='%s'>Go to Tandem</a>"
 
 msgid "Your partner is waiting for you to do a tandem"
 msgstr "Your partner is waiting for you to do a tandem"
+
+msgid "Your partner %s is waiting for you to do a tandem"
+msgstr "Your partner %s is waiting for you to do a tandem"
 
 msgid "Export to excel"
 msgstr "Export to excel"
@@ -730,15 +681,10 @@ msgid "Position"
 msgstr "Position"
 
 msgid "top_10_ranking_message"
-msgstr ""
-"If you are one of the top ten students in your list, you will get a special "
-"mention in your certificate. If you are one of the top three, you'll also "
-"get a special prize!"
+msgstr "If you are one of the top ten students in your list, you will get a special mention in your certificate. If you are one of the top three, you'll also get a special prize!"
 
 msgid "portfolio_info"
-msgstr ""
-"Here you can see the feedback your partners have given to you at the end of "
-"the tandem"
+msgstr "Here you can see the feedback your partners have given to you at the end of the tandem"
 
 msgid "Is teacher"
 msgstr "Is teacher"
@@ -752,12 +698,8 @@ msgstr "Learner of Spanish"
 msgid "List of all your tandems"
 msgstr "List of all your tandems"
 
-msgid ""
-"For each Tandem activity you complete, you will receive points based on the "
-"feedback you provide, and the feedback you receive"
-msgstr ""
-"For each Tandem activity you complete, you will receive points based on the "
-"feedback you provide, and the feedback you receive"
+msgid "For each Tandem activity you complete, you will receive points based on the feedback you provide, and the feedback you receive"
+msgstr "For each Tandem activity you complete, you will receive points based on the feedback you provide, and the feedback you receive"
 
 msgid "Show student view"
 msgstr "Show student view"
@@ -772,10 +714,7 @@ msgid "%s portfolio"
 msgstr "%s portfolio"
 
 msgid "portfolio_header"
-msgstr ""
-"Below you can find a summary of your ranking position, the feedback that you "
-"received throughout the whole course, and the feedback provided by your "
-"tandem partners."
+msgstr "Below you can find a summary of your ranking position, the feedback that you received throughout the whole course, and the feedback provided by your tandem partners."
 
 msgid "Self Assessment"
 msgstr "Self-Assessment"
@@ -784,22 +723,13 @@ msgid "Self Assessment Form"
 msgstr "Self-Assessment Form"
 
 msgid "The aim of this form is for you to self-assess your own learning"
-msgstr ""
-"The purpose of this form is that you evaluate yourself how was your learning"
+msgstr "The purpose of this form is that you evaluate yourself how was your learning"
 
-msgid ""
-"Thinking about and being aware of your learning is key when learning a "
-"language"
-msgstr ""
-"Thinking about and being aware of your learning is key when learning a "
-"language"
+msgid "Thinking about and being aware of your learning is key when learning a language"
+msgstr "Thinking about and being aware of your learning is key when learning a language"
 
-msgid ""
-"If you are aware of your language level, you will know what to do to keep "
-"improving"
-msgstr ""
-"If you are aware of your language level, you will know what to do to keep "
-"improving"
+msgid "If you are aware of your language level, you will know what to do to keep improving"
+msgstr "If you are aware of your language level, you will know what to do to keep improving"
 
 msgid "My language level is"
 msgstr "My language level is"
@@ -828,12 +758,8 @@ msgstr "What things could you have done better in this course?"
 msgid "(i.e. Searching for resources on my own, more participation , etc)"
 msgstr "(i.e. Searching for resources on my own, more participation , etc)"
 
-msgid ""
-"After your participation in the course, are you more aware of how to improve "
-"your language level?"
-msgstr ""
-"After your participation in the course, are you more aware of how to improve "
-"your language level?"
+msgid "After your participation in the course, are you more aware of how to improve your language level?"
+msgstr "After your participation in the course, are you more aware of how to improve your language level?"
 
 msgid "(for instance, seeing films, reading books, etc)"
 msgstr "(for instance, seeing films, reading books, etc)"
@@ -844,32 +770,20 @@ msgstr "The feedback I have been given has helped me to improve"
 msgid "Explain how"
 msgstr "Explain how"
 
-msgid ""
-"What aspects of the feedback provided to you were helpful and what were not?"
-msgstr ""
-"What aspects of the feedback provided to you were helpful and what were not?"
+msgid "What aspects of the feedback provided to you were helpful and what were not?"
+msgstr "What aspects of the feedback provided to you were helpful and what were not?"
 
 msgid "Do you agree with those comments?"
 msgstr "Do you agree with those comments?"
 
-msgid ""
-"Giving feedback to my partners has also helped me in the learning process"
-msgstr ""
-"Giving feedback to my partners has also helped me in the learning process"
+msgid "Giving feedback to my partners has also helped me in the learning process"
+msgstr "Giving feedback to my partners has also helped me in the learning process"
 
-msgid ""
-"I feel more confident when speaking the target language outside of the course"
-msgstr ""
-"I feel more confident when speaking the target language outside of the course"
+msgid "I feel more confident when speaking the target language outside of the course"
+msgstr "I feel more confident when speaking the target language outside of the course"
 
-msgid ""
-"Thanks to this course I am able to use the language in different contexts, "
-"such as my personal life, at a professional level, in social networks "
-"(Facebook, etc)"
-msgstr ""
-"Thanks to this course I am able to use the language in different contexts, "
-"such as my personal life, at a professional level, in social networks "
-"(Facebook, etc)"
+msgid "Thanks to this course I am able to use the language in different contexts, such as my personal life, at a professional level, in social networks (Facebook, etc)"
+msgstr "Thanks to this course I am able to use the language in different contexts, such as my personal life, at a professional level, in social networks (Facebook, etc)"
 
 msgid "I know how to use what I’ve learned from the course in my daily life"
 msgstr "I know how to use what I’ve learned from the course in my daily life"
@@ -884,7 +798,7 @@ msgid "Received Feedback"
 msgstr "Received Feedback"
 
 msgid "Download a PDF file with all Tandems"
-msgstr "Download a PDF file with all Tandems"
+msgstr "Download Portfolio PDF"
 
 msgid "Error deleting tandem"
 msgstr "Error deleting tandem"
@@ -899,18 +813,13 @@ msgid "Do you want to delete this tandem?"
 msgstr "Do you want to delete this tandem?"
 
 msgid "I felt comfortable in this speaking practice"
-msgstr ""
-"I felt comfortable in this speaking practice (absolutely no-absolutely yes)"
+msgstr "I felt comfortable in this speaking practice (absolutely no-absolutely yes)"
 
 msgid "I enjoyed doing this task (absolutely no-absolutely yes)"
 msgstr "I enjoyed doing this task (absolutely no-absolutely yes)"
 
-msgid ""
-"This task has helped me to feel more confident in the speaking practice "
-"(absolutely no-absolutely yes)"
-msgstr ""
-"This task has helped me to feel more confident in the speaking practice "
-"(absolutely no-absolutely yes)"
+msgid "This task has helped me to feel more confident in the speaking practice (absolutely no-absolutely yes)"
+msgstr "This task has helped me to feel more confident in the speaking practice (absolutely no-absolutely yes)"
 
 msgid "The thing that has challenged me the most is:"
 msgstr "The thing that has challenged me the most is:"
@@ -941,3 +850,210 @@ msgstr "Comment"
 
 msgid "Missing parameters"
 msgstr "Missing parameters"
+
+msgid "errorCommentStr"
+msgstr "Please, introduce some comment."
+
+msgid "errorCharactersStr"
+msgstr "All items should have at least %s characters."
+
+msgid "errorItemsStr"
+msgstr "Please, introduce at least %s item(s)."
+
+msgid "Partners' valoration of your feedback"
+msgstr "Partners' valoration of your feedback"
+
+msgid "Stars"
+msgstr "Stars"
+
+msgid "Speaking time: %s point per minute"
+msgstr "Speaking time: %s point per minute"
+
+msgid "Giving feedback to my partner after each tandem: %s points"
+msgstr "Giving feedback to my partner after each tandem: %s points"
+
+msgid "The ratings of the feedback I have given: %s points for each star I receive"
+msgstr "The ratings of the feedback I have given: %s points for each star I receive"
+
+msgid "Giving a star-rating to the feedback I receive: %s points"
+msgstr "Giving a star-rating to the feedback I receive: %s points"
+
+msgid "Write here one or more things that you think you did well while you were doing the speaking activity with your partner. For example,"
+msgstr "Write here one or more things that you think you did well while you were doing the speaking activity with your partner. For example,"
+
+msgid "I didn’t hesitate much during the conversation. When I couldn’t remember a word, I explained what I wanted to say in a different way."
+msgstr "I didn’t hesitate much during the conversation. When I couldn’t remember a word, I explained what I wanted to say in a different way."
+
+msgid "I used some linking words that I don’t normally use like despite and although."
+msgstr "I used some linking words that I don’t normally use like despite and although."
+
+msgid "I asked my partner lots of questions. Also, I was able to answer my partner’s questions and give my opinion."
+msgstr "I asked my partner lots of questions. Also, I was able to answer my partner’s questions and give my opinion."
+
+msgid "You can watch the videos of you and your partner doing the Tandem cctivity by clicking on view video at any time while you are completing the Peer review form."
+msgstr "You can watch the videos of you and your partner doing the Tandem cctivity by clicking on view video at any time while you are completing the Peer review form."
+
+msgid "Write here three language errors you remember making while you were doing the speaking activity with your partner. For example,"
+msgstr "Write here three language errors you remember making while you were doing the speaking activity with your partner. For example,"
+
+msgid "I didn't pronounce public correctly."
+msgstr "I didn't pronounce public correctly."
+
+msgid "I said my last travel but I should have said my last holiday."
+msgstr "I said my last travel but I should have said my last holiday."
+
+msgid "I said people is and I should have said people are."
+msgstr "I said people is and I should have said people are."
+
+msgid "Write here any additional comments you would like to say about the Tandem activity you have just done. For example,"
+msgstr "Write here any additional comments you would like to say about the Tandem activity you have just done. For example,"
+
+msgid "The conversation was difficult at the beginning but then I realised I had lots of things to say about the topic. In the end I enjoyed it."
+msgstr "The conversation was difficult at the beginning but then I realised I had lots of things to say about the topic. In the end I enjoyed it."
+
+msgid "Write here one or more things that you think your partner did well while you were doing the speaking activity. For example,"
+msgstr "Write here one or more things that you think your partner did well while you were doing the speaking activity. For example,"
+
+msgid "When you didn’t understand what I was saying, you asked me to explain what I meant."
+msgstr "When you didn’t understand what I was saying, you asked me to explain what I meant."
+
+msgid "You always gave examples to justify your opinions."
+msgstr "You always gave examples to justify your opinions."
+
+msgid "You used some synonyms like busy and crowded."
+msgstr "You used some synonyms like busy and crowded."
+
+msgid "Most of the time your pronunciation was easy to understand."
+msgstr "Most of the time your pronunciation was easy to understand."
+
+msgid "Write here three language errors that you noticed your partner make while you were doing the speaking activity. For example,"
+msgstr "Write here three language errors that you noticed your partner make while you were doing the speaking activity. For example,"
+
+msgid "Sometimes you used the present tense when you were talking about the past."
+msgstr "Sometimes you used the present tense when you were talking about the past."
+
+msgid "You said depends of when you should have said depends on."
+msgstr "You said depends of when you should have said depends on."
+
+msgid "You pronounced culture and disturb incorrectly."
+msgstr "You pronounced culture and disturb incorrectly."
+
+msgid "Write here any additional comments you would like to tell your partner about the Tandem activity you have just done. For example,"
+msgstr "Write here any additional comments you would like to tell your partner about the Tandem activity you have just done. For example,"
+
+msgid "I thought we did part two very well and we had interesting conversation."
+msgstr "I thought we did part two very well and we had interesting conversation."
+
+msgid "vocabulary"
+msgstr "Vocabulary"
+
+msgid "grammar"
+msgstr "Grammar"
+
+msgid "culture"
+msgstr "Culture"
+
+msgid "tandemstrategies"
+msgstr "Tandem Strategies"
+
+msgid "Extremely comfortable"
+msgstr "Muy tranquilo"
+
+msgid "Extremely nervous"
+msgstr "Muy nervioso"
+
+msgid "No TRANS => Required fields are noted with an asterisk (*)"
+msgstr "Todos los campos marcados con asterisco (*) son obligatorios"
+
+msgid "During this task I felt..."
+msgstr "Durante esta tarea me he sentido..."
+
+msgid "Unable to save your feedback. Try again later."
+msgstr "<strong>Error!</strong> Unable to save your feedback. Try again later."
+
+msgid "Your feedback was saved."
+msgstr "<strong>Success!</strong> Your feedback was saved."
+
+msgid "level_badge_1"
+msgstr "Licencia tándem"
+
+msgid "level_badge_1_desc"
+msgstr "Licencia tándem - Intro Quiz"
+
+msgid "level_badge_2"
+msgstr "Novice"
+
+msgid "level_badge_2_desc"
+msgstr "Novice - 3 tandems - 60 mins"
+
+msgid "level_badge_3"
+msgstr "Graduado"
+
+msgid "level_badge_3_desc"
+msgstr "Graduado - 6 tandems - 120 mins"
+
+msgid "level_badge_4"
+msgstr "Super speaker"
+
+msgid "level_badge_4_desc"
+msgstr "Super speaker - 9 tandem - 180 mins"
+
+msgid "level_badge_5"
+msgstr "Experto"
+
+msgid "level_badge_5_desc"
+msgstr "Experto - 12 tandem - 240 min"
+
+msgid "level_badge_6"
+msgstr "Tandem Legend"
+
+msgid "level_badge_6_desc"
+msgstr "Tandem legend-  15 tandems - 300 mins"
+
+msgid "badge_feedback_expert"
+msgstr "Feedback expert"
+
+msgid "badge_feedback_expert_desc"
+msgstr "5 stars on 12 feedbacks"
+
+msgid "badge_loyalty"
+msgstr "Loyalty"
+
+msgid "badge_loyalty_desc"
+msgstr "12 tandems with same partner"
+
+msgid "badge_social"
+msgstr "Social"
+
+msgid "badge_social_desc"
+msgstr "12 tandems with distinct partners"
+
+msgid "badge_week_ranking"
+msgstr "Ranking winner"
+
+msgid "badge_week_ranking_desc"
+msgstr "Ranking winner"
+
+msgid "badge_forms"
+msgstr "Forms completed"
+
+msgid "badge_forms_desc"
+msgstr "All forms completed"
+
+msgid "your_partner_has_not_connected_since"
+msgstr "Your partner has not connected in the last FROMTIME, are you sure you have arranged to meet with this person?"
+
+msgid "years"
+msgstr "years"
+
+msgid "months"
+msgstr "months"
+
+msgid "days"
+msgstr "days"
+
+msgid "hours"
+msgstr "hours"
+
+msgid "minutes"
+msgstr "minutes"

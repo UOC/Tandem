@@ -5,14 +5,13 @@ msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Antoni Bertran <abertranb@uoc.edu>\n"
+"Last-Translator: Antoni Bertran <antoni@tresipunt.com>\n"
 "Language-Team: \n"
+"Language: ca_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7\n"
-"Language-Team: \n"
-"Language: ca_ES\n"
+"X-Generator: Poedit 1.5.5\n"
 
 msgid "welcome"
 msgstr "Hola"
@@ -371,7 +370,7 @@ msgid "SlowConn"
 msgstr "Connexi&oacute; lenta"
 
 msgid "waiting_remaining_time"
-msgstr "Temps per finalitzar"
+msgstr "Esperant…"
 
 msgid "Tandem"
 msgstr "Emparallats"
@@ -442,10 +441,408 @@ msgid "How do you feel today?"
 msgstr "Com et trobes avui?"
 
 msgid "Feedback given"
-msgstr "Feedback donat"
+msgstr "Valoració donada"
 
 msgid "Feedback received"
-msgstr "Feedback rebut"
+msgstr "Valoració rebuda"
 
 msgid "Partner Name"
 msgstr "Nom company"
+
+msgid "Go to the ranking"
+msgstr "Tornar al rànquing"
+
+msgid "Missing feedback parameter"
+msgstr "Falta paràmetre de valoració"
+
+msgid "Can not find feedback"
+msgstr "Valoració no trobada"
+
+msgid "Not authorized"
+msgstr "No estàs autoritzat"
+
+msgid "The information is stored you can only review it"
+msgstr "La informació només es pot consultar"
+
+msgid "Data saved successfully"
+msgstr "Les dades s’han desat correctament"
+
+msgid "fill_required_fields"
+msgstr "Ompliu els camps obligatoris"
+
+msgid "Back to list"
+msgstr "Tornar a la llista"
+
+msgid "peer_review_form"
+msgstr "Valora la intervenció"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "your_partners_name"
+msgstr "Nom del teu company"
+
+msgid "Contact"
+msgstr "Contacte"
+
+msgid "Created"
+msgstr "Creat"
+
+msgid "Exercise"
+msgstr "Exercici"
+
+msgid "Total Duration"
+msgstr "Temps total parlant"
+
+msgid "Duration per task"
+msgstr "Durada per tasca"
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "View video session"
+msgstr "Veure sessió de vídeo"
+
+msgid "Download"
+msgstr "Descarregar"
+
+msgid "Video is processing"
+msgstr "El vídeo s’està processant"
+
+msgid "The video could not be recorded"
+msgstr "La sessió de vídeo no s’ha pogut desar"
+
+msgid "Review your Tandem session"
+msgstr "Revisa la sessió Tandem"
+
+msgid "View received feedback"
+msgstr "Veure valoració rebuda"
+
+msgid "Rate your partner's feedback"
+msgstr "Puntua la valoració del teu company"
+
+msgid "Comments"
+msgstr "Comentaris"
+
+msgid "Add comments"
+msgstr "Afegir comentaris"
+
+msgid "Send"
+msgstr "Enviar"
+
+msgid "cannot_be_modified"
+msgstr "Un cop s’ha desat el formulari, no es podrà modificar"
+
+msgid "partner_feedback_not_available"
+msgstr "La valoració del teu company no està encara disponible"
+
+msgid "Check if feedback has been submitted"
+msgstr "Comprova si el teu company ha enviat la seva valoració"
+
+msgid "Grammatical Resource"
+msgstr "Recurs gramatical"
+
+msgid "Lexical Resource"
+msgstr "Recurs lèxic"
+
+msgid "Discourse Mangement"
+msgstr "Gestió del discurs"
+
+msgid "Interactive Communication"
+msgstr "Comunicació interactiva"
+
+msgid "Pronunciation"
+msgstr "Pronunciació"
+
+msgid "Other Observations"
+msgstr "Altres observacions"
+
+msgid "Indicate other observations"
+msgstr "Indiqueu altres observacions"
+
+msgid "Fluency"
+msgstr "Fluidesa"
+
+msgid "Accuracy"
+msgstr "Precisió"
+
+msgid "Overall Grade"
+msgstr "Nota general"
+
+msgid "Select one"
+msgstr "Selecciona"
+
+msgid "Excellent"
+msgstr "Excellent"
+
+msgid "Very Good"
+msgstr "Molt bé"
+
+msgid "Good"
+msgstr "Bé"
+
+msgid "Pass"
+msgstr "Suficient"
+
+msgid "Fail"
+msgstr "Insuficient"
+
+msgid "Room for improvement"
+msgstr "Espai per millorar"
+
+msgid "Indicate the level of pronunciation"
+msgstr "Indica el nivell de pronunciació"
+
+msgid "Vocabulary"
+msgstr "Vocabulari"
+
+msgid "Indicate the level of vocabulary"
+msgstr "Indica el nivell de vocabulari"
+
+msgid "Grammar"
+msgstr "Gramàtica"
+
+msgid "Indicate the level of grammar"
+msgstr "Indiqueu el nivell de gramàtica"
+
+msgid "Please move the slider to set a value"
+msgstr "Mou el control lliscant per establir un valor"
+
+msgid "Required fields are noted with an asterisk (*)"
+msgstr "Els camps obligatoris s’assenyalen amb un asterisc (*)"
+
+msgid "More information"
+msgstr "Més informació"
+
+msgid "Subject"
+msgstr "Assumpte"
+
+msgid "Comment"
+msgstr "Comentar"
+
+msgid "Missing parameters"
+msgstr "Faltan paràmetres"
+
+msgid "Close"
+msgstr "Tancar"
+
+msgid "Video player"
+msgstr "Reproductor de video"
+
+msgid "Loading the player"
+msgstr "Carregant el reproductor"
+
+msgid "+ Add"
+msgstr "+ Afegir"
+
+msgid "Self-reflection"
+msgstr "Autoreflexió"
+
+msgid "1. One or more things I did well."
+msgstr "1. Una o més coses que he fet bé."
+
+msgid "2. Three language errors I made."
+msgstr "2. Tres errors d’idioma que he fet."
+
+msgid "3. Other comments."
+msgstr "3. Altres comentaris."
+
+msgid "Peer-feedback"
+msgstr "Valoració per al company"
+
+msgid "1. One or more things your partner did well."
+msgstr "1. Una o més coses que la vostra parella hagi fet bé."
+
+msgid "2. Three language errors your partner made."
+msgstr "2. Tres errors d’idioma que ha fet la vostra parella."
+
+msgid "Add other comments"
+msgstr "Afegeix altres comentaris"
+
+msgid "Write one item"
+msgstr "Afegir nou item"
+
+msgid "Received feedback"
+msgstr "Valoració rebuda"
+
+msgid "Submit feedback"
+msgstr "Enviar valoració"
+
+msgid "errorCommentStr"
+msgstr "Si us plau, introdueix un comentari."
+
+msgid "errorCharactersStr"
+msgstr "Totes les valoracions han de tenir almenys $s caràcters."
+
+msgid "errorItemsStr"
+msgstr "Si us plau, introdueix com a mínim %s valoracions."
+
+msgid "Partners' valoration of your feedback"
+msgstr "Valoració mitjana del teu feedback"
+
+msgid "Stars"
+msgstr "Estrelles"
+
+msgid "My portfolio feedback"
+msgstr "El meu portafoli"
+
+msgid "Number of Tandems"
+msgstr "Nombre de tàndems"
+
+msgid "All Feedbacks"
+msgstr "Totes les valoracions"
+
+msgid "Show feedback status"
+msgstr "Mostra l’estat de les valoracions"
+
+msgid "Actions"
+msgstr "Accions"
+
+msgid "Pending"
+msgstr "Pendent"
+
+msgid "View"
+msgstr "Veure"
+
+msgid "Speaking time: %s point per minute"
+msgstr "Temps de conversa: %s punt per minut"
+
+msgid "Giving feedback to my partner after each tandem: %s points"
+msgstr "Donant feedback al meu company després de cada tandem: %s punts"
+
+msgid ""
+"The ratings of the feedback I have given: %s points for each star I receive"
+msgstr ""
+"Les valoracions dels comentaris que he donat: %s punts per cada estrella que "
+"rebo"
+
+msgid "Giving a star-rating to the feedback I receive: %s points"
+msgstr "Donant una puntuació estrella als comentaris que rebo: %s punts"
+
+msgid "portfolio_info"
+msgstr ""
+"Aquí pots veure la valoració que els teus companys t’han fet en acabar el "
+"Tàndem"
+
+msgid ""
+"Write here one or more things that you think you did well while you were "
+"doing the speaking activity with your partner. For example,"
+msgstr ""
+"Escriu aquí una o més coses que penses que vas fer bé mentre parlaves amb la "
+"teva parella. Per exemple,"
+
+msgid ""
+"I didn’t hesitate much during the conversation. When I couldn’t remember a "
+"word, I explained what I wanted to say in a different way."
+msgstr ""
+"No vaig dubtar molt durant la conversa. Quan no podia recordar una paraula, "
+"vaig explicar el que volia dir d’una manera diferent."
+
+msgid ""
+"I used some linking words that I don’t normally use like despite and "
+"although."
+msgstr ""
+"Vaig fer servir algunes conjuncions o locucions que normalment no faig "
+"servir com malgrat i encara que."
+
+msgid ""
+"I asked my partner lots of questions. Also, I was able to answer my "
+"partner’s questions and give my opinion."
+msgstr ""
+"Vaig fer moltes preguntes a la meva parella. A més, vaig poder respondre a "
+"les preguntes del meu company i donar la meva opinió."
+
+msgid ""
+"You can watch the videos of you and your partner doing the Tandem activity "
+"by clicking on view video at any time while you are completing the Peer "
+"review form."
+msgstr ""
+"Pots veure els vídeos teu company i tu realitzant l’activitat Tàndem fent "
+"clic a veure vídeo en qualsevol moment mentre completes el formulari de "
+"valoració de la intervenció del teu company."
+
+msgid ""
+"Write here three language errors you remember making while you were doing "
+"the speaking activity with your partner. For example,"
+msgstr ""
+"Escriu aquí tres errors de llenguatge que recordes haver fet mentre parlaves "
+"amb el teu company. Per exemple,"
+
+msgid "I didn't pronounce public correctly."
+msgstr "No vaig pronunciar públic correctament."
+
+msgid "I said my last travel but I should have said my last holiday."
+msgstr ""
+"Vaig dir el meu últim viatge, però hauria d’haver dit les meves últimes "
+"vacances."
+
+msgid "I said people is and I should have said people are."
+msgstr "Vaig dir que la gent són i hauria d’haver dit que la gent és."
+
+msgid ""
+"Write here any additional comments you would like to say about the Tandem "
+"activity you have just done. For example,"
+msgstr ""
+"Escriu aquí qualsevol comentari addicional sobre l’activitat Tàndem que "
+"acabes de realitzar. Per exemple,"
+
+msgid ""
+"The conversation was difficult at the beginning but then I realised I had "
+"lots of things to say about the topic. In the end I enjoyed it."
+msgstr ""
+"La conversa va ser difícil al principi, però després em vaig adonar que "
+"tenia moltes coses a dir sobre el tema. Al final m’ho vaig passar bé."
+
+msgid ""
+"Write here one or more things that you think your partner did well while you "
+"were doing the speaking activity. For example,"
+msgstr ""
+"Escriu aquí una o més coses que creus que el teu company va fer bé mentre "
+"parlava. Per exemple,"
+
+msgid ""
+"When you didn’t understand what I was saying, you asked me to explain what I "
+"meant."
+msgstr ""
+"Quan no vas entendre el que estava dient, em vas demanar que expliqués el "
+"que volia dir."
+
+msgid "You always gave examples to justify your opinions."
+msgstr "Sempre has donat exemples per justificar les teves opinions."
+
+msgid "You used some synonyms like busy and crowded."
+msgstr "Vas usar alguns sinònims com ple i abarrotat."
+
+msgid "Most of the time your pronunciation was easy to understand."
+msgstr ""
+"La majoria de les vegades la teva pronunciació va ser fàcil d’entendre."
+
+msgid ""
+"Write here three language errors that you noticed your partner make while "
+"you were doing the speaking activity. For example,"
+msgstr ""
+"Escriu aquí tres errors de llenguatge que vas notar que va fer el teu "
+"company mentre parlava. Per exemple,"
+
+msgid ""
+"Sometimes you used the present tense when you were talking about the past."
+msgstr "De vegades usaves el temps present quan parlaves del passat."
+
+msgid "You said depends of when you should have said depends on."
+msgstr "Has dit depèn en quan hauries d’haver dit depèn de."
+
+msgid "You pronounced culture and disturb incorrectly."
+msgstr "Vas pronunciar cultura i molestar incorrectament."
+
+msgid ""
+"Write here any additional comments you would like to tell your partner about "
+"the Tandem activity you have just done. For example,"
+msgstr ""
+"Escriu aquí qualsevol comentari addicional que t’agradaria transmetre al teu "
+"company sobre l’activitat Tàndem que acabes de realitzar. Per exemple,"
+
+msgid ""
+"I thought we did part two very well and we had interesting conversation."
+msgstr ""
+"Vaig pensar que vam fer la segona part molt bé i vam tenir una conversa "
+"interessant."

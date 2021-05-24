@@ -676,7 +676,7 @@ $.Window = (function()  {
 	
 				// append iframe html
 				var scrollingHtml = options.scrollable? "yes":"no";
-				container.append("<iframe style='display:none;' class='window_frame ui-widget-content no-draggable no-resizable "+options.frameClass+"' scrolling='"+scrollingHtml+"' src='"+options.url+"' width='100%' height='"+frameHeight+"px' frameborder='0'></iframe>");
+				container.append("<iframe style='display:none;' class='window_frame ui-widget-content no-draggable no-resizable "+options.frameClass+"' scrolling='"+scrollingHtml+"' src='"+options.url+"' width='100%' height='"+frameHeight+"px' frameborder='0' allow='microphone *; camera *;'></iframe>");
 				frame = container.children(".window_frame");
 	
 				// iframe load finished call back

@@ -11,6 +11,16 @@ $user_register_obj  = isset($_SESSION[CURRENT_USER])?$_SESSION[CURRENT_USER]:fal
 $course_register_id = isset($_SESSION[COURSE_ID])?$_SESSION[COURSE_ID]:false;
 $id_register_tandem = isset($_SESSION[CURRENT_TANDEM])?$_SESSION[CURRENT_TANDEM]:false;
 
+// tandem_id value on session sometimes goes to -1 because the user has acceess to LTI tool again the we try to get it from
+if ($id_register_tandem == -1) {
+    if (isset($_GET['room'])) {
+        $exploded = explode('_', $_GET['room']);
+        $id_register_tandem = end($exploded);
+    } else {
+        error_log("can not get room in check when tandem_id was -1!!!");
+    }
+}
+
 if ($user_register_obj && $course_register_id && $id_register_tandem && isset($user_register_obj->id) && $user_register_obj->id>0) {
 
 	//Regitrem total

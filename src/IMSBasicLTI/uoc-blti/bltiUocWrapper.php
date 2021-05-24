@@ -79,7 +79,7 @@ class bltiUocWrapper extends BLTI {
 	 * @param $usesession
 	 * @param $doredirect
 	 */
-	 function __construct($usesession=true, $doredirect=true, $overwriteconfigurationfile=null, $secret=null) {
+	 function __construct($usesession=false, $doredirect=true, $overwriteconfigurationfile=null, $secret=null) {
 
 	 	$valid = false;
 	 	if ($secret==null) { //Configuration file
@@ -104,7 +104,11 @@ class bltiUocWrapper extends BLTI {
 		 	//abertranb - 20120905 - Adding ext services
 		 	$consumer_instance = new stdClass();
 		 	$consumer_instance->guid	= $this->getConsumerKeyFromPost();
-            $consumer_instance->secret = $this->getSecretMembership();
+	//MODIFIED ***** abertran 20130807 - set the secret of services as membership
+		 	$consumer_instance->secret = $this->getSecretMembership()?$this->getSecretMembership():$secret;
+	// ****** ORIGINAL	 	
+		 	//$consumer_instance->secret = $secret;
+	// ****** END	 		 	
 		 	$consumer_instance->lti_context_id = $this->context_id;
 		 	$consumer_instance->lti_resource_id = $this->info['resource_link_id']; 
 		 	$consumer_instance->title = $this->info['context_title']; 
@@ -220,6 +224,16 @@ class bltiUocWrapper extends BLTI {
 		}
 		
 	}
+
+
+	/** 
+	* Get course title
+	*/
+    function getCourseTitle() {
+        $title = $this->info['context_title'];
+        if ( strlen($title) > 0 ) return $title;
+        return $this->getCourseName();
+    }
 	/**
 	 * This function gets the User key format of UOC
 	 * @see IMSBasicLTI/ims-blti/BLTI#getUserKey()

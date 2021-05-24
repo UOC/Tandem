@@ -1,0 +1,12 @@
+#footer-container {
+    margin-top: -222px;
+    position: inherit;
+}
+
+#wrapper {
+    padding: 0 58px
+}
+
+#jwVideoModal .modal-dialog {
+    width: 680px; /* your width */
+}

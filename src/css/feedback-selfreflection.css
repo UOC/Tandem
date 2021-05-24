@@ -1,0 +1,51 @@
+.feedback-list .close {
+    float: right;
+    color: #000;
+}
+
+.feedback-list .panel {
+    margin-bottom: 10px;
+}
+
+.feedback-list .panel-body {
+    padding: 5px 15px;
+}
+
+.send-feedback-pane h3 {
+    color: #555;
+    margin-bottom: 0;
+}
+
+.send-feedback-pane h4 {
+    color: #777;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.feedback-form {
+    margin-bottom: 25px;
+}
+
+.post-feedback-alerts-container > .alert {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.validation-errors {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.validation-errors > .text-danger {
+    margin: 0;
+    padding: .2em 0 0 0;
+}
+
+.partner-review-rating-container > h3 {
+    margin-top: 10px;
+}
+
+#wrapper {
+    padding: 0 58px 100px 58px;
+}

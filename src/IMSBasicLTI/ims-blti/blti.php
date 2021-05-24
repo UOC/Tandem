@@ -5,9 +5,9 @@ require_once 'OAuth.php';
 // Returns true if this is a Basic LTI message
 // with minimum values to meet the protocol
 function is_basic_lti_request() {
-   $good_message_type = $_REQUEST["lti_message_type"] == "basic-lti-launch-request";
-   $good_lti_version = $_REQUEST["lti_version"] == "LTI-1p0";
-   $resource_link_id = $_REQUEST["resource_link_id"];
+   $good_message_type = isset($_REQUEST["lti_message_type"])?$_REQUEST["lti_message_type"] == "basic-lti-launch-request":false;
+   $good_lti_version = isset($_REQUEST["lti_version"])?$_REQUEST["lti_version"] == "LTI-1p0":false;
+   $resource_link_id = isset($_REQUEST["resource_link_id"])?$_REQUEST["resource_link_id"]:false;
    if ($good_message_type and $good_lti_version and isset($resource_link_id) ) return(true);
    return false;
 }
@@ -239,12 +239,12 @@ class BLTI {
     }
 
     function getUserImage() {
-        $image = $this->info['user_image'];
+        $image = isset($this->info['user_image']) ? $this->info['user_image'] : '';
         if ( strlen($image) > 0 ) return $image;
         $email = $this->getUserEmail();
         if ( $email === false ) return false;
         $size = 40;
-        $grav_url = $_SERVER['HTTPS'] ? 'https://' : 'http://';
+        $grav_url = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
         $grav_url = $grav_url . "www.gravatar.com/avatar.php?gravatar_id=".md5( strtolower($email) )."&size=".$size;
         return $grav_url;
     }
@@ -289,7 +289,7 @@ class BLTI {
     function redirect() {
             $host = $_SERVER['HTTP_HOST'];
             $uri = $_SERVER['PHP_SELF'];
-            $location = $_SERVER['HTTPS'] ? 'https://' : 'http://';
+            $location = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
             $location = $location . $host . $uri;
             $location = $this->addSession($location);
             header("Location: $location");

@@ -42,3 +42,9 @@ border-color: #7E9F0B !important;
 #button-contact{
     margin-left: 15px;
 }
+
+.waiting-message {
+	margin-top: 25px;
+	margin-bottom: 10px;
+	text-align: center;
+}
