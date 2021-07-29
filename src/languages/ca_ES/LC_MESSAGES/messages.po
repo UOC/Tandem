@@ -11,7 +11,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 2.4.2\n"
 
 msgid "welcome"
 msgstr "Hola"
@@ -846,3 +846,105 @@ msgid ""
 msgstr ""
 "Vaig pensar que vam fer la segona part molt bé i vam tenir una conversa "
 "interessant."
+
+msgid "import_exercise"
+msgstr "Importar Exercici"
+
+msgid "re_import_exercise"
+msgstr "ReImportar Exercici"
+
+msgid "Catalan"
+msgstr "Català"
+
+msgid "French"
+msgstr "Francés"
+
+msgid "Level"
+msgstr "Nivell"
+
+msgid "Private"
+msgstr "Privat"
+
+msgid "Public"
+msgstr "Públic"
+
+msgid "Saved successfully"
+msgstr "S'ha guardat correctament"
+
+msgid "Typology"
+msgstr "Tipologia"
+
+msgid "Manage Tasks"
+msgstr "Gestionar Tasques"
+
+msgid "New Task"
+msgstr "Nova Tasca"
+
+msgid "Edit Task"
+msgstr "Editar Tasca"
+
+msgid "Task List"
+msgstr "Llista Tasques"
+
+msgid "Task successfully deleted"
+msgstr "Tasca eliminada correctament"
+
+msgid "Edit Task"
+msgstr "Edita Tasca"
+
+msgid "Timer"
+msgstr "Temportizador"
+
+msgid "minutes"
+msgstr "minuts"
+
+msgid "minute"
+msgstr "minut"
+
+msgid "Description A"
+msgstr "Descripció A"
+
+msgid "Image A"
+msgstr "Imatge A"
+
+msgid "Image A 2"
+msgstr "Imatge A 2"
+
+msgid "Description B"
+msgstr "Descripció B"
+
+msgid "Image B"
+msgstr "Imatge B"
+
+msgid "Image B 2"
+msgstr "Imatge B 2"
+
+msgid "Leave emtpy if it's the same as A"
+msgstr "Deixa-ho buit si és la mateixa que l'A"
+
+msgid "Solution A"
+msgstr "Solució A"
+
+msgid "Image Solution A"
+msgstr "Imatge Solució A"
+
+msgid "Image Solution A 2"
+msgstr "Imatge Solució A 2"
+
+msgid "Solution B"
+msgstr "Solució B"
+
+msgid "Image Solution B"
+msgstr "Imatge Solució B"
+
+msgid "Image Solution B 2"
+msgstr "Imatge Solució B 2"
+
+msgid "Choose Image File"
+msgstr "Selecciona la imatge"
+
+msgid "There was an error storing task"
+msgstr "S'ha produït un error guardant la tasca"
+
+msgid "Some files are not a supported images"
+msgstr "Algunes dels fitxers no són imatges suportades"

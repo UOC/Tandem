@@ -127,8 +127,6 @@ $show_quiz = true;//isset($_SESSION[USE_WAITING_ROOM]) ? $_SESSION[USE_WAITING_R
                    href='manage_exercises_tandem.php'><?php echo $LanguageInstance->get('mange_exercises_tandem'); ?></a>
                 <a href='statistics_tandem.php'
                    class='btn btn-success'><?php echo $LanguageInstance->get('Tandem Statistics'); ?></a>
-                <a href="mailingTools.php"
-                   class='btn btn-success'><?php echo $LanguageInstance->get('Mailing tools'); ?></a>
                 <?php if (!$_SESSION[USE_WAITING_ROOM_NO_TEAMS]) { ?><a
                     href='tandemInfo.php?force=1&lang=en_US<?php echo $select_room ? '&select_room=1' : '' ?>'
                     class='btn btn-success' ><?php echo $LanguageInstance->get('Go to tandem to practise English'); ?></a>

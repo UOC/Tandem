@@ -6664,6 +6664,53 @@ GROUP BY period) AS concurrent_users_report ";
 		return $is_instructor;
 	}
 
+    public function saveTask(
+            $task_id, $title, $language, $level, $typology, $active, $timer_duration, $descriptionA,
+            $descriptionB, $solutionA, $solutionB, $user_id
+    ) {
+        if ( $task_id > 0 ) {
+            $sql    = 'UPDATE tasks set title=' . $this->escapeString( $title ) .
+                    ', language=' . $this->escapeString( $language ) .
+                    ', level=' . $this->escapeString( $level ) .
+                    ', typology=' . $this->escapeString( $typology ) .
+                    ', active=' . $this->escapeString( $active ) .
+                    ', timer_duration = ' . $this->escapeString( $timer_duration ) .
+                    ', descriptionA = ' . $this->escapeString( $descriptionA ) .
+                    ', descriptionB =' . $this->escapeString( $descriptionB ) .
+                    ', solutionA =' . $this->escapeString( $solutionA ) .
+                    ', solutionB =' . $this->escapeString( $solutionB ) .
+                    ', modified_user_id =' . $this->escapeString( $user_id ) .
+                    ', updated_at = now() WHERE id = ' . $task_id;
+            $result = $this->consulta( $sql );
+            if ( ! $result ) {
+                die( "Error updating!! " . print_r( $this->conn->error, true ) );
+            }
+
+        } else {
+            $sql    = 'INSERT INTO `tasks` (`title`, `language`, `level`, `typology`, `active`, `timer_duration`, `descriptionA`, `descriptionB`, `solutionA`, `solutionB`, `created_user_id`, `modified_user_id`, `created_at`, `updated_at`)
+                        VALUES (' . $this->escapeString( $title ) . ',' . $this->escapeString( $language ) . ',' . $this->escapeString( $level ) . ',' . $this->escapeString( $typology ) . ',' . $this->escapeString( $active ) . ',' .
+                    $this->escapeString( $timer_duration ) . ',' . $this->escapeString( $descriptionA ) . ',' . $this->escapeString( $descriptionB ) . ', '  . $this->escapeString( $solutionA ) . ', ' . $this->escapeString( $solutionB ) . ', ' .
+                    $this->escapeString( $user_id ) . ', ' .$this->escapeString( $user_id ) . ', ' .
+                    ' now(),  now())';
+            $result = $this->consulta( $sql );
+            if ( ! $result ) {
+                die( "Error!! " . print_r( $this->conn->error, true ) );
+            }
+            $task_id = $this->get_last_inserted_id();
+        }
+
+        return $task_id;
+    }
+
+    public function saveTaskImage($task_id, $image_field, $file_path) {
+        $sql    = 'UPDATE tasks set '.$image_field.'=' . $this->escapeString( $file_path ) .
+                ' WHERE id = ' . $task_id;
+        $result = $this->consulta( $sql );
+        if ( ! $result ) {
+            die( "Error updating!! " . print_r( $this->conn->error, true ) );
+        }
+    }
+
 
 } // End of class.
 

@@ -902,3 +902,61 @@ function get_video_from_s3($url_video) {
 	}
 	return $url_video;
 }
+
+function check_post_file_is_ok($files, $name)
+{
+    if (isset($files[$name]) && !empty($files[$name]['tmp_name'])) {
+
+        if (the_file_is_image($files[$name]['tmp_name'])) {
+            return FILE_OK;
+        }
+        return FILE_FORMAT_ERROR;
+    }
+    return FILE_NOT_SEND_IN_FORM;
+}
+
+function the_file_is_image($path)
+{
+    $a = getimagesize($path);
+    $image_type = $a[2];
+
+    if(in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP)))
+    {
+        return true;
+    }
+    return false;
+}
+
+function get_task_path($course_id, $task_id) {
+    $path = __DIR__ .'/../repository/' . $course_id .'/'. $task_id;
+    makdir_if_not_exist($path);
+    return $path;
+}
+
+function makdir_if_not_exist($path) {
+    if(!is_dir($path)){
+        //Directory does not exist, so lets create it.
+        mkdir($path, 0755, true);
+    }
+}
+
+function upload_files_task($course_id, $task_id, $images) {
+    $path = get_task_path($course_id, $task_id);
+    $results = array();
+    foreach ($images as $image) {
+        $result = check_post_file_is_ok($_FILES, $image);
+        $target_path_file = '';
+        if ($result === FILE_OK) {
+            $target_path = $path . '/' . $image;
+            makdir_if_not_exist($target_path);
+            $target_path_file = $target_path . '/' . $_FILES[$image]['name'];
+            if(move_uploaded_file($_FILES[$image]['tmp_name'], $target_path_file)) {
+                $result = FILE_UPLOADED;
+            } else {
+                $result = FILE_CAN_NOT_BE_UPLOADED;
+            }
+        }
+        $results[$image] = ['result' => $result, 'path' => $target_path_file];
+    }
+    return $results;
+}

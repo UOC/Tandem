@@ -65,7 +65,12 @@ define ('ENABLE_TASK_EVALUATION', 'enable_task_evaluation');
 define ('SHOW_USER_STATUS', 'show_user_status');
 define ('DISABLE_PROFILE_FORM', 'disable_profile_form');
 define ('FEEDBACK_SELFREFLECTION_FORM', 'feedback_selfreflection_form');
-define ('LMS_RETURN_URL', 'launch_presentation_return_url ');
+define ('LMS_RETURN_URL', 'launch_presentation_return_url');
+define ('FILE_OK', 1);
+define ('FILE_UPLOADED', 10);
+define ('FILE_NOT_SEND_IN_FORM', 0);
+define ('FILE_FORMAT_ERROR', -1);
+define ('FILE_CAN_NOT_BE_UPLOADED', -10);
 
 class BasicLTIConstants {
    /**

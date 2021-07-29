@@ -1,13 +1,13 @@
 # ************************************************************
 # Sequel Pro SQL dump
-# Versión 4541
+# Versiï¿½n 4541
 #
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
 # Host: speakapps.cjzns9zuckel.eu-west-1.rds.amazonaws.com (MySQL 5.6.10)
 # Base de datos: tandem_speakapps
-# Tiempo de Generación: 2021-07-10 06:56:37 +0000
+# Tiempo de Generaciï¿½n: 2021-07-10 06:56:37 +0000
 # ************************************************************
 
 
@@ -771,8 +771,33 @@ CREATE TABLE `waiting_room_user_history` (
   KEY `id_waiting_room` (`id_waiting_room`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
-
+DROP TABLE  IF EXISTS `tasks`;
+CREATE TABLE `tasks` (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+ `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+ `language` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `level` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `typology` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+ `active` decimal(1,0) DEFAULT '1',
+ `timer_duration` int(11) DEFAULT NULL,
+ `descriptionA` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `imageA` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `imageA2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `descriptionB` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `imageB` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `imageB2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `solutionA` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `solutionImageA` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `solutionImageA2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `solutionB` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `solutionImageB` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `solutionImageB2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+ `created_user_id` int(10) unsigned NOT NULL,
+ `modified_user_id` int(10) unsigned NOT NULL,
+ `created_at` timestamp NULL DEFAULT NULL,
+ `updated_at` timestamp NULL DEFAULT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

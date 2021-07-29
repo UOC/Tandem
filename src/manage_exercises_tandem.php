@@ -197,12 +197,13 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 
 						<h1 class="main-title"><?php echo $LanguageInstance->get('mange_exercises_tandem')?></h1>
 
-						<?php  if ($exercise_id == -1 ) { ?>
-						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('new_exercise')?></span></a>
-						<?php }else{ ?>
-						<a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('new_exercise')?></span></a>
-						<a href="#" class="tandem-btn btn-exercise open" id="btn-edit-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('edit_exercise')?>: <em><?php echo $exercise_name ?></em></span></a>
+                        <a href="editor/edit_exercise.php" class="tandem-btn btn-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('new_exercise')?></span></a>
+                        <a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('import_exercise')?></span></a>
+						<?php  if ($exercise_id != -1 ) { ?>
+                            <a href="editor/edit_exercise.php?id=<?php echo $exercise_id?>" class="tandem-btn btn-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('edit_exercise')?></span></a>
+                            <a href="#" class="tandem-btn btn-exercise open" id="btn-edit-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('reimport_exercise')?>: <em><?php echo $exercise_name ?></em></span></a>
 						<?php } ?>
+                        <a href="editor/tasks.php" class="tandem-btn btn-exercise"><span><?php echo $LanguageInstance->get('Manage Tasks')?></span></a>
 
 						<form id="frm-new-exercise" enctype="multipart/form-data" method="post" action="" style="display:none">
 							<div class="frm-group">

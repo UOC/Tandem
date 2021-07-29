@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2020-04-14 22:57+0200\n"
+"PO-Revision-Date: 2021-07-12 06:29+0200\n"
 "Last-Translator: Antoni Bertran <antoni@tresipunt.com>\n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.2\n"
 "X-Language: ca_ES\n"
 "X-Source-Language: C\n"
 
@@ -1389,3 +1389,105 @@ msgstr "Durante la sesión, haz clic en Mostrar tarea/Mostrar video (en la parte
 
 msgid "Your session is now being recorded. Click on the button to see your partner"
 msgstr "La sesión está siendo grabada. Haz click en el botón para ver a tu compañer@"
+
+msgid "import_exercise"
+msgstr "Importar Ejercicio"
+
+msgid "re_import_exercise"
+msgstr "ReImportar Ejercicio"
+
+msgid "Catalan"
+msgstr "Catalán"
+
+msgid "French"
+msgstr "Francés"
+
+msgid "Level"
+msgstr "Nivel"
+
+msgid "Private"
+msgstr "Privado"
+
+msgid "Public"
+msgstr "Público"
+
+msgid "Saved successfully"
+msgstr "Se ha guardado correctamente"
+
+msgid "Typology"
+msgstr "Tipología"
+
+msgid "Manage Tasks"
+msgstr "Gestionar Tareas"
+
+msgid "New Task"
+msgstr "Nueva Tarea"
+
+msgid "Edit Task"
+msgstr "Editar Tarea"
+
+msgid "Task List"
+msgstr "Lista Tareas"
+
+msgid "Task successfully deleted"
+msgstr "Tasca eliminada correctament"
+
+msgid "Edit Task"
+msgstr "Edita Tarea"
+
+msgid "Timer"
+msgstr "Temporizador"
+
+msgid "minutes"
+msgstr "minutos"
+
+msgid "minute"
+msgstr "minuto"
+
+msgid "Description A"
+msgstr "Descripción A"
+
+msgid "Image A"
+msgstr "Imagen A"
+
+msgid "Image A 2"
+msgstr "Imagen A 2"
+
+msgid "Description B"
+msgstr "Descripció B"
+
+msgid "Image B"
+msgstr "Imagen B"
+
+msgid "Image B 2"
+msgstr "Imagen B 2"
+
+msgid "Leave emtpy if it's the same as A"
+msgstr "Déjalo vacio si es la misma que la A"
+
+msgid "Solution A"
+msgstr "Solución A"
+
+msgid "Image Solution A"
+msgstr "Imagen Solución A"
+
+msgid "Image Solution A 2"
+msgstr "Imagen Solución A 2"
+
+msgid "Solution B"
+msgstr "Solución B"
+
+msgid "Image Solution B"
+msgstr "Imagen Solución B"
+
+msgid "Image Solution B 2"
+msgstr "Imagen Solución B 2"
+
+msgid "Choose Image File"
+msgstr "Selecciona la imagen"
+
+msgid "There was an error storing task"
+msgstr "Se ha producido un error guardando la tarea"
+
+msgid "Some files are not a supported images"
+msgstr "Algunas de los ficheros no son imágenes suportadas"
