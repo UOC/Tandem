@@ -6687,11 +6687,11 @@ GROUP BY period) AS concurrent_users_report ";
 
         } else {
             $name_xml_file = 'TandemRepo' . rand(0, 100000) . '-' . time();
-            $sql = 'INSERT INTO `exercise` (`name`, `name_xml_file`, `level`, `enabled`, `created_user_id`, `modified_user_id`, `created`, `modified`)
+            $sql = 'INSERT INTO `exercise` (`name`, `name_xml_file`, `level`, `enabled`, `created_user_id`, `modified_user_id`, `created`, `modified`, `imported`)
                         VALUES (' . $this->escapeString($name) . ',' . $this->escapeString($name_xml_file) . ',' .
                     $this->escapeString($level) . ',' . $this->escapeString($enabled) . ', ' .
                     $this->escapeString($user_id) . ', ' . $this->escapeString($user_id) . ', ' .
-                    ' now(),  now())';
+                    ' now(),  now(), 0)';
             $result = $this->consulta($sql);
             if (!$result) {
                 die("Error!! " . print_r($this->conn->error, true));
