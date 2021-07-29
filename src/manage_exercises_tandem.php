@@ -232,7 +232,7 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
 									<option value="4">4</option>
 									<option value="5">5</option>
 									<option value="6">6</option>
-									<option value="0"><?php echo $LanguageInstance->get('not apply')?>:</option>
+									<option value="0"><?php echo $LanguageInstance->get('not apply')?></option>
 								</select>
 							</div>
 
