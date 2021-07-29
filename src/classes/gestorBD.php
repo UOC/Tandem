@@ -1156,22 +1156,28 @@ class GestorBD {
 		$result = $this->consulta( $sql );
 		if ( $result ) {
 			if ( $id_exercise <= 0 ) {
-				$id_exercise   = $this->get_last_inserted_id();
-				$relative_path = '/' . $id_exercise;
-				$sql           = 'UPDATE exercise SET relative_path=' . $this->escapeString( $relative_path ) .
-				                 ' WHERE id = ' . $id_exercise;
-				$result        = $this->consulta( $sql );
-
-				//Relacionem amb el curs
-				$sql    = 'INSERT INTO course_exercise (id_course, id_exercise, created, created_user_id, week, lang) ' .
-				          'VALUES ' .
-				          '(' . $id_course . ', ' . $id_exercise . ', NOW(), ' . $id_user . ', ' . $this->escapeString( $week ) . ', ' . $this->escapeString( $lang ) . ')';
-				$result = $this->consulta( $sql );
+                $id_exercise = $this->set_tandem_exercise_course($id_user, $id_course, $week, $lang);
 			}
 		}
 
 		return $id_exercise;
 	}
+
+	private function set_tandem_exercise_course($id_user, $id_course, $week, $lang) {
+        $id_exercise   = $this->get_last_inserted_id();
+        $relative_path = '/' . $id_exercise;
+        $sql           = 'UPDATE exercise SET relative_path=' . $this->escapeString( $relative_path ) .
+                ' WHERE id = ' . $id_exercise;
+        $result        = $this->consulta( $sql );
+
+        //Relacionem amb el curs
+        $sql    = 'INSERT INTO course_exercise (id_course, id_exercise, created, created_user_id, week, lang) ' .
+                'VALUES ' .
+                '(' . $id_course . ', ' . $id_exercise . ', NOW(), ' . $id_user . ', ' . $this->escapeString( $week ) . ', ' . $this->escapeString( $lang ) . ')';
+        $result = $this->consulta( $sql );
+
+        return $id_exercise;
+    }
 
 	/**
 	 * Registra un nou tandem a l'espera que l'altre usuari es connecti
@@ -6663,6 +6669,39 @@ GROUP BY period) AS concurrent_users_report ";
 
 		return $is_instructor;
 	}
+
+
+    public function saveExercise(
+            $exercise_id, $name, $lang, $level, $enabled, $id_course, $week, $user_id
+    ) {
+        if ($exercise_id > 0) {
+            $sql = 'UPDATE exercise set name=' . $this->escapeString($name) .
+                    ', level=' . $this->escapeString($level) .
+                    ', enabled=' . $this->escapeString($enabled) .
+                    ', modified_user_id =' . $this->escapeString($user_id) .
+                    ', modified = now() WHERE id = ' . $exercise_id;
+            $result = $this->consulta($sql);
+            if (!$result) {
+                die("Error updating!! " . print_r($this->conn->error, true));
+            }
+
+        } else {
+            $name_xml_file = 'TandemRepo' . rand(0, 100000) . '-' . time();
+            $sql = 'INSERT INTO `exercise` (`name`, `name_xml_file`, `level`, `enabled`, `created_user_id`, `modified_user_id`, `created`, `modified`)
+                        VALUES (' . $this->escapeString($name) . ',' . $this->escapeString($name_xml_file) . ',' .
+                    $this->escapeString($level) . ',' . $this->escapeString($enabled) . ', ' .
+                    $this->escapeString($user_id) . ', ' . $this->escapeString($user_id) . ', ' .
+                    ' now(),  now())';
+            $result = $this->consulta($sql);
+            if (!$result) {
+                die("Error!! " . print_r($this->conn->error, true));
+            }
+            $exercise_id = $this->set_tandem_exercise_course($user_id, $id_course, $week, $lang);
+
+        }
+
+        return $exercise_id;
+    }
 
     public function saveTask(
             $task_id, $title, $language, $level, $typology, $active, $timer_duration, $descriptionA,

@@ -78,9 +78,10 @@ if (isset($_POST['save'])) {
             }
             $gestorBD->saveTaskImage($task_id, $image, $file_path);
         }
-
-    } else {
         $message = $LanguageInstance->get('Saved successfully');
+        $message_cls = 'alert-info';
+    } else {
+        $message = $LanguageInstance->get('Error storing data');
     }
 
 }

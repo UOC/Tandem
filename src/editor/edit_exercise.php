@@ -25,23 +25,27 @@ $message_cls = 'alert-error';
 $exercise_id = isset($_GET['id']) ? intval($_GET['id']) : (isset($_POST['id']) ? intval($_POST['id']) : 0);
 if (isset($_POST['save'])) {
     $title = isset($_POST['title']) ? $_POST['title'] : '';
-    $language = isset($_POST['language']) ? $_POST['language'] : '';
+    $lang = isset($_POST['lang']) ? $_POST['lang'] : '';
+    $week = isset($_POST['week']) ? $_POST['week'] : '';
     $level = isset($_POST['level']) ? $_POST['level'] : '';
     $active = isset($_POST['active']) ? $_POST['active'] : '';
-    $exercise_id = $gestorBD->saveExercise($exercise_id, $title, $language, $level, $active);
+    $exercise_id = $gestorBD->saveExercise($exercise_id, $title, $lang, $level, $active, $course_id, $week, $user_obj->id);
 
     if ($exercise_id > 0) {
         $message = $LanguageInstance->get('Saved successfully');
         $message_cls = 'alert-info';
     } else {
-
+        $message = $LanguageInstance->get('Error storing data');
     }
 
 }
+$levels = array('A1', 'A2', 'B1', 'B2', 'C1', 'C2');
+$weeks = array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '0' => $LanguageInstance->get('not apply'));
 $exercise = array();
 $exercise['id'] = -1;
 $exercise['title'] = '';
-$exercise['language'] = 'en_US';
+$exercise['lang'] = 'all';
+$exercise['week'] = '';
 $exercise['active'] = 1;
 $exercise['level'] = '';
 if ($exercise_id > 0) {
@@ -98,7 +102,7 @@ if ($exercise_id > 0) {
 
                 <div class="clear">
 
-                    <h1 class="main-title"><?php echo $LanguageInstance->get($exercise_id > 0 ? 'edit_exercise' : 'new_exercise') ?></h1>
+                    <h1 class="main-title"><?php echo $LanguageInstance->get($exercise_id > 0 ? 'Edit exercise' : 'New exercise') ?></h1>
 
 
                     <div class='row'>
@@ -109,34 +113,37 @@ if ($exercise_id > 0) {
                                     <input type="text" id="title" name="title"
                                            value="<?php echo $exercise['title'] ?>">
                                 </div>
+                                <?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
+                                    <div class="frm-group">
+                                        <label class="frm-label"><?php echo $LanguageInstance->get('select week')?>:</label>
+                                        <select name="week" >
+                                            <?php
+                                            foreach ($weeks as $key => $week) { ?>
+                                                <option value="<?php echo $key?>" <?php echo $key == $task['week'] ? 'selected' :
+                                                        '' ?>><?php echo $week ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
+                                <?php } ?>
+                                <?php if (isset($_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]) && $_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]==1) {?>
                                 <div class="frm-group">
-                                    <label for="language" class="frm-label"><?php echo $LanguageInstance->get('Language') ?>:</label>
-                                    <select id="language" name="language">
-                                        <option value="ca_ES" <?php echo 'ca_ES' == $exercise['language'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('Catalan') ?></option>
-                                        <option value="en_US" <?php echo 'en_US' == $exercise['language'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('English') ?></option>
-                                        <option value="es_ES" <?php echo 'es_ES' == $exercise['language'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('Spanish') ?></option>
-                                        <option value="es_ES" <?php echo 'fr_FR' == $exercise['language'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('French') ?></option>
+                                    <label for="lang" class="frm-label"><?php echo $LanguageInstance->get('Language') ?>:</label>
+                                    <select id="lang" name="lang">
+                                        <option value="all"><?php echo $LanguageInstance->get('All')?></option>
+                                        <option value="en_US"><?php echo $LanguageInstance->get('English')?></option>
+                                        <option value="es_ES"><?php echo $LanguageInstance->get('Spanish')?></option>
                                     </select>
                                 </div>
+                                <?php } ?>
                                 <div class="frm-group">
                                     <label for="level" class="frm-label"><?php echo $LanguageInstance->get('Level') ?>:</label>
                                     <select id="level" name="level">
-                                        <option value="A1" <?php echo 'A1' == $exercise['level'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('A1') ?></option>
-                                        <option value="A2" <?php echo 'A2' == $exercise['level'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('A2') ?></option>
-                                        <option value="B1" <?php echo 'B1' == $exercise['level'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('B1') ?></option>
-                                        <option value="B2" <?php echo 'B2' == $exercise['level'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('B2') ?></option>
-                                        <option value="B1" <?php echo 'C1' == $exercise['level'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('C1') ?></option>
-                                        <option value="B2" <?php echo 'C2' == $exercise['level'] ? 'selected' :
-                                                '' ?>><?php echo $LanguageInstance->get('C2') ?></option>
+                                        <?php
+                                        foreach ($levels as $level) { ?>
+                                            <option value="<?php echo $level?>" <?php echo $level == $task['level'] ? 'selected' :
+                                                    '' ?>><?php echo $LanguageInstance->get($level) ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
 
