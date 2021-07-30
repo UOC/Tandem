@@ -123,11 +123,15 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 		} elseif (isset($_GET['update_exercise_form_id'])) {
 			$update_exercise_form_id = $_GET['update_exercise_form_id'];
 			$exercise = $gestorBD->get_exercise($update_exercise_form_id);
-			if ($exercise && count($exercise)>'') {
+			if ($exercise && count($exercise)> 0) {
 				if (strlen($exercise_name)==0) { //Because if it has some value is because user indicated it
 					$exercise_name = $exercise[0]['name'];
 				}
 				$exercise_id = $exercise[0]['id'];
+				if ($exercise[0]['imported'] == 0) {
+                    header ('Location: editor/edit_exercise.php?id='.$exercise_id);
+				    exit();
+                }
 			} else {
 				$message = $LanguageInstance->get('error_getting_information_of_exercise');
 			}
@@ -201,7 +205,7 @@ $("#GoBack").attr("href","<?php echo isset($_SESSION[USE_WAITING_ROOM]) && $_SES
                         <a href="#" class="tandem-btn btn-exercise" id="btn-new-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('import_exercise')?></span></a>
 						<?php  if ($exercise_id != -1 ) { ?>
                             <a href="editor/edit_exercise.php?id=<?php echo $exercise_id?>" class="tandem-btn btn-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('edit_exercise')?></span></a>
-                            <a href="#" class="tandem-btn btn-exercise open" id="btn-edit-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('reimport_exercise')?>: <em><?php echo $exercise_name ?></em></span></a>
+                            <a href="#" class="tandem-btn btn-exercise open" id="btn-edit-exercise"><i class="icon"></i><span><?php echo $LanguageInstance->get('re_import_exercise')?>: <em><?php echo $exercise_name ?></em></span></a>
 						<?php } ?>
                         <a href="editor/tasks.php" class="tandem-btn btn-exercise"><span><?php echo $LanguageInstance->get('Manage Tasks')?></span></a>
 

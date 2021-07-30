@@ -6685,6 +6685,13 @@ GROUP BY period) AS concurrent_users_report ";
                 die("Error updating!! " . print_r($this->conn->error, true));
             }
 
+            $sql    = 'UPDATE course_exercise set week = ' . $this->escapeString( $week ) . ', lang = ' . $this->escapeString( $lang ) .
+                    ' WHERE  id_course = ' . $id_course . ' and  id_exercise = '. $exercise_id ;
+            $result = $this->consulta( $sql );
+            if (!$result) {
+                die("Error!! " . print_r($this->conn->error, true));
+            }
+
         } else {
             $name_xml_file = 'TandemRepo' . rand(0, 100000) . '-' . time();
             $sql = 'INSERT INTO `exercise` (`name`, `name_xml_file`, `level`, `enabled`, `created_user_id`, `modified_user_id`, `created`, `modified`, `imported`)
@@ -6750,6 +6757,20 @@ GROUP BY period) AS concurrent_users_report ";
         }
     }
 
+    public function getExerciseCourseData($exercise_id, $course_id) {
+        $row    = false;
+        $where  = 'where id_exercise = ' . $exercise_id . ' AND id_course = '.$course_id;
+        $result = $this->consulta( 'SELECT * FROM course_exercise   ' .
+                $where
+        );
+        if ( $this->numResultats( $result ) > 0 ) {
+            $arr = $this->obteComArray( $result );
+            if (count($arr) > 0) {
+                $row = $arr[0];
+            }
+        }
+        return $row;
+    }
 
 } // End of class.
 

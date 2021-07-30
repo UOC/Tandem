@@ -41,6 +41,7 @@ if (isset($_POST['save'])) {
 }
 $levels = array('A1', 'A2', 'B1', 'B2', 'C1', 'C2');
 $weeks = array('1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6', '0' => $LanguageInstance->get('not apply'));
+$langs = array('all' => $LanguageInstance->get('All'), 'en_US' => $LanguageInstance->get('English'), 'es_ES' => $LanguageInstance->get('Spanish'));
 $exercise = array();
 $exercise['id'] = -1;
 $exercise['title'] = '';
@@ -49,7 +50,22 @@ $exercise['week'] = '';
 $exercise['active'] = 1;
 $exercise['level'] = '';
 if ($exercise_id > 0) {
-    $exercise = $gestorBD->get_questions_quiz_manage($exercise_id);
+    $exercise_array = $gestorBD->get_exercise($exercise_id);
+    $exercise_id = $exercise_array[0]['id'];
+    if ($exercise_array[0]['imported'] == 1) {
+        header ('Location: ../manage_exercises_tandem.php?update_exercise_form_id='.$exercise_id);
+        exit();
+    } else {
+
+        $data = $gestorBD->getExerciseCourseData($exercise_id, $course_id);
+        $exercise['id'] = $exercise_id;
+        $exercise['title'] = $exercise_array[0]['name'];
+        $exercise['lang'] = $data ? $data['lang'] : 'all';
+        $exercise['week'] = $data ? $data['week'] : '';
+        $exercise['active'] = $exercise_array[0]['enabled'];
+        $exercise['level'] = $exercise_array[0]['level'];
+
+    }
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -119,7 +135,7 @@ if ($exercise_id > 0) {
                                         <select name="week" >
                                             <?php
                                             foreach ($weeks as $key => $week) { ?>
-                                                <option value="<?php echo $key?>" <?php echo $key == $task['week'] ? 'selected' :
+                                                <option value="<?php echo $key?>" <?php echo $key == $exercise['week'] ? 'selected' :
                                                         '' ?>><?php echo $week ?></option>
                                             <?php } ?>
                                         </select>
@@ -130,9 +146,11 @@ if ($exercise_id > 0) {
                                 <div class="frm-group">
                                     <label for="lang" class="frm-label"><?php echo $LanguageInstance->get('Language') ?>:</label>
                                     <select id="lang" name="lang">
-                                        <option value="all"><?php echo $LanguageInstance->get('All')?></option>
-                                        <option value="en_US"><?php echo $LanguageInstance->get('English')?></option>
-                                        <option value="es_ES"><?php echo $LanguageInstance->get('Spanish')?></option>
+                                        <?php
+                                        foreach ($langs as $key => $lang) { ?>
+                                            <option value="<?php echo $key?>" <?php echo $key == $exercise['lang'] ? 'selected' :
+                                                    '' ?>><?php echo $lang ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <?php } ?>
@@ -141,7 +159,7 @@ if ($exercise_id > 0) {
                                     <select id="level" name="level">
                                         <?php
                                         foreach ($levels as $level) { ?>
-                                            <option value="<?php echo $level?>" <?php echo $level == $task['level'] ? 'selected' :
+                                            <option value="<?php echo $level?>" <?php echo $level == $exercise['level'] ? 'selected' :
                                                     '' ?>><?php echo $LanguageInstance->get($level) ?></option>
                                         <?php } ?>
                                     </select>
