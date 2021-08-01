@@ -6693,7 +6693,7 @@ GROUP BY period) AS concurrent_users_report ";
             }
 
         } else {
-            $name_xml_file = 'TandemRepo' . rand(0, 100000) . '-' . time();
+            $name_xml_file = 'TandemRepo' . rand(0, 100000) . time();
             $sql = 'INSERT INTO `exercise` (`name`, `name_xml_file`, `level`, `enabled`, `created_user_id`, `modified_user_id`, `created`, `modified`, `imported`)
                         VALUES (' . $this->escapeString($name) . ',' . $this->escapeString($name_xml_file) . ',' .
                     $this->escapeString($level) . ',' . $this->escapeString($enabled) . ', ' .
@@ -6712,7 +6712,7 @@ GROUP BY period) AS concurrent_users_report ";
 
     public function saveTask(
             $task_id, $title, $language, $level, $typology, $active, $timer_duration, $descriptionA,
-            $descriptionB, $solutionA, $solutionB, $user_id
+            $descriptionB, $solutionA, $solutionB, $user_id, $id_course
     ) {
         if ( $task_id > 0 ) {
             $sql    = 'UPDATE tasks set title=' . $this->escapeString( $title ) .
@@ -6733,8 +6733,8 @@ GROUP BY period) AS concurrent_users_report ";
             }
 
         } else {
-            $sql    = 'INSERT INTO `tasks` (`title`, `language`, `level`, `typology`, `active`, `timer_duration`, `descriptionA`, `descriptionB`, `solutionA`, `solutionB`, `created_user_id`, `modified_user_id`, `created_at`, `updated_at`)
-                        VALUES (' . $this->escapeString( $title ) . ',' . $this->escapeString( $language ) . ',' . $this->escapeString( $level ) . ',' . $this->escapeString( $typology ) . ',' . $this->escapeString( $active ) . ',' .
+            $sql    = 'INSERT INTO `tasks` (`title`, `id_course`, `language`, `level`, `typology`, `active`, `timer_duration`, `descriptionA`, `descriptionB`, `solutionA`, `solutionB`, `created_user_id`, `modified_user_id`, `created_at`, `updated_at`)
+                        VALUES (' . $this->escapeString( $title ) . ',' . $this->escapeString( $id_course ) . ',' . $this->escapeString( $language ) . ',' . $this->escapeString( $level ) . ',' . $this->escapeString( $typology ) . ',' . $this->escapeString( $active ) . ',' .
                     $this->escapeString( $timer_duration ) . ',' . $this->escapeString( $descriptionA ) . ',' . $this->escapeString( $descriptionB ) . ', '  . $this->escapeString( $solutionA ) . ', ' . $this->escapeString( $solutionB ) . ', ' .
                     $this->escapeString( $user_id ) . ', ' .$this->escapeString( $user_id ) . ', ' .
                     ' now(),  now())';
@@ -6757,6 +6757,21 @@ GROUP BY period) AS concurrent_users_report ";
         }
     }
 
+    public function getTask($task_id) {
+        $row    = false;
+        $where  = 'where id = ' . $task_id;
+        $result = $this->consulta( 'SELECT * FROM tasks   ' .
+                $where
+        );
+        if ( $this->numResultats( $result ) > 0 ) {
+            $arr = $this->obteComArray( $result );
+            if (count($arr) > 0) {
+                $row = $arr[0];
+            }
+        }
+        return $row;
+    }
+
     public function getExerciseCourseData($exercise_id, $course_id) {
         $row    = false;
         $where  = 'where id_exercise = ' . $exercise_id . ' AND id_course = '.$course_id;
@@ -6770,6 +6785,99 @@ GROUP BY period) AS concurrent_users_report ";
             }
         }
         return $row;
+    }
+    public function getTasks($courseId) {
+        $rows    = array();
+        $where  = 'where  id_course = '.$courseId;
+        $result = $this->consulta( 'SELECT * FROM tasks ' .
+                $where
+        );
+        if ( $this->numResultats( $result ) > 0 ) {
+            $rows = $this->obteComArray( $result );
+
+        }
+        return $rows;
+    }
+    public function getExerciseLinkedToTask($taskId) {
+        $row    = false;
+        $sql  = 'select e.name, e.id from exercise_task et inner join exercise e on e.id = et.exercise_id  where et.task_id = '.$this->escapeString($taskId);
+        $result = $this->consulta( $sql );
+        if ( $this->numResultats( $result ) > 0 ) {
+            $rows = $this->obteComArray( $result );
+            $row = $rows[0];
+
+        }
+        return $row;
+    }
+    public function deleteTask($taskId) {
+        $sql  = 'delete from tasks where id = '.$this->escapeString($taskId);
+        $result = $this->consulta( $sql );
+        return $result;
+    }
+    public function getAvailableTasks($exerciseId, $courseId) {
+        $rows    = array();
+        $where  = 'where id not in (select task_id from exercise_task where exercise_id = '.$exerciseId.') AND id_course = '.$courseId;
+        $result = $this->consulta( 'SELECT * FROM tasks ' .
+                $where
+        );
+        if ( $this->numResultats( $result ) > 0 ) {
+            $rows = $this->obteComArray( $result );
+
+        }
+        return $rows;
+    }
+    public function getLinkedTasks($exerciseId, $courseId) {
+        $rows    = array();
+        $where  = 'where  id_course = '.$courseId;
+        $result = $this->consulta( 'SELECT t.*, et.order FROM tasks t ' .
+                ' inner join exercise_task et on et.task_id=t.id and et.exercise_id = '.$this->escapeString($exerciseId).' '.
+                $where .
+                ' ORDER by et.order asc '
+        );
+        if ( $this->numResultats( $result ) > 0 ) {
+            $rows = $this->obteComArray( $result );
+
+        }
+        return $rows;
+    }
+    public function sortTasks($exerciseId, $sort) {
+
+        $sortOrder = 1;
+        foreach ($sort as $id) {
+            if ($id > 0) {
+                $sql = 'UPDATE exercise_task set `order` = ' . $sortOrder . ', updated_at = now()
+             where exercise_id = ' . $this->escapeString($exerciseId) . ' AND task_id = ' . $this->escapeString($id);
+                $result = $this->consulta($sql);
+                $sortOrder++;
+            }
+        }
+        return ['success' => true];
+
+    }
+    public function linkTask($exerciseId, $taskId, $unlinkTask) {
+
+        if ($unlinkTask) {
+            $sql = 'DELETE from exercise_task  WHERE exercise_id = ' . $this->escapeString($exerciseId) . ' AND task_id = ' . $this->escapeString($taskId);
+        } else {
+            $sql = 'INSERT INTO `exercise_task` (`exercise_id`, `task_id`, `order`, `created_at`, `updated_at`) '.
+                    ' VALUES (' . $this->escapeString($exerciseId) . ', ' . $this->escapeString($taskId) . ', 9999999, now(), now())';
+        }
+        $result = $this->consulta($sql);
+        if ($result) {
+            // reorder
+            $sort = array();
+            $select = 'select * from exercise_task  WHERE exercise_id = ' . $this->escapeString($exerciseId) . ' ORDER by `order`';
+            $result = $this->consulta($select);
+            if ( $this->numResultats( $result ) > 0 ) {
+                $rows = $this->obteComArray( $result );
+                foreach ($rows as $row ) {
+                    $sort[] = $row['task_id'];
+                }
+                $this->sortTasks($exerciseId, $sort);
+            }
+
+        }
+        return ['success' => true];
     }
 
 } // End of class.

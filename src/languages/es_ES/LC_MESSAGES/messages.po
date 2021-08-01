@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tandem (trunk)\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2021-07-29 19:04+0200\n"
+"PO-Revision-Date: 2021-08-01 21:56+0200\n"
 "Last-Translator: Antoni Bertran <antoni@tresipunt.com>\n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -1491,3 +1491,24 @@ msgstr "Edita ejercicio"
 
 msgid "New exercise"
 msgstr "Nuevo ejercicio"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Processing"
+msgstr "Procesando"
+
+msgid "Available Tasks"
+msgstr "Tareas Disponibles"
+
+msgid "Linked Tasks"
+msgstr "Tareas Enlazadas"
+
+msgid "There is an error deleting task"
+msgstr "Se ha producido un error eliminando la tarea"
+
+msgid "Task can't be deleted because is linked with exercise %s'"
+msgstr "La tarea no se puede eliminar porque está enlazada con el ejercicio %s"

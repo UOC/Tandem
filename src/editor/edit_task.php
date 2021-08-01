@@ -44,7 +44,7 @@ if (isset($_POST['save'])) {
     $solutionImageB = isset($_POST['solutionImageB']) ? $_POST['solutionImageB'] : '';
     $solutionImageB2 = isset($_POST['solutionImageB2']) ? $_POST['solutionImageB2'] : '';
     $task_id = $gestorBD->saveTask($task_id, $title, $language, $level, $typology, $active, $timer_duration, $descriptionA,
-            $descriptionB, $solutionA, $solutionB, $user_obj->id);
+            $descriptionB, $solutionA, $solutionB, $user_obj->id, $course_id);
 
     if ($task_id > 0) {
         // Store files
@@ -56,10 +56,7 @@ if (isset($_POST['save'])) {
 
         $added_error_format = false;
         $added_error_uploading = false;
-        $added_file_uploaded = false;
         foreach ($files_uploaded as $image => $result) {
-
-            $file_path = '';
 
             if (!$added_error_format && $result['result'] === FILE_FORMAT_ERROR) {
                 $message .= '. ' . $LanguageInstance->get('Some files are not a supported images');
@@ -71,12 +68,10 @@ if (isset($_POST['save'])) {
                 $message_cls = 'alert-warning';
                 $added_error_uploading = true;
             }
-            if (!$added_file_uploaded && $result['result'] === FILE_UPLOADED) {
-
-                $added_file_uploaded = true;
+            if ($result['result'] === FILE_UPLOADED) {
                 $file_path = $result['path'];
+                $gestorBD->saveTaskImage($task_id, $image, $file_path);
             }
-            $gestorBD->saveTaskImage($task_id, $image, $file_path);
         }
         $message = $LanguageInstance->get('Saved successfully');
         $message_cls = 'alert-info';
@@ -96,7 +91,16 @@ $memory_limit = (int)(ini_get('memory_limit'));
 $upload_mb = min($max_upload, $max_post, $memory_limit);
 
 if ($task_id > 0) {
-    $task = $gestorBD->get_questions_quiz_manage($task_id);
+    $task = $gestorBD->getTask($task_id);
+    $task['imageA'] = get_file_name($task['imageA']);
+    $task['imageA2'] = get_file_name($task['imageA2']);
+    $task['imageB'] = get_file_name($task['imageB']);
+    $task['imageB2'] = get_file_name($task['imageB2']);
+    $task['solutionImageA'] = get_file_name($task['solutionImageA']);
+    $task['solutionImageA2'] = get_file_name($task['solutionImageA2']);
+    $task['solutionImageB'] = get_file_name($task['solutionImageB']);
+    $task['solutionImageB2'] = get_file_name($task['solutionImageB2']);
+
 } else {
     $task = array();
     $task['id'] = -1;
@@ -212,6 +216,7 @@ if ($task_id > 0) {
                                 <div class="frm-group">
                                     <label for="timer_duration" class="frm-label"><?php echo $LanguageInstance->get('timer_duration') ?>:</label>
                                     <select id="timer_duration" name="timer_duration">
+                                        <option value="0"><?php echo $LanguageInstance->get('not apply')?></option>
                                         <?php for ($i=1; $i<=30; $i++) { ?>
                                         <option value=" <?php echo $i ?>" <?php echo $i == $task['timer_duration'] ? 'selected' :
                                                 '' ?>><?php echo $i . ' ' . $LanguageInstance->get('minutes'.($i>1?'s':'')) ?></option>
@@ -229,16 +234,16 @@ if ($task_id > 0) {
                                 </div>
                                 <div class="frm-group">
                                     <label for="descriptionA"><?php echo $LanguageInstance->get('Description A') ?>:</label>
-                                    <textarea class="summernote" name="descriptionA" cols="50" rows="10" id="descriptionA"></textarea>
+                                    <textarea class="summernote" name="descriptionA" cols="50" rows="10" id="descriptionA"><?php echo $task['descriptionA']?></textarea>
                                 </div>
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image A')?>:"><?php echo $LanguageInstance->get('Image A')?>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['imageA'])?$LanguageInstance->get('Choose Image File'):$task['imageA']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
-					                    <input type="file" name="imageA" class="attach-input-file" />
+					                    <input type="file" name="imageA" class="attach-input-file" value="<?php echo $task['imageA']?>"/>
 					                </span>
 					                <span class="attach-input-help">Max. <?php echo $upload_mb; ?> MB</span>
 					            </span>
@@ -246,7 +251,7 @@ if ($task_id > 0) {
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image A 2')?>:"><?php echo $LanguageInstance->get('Image A 2')?>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['imageA2'])?$LanguageInstance->get('Choose Image File'):$task['imageA2']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
@@ -257,12 +262,12 @@ if ($task_id > 0) {
                                 </div>
                                 <div class="frm-group">
                                     <label for="descriptionB"><?php echo $LanguageInstance->get('Description B') ?> <small><?php echo $LanguageInstance->get('(Leave emtpy if it\'s the same as A)') ?></small>:</label>
-                                    <textarea class="summernote" name="descriptionB" cols="50" rows="10" id="descriptionB"></textarea>
+                                    <textarea class="summernote" name="descriptionB" cols="50" rows="10" id="descriptionB"><?php echo $task['descriptionB']?></textarea>
                                 </div>
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image B')?>:"><?php echo $LanguageInstance->get('Image B')?> <small><?php echo $LanguageInstance->get('(Leave emtpy if it\'s the same as A)') ?></small>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['imageB'])?$LanguageInstance->get('Choose Image File'):$task['imageB']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
@@ -274,7 +279,7 @@ if ($task_id > 0) {
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image B 2')?>:"><?php echo $LanguageInstance->get('Image B 2')?> <small><?php echo $LanguageInstance->get('(Leave emtpy if it\'s the same as A)') ?></small>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['imageB2'])?$LanguageInstance->get('Choose Image File'):$task['imageB2']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
@@ -287,12 +292,12 @@ if ($task_id > 0) {
 
                                 <div class="frm-group">
                                     <label for="solutionA"><?php echo $LanguageInstance->get('Solution A') ?>:</label>
-                                    <textarea class="summernote" name="solutionA" cols="50" rows="10" id="solutionA"></textarea>
+                                    <textarea class="summernote" name="solutionA" cols="50" rows="10" id="solutionA"><?php echo $task['solutionA']?></textarea>
                                 </div>
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image A')?>:"><?php echo $LanguageInstance->get('Solution Image A')?>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['solutionImageA'])?$LanguageInstance->get('Choose Image File'):$task['solutionImageA']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
@@ -304,7 +309,7 @@ if ($task_id > 0) {
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image A 2')?>:"><?php echo $LanguageInstance->get('Solution Image A 2')?>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['solutionImageA2'])?$LanguageInstance->get('Choose Image File'):$task['solutionImageA2']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
@@ -315,12 +320,12 @@ if ($task_id > 0) {
                                 </div>
                                 <div class="frm-group">
                                     <label for="solutionB"><?php echo $LanguageInstance->get('Solution B') ?> <small><?php echo $LanguageInstance->get('(Leave emtpy if it\'s the same as A)') ?></small>:</label>
-                                    <textarea class="summernote" name="solutionB" cols="50" rows="10" id="solutionB"></textarea>
+                                    <textarea class="summernote" name="solutionB" cols="50" rows="10" id="solutionB"><?php echo $task['solutionB']?></textarea>
                                 </div>
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image B')?>:"><?php echo $LanguageInstance->get('Solution Image B')?> <small><?php echo $LanguageInstance->get('(Leave emtpy if it\'s the same as A)') ?></small>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['solutionImageB'])?$LanguageInstance->get('Choose Image File'):$task['solutionImageB']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>
@@ -332,7 +337,7 @@ if ($task_id > 0) {
                                 <div class="frm-group">
                                     <label  class="frm-label" data-title-file="<?php echo $LanguageInstance->get('Choose Image File')?>:" data-title-none="<?php echo $LanguageInstance->get('Image B 2')?>:"><?php echo $LanguageInstance->get('Solution Image B 2')?> <small><?php echo $LanguageInstance->get('(Leave emtpy if it\'s the same as A)') ?></small>:</label>
                                     <span class="attach-input">
-									<input type="text" value="" class="attach-input-text" placeholder="<?php echo $LanguageInstance->get('Choose Image File')?>" />
+									<input type="text" value="" class="attach-input-text" placeholder="<?php echo empty($task['solutionImageB'])?$LanguageInstance->get('Choose Image File'):$task['solutionImageB2']?>" />
 									<span class="attach-input-btn">
 										<i class="icon"></i>
 					                    <span aria-hidden="true"><?php echo $LanguageInstance->get('browse')?></span>

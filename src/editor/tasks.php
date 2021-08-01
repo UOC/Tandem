@@ -13,24 +13,28 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 	//Tornem a l'index
 	header ('Location: ../index.php');
 } else {
-	$exercise_name = '';
-	$exercise_week = '';
-	$exercise_type = 'all';
-	$task_id = -1;
 	$gestorBD	= new GestorBD();
-
 
     if (isset($_GET['delete'])) {
         $delete = $_GET['delete'];
 
-        // TODO delete it
-        if ($gestorBD->delete_task($course_id, $delete)) {
+        $exercise_linked = $gestorBD->getExerciseLinkedToTask($delete);
 
-            $message = $LanguageInstance->get('Task successfully deleted');
+        if ($exercise_linked != false) {
+            $message = '<a href="edit_exercise.php?id='.$exercise_linked['id'].'" target="_blank">'.$LanguageInstance->getTag('Task can\'t be deleted because is linked with exercise %s', $exercise_linked['name']).'</a>';
+            $message_cls = 'alert-warning';
+        } else {
+
+            if ($gestorBD->deleteTask($delete)) {
+
+                $message = $LanguageInstance->get('Task successfully deleted');
+                $message_cls = 'alert-info';
+            } else {
+                $message = $LanguageInstance->get('There is an error deleting task');
+            }
         }
     }
-    // TODO get tasks
-	$array_tasks = array();// $gestorBD->get_tandem_exercises($course_id, 0);
+	$array_tasks = $gestorBD->getTasks($course_id);
 
 
 ?>
@@ -77,7 +81,7 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				<div id="content">
 					<a href="../manage_exercises_tandem.php" class="tandem-btn-secundary btn-back"><span>&larr;</span>&nbsp;<?php echo $LanguageInstance->get('back')?></a>
 					<div id="logo">
-						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
+						<a href="#" title="<?php echo $LanguageInstance->get('tandem_logo')?>"><img src="../css/images/logo_Tandem.png" alt="<?php echo $LanguageInstance->get('tandem_logo')?>" /></a>
 					</div>
 
 					<div class="clear">
@@ -94,16 +98,11 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 							<table  class="table">
 								<thead>
 									<tr>
-										<th><?php echo $LanguageInstance->get('exercise_name')?></th>
-										<th><?php echo $LanguageInstance->get('name_xml_file')?></th>
-										<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
-                                            <th><?php echo $LanguageInstance->get('Week')?></th>
-										<?php } ?>
-										<?php if (isset($_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]) && $_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]==1) {?>
-                                            <th><?php echo $LanguageInstance->get('Language')?></th>
-										<?php } ?>
-										<th class="center"><?php echo $LanguageInstance->get('enabled')?></th>
-										<th class="center"><?php echo $LanguageInstance->get('update')?></th>
+                                        <th><?php echo $LanguageInstance->get('Title') ?></th>
+                                        <th><?php echo $LanguageInstance->get('Language') ?></th>
+                                        <th><?php echo $LanguageInstance->get('Level') ?></th>
+                                        <th><?php echo $LanguageInstance->get('Enabled') ?></th>
+                                        <th class="center"><?php echo $LanguageInstance->get('update')?></th>
 										<th class="center"><?php echo $LanguageInstance->get('delete')?></th>
 									</tr>
 								</thead>
@@ -111,17 +110,12 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 									<?php $i=0;
 									foreach ($array_tasks as $exercise) {?>
 									<tr class="<?php echo $i%2==0?'normalRow':'alternateRow'?>">
-										<td><?php echo $exercise['name']?></td>
-										<td><?php echo $exercise['name_xml_file']?></td>
-										<?php if (isset($_SESSION[USE_WAITING_ROOM]) && $_SESSION[USE_WAITING_ROOM]==1) {?>
-										<td><?php echo $exercise['week']?></td>
-										<?php } ?>
-										<?php if (isset($_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]) && $_SESSION[USE_FALLBACK_WAITING_ROOM_AVOID_LANGUAGE]==1) {?>
-										<td><?php echo $exercise['lang']?></td>
-										<?php } ?>
-										<td class="center"><a href="manage_exercises_tandem.php?enabled=<?php echo $exercise['id']?>&action=<?php echo $exercise['enabled']?>"><?php echo $LanguageInstance->get($exercise['enabled']=='1'?'yes':'no')?></a></td>
-										<td class="center"><a href="manage_exercises_tandem.php?update_exercise_form_id=<?php echo $exercise['id']?>" class="lnk-btn-edit" title="<?php echo $LanguageInstance->get('update')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('update')?></span></a></td>
-										<td class="center"><a href="manage_exercises_tandem.php?delete=<?php echo $exercise['id']?>" class="lnk-btn-trash" title="<?php echo $LanguageInstance->get('delete')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('delete')?></span></a></td>
+										<td><?php echo $exercise['title']?></td>
+										<td><?php echo $exercise['language']?></td>
+										<td><?php echo $exercise['level']?></td>
+                                        <td><?php echo $LanguageInstance->get($task['active']?'yes':'no')?></td>
+										<td class="center"><a href="edit_task.php?id=<?php echo $exercise['id']?>" class="lnk-btn-edit" title="<?php echo $LanguageInstance->get('update')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('update')?></span></a></td>
+										<td class="center"><a href="tasks.php?delete=<?php echo $exercise['id']?>" class="lnk-btn-trash" title="<?php echo $LanguageInstance->get('delete')?>"><span class="visually-hidden"><?php echo $LanguageInstance->get('delete')?></span></a></td>
 									</tr>
 									<?php
 									$i++;
@@ -156,8 +150,8 @@ if (!isset($user_obj) || !isset($course_id) || !isset($course_folder) || !$user_
 				<div style="float: left; margin-top: 0pt; text-align: justify; width: 600px;"><span style="font-size:9px;">This project has been funded with support from the Lifelong Learning Programme of the European Commission.  <br />
 This site reflects only the views of the authors, and the European Commission cannot be held responsible for any use which may be made of the information contained therein.</span>
 </div>
-		 &nbsp;	<img src="css/images/EU_flag.jpg" alt="" />
-				<img src="img/logo_speakapps.png" alt="Speakapps" />
+		 &nbsp;	<img src="../css/images/EU_flag.jpg" alt="" />
+				<img src="../img/logo_speakapps.png" alt="Speakapps" />
 			</div>
 		</div>
 	</div>

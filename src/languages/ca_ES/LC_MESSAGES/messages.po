@@ -876,3 +876,24 @@ msgstr "Edita exercici"
 
 msgid "New exercise"
 msgstr "Nou exercici"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Action"
+msgstr "Acció"
+
+msgid "Processing"
+msgstr "Processant"
+
+msgid "Available Tasks"
+msgstr "Tasques Disponibles"
+
+msgid "Linked Tasks"
+msgstr "Taasques Enllaçades"
+
+msgid "There is an error deleting task"
+msgstr "S'ha produit un error eliminant la tasca"
+
+msgid "Task can't be deleted because is linked with exercise %s'"
+msgstr "La tasca no es pot eliminar perquè està enllaçada amb l'exercici %s"

@@ -638,13 +638,13 @@ CREATE TABLE `user_tandem_task` (
 
 
 DELIMITER ;;
-/*!50003 SET SESSION SQL_MODE="" */;;
-/*!50003 CREATE */ /*!50017 DEFINER=`speakapps`@`%` */ /*!50003 TRIGGER `updateTandemTime` AFTER UPDATE ON `user_tandem_task` FOR EACH ROW BEGIN
+
+/*!50003 CREATE */ /*!50003 TRIGGER `updateTandemTime` AFTER UPDATE ON `user_tandem_task` FOR EACH ROW BEGIN
 	update user_tandem set total_time = (select sum(total_time) from user_tandem_task where id_tandem = NEW.id_tandem and id_user=NEW.id_user) where id_tandem = NEW.id_tandem and id_user=NEW.id_user;
 	
 END */;;
 DELIMITER ;
-/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;
+
 
 
 # Volcado de tabla user_tandem_task_question
@@ -775,6 +775,7 @@ DROP TABLE  IF EXISTS `tasks`;
 CREATE TABLE `tasks` (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+ `id_course` int(11) NOT NULL,
  `language` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
  `level` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
  `typology` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -801,6 +802,15 @@ CREATE TABLE `tasks` (
 
 alter table exercise add imported tinyint default 1;
 alter table exercise add `level` varchar(255) COLLATE utf8mb4_unicode_ci NULL;
+
+CREATE TABLE `exercise_task` (
+                                 `exercise_id` int(10) unsigned NOT NULL,
+                                 `task_id` int(10) unsigned NOT NULL,
+                                 `order` int(11) NOT NULL,
+                                 `created_at` timestamp NULL DEFAULT NULL,
+                                 `updated_at` timestamp NULL DEFAULT NULL,
+                                 PRIMARY KEY (`exercise_id`,`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

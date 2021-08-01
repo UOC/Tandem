@@ -33,6 +33,8 @@ if (isset($_POST['save'])) {
 
     if ($exercise_id > 0) {
         $message = $LanguageInstance->get('Saved successfully');
+        $course_folder = $_SESSION[TANDEM_COURSE_FOLDER];
+        generate_image_from_repository($exercise_id, $gestorBD, $course_id, $course_folder);
         $message_cls = 'alert-info';
     } else {
         $message = $LanguageInstance->get('Error storing data');
@@ -49,6 +51,7 @@ $exercise['lang'] = 'all';
 $exercise['week'] = '';
 $exercise['active'] = 1;
 $exercise['level'] = '';
+$availableTasks = array();
 if ($exercise_id > 0) {
     $exercise_array = $gestorBD->get_exercise($exercise_id);
     $exercise_id = $exercise_array[0]['id'];
@@ -74,6 +77,7 @@ if ($exercise_id > 0) {
     <title>Tandem</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" type="text/css" media="all" href="../css/tandem.css"/>
+    <link rel="stylesheet" type="text/css" media="all" href="../css/spinner.css"/>
     <link rel="stylesheet" type="text/css" media="all" href="../css/jquery-ui.css"/>
     <script src="../js/jquery-1.7.2.min.js"></script>
     <script src="../js/jquery.ui.core.js"></script>
@@ -174,6 +178,20 @@ if ($exercise_id > 0) {
                                                 '' ?>><?php echo $LanguageInstance->get('No') ?></option>
                                     </select>
                                 </div>
+                                <?php if ($exercise_id > 0) { ?>
+                                    <div class="clear"></div>
+                                    <div class="frm-group">
+                                        <h3><?php echo $LanguageInstance->get('Linked Tasks') ?></h3>
+                                    </div>
+                                    <div id="linked_tasks">
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="frm-group">
+                                        <h3><?php echo $LanguageInstance->get('Available Tasks') ?></h3>
+                                    </div>
+                                    <div id="available_tasks">
+                                    </div>
+                                <?php } ?>
                                 <div class="clear"></div>
 
                                 <input type="submit" class="tandem-btn"
@@ -188,9 +206,134 @@ if ($exercise_id > 0) {
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 <?php include_once __DIR__ . '/../js/google_analytics.php'; ?>
+<?php if ($exercise_id > 0) { ?>
+    <script language="JavaScript">
+        const exerciseId = <?php echo $exercise_id?>;
+        var spinner = "<table class=\"table\"><tr><th colspan=\"100%\"><strong><?php echo $LanguageInstance->get('Processing') ?></strong><div class=\"spinner-grow spinner-grow-sm\" role=\"status\" aria-hidden=\"true\"></div></table></tr></th>";
+        var sortData;
+        let target = $('#linked_tasks');
+        $(document).ready(function() {
+            target.sortable({
+                items: "tr",
+                cursor: 'move',
+                opacity: 0.6,
+                update: function () {
+                    sortData = target.sortable('toArray', {attribute: 'data-id'})
+                    sortLinkedTasks();
+                }
+            });
+            getLinkedTasks();
+            getAvailableTasks();
+
+
+        });
+
+
+        function getLinkedTasks(){
+            $.ajax({
+                url: "linkedTasks.php",
+                type:"POST",
+                data:{
+                    exerciseId: exerciseId,
+                },
+                beforeSend: function() {
+                    $("#linked_tasks").html(spinner);
+                },
+                success:function(response){
+                    $("#linked_tasks").html(response);
+                    sortData = target.sortable('toArray',{ attribute: 'data-id'});
+                },
+            });
+        }
+        function getAvailableTasks(){
+
+            $.ajax({
+                url: "availableTasks.php",
+                type:"POST",
+                data:{
+                    exerciseId: exerciseId
+                },
+                beforeSend: function() {
+                    $("#available_tasks").html(spinner);
+                },
+                success:function(response){
+                    $("#available_tasks").html(response);
+                    sortData = target.sortable('toArray',{ attribute: 'data-id'});
+                },
+            });
+        }
+
+        function sortLinkedTasks(){
+
+            let idString = sortData.join(',');
+
+            $.ajax({
+                url:'sortTasks.php',
+                method:'POST',
+                data:{
+                    exerciseId: exerciseId,
+                    ids: idString
+                },
+                beforeSend: function() {
+                    $("#linked_tasks").html(spinner);
+                },
+                success:function(){
+                    getLinkedTasks();
+                }
+            })
+        }
+
+        function linkTask(taskId){
+
+            $.ajax({
+                url:'linkTask.php',
+                method:'POST',
+                data:{
+                    exerciseId: exerciseId,
+                    taskId: taskId,
+                    unlinkTask: 0
+                },
+                beforeSend: function() {
+                    $("#available_tasks").html(spinner);
+                },
+                success:function(){
+                    getLinkedTasks();
+                    getAvailableTasks();
+
+                }
+            })
+        }
+        function unlinkTask(taskId){
+
+            const index = sortData.indexOf(taskId.toString());
+            if (index > -1){
+                sortData.splice(index, 1);
+            }
+            $.ajax({
+                url:'linkTask.php',
+                method:'POST',
+
+                data:{
+                    exerciseId: exerciseId,
+                    taskId: taskId,
+                    unlink: 1
+                },
+                beforeSend: function() {
+                    $("#linked_tasks").html(spinner);
+                },
+                success:function(){
+                    sortLinkedTasks();
+                    getAvailableTasks();
+                },
+            })
+        }
+
+    </script>
+<?php } ?>
 </body>
 </html>
