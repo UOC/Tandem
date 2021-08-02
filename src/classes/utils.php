@@ -978,7 +978,8 @@ function upload_files_task($course_id, $task_id, $images) {
 
 function get_file_name($str) {
     if (!empty($str)) {
-        $str = end(explode('/', $str));
+        $arr_file = explode('/', $str);
+        $str = end($arr_file);
     }
     return $str;
 }
